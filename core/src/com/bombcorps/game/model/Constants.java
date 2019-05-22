@@ -13,5 +13,6 @@ public class Constants {
     public static final int FALLING = 3;
 
     public static final float ENDURANCE_COST = 0.2f;
-    
+
+
 }
