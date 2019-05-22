@@ -14,4 +14,5 @@ public class Constants {
 
     public static final float ENDURANCE_COST = 0.2f;
 
+    int a = 0;
 }
