@@ -78,7 +78,7 @@ public abstract class AbstractHero {
                     state = STATE.FALLING;
                     break;
                 }
-                if(endurance > 0 && /* 没到目的地*/){
+                if(endurance > 0 && /* 没到目的地*/ && /* 前方无阻挡物*/){
                     endurance -= Constants.ENDURANCE_COST;
                     updateX(deltaTime);
                 }else{
@@ -86,7 +86,7 @@ public abstract class AbstractHero {
                 }
                 break;
             case GROUNDED:
-
+                break;
 
         }
 
@@ -114,6 +114,7 @@ public abstract class AbstractHero {
     public void setState(int input){
         switch (input){
             case 1:
+                velocity.x = /*向右移动？*/? Constants.VELOCITY_X : -Constants.VELOCITY_X;
                 state = STATE.MOVING;
                 break;
             case 2:
