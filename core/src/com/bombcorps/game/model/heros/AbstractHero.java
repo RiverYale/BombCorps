@@ -2,7 +2,9 @@ package com.bombcorps.game.model.heros;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.bombcorps.game.model.Constants;
 
 public abstract class AbstractHero {
     /*
@@ -19,12 +21,24 @@ public abstract class AbstractHero {
     /*
     角色其他属性
      */
-    private Vector2 position;   //位置
+    private boolean isMove;
     private boolean headright;  //方向  true表示朝右 反之朝左
+    private Vector2 position;   //位置
+    private Vector2 dimension;  //大小
+    private Vector2 origin;     //焦点
+    private Vector2 scale;      //缩放
+    private Vector2 velocity;   //速度
+    private Vector2 acceleration;//加速度
+
+    private STATE state;
 
     private TextureRegion staticRegion;
     private TextureRegion[] moveRegions;
     private TextureRegion[] attackRegions;
+
+    public enum STATE{          //人物状态
+        ATTACKING, FALLING, GROUNDED,MOVING
+    }
 
     public AbstractHero(){
         health = 0;
@@ -35,15 +49,48 @@ public abstract class AbstractHero {
         armor = 0;
 
         position = new Vector2();
-        headright = false;
+        dimension = new Vector2();
+        origin = new Vector2();
+        scale = new Vector2();
+        velocity = new Vector2();
+        acceleration = new Vector2(0,Constants.ACCELERATION);
 
-        staticRegion = null;
-        moveRegions = null;
-        attackRegions = null;
+        headright = false;
+        isMove = false;
     }
 
     public void update(float deltaTime){
 
+    }
+
+    protected void updatePosition(float deltaTime){
+        switch(state){
+            case FALLING:
+                velocity.y += acceleration.y * deltaTime;
+                position.y -= velocity.y * deltaTime;
+                if(/* 撞到了地面 */) {
+                    state = STATE.GROUNDED;
+                }
+                break;
+            case MOVING:
+                if(endurance > 0)
+                    position.x += velocity.x * deltaTime;
+                break;
+            case GROUNDED:
+            case ATTACKING:
+
+        }
+
+        updateX(deltaTime);
+        updateY(deltaTime);
+    }
+
+    private void updateX(float deltaTime){
+        position.x += deltaTime * velocity.x;
+    }
+
+    private void updateY(float deltaTime){
+        position.y += deltaTime * velocity.y;
     }
 
     public abstract void render(SpriteBatch batch);
@@ -52,6 +99,8 @@ public abstract class AbstractHero {
     /*
     set 与 put函数
      */
+    public void setVelocity(float velocityX, float )
+
     public void setHealth(int health) {
         this.health = health;
     }
