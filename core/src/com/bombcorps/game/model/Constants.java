@@ -18,14 +18,155 @@ public class Constants {
     public static final int MOVING = 1;
     public static final int GROUNDED = 2;
     public static final int FALLING = 3;
+    public static final int ATTACK = 4;
+    public static final int DEAD = 5;
 
     public static final float MAX_ENDURENCE = 200;
     public static final float MAX_RAGEPOWER = 100;
-    public static final float ENDURANCE_COST = 0.2f;
+    public static final float MOVE_ENDURANCE_COST = 0.2f;
+    public static final float TRANSPORT_ENDURENCE_COST = 150f;
+    public static final float CRITICALPROBABILITY_DAMAGE_RATE = 2f;
 
     /*
     Sniper
      */
-    public static float
+    public static final class Sniper{
+        public static final float HEALTH = 800f;
+        public static final float ATTACK = 200f;
+        public static final float ARMOR = 70f;
+        public static final float START_CRITICALPROBABILITY = 0f;
+        /*
+        技能消耗
+         */
+        public static final float SKILL_1_ENDURENCE_COST = 50f;
+        public static final float SKILL_2_ENDURENCE_COST = 80f;
+        public static final float SKILL_3_ENDURENCE_COST = 100f;
+        public static final float SKILL_1_POWERRAGE_COST = 10f;
+        public static final float SKILL_2_POWERRAGE_COST = 30f;
+        public static final float SKILL_3_POWERRAGE_COST = 100f;
+        /*
+        技能效果加成
+         */
+        public static final float SKILL_0_CRITICALPROBABILITY_PER_ROUND_ADD = 0.2f;
+        public static final float SKILL_1_ANTI_ARMOR_RATE = 0.3f;
+        public static final float SKILL_2_LEFT_PERCENTAGE = 0.5f;
+        public static final float SKILL_3_CRITICALBROBABILITY_DAMAGE_RATE = 3f;
+    }
+
+    /*
+    Angel
+     */
+    public static final class Angel{
+        public static final float HEALTH = 1000f;
+        public static final float ATTACK = 50f;
+        public static final float ARMOR = 50f;
+        public static final float START_CRITICALPROBABILITY = 0.2f;
+        public static final float ANTI_ARMOR_RATE = 0f;
+        /*
+        技能消耗
+         */
+        public static final float SKILL_1_ENDURENCE_COST = 50f;
+        public static final float SKILL_2_ENDURENCE_COST = 80f;
+        public static final float SKILL_3_ENDURENCE_COST = 100f;
+        public static final float SKILL_1_POWERRAGE_COST = 10f;
+        public static final float SKILL_2_POWERRAGE_COST = 30f;
+        public static final float SKILL_3_POWERRAGE_COST = 100f;
+        /*
+        技能效果加成
+         */
+        public static final float SKILL_0_HEALTH_PER_ROUND_ADD = 150f;
+        public static final float SKILL_1_HEALTH_PERCENTAGE_ADD = 0.1f;
+        public static final int SKILL_2_ROUND_NUM = 2;
+        public static final float SKILL_2_ATTACK_PERCENTAGE_MIN = 0.2f;
+        public static final float SKILL_2_ENDURANCE_MIN = 80f;
+        public static final float SKILL_3_TEAMMATE_HEALTH_ADD = 500f;
+        public static final float SKILL_3_TEAMMATE_ATTACK_PERCENTAGE_ADD = 0.1f;
+    }
+
+    /*
+    Wizard
+     */
+    public static final class Wizard{
+        public static final float HEALTH = 800f;
+        public static final float ATTACK = 0f;
+        public static final float ARMOR = 70f;
+        public static final float START_CRITICALPROBABILITY = 0f;
+        public static final float ANTI_ARMOR_RATE = 0.3f;
+        /*
+        技能消耗
+         */
+        public static final float SKILL_1_ENDURENCE_COST = 50f;
+        public static final float SKILL_2_ENDURENCE_COST = 80f;
+        public static final float SKILL_3_ENDURENCE_COST = 100f;
+        public static final float SKILL_1_POWERRAGE_COST = 10f;
+        public static final float SKILL_2_POWERRAGE_COST = 30f;
+        public static final float SKILL_3_POWERRAGE_COST = 100f;
+        /*
+        技能效果加成
+         */
+        public static final float SKILL_0_DAMAGE_PER_ROUND_PER_LAYER = 50f;
+        public static final float SKILL_1_LAYERS_ADD = 3f;
+        public static final float SKILL_2_SEAL_ROUND = 1f;
+        public static final float SKILL_3_PERCENTAGE_PER_LAYER = 0.1f;
+    }
+
+    /*
+    Sparda
+     */
+    public static final class Sparda{
+        public static final float HEALTH = 1000f;
+        public static final float ATTACK = 130f;
+        public static final float ARMOR = 70f;
+        public static final float START_CRITICALPROBABILITY = 0.2f;
+        public static final float ANTI_ARMOR_RATE = 0f;
+        /*
+        技能消耗
+         */
+        public static final float SKILL_1_ENDURENCE_COST = 50f;
+        public static final float SKILL_2_ENDURENCE_COST = 80f;
+        public static final float SKILL_3_ENDURENCE_COST = 100f;
+        public static final float SKILL_1_HEALTH_COST = 100f;
+        public static final float SKILL_2_HEALTH_COST = 100f;
+        public static final float SKILL_3_HEALTH_COST = 100f;
+        /*
+        技能效果加成
+         */
+        public static final float SKILL_0_ATTACK_PERCENTAGE_ADD = 0.1f;
+        public static final float SKILL_0_HEALTH_PERCENTAGE_ADD = 0.3f;
+        public static final float SKILL_1_ATTACK_ADD = 50f;
+        public static final float SKILL_2_CRITICALPROBABILITY_ADD = 0.3f;
+        public static final float SKILL_3_POWERRAGE_EACH_ROUND_COST = 20f;
+
+    }
+
+    /*
+    Protector
+     */
+    public static final class Protector{
+        public static final float HEALTH = 1500f;
+        public static final float ATTACK = 70f;
+        public static final float ARMOR = 130f;
+        public static final float START_CRITICALPROBABILITY = 0.2f;
+        public static final float ANTI_ARMOR_RATE = 0.3f;
+        /*
+        技能消耗
+         */
+        public static final float SKILL_1_ENDURENCE_COST = 50f;
+        public static final float SKILL_2_ENDURENCE_COST = 80f;
+        public static final float SKILL_3_ENDURENCE_COST = 100f;
+        public static final float SKILL_1_POWERRAGE_COST = 10f;
+        public static final float SKILL_2_POWERRAGE_COST = 30f;
+        public static final float SKILL_3_POWERRAGE_COST = 100f;
+        /*
+        技能效果加成
+         */
+        public static final float SKILL_1_ARMOR_ADD = 100f;
+        public static final float SKILL_2_SHIELD_PERCENTAGE = 0.2f;
+        public static final int SKILL_3_ROUND_NUM = 2;
+        public static final float SKILL_3_TEAMMATE_DAMAGE_PERCENTAGE = 0.4f;
+        public static final float SKILL_3_SELF_DAMAGE_PERCENTAGE = 0.6f;
+
+
+    }
 
 }

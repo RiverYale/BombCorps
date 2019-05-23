@@ -1,5 +1,6 @@
 package com.bombcorps.game.model.heros;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -13,9 +14,10 @@ public abstract class AbstractHero {
      */
     private float health;         //血量
     private float endurance;      //精力
-    private float ragePower;      //怒气值
+    private float powerRage;      //怒气值
 
     private float attack;         //攻击力
+    private float antiArmor;
     private float criticalProbability;  //暴击几率
     private float armor;          //护甲值
 
@@ -35,6 +37,9 @@ public abstract class AbstractHero {
     /*
     渲染英雄
      */
+    private float stateTime;
+    private int attackTimes;
+
     private TextureRegion staticRegion;
     private TextureRegion deadRegion;
     private TextureRegion[] moveRegions;
@@ -44,7 +49,7 @@ public abstract class AbstractHero {
     private Animation attackAnimation;
 
     public enum STATE{          //人物状态
-        FALLING, GROUNDED,MOVING,ATTACK
+        FALLING, GROUNDED,MOVING,ATTACK,DEAD
     }
 
     public AbstractHero(int hero){
@@ -120,16 +125,17 @@ public abstract class AbstractHero {
 
     private void initAnimation(){
         moveAnimation = new Animation(0.1f, moveRegions);
-        attackAnimation = new Animation(0.1f, attackRegions);
+        attackAnimation = new Animation(0.3f, attackRegions);
     }
 
     private void init(){
         health = 0;
-        endurance = 0;
-        ragePower = 0;
+        endurance = Constants.MAX_ENDURENCE;
+        powerRage = Constants.MAX_RAGEPOWER;
         attack = 0;
         criticalProbability = 0;
         armor = 0;
+        antiArmor = 0;
 
         position = new Vector2();
         dimension = new Vector2();
@@ -139,6 +145,8 @@ public abstract class AbstractHero {
         acceleration = new Vector2(0,Constants.ACCELERATION);
 
         headright = false;
+        stateTime = 0;
+        attackTimes = 1;
     }
 
 
@@ -151,6 +159,7 @@ public abstract class AbstractHero {
     protected void updatePosition(float deltaTime){
         switch(state){
             case ATTACK:
+            case DEAD:
             case GROUNDED:
                 velocity.y = 0;
                 state = STATE.FALLING;
@@ -162,7 +171,7 @@ public abstract class AbstractHero {
                 float destination = ;      //目的地的x
 
                 if(endurance > 0 && Math.abs(position.x - destination) > 5){
-                    endurance -= Constants.ENDURANCE_COST;
+                    endurance -= Constants.MOVE_ENDURANCE_COST;
                     updateX(deltaTime);
 
                     if(endurance < 0)
@@ -175,27 +184,71 @@ public abstract class AbstractHero {
 
     }
 
-    private void updateX(float deltaTime){
+    protected void updateX(float deltaTime){
         position.x += deltaTime * velocity.x;
     }
 
-    private void updateY(float deltaTime){
+    protected void updateY(float deltaTime){
         position.y += deltaTime * velocity.y;
         velocity.y += deltaTime * acceleration.y;
     }
 
     public void render(SpriteBatch batch){
-
+        renderHero(batch);
     };
 
-    protected void renderHero(float batch){
-        if()
+    protected void renderHero(SpriteBatch batch){
+
+        switch(state){
+            case FALLING:
+            case GROUNDED:
+                batch.draw(staticRegion.getTexture(), position.x, position.y, origin.x, origin.y,
+                        dimension.x, dimension.y, scale.x, scale.y, 0, staticRegion.getRegionX(),
+                        staticRegion.getRegionY(), staticRegion.getRegionWidth(),staticRegion.getRegionHeight(),
+                        !headright, false);
+                break;
+            case DEAD:
+                batch.draw(deadRegion.getTexture(), position.x, position.y, origin.x, origin.y,
+                        dimension.x, dimension.y, scale.x, scale.y, 0, deadRegion.getRegionX(),
+                        deadRegion.getRegionY(), deadRegion.getRegionWidth(),deadRegion.getRegionHeight(),
+                        !headright, false);
+                break;
+            case MOVING:
+                TextureRegion moveFrame = (TextureRegion) moveAnimation.getKeyFrame(stateTime);
+                stateTime += Gdx.graphics.getDeltaTime();
+                stateTime %= moveAnimation.getAnimationDuration();
+
+                batch.draw(moveFrame, position.x, position.y, origin.x, origin.y, dimension.x, dimension.y,
+                        scale.x, scale.y, 0);
+                break;
+            case ATTACK:
+                TextureRegion attackFrame = (TextureRegion) attackAnimation.getKeyFrame(stateTime);
+                stateTime += Gdx.graphics.getDeltaTime();
+
+                batch.draw(attackFrame, position.x, position.y, origin.x, origin.y, dimension.x, dimension.y,
+                        scale.x, scale.y, 0);
+
+                if(stateTime > attackAnimation.getAnimationDuration()){
+                    attackTimes--;
+                    if(attackTimes > 0){
+                        stateTime -= attackAnimation.getAnimationDuration();
+                    }else {
+                        state = STATE.GROUNDED;
+                    }
+                }
+                break;
+        }
+
     }
 
 
     /*
     set 与 put函数
      */
+    public void setAttackTimes(int attackTimes){
+        this.attackTimes = attackTimes;
+    }
+
     public  void setVelocity(float VelocityX){
         velocity.x = VelocityX;
     }
@@ -224,7 +277,7 @@ public abstract class AbstractHero {
     }
 
     public void setRagePower(float ragePower) {
-        this.ragePower = ragePower;
+        this.powerRage = ragePower;
     }
 
     public void setCriticalProbability(float criticalProbability) {
@@ -256,7 +309,7 @@ public abstract class AbstractHero {
     }
 
     public float getRagePower(){
-        return ragePower;
+        return powerRage;
     }
 
     public float getCriticalProbability() {
