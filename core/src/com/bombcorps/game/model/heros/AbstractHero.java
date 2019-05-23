@@ -10,13 +10,13 @@ public abstract class AbstractHero {
     /*
         角色基本属性
      */
-    private int health;         //血量
-    private int endurance;      //精力
-    private int ragePower;      //怒气值
+    private float health;         //血量
+    private float endurance;      //精力
+    private float ragePower;      //怒气值
 
-    private int attack;         //攻击力
+    private float attack;         //攻击力
     private float criticalProbability;  //暴击几率
-    private int armor;          //护甲值
+    private float armor;          //护甲值
 
     /*
     角色其他属性
@@ -37,7 +37,7 @@ public abstract class AbstractHero {
     private TextureRegion[] attackRegions;
 
     public enum STATE{          //人物状态
-        ATTACKING, FALLING, GROUNDED,MOVING
+        FALLING, GROUNDED,MOVING
     }
 
     public AbstractHero(){
@@ -60,29 +60,36 @@ public abstract class AbstractHero {
     }
 
     public void update(float deltaTime){
+        updatePosition(deltaTime);
 
     }
 
     protected void updatePosition(float deltaTime){
         switch(state){
             case FALLING:
-                velocity.y += acceleration.y * deltaTime;
-                position.y -= velocity.y * deltaTime;
+                updateY(deltaTime);
                 if(/* 撞到了地面 */) {
-                    state = STATE.GROUNDED;
+                    state = STATE.MOVING;
+                    velocity.y = 0;
                 }
                 break;
             case MOVING:
-                if(endurance > 0)
-                    position.x += velocity.x * deltaTime;
+                if(/*开始FALLing*/){
+                    state = STATE.FALLING;
+                    break;
+                }
+                if(endurance > 0 && /* 没到目的地*/ && /* 前方无阻挡物*/){
+                    endurance -= Constants.ENDURANCE_COST;
+                    updateX(deltaTime);
+                }else{
+                    state = STATE.GROUNDED;
+                }
                 break;
             case GROUNDED:
-            case ATTACKING:
+                break;
 
         }
 
-        updateX(deltaTime);
-        updateY(deltaTime);
     }
 
     private void updateX(float deltaTime){
@@ -90,6 +97,7 @@ public abstract class AbstractHero {
     }
 
     private void updateY(float deltaTime){
+        velocity.y += deltaTime * acceleration.y;
         position.y += deltaTime * velocity.y;
     }
 
@@ -99,17 +107,34 @@ public abstract class AbstractHero {
     /*
     set 与 put函数
      */
-    public void setVelocity(float velocityX, float )
+    public  void setVelocity(float VelocityX){
+        velocity.x = VelocityX;
+    }
 
-    public void setHealth(int health) {
+    public void setState(int input){
+        switch (input){
+            case 1:
+                velocity.x = /*向右移动？*/? Constants.VELOCITY_X : -Constants.VELOCITY_X;
+                state = STATE.MOVING;
+                break;
+            case 2:
+                state = STATE.GROUNDED;
+                break;
+            case 3:
+                state = STATE.FALLING;
+                break;
+        }
+    }
+
+    public void setHealth(float health) {
         this.health = health;
     }
 
-    public void setEndurance(int endurance) {
+    public void setEndurance(float endurance) {
         this.endurance = endurance;
     }
 
-    public void setRagePower(int ragePower) {
+    public void setRagePower(float ragePower) {
         this.ragePower = ragePower;
     }
 
@@ -117,11 +142,11 @@ public abstract class AbstractHero {
         this.criticalProbability = criticalProbability;
     }
 
-    public void setAttack(int attack) {
+    public void setAttack(float attack) {
         this.attack = attack;
     }
 
-    public void setArmor(int armor){
+    public void setArmor(float armor){
         this.armor = armor;
     }
 
@@ -133,15 +158,15 @@ public abstract class AbstractHero {
         this.headright = direction;
     }
 
-    public int getHealth() {
+    public float getHealth() {
         return health;
     }
 
-    public int getEndurance() {
+    public float getEndurance() {
         return endurance;
     }
 
-    public int getRagePower(){
+    public float getRagePower(){
         return ragePower;
     }
 
@@ -149,11 +174,11 @@ public abstract class AbstractHero {
         return criticalProbability;
     }
 
-    public int getAttack() {
+    public float getAttack() {
         return attack;
     }
 
-    public int getArmor() {
+    public float getArmor() {
         return armor;
     }
 
