@@ -8,11 +8,24 @@ public class Constants {
     /*
     人物状态
      */
+    public static final int ANGEL = 0;
+    public static final int PROTECTOR = 1;
+    public static final int SNIPER = 2;
+    public static final int SPARDA = 3;
+    public static final int WIZARD = 4;
+
+
     public static final int MOVING = 1;
     public static final int GROUNDED = 2;
     public static final int FALLING = 3;
 
+    public static final float MAX_ENDURENCE = 200;
+    public static final float MAX_RAGEPOWER = 100;
     public static final float ENDURANCE_COST = 0.2f;
 
+    /*
+    Sniper
+     */
+    public static float
 
 }
