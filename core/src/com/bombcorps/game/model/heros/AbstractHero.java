@@ -1,9 +1,10 @@
 package com.bombcorps.game.model.heros;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.model.Constants;
 
 public abstract class AbstractHero {
@@ -21,7 +22,6 @@ public abstract class AbstractHero {
     /*
     角色其他属性
      */
-    private boolean isMove;
     private boolean headright;  //方向  true表示朝右 反之朝左
     private Vector2 position;   //位置
     private Vector2 dimension;  //大小
@@ -32,15 +32,98 @@ public abstract class AbstractHero {
 
     private STATE state;
 
+    /*
+    渲染英雄
+     */
     private TextureRegion staticRegion;
+    private TextureRegion deadRegion;
     private TextureRegion[] moveRegions;
     private TextureRegion[] attackRegions;
 
+    private Animation moveAnimation;
+    private Animation attackAnimation;
+
     public enum STATE{          //人物状态
-        FALLING, GROUNDED,MOVING
+        FALLING, GROUNDED,MOVING,ATTACK
     }
 
-    public AbstractHero(){
+    public AbstractHero(int hero){
+        init();
+        initHeroRegion(hero);
+    }
+
+    private void initHeroRegion(int hero){
+        staticRegion = new TextureRegion();
+        deadRegion = new TextureRegion();
+        moveRegions = new TextureRegion[4];
+        attackRegions = new TextureRegion[2];
+
+        switch(hero){
+            case Constants.ANGEL:
+                staticRegion = AssetsController.instance.getRegion("Angel_stand");
+                deadRegion = AssetsController.instance.getRegion("Angel_dead");
+                moveRegions[0] = AssetsController.instance.getRegion("Angel_move0");
+                moveRegions[1] = AssetsController.instance.getRegion("Angel_move1");
+                moveRegions[2] = AssetsController.instance.getRegion("Angel_move2");
+                moveRegions[3] = AssetsController.instance.getRegion("Angel_move3");
+
+                attackRegions[0] = AssetsController.instance.getRegion("Angel_attack0");
+                attackRegions[1] = AssetsController.instance.getRegion("Angel_attack1");
+                break;
+            case Constants.SPARDA:
+                staticRegion = AssetsController.instance.getRegion("Sparda_stand");
+                deadRegion = AssetsController.instance.getRegion("Sparda_dead");
+                moveRegions[0] = AssetsController.instance.getRegion("Sparda_move0");
+                moveRegions[1] = AssetsController.instance.getRegion("Sparda_move1");
+                moveRegions[2] = AssetsController.instance.getRegion("Sparda_move2");
+                moveRegions[3] = AssetsController.instance.getRegion("Sparda_move3");
+
+                attackRegions[0] = AssetsController.instance.getRegion("Sparda_attack0");
+                attackRegions[1] = AssetsController.instance.getRegion("Sparda_attack1");
+                break;
+            case Constants.SNIPER:
+                staticRegion = AssetsController.instance.getRegion("Sniper_stand");
+                deadRegion = AssetsController.instance.getRegion("Sniper_dead");
+                moveRegions[0] = AssetsController.instance.getRegion("Sniper_move0");
+                moveRegions[1] = AssetsController.instance.getRegion("Sniper_move1");
+                moveRegions[2] = AssetsController.instance.getRegion("Sniper_move2");
+                moveRegions[3] = AssetsController.instance.getRegion("Sniper_move3");
+
+                attackRegions[0] = AssetsController.instance.getRegion("Sniper_attack0");
+                attackRegions[1] = AssetsController.instance.getRegion("Sniper_attack1");
+                break;
+            case Constants.WIZARD:
+                staticRegion = AssetsController.instance.getRegion("Wizard_stand");
+                deadRegion = AssetsController.instance.getRegion("Wizard_dead");
+                moveRegions[0] = AssetsController.instance.getRegion("Wizard_move0");
+                moveRegions[1] = AssetsController.instance.getRegion("Wizard_move1");
+                moveRegions[2] = AssetsController.instance.getRegion("Wizard_move2");
+                moveRegions[3] = AssetsController.instance.getRegion("Wizard_move3");
+
+                attackRegions[0] = AssetsController.instance.getRegion("Wizard_attack0");
+                attackRegions[1] = AssetsController.instance.getRegion("Wizard_attack1");
+                break;
+            case Constants.PROTECTOR:
+                staticRegion = AssetsController.instance.getRegion("Protector_stand");
+                deadRegion = AssetsController.instance.getRegion("Protector_dead");
+                moveRegions[0] = AssetsController.instance.getRegion("Protector_move0");
+                moveRegions[1] = AssetsController.instance.getRegion("Protector_move1");
+                moveRegions[2] = AssetsController.instance.getRegion("Protector_move2");
+                moveRegions[3] = AssetsController.instance.getRegion("Protector_move3");
+
+                attackRegions[0] = AssetsController.instance.getRegion("Protector_attack0");
+                attackRegions[1] = AssetsController.instance.getRegion("Protector_attack1");
+                break;
+        }
+        initAnimation();
+    }
+
+    private void initAnimation(){
+        moveAnimation = new Animation(0.1f, moveRegions);
+        attackAnimation = new Animation(0.1f, attackRegions);
+    }
+
+    private void init(){
         health = 0;
         endurance = 0;
         ragePower = 0;
@@ -56,8 +139,9 @@ public abstract class AbstractHero {
         acceleration = new Vector2(0,Constants.ACCELERATION);
 
         headright = false;
-        isMove = false;
     }
+
+
 
     public void update(float deltaTime){
         updatePosition(deltaTime);
@@ -66,28 +150,27 @@ public abstract class AbstractHero {
 
     protected void updatePosition(float deltaTime){
         switch(state){
+            case ATTACK:
+            case GROUNDED:
+                velocity.y = 0;
+                state = STATE.FALLING;
+                break;
             case FALLING:
                 updateY(deltaTime);
-                if(/* 撞到了地面 */) {
-                    state = STATE.MOVING;
-                    velocity.y = 0;
-                }
                 break;
             case MOVING:
-                if(/*开始FALLing*/){
-                    state = STATE.FALLING;
-                    break;
-                }
-                if(endurance > 0 && /* 没到目的地*/ && /* 前方无阻挡物*/){
+                float destination = ;      //目的地的x
+
+                if(endurance > 0 && Math.abs(position.x - destination) > 5){
                     endurance -= Constants.ENDURANCE_COST;
                     updateX(deltaTime);
+
+                    if(endurance < 0)
+                        setEndurance(0);
                 }else{
                     state = STATE.GROUNDED;
                 }
                 break;
-            case GROUNDED:
-                break;
-
         }
 
     }
@@ -97,11 +180,17 @@ public abstract class AbstractHero {
     }
 
     private void updateY(float deltaTime){
-        velocity.y += deltaTime * acceleration.y;
         position.y += deltaTime * velocity.y;
+        velocity.y += deltaTime * acceleration.y;
     }
 
-    public abstract void render(SpriteBatch batch);
+    public void render(SpriteBatch batch){
+
+    };
+
+    protected void renderHero(float batch){
+        if()
+    }
 
 
     /*
@@ -114,7 +203,7 @@ public abstract class AbstractHero {
     public void setState(int input){
         switch (input){
             case 1:
-                velocity.x = /*向右移动？*/? Constants.VELOCITY_X : -Constants.VELOCITY_X;
+                velocity.x = headright? Constants.VELOCITY_X : -Constants.VELOCITY_X;
                 state = STATE.MOVING;
                 break;
             case 2:
