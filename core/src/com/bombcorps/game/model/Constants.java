@@ -23,9 +23,13 @@ public class Constants {
     public static final float MAX_RAGEPOWER = 100;
     public static final float ENDURANCE_COST = 0.2f;
 
+    // GUI Width
+    public static final float VIEWPORT_GUI_WIDTH = 800.0f;
+    // GUI Height
+    public static final float VIEWPORT_GUI_HEIGHT = 480.0f;
+
     /*
     Sniper
      */
-    public static float
 
 }
