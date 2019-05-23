@@ -6,6 +6,14 @@ public class Constants {
     public static final float VELOCITY_X = 5f;        //水平速度
 
     /*
+    Bomb类
+     */
+    public static final class BOMB{
+        public static final float ROTATE_SPEED = 120;
+        public static final float ACCELERATION = -8f;
+    }
+
+    /*
     人物状态
      */
     public static final int ANGEL = 0;
@@ -13,7 +21,6 @@ public class Constants {
     public static final int SNIPER = 2;
     public static final int SPARDA = 3;
     public static final int WIZARD = 4;
-
 
     public static final int MOVING = 1;
     public static final int GROUNDED = 2;
@@ -49,7 +56,7 @@ public class Constants {
          */
         public static final float SKILL_0_CRITICALPROBABILITY_PER_ROUND_ADD = 0.2f;
         public static final float SKILL_1_ANTI_ARMOR_RATE = 0.3f;
-        public static final float SKILL_2_LEFT_PERCENTAGE = 0.5f;
+        public static final float SKILL_2_SECOND_HIT_DAMAGE_PERCENTAGE = 0.5f;
         public static final float SKILL_3_CRITICALBROBABILITY_DAMAGE_RATE = 3f;
     }
 
@@ -165,8 +172,6 @@ public class Constants {
         public static final int SKILL_3_ROUND_NUM = 2;
         public static final float SKILL_3_TEAMMATE_DAMAGE_PERCENTAGE = 0.4f;
         public static final float SKILL_3_SELF_DAMAGE_PERCENTAGE = 0.6f;
-
-
     }
 
 }
