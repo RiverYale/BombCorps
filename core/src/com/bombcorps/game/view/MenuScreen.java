@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.bombcorps.game.model.Constants;
 
@@ -125,24 +127,41 @@ public class MenuScreen extends AbstractGameScreen {
 
         Table layer = new Table();
         layer.left().bottom();
+        //添加退出按钮
+        btnQuit = new Image(new Texture(Gdx.files.internal("button_quit.png")));
+        btnQuit.setSize(80,40);
+        layer.add(btnQuit);
+
         layer.row().expandY();
-
-        //btnQuit = new Image(new Texture(Gdx.files.internal(button_quit.png)));
-
+        //添加play按钮
         btnMenuPlay = new Image(new Texture(Gdx.files.internal("button_start.png")));
         btnMenuPlay.setSize(80,40);
         layer.add(btnMenuPlay);
-
+        btnMenuPlay.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                onPlayClicked();
+            }
+        });
+        //添加设置按钮
+        btnMenuOptions = new Image(new Texture(Gdx.files.internal("button_setting.png")));
+        btnMenuOptions.setSize(80,40);
+        layer.add(btnMenuOptions);
 
 
         return layer;
     }
+
     private Table buildOptionsWindowLayer(){
         Table layer = new Table();
         return layer;
 
-    }
 
+    }
+    private void onPlayClicked(){
+        //切换到LObbyScreen
+        //game.setScreen(new LobbyScreen(game));
+    }
 
 
 
