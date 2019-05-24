@@ -5,6 +5,9 @@ import com.badlogic.gdx.math.Vector2;
 public class Constants {
     public static final String HEROES_OBJECTS = "images/heroes.txt";
     public static final String CONFIG = "BombCorpsConfig";
+    public static final float MAX_ZOON_IN = 0.5f;
+    public static final float MAX_ZOON_OUT = 2f;
+
     public static final float ACCELERATION = -5f;   //加速度
     public static final float VELOCITY_X = 5f;        //水平速度
 

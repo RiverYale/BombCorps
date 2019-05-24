@@ -46,8 +46,10 @@ public abstract class AbstractHero {
 
     private TextureRegion staticRegion;
     private TextureRegion deadRegion;
-    private TextureRegion[] moveRegions;
-    private TextureRegion[] attackRegions;
+    private Array<TextureRegion> moveRegions;
+//    private TextureRegion[] moveRegions;
+    private Array<TextureRegion> attackRegions;
+//    private TextureRegion[] attackRegions;
 
     private TextureRegion moveKeyFrame;
     private  TextureRegion attackKeyFrame;
@@ -67,64 +69,96 @@ public abstract class AbstractHero {
     private void initHeroRegion(int hero){
         staticRegion = new TextureRegion();
         deadRegion = new TextureRegion();
-        moveRegions = new TextureRegion[4];
-        attackRegions = new TextureRegion[2];
+        moveRegions = new Array<TextureRegion>();
+//        moveRegions = new TextureRegion[4];
+        attackRegions = new Array<TextureRegion>();
+//        attackRegions = new TextureRegion[2];
 
         switch(hero){
             case Constants.ANGEL:
                 staticRegion = AssetsController.instance.getRegion("Angel_stand");
                 deadRegion = AssetsController.instance.getRegion("Angel_dead");
-                moveRegions[0] = AssetsController.instance.getRegion("Angel_move0");
-                moveRegions[1] = AssetsController.instance.getRegion("Angel_move1");
-                moveRegions[2] = AssetsController.instance.getRegion("Angel_move2");
-                moveRegions[3] = AssetsController.instance.getRegion("Angel_move3");
+                moveRegions.add(AssetsController.instance.getRegion("Angel_move0"));
+                moveRegions.add(AssetsController.instance.getRegion("Angel_move1"));
+                moveRegions.add(AssetsController.instance.getRegion("Angel_move2"));
+                moveRegions.add(AssetsController.instance.getRegion("Angel_move3"));
+//                moveRegions[0] = AssetsController.instance.getRegion("Angel_move0");
+//                moveRegions[1] = AssetsController.instance.getRegion("Angel_move1");
+//                moveRegions[2] = AssetsController.instance.getRegion("Angel_move2");
+//                moveRegions[3] = AssetsController.instance.getRegion("Angel_move3");
 
-                attackRegions[0] = AssetsController.instance.getRegion("Angel_attack0");
-                attackRegions[1] = AssetsController.instance.getRegion("Angel_attack1");
+                attackRegions.add(AssetsController.instance.getRegion("Angel_attack0"));
+                attackRegions.add(AssetsController.instance.getRegion("Angel_attack1"));
+//                attackRegions[0] = AssetsController.instance.getRegion("Angel_attack0");
+//                attackRegions[1] = AssetsController.instance.getRegion("Angel_attack1");
                 break;
             case Constants.SPARDA:
                 staticRegion = AssetsController.instance.getRegion("Sparda_stand");
                 deadRegion = AssetsController.instance.getRegion("Sparda_dead");
-                moveRegions[0] = AssetsController.instance.getRegion("Sparda_move0");
-                moveRegions[1] = AssetsController.instance.getRegion("Sparda_move1");
-                moveRegions[2] = AssetsController.instance.getRegion("Sparda_move2");
-                moveRegions[3] = AssetsController.instance.getRegion("Sparda_move3");
+                moveRegions.add(AssetsController.instance.getRegion("Sparda_move0"));
+                moveRegions.add(AssetsController.instance.getRegion("Sparda_move1"));
+                moveRegions.add(AssetsController.instance.getRegion("Sparda_move2"));
+                moveRegions.add(AssetsController.instance.getRegion("Sparda_move3"));
+//                moveRegions[0] = AssetsController.instance.getRegion("Sparda_move0");
+//                moveRegions[1] = AssetsController.instance.getRegion("Sparda_move1");
+//                moveRegions[2] = AssetsController.instance.getRegion("Sparda_move2");
+//                moveRegions[3] = AssetsController.instance.getRegion("Sparda_move3");
 
-                attackRegions[0] = AssetsController.instance.getRegion("Sparda_attack0");
-                attackRegions[1] = AssetsController.instance.getRegion("Sparda_attack1");
+                attackRegions.add(AssetsController.instance.getRegion("Sparda_attack0"));
+                attackRegions.add(AssetsController.instance.getRegion("Sparda_attack1"));
+//                attackRegions[0] = AssetsController.instance.getRegion("Sparda_attack0");
+//                attackRegions[1] = AssetsController.instance.getRegion("Sparda_attack1");
                 break;
             case Constants.SNIPER:
                 staticRegion = AssetsController.instance.getRegion("Sniper_stand");
                 deadRegion = AssetsController.instance.getRegion("Sniper_dead");
-                moveRegions[0] = AssetsController.instance.getRegion("Sniper_move0");
-                moveRegions[1] = AssetsController.instance.getRegion("Sniper_move1");
-                moveRegions[2] = AssetsController.instance.getRegion("Sniper_move2");
-                moveRegions[3] = AssetsController.instance.getRegion("Sniper_move3");
+                moveRegions.add(AssetsController.instance.getRegion("Sniper_move0"));
+                moveRegions.add(AssetsController.instance.getRegion("Sniper_move1"));
+                moveRegions.add(AssetsController.instance.getRegion("Sniper_move2"));
+                moveRegions.add(AssetsController.instance.getRegion("Sniper_move3"));
+//                moveRegions[0] = AssetsController.instance.getRegion("Sniper_move0");
+//                moveRegions[1] = AssetsController.instance.getRegion("Sniper_move1");
+//                moveRegions[2] = AssetsController.instance.getRegion("Sniper_move2");
+//                moveRegions[3] = AssetsController.instance.getRegion("Sniper_move3");
 
-                attackRegions[0] = AssetsController.instance.getRegion("Sniper_attack0");
-                attackRegions[1] = AssetsController.instance.getRegion("Sniper_attack1");
+                attackRegions.add(AssetsController.instance.getRegion("Sniper_attack0"));
+                attackRegions.add(AssetsController.instance.getRegion("Sniper_attack1"));
+//                attackRegions[0] = AssetsController.instance.getRegion("Sniper_attack0");
+//                attackRegions[1] = AssetsController.instance.getRegion("Sniper_attack1");
                 break;
             case Constants.WIZARD:
                 staticRegion = AssetsController.instance.getRegion("Wizard_stand");
                 deadRegion = AssetsController.instance.getRegion("Wizard_dead");
-                moveRegions[0] = AssetsController.instance.getRegion("Wizard_move0");
-                moveRegions[1] = AssetsController.instance.getRegion("Wizard_move1");
-                moveRegions[2] = AssetsController.instance.getRegion("Wizard_move2");
-                moveRegions[3] = AssetsController.instance.getRegion("Wizard_move3");
+                moveRegions.add(AssetsController.instance.getRegion("Wizard_move0"));
+                moveRegions.add(AssetsController.instance.getRegion("Wizard_move1"));
+                moveRegions.add(AssetsController.instance.getRegion("Wizard_move2"));
+                moveRegions.add(AssetsController.instance.getRegion("Wizard_move3"));
+//                moveRegions[0] = AssetsController.instance.getRegion("Wizard_move0");
+//                moveRegions[1] = AssetsController.instance.getRegion("Wizard_move1");
+//                moveRegions[2] = AssetsController.instance.getRegion("Wizard_move2");
+//                moveRegions[3] = AssetsController.instance.getRegion("Wizard_move3");
 
-                attackRegions[0] = AssetsController.instance.getRegion("Wizard_attack0");
-                attackRegions[1] = AssetsController.instance.getRegion("Wizard_attack1");
+                attackRegions.add(AssetsController.instance.getRegion("Wizard_attack0"));
+                attackRegions.add(AssetsController.instance.getRegion("Wizard_attack1"));
+//                attackRegions[0] = AssetsController.instance.getRegion("Wizard_attack0");
+//                attackRegions[1] = AssetsController.instance.getRegion("Wizard_attack1");
                 break;
             case Constants.PROTECTOR:
                 staticRegion = AssetsController.instance.getRegion("Protector_stand");
                 deadRegion = AssetsController.instance.getRegion("Protector_dead");
-                moveRegions[0] = AssetsController.instance.getRegion("Protector_move0");
-                moveRegions[1] = AssetsController.instance.getRegion("Protector_move1");
-                moveRegions[2] = AssetsController.instance.getRegion("Protector_move2");
-                moveRegions[3] = AssetsController.instance.getRegion("Protector_move3");
+                moveRegions.add(AssetsController.instance.getRegion("Protector_move0"));
+                moveRegions.add(AssetsController.instance.getRegion("Protector_move1"));
+                moveRegions.add(AssetsController.instance.getRegion("Protector_move2"));
+                moveRegions.add(AssetsController.instance.getRegion("Protector_move3"));
+//                moveRegions[0] = AssetsController.instance.getRegion("Protector_move0");
+//                moveRegions[1] = AssetsController.instance.getRegion("Protector_move1");
+//                moveRegions[2] = AssetsController.instance.getRegion("Protector_move2");
+//                moveRegions[3] = AssetsController.instance.getRegion("Protector_move3");
 
-                attackRegions[0] = AssetsController.instance.getRegion("Protector_attack0");
-                attackRegions[1] = AssetsController.instance.getRegion("Protector_attack1");
+                attackRegions.add(AssetsController.instance.getRegion("Protector_attack0"));
+                attackRegions.add(AssetsController.instance.getRegion("Protector_attack1"));
+//                attackRegions[0] = AssetsController.instance.getRegion("Protector_attack0");
+//                attackRegions[1] = AssetsController.instance.getRegion("Protector_attack1");
                 break;
         }
         initAnimation();
