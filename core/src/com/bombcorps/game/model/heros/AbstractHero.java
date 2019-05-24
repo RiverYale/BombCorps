@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.model.Constants;
 
@@ -47,6 +48,9 @@ public abstract class AbstractHero {
     private TextureRegion deadRegion;
     private TextureRegion[] moveRegions;
     private TextureRegion[] attackRegions;
+
+    private TextureRegion moveKeyFrame;
+    private  TextureRegion attackKeyFrame;
 
     private Animation moveAnimation;
     private Animation attackAnimation;
@@ -127,8 +131,10 @@ public abstract class AbstractHero {
     }
 
     private void initAnimation(){
-        moveAnimation = new Animation(0.1f, moveRegions);
-        attackAnimation = new Animation(0.3f, attackRegions);
+        Array<TextureRegion> temp = new Array<TextureRegion>(moveRegions);
+        moveAnimation = new Animation(0.1f, temp);
+        temp = new Array<TextureRegion>(attackRegions);
+        attackAnimation = new Animation(0.3f, temp);
     }
 
     private void init(){
@@ -172,7 +178,8 @@ public abstract class AbstractHero {
                 updateY(deltaTime);
                 break;
             case MOVING:
-                float destination = ;      //目的地的x
+                //TODO
+                float destination = 5;      //目的地的x
 
                 if(endurance > 0 && Math.abs(position.x - destination) > 5){
                     endurance -= Constants.MOVE_ENDURANCE_COST;
@@ -218,18 +225,18 @@ public abstract class AbstractHero {
                         !headright, false);
                 break;
             case MOVING:
-                TextureRegion moveFrame = (TextureRegion) moveAnimation.getKeyFrame(stateTime);
+                moveKeyFrame = (TextureRegion) moveAnimation.getKeyFrame(stateTime);
                 stateTime += Gdx.graphics.getDeltaTime();
                 stateTime %= moveAnimation.getAnimationDuration();
 
-                batch.draw(moveFrame, position.x, position.y, origin.x, origin.y, dimension.x, dimension.y,
+                batch.draw(moveKeyFrame, position.x, position.y, origin.x, origin.y, dimension.x, dimension.y,
                         scale.x, scale.y, 0);
                 break;
             case ATTACK:
-                TextureRegion attackFrame = (TextureRegion) attackAnimation.getKeyFrame(stateTime);
+                attackKeyFrame = (TextureRegion) attackAnimation.getKeyFrame(stateTime);
                 stateTime += Gdx.graphics.getDeltaTime();
 
-                batch.draw(attackFrame, position.x, position.y, origin.x, origin.y, dimension.x, dimension.y,
+                batch.draw(attackKeyFrame, position.x, position.y, origin.x, origin.y, dimension.x, dimension.y,
                         scale.x, scale.y, 0);
 
                 if(stateTime > attackAnimation.getAnimationDuration()){

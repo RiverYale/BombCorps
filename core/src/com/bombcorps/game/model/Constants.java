@@ -13,6 +13,12 @@ public class Constants {
     Bomb类
      */
     public static final class BOMB{
+        public static final int STATE_FLY = 0;
+        public static final int STATE_BOOM = 1;
+        public static final float BOOM_DURETION = 0.2f;
+        public static final Vector2 BOOM_DIMENSION = new Vector2(5f,5f);
+        public static final Vector2 BOOM_SCALE = new Vector2(1f,1f);
+
         public static final Vector2 DIMENSION = new Vector2(5f,5f);
 
         public static final float ROTATE_SPEED = 120f;
@@ -27,17 +33,17 @@ public class Constants {
      */
     public static final Vector2 HERO_DIMENSION = new Vector2(10f,10f);
 
-    public static final int ANGEL = 0;
+    public static final int SPARDA = 0;
     public static final int PROTECTOR = 1;
-    public static final int SNIPER = 2;
-    public static final int SPARDA = 3;
+    public static final int ANGEL = 2;
+    public static final int SNIPER = 3;
     public static final int WIZARD = 4;
 
-    public static final int MOVING = 1;
-    public static final int GROUNDED = 2;
-    public static final int FALLING = 3;
-    public static final int ATTACK = 4;
-    public static final int DEAD = 5;
+    public static final int STATE_MOVING = 1;
+    public static final int STATE_GROUNDED = 2;
+    public static final int STATE_FALLING = 3;
+    public static final int STATE_ATTACK = 4;
+    public static final int STATE_DEAD = 5;
 
     public static final float MAX_ENDURENCE = 200;
     public static final float MAX_RAGEPOWER = 100;
