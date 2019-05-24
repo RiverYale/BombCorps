@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.model.Constants;
@@ -12,6 +13,8 @@ public abstract class AbstractHero {
     /*
         角色基本属性
      */
+    private Rectangle rec;
+
     private float health;         //血量
     private float endurance;      //精力
     private float powerRage;      //怒气值
@@ -138,11 +141,12 @@ public abstract class AbstractHero {
         antiArmor = 0;
 
         position = new Vector2();
-        dimension = new Vector2();
+        dimension = Constants.HERO_DIMENSION;
         origin = new Vector2();
         scale = new Vector2();
         velocity = new Vector2();
         acceleration = new Vector2(0,Constants.ACCELERATION);
+        rec = new Rectangle(0,0,dimension.x,dimension.y);
 
         headright = false;
         stateTime = 0;
@@ -245,6 +249,14 @@ public abstract class AbstractHero {
     /*
     set 与 put函数
      */
+
+    public Rectangle getRec() {
+        rec.x = position.x;
+        rec.y = position.y;
+
+        return rec;
+    }
+
     public void setAttackTimes(int attackTimes){
         this.attackTimes = attackTimes;
     }

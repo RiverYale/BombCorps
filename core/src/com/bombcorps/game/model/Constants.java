@@ -1,5 +1,7 @@
 package com.bombcorps.game.model;
 
+import com.badlogic.gdx.math.Vector2;
+
 public class Constants {
     public static final String HEROES_OBJECTS = "images/heroes.txt";
     public static final float ACCELERATION = -5f;   //加速度
@@ -9,13 +11,20 @@ public class Constants {
     Bomb类
      */
     public static final class BOMB{
-        public static final float ROTATE_SPEED = 120;
+        public static final Vector2 DIMENSION = new Vector2(5f,5f);
+
+        public static final float ROTATE_SPEED = 120f;
         public static final float ACCELERATION = -8f;
+        public static final Vector2 BOMBSCALE = new Vector2(1f,1f);
+        public static final float ROUTESCALE = 1f;
     }
+
 
     /*
     人物状态
      */
+    public static final Vector2 HERO_DIMENSION = new Vector2(10f,10f);
+
     public static final int ANGEL = 0;
     public static final int PROTECTOR = 1;
     public static final int SNIPER = 2;
