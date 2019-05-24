@@ -165,10 +165,8 @@ public abstract class AbstractHero {
     }
 
     private void initAnimation(){
-        Array<TextureRegion> temp = new Array<TextureRegion>(moveRegions);
-        moveAnimation = new Animation(0.1f, temp);
-        temp = new Array<TextureRegion>(attackRegions);
-        attackAnimation = new Animation(0.3f, temp);
+        moveAnimation = new Animation(0.1f, moveRegions);
+        attackAnimation = new Animation(0.3f, attackRegions);
     }
 
     private void init(){
