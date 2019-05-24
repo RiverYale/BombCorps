@@ -3,6 +3,8 @@ package com.bombcorps.game.view;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
@@ -60,11 +62,12 @@ public class MenuScreen extends AbstractGameScreen {
 
     // menu
     private Image imgBackground;
-    private Image imgLogo;
+    //private Image imgLogo;
     //private Image imgInfo;
 
-    private Button btnMenuPlay;
-    private Button btnMenuOptions;
+    private Image btnMenuPlay;
+    private Image btnMenuOptions;
+    private Image btnQuit;
 
     // options
     private Window winOptions;
@@ -88,7 +91,7 @@ public class MenuScreen extends AbstractGameScreen {
         // build all layers
         Table layerBackground = buildBackgroundLayer();
         //Table layerObjects = buildObjectsLayer();
-        Table layerLogos = buildLogosLayer();
+//      Table layerLogos = buildLogosLayer();
         Table layerControls = buildControlsLayer();
         Table layerOptionsWindow = buildOptionsWindowLayer();
         // assemble stage for menu screen
@@ -98,7 +101,7 @@ public class MenuScreen extends AbstractGameScreen {
         stack.setSize(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
         stack.add(layerBackground);
         //stack.add(layerObjects);
-        stack.add(layerLogos);
+        //stack.add(layerLogos);
         stack.add(layerControls);
         stage.addActor(layerOptionsWindow);
 
@@ -106,24 +109,38 @@ public class MenuScreen extends AbstractGameScreen {
         }
     private Table buildBackgroundLayer(){
         Table layer = new Table();
-        imgBackground = new Image()
+        imgBackground = new Image(new TextureRegion(new Texture(Gdx.files.internal("background1.png")),0,0,1024,576));
+        layer.add(imgBackground);
         return layer;
     }
 //    private Table buildObjectsLayer(){
 //        Table layer = new Table();
 //        return layer;
 //    }
-    private Table buildLogosLayer(){
-        Table layer = new Table();
-        return layer;
-    }
+//    private Table buildLogosLayer(){
+//        Table layer = new Table();
+//        return layer;
+//    }
     private Table buildControlsLayer(){
+
         Table layer = new Table();
+        layer.left().bottom();
+        layer.row().expandY();
+
+        //btnQuit = new Image(new Texture(Gdx.files.internal(button_quit.png)));
+
+        btnMenuPlay = new Image(new Texture(Gdx.files.internal("button_start.png")));
+        btnMenuPlay.setSize(80,40);
+        layer.add(btnMenuPlay);
+
+
+
         return layer;
     }
     private Table buildOptionsWindowLayer(){
         Table layer = new Table();
         return layer;
+
     }
 
 
