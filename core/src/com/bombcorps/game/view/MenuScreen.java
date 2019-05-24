@@ -38,6 +38,7 @@ public class MenuScreen extends AbstractGameScreen {
 ////        }
         stage.act(deltaTime);
         stage.draw();
+        //Table.drawDebug(stage);
     }
     @Override public void resize(int width,int height){
         stage.getViewport().update(width,height);
@@ -105,6 +106,7 @@ public class MenuScreen extends AbstractGameScreen {
         }
     private Table buildBackgroundLayer(){
         Table layer = new Table();
+        imgBackground = new Image()
         return layer;
     }
 //    private Table buildObjectsLayer(){
@@ -123,6 +125,7 @@ public class MenuScreen extends AbstractGameScreen {
         Table layer = new Table();
         return layer;
     }
+
 
 
 
