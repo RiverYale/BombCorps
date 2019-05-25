@@ -54,6 +54,9 @@ public class Aura {
             case Constants.AURA.WAIT:
                 state = AURA.WAIT;
                 break;
+            case Constants.AURA.SPARDAAURA:
+                state = AURA.SPARDAAURA;
+                break;
             case Constants.AURA.PROTECTORAURA:
                 state = AURA.PROTECTORAURA;
                 break;
@@ -72,4 +75,6 @@ public class Aura {
         }
 
     }
+
+
 }
