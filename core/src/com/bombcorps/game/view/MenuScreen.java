@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
@@ -131,6 +133,14 @@ public class MenuScreen extends AbstractGameScreen {
         btnQuit = new Image(new Texture(Gdx.files.internal("button_quit.png")));
         btnQuit.setSize(80,40);
         layer.add(btnQuit);
+        btnQuit.addListener(new InputListener(){
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                Gdx.app.exit();
+                return true;
+            }
+        });
 
         layer.row().expandY();
         //添加play按钮
@@ -159,9 +169,13 @@ public class MenuScreen extends AbstractGameScreen {
 
     }
     private void onPlayClicked(){
-        //切换到LObbyScreen
+        //切换到LobbyScreen
         //game.setScreen(new LobbyScreen(game));
     }
+    private void onOptionsClicded(){
+
+    }
+
 
 
 
