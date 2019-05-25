@@ -1,4 +1,4 @@
-package com.bombcorps.game.model.Bombs;
+package com.bombcorps.game.model.bombs;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -11,7 +11,6 @@ import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.model.Constants;
 
 public class Bomb {
-//    public static Bomb instance = new Bomb();
 
     private int heroType;
     private int bombType;
@@ -194,7 +193,6 @@ public class Bomb {
             state = STATE.WAIT;
         }
     }
-
 
     /*
     get   set函数
