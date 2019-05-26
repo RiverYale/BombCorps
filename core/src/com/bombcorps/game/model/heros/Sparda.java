@@ -1,8 +1,10 @@
 package com.bombcorps.game.model.heros;
 
-public class Sparda extends AbstractHero{
+import com.bombcorps.game.model.Constants;
 
-    public Sparda(int hero) {
-        super(hero);
+public class Sparda extends BaseHero {
+
+    public Sparda() {
+        super(Constants.SPARDA);
     }
 }

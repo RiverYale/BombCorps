@@ -1,5 +1,6 @@
 package com.bombcorps.game.model;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -39,7 +40,10 @@ public class BonusSetter{
     }
 
     public void deleteIndexAt(int index){
-        bonusList.removeIndex(index);
+        if(index < bonusList.size)
+            bonusList.removeIndex(index);
+        else
+            Gdx.app.log("Out of Bounds : ", "BonusList");
     }
 
 }
@@ -53,7 +57,7 @@ class Bonus {
     public TextureRegion parachute;
 
     private STATE state;
-    public enum STATE{
+    private enum STATE{
          ACTIVATED, GROUNDED
     }
 

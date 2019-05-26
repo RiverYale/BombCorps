@@ -13,6 +13,12 @@ public class Constants {
 
     public static final int HERO_MAX_LEVEL = 5;
 
+    public static final class PLAYER{
+        public static final int STATE_LOCAL = 0;
+        public static final int STATE_OTHERS = 1;
+    }
+
+
     public static final class BONUS{
         public static final float BONUS_VELOCITY_Y = -10;
 

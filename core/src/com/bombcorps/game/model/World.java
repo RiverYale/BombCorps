@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
-import com.bombcorps.game.model.heros.AbstractHero;
+import com.bombcorps.game.model.heros.BaseHero;
 
 import java.util.logging.Level;
 
@@ -34,7 +34,7 @@ public class World {
     //砖块
     public Array<Rock> rocks;
     //英雄
-    public Array<AbstractHero> heroes;
+    public Array<BaseHero> heroes;
 
     public  World(String filename){
         init(filename);
@@ -44,7 +44,7 @@ public class World {
         //物品
         rocks = new Array<Rock>();
         //英雄
-        heroes = new Array<AbstractHero>();
+        heroes = new Array<BaseHero>();
         Pixmap pixmap = new Pixmap(Gdx.files.internal(filename));
         //从左上到右下扫描
         int lastPixel = -1;
