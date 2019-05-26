@@ -1,6 +1,5 @@
 package com.bombcorps.game.model;
 
-public class MyData {
-
+public class Message {
 
 }
