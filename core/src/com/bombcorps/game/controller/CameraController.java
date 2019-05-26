@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.bombcorps.game.model.Bombs.Bomb;
 import com.bombcorps.game.model.Constants;
-import com.bombcorps.game.model.heros.AbstractHero;
+import com.bombcorps.game.model.heros.BaseHero;
 
 public class CameraController {
     private Vector2 position;
@@ -50,11 +50,11 @@ public class CameraController {
 
     public void update(float deltaTime) {
         if(target != null){
-            if(target instanceof AbstractHero){
-                if(((AbstractHero) target).getPosition().epsilonEquals(position)){
+            if(target instanceof BaseHero){
+                if(((BaseHero) target).getPosition().epsilonEquals(position)){
                     setTarget(null);
                 }else{
-                    position.lerp(((AbstractHero) target).getPosition(), Constants.FOLLOW_SPEED * deltaTime);
+                    position.lerp(((BaseHero) target).getPosition(), Constants.FOLLOW_SPEED * deltaTime);
                 }
             }else if(target instanceof Bomb){
                 if(((Bomb) target).getPosition().epsilonEquals(position)){
