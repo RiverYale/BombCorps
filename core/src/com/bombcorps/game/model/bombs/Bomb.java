@@ -1,4 +1,4 @@
-package com.bombcorps.game.model.bombs;
+package com.bombcorps.game.model.Bombs;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;

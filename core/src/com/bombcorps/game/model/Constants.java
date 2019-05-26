@@ -3,15 +3,21 @@ package com.bombcorps.game.model;
 import com.badlogic.gdx.math.Vector2;
 
 public class Constants {
+    //文件路径、名称
     public static final String HEROES_OBJECTS = "images/heroes.txt";
     public static final String CONFIG = "BombCorpsConfig";
+
+    //CameraHelper
     public static final float MAX_ZOON_IN = 0.5f;
     public static final float MAX_ZOON_OUT = 2f;
+    public static final float FOLLOW_SPEED = 4f;
+
+    //DataController
+    public static final int HERO_MAX_LEVEL = 5;
 
     public static final float ACCELERATION = -5f;   //加速度
     public static final float VELOCITY_X = 5f;        //水平速度
 
-    public static final int HERO_MAX_LEVEL = 5;
 
     public static final float LEVEL_0 = 1;
     public static final float LEVEL_1 = 1.1f;
@@ -103,8 +109,6 @@ public class Constants {
     public static final float VIEWPORT_GUI_WIDTH = 800.0f;
     // GUI Height
     public static final float VIEWPORT_GUI_HEIGHT = 480.0f;
-
-
 
     /*
     Sniper
