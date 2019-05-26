@@ -36,6 +36,8 @@ public class World {
     //英雄
     public Array<AbstractHero> heroes;
 
+    private int MapWidth;
+
     public  World(String filename){
         init(filename);
     }
@@ -46,6 +48,7 @@ public class World {
         //英雄
         heroes = new Array<AbstractHero>();
         Pixmap pixmap = new Pixmap(Gdx.files.internal(filename));
+        MapWidth = pixmap.getWidth();
         //从左上到右下扫描
         int lastPixel = -1;
         for(int pixelY = 0; pixelY < pixmap.getHeight();pixelY++){
@@ -99,4 +102,7 @@ public class World {
         }
     }
 
+    public int getMapWidth() {
+        return MapWidth;
+    }
 }
