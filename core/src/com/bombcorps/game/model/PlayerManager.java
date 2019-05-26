@@ -19,11 +19,11 @@ public class PlayerManager {
         playerList.add(player);
     }
 
-    public void deletePlayerAt(int index){
+    public void deletePlayerAtIndex(int index){
         if(index < playerList.size)
             playerList.removeIndex(index);
         else
-            Gdx.app.log("Out of Bounds : ", "PlayerList");
+            Gdx.app.log("Out of Bounds : ", "PlayerList At function \"deletePlayerAtIndex\"");
     }
 
     public void update(float deltaTime){
@@ -40,5 +40,35 @@ public class PlayerManager {
 
     public Array<Player> getPlayerList(){
         return playerList;
+    }
+
+    public void setPlayerStateAtIndex(int index, int state){
+        if(index < playerList.size)
+            playerList.get(index).setState(state);
+        else
+            Gdx.app.log("Out Of Bounds : ", "playerList in function \"setPlayerStateAtIndex\" ");
+    }
+
+    public int getPlayerStateAtIndex(int index){
+        if(index < playerList.size)
+            return playerList.get(index).getState();
+
+        Gdx.app.log("Out Of Bounds : ", "playerList in function \"getPlayerStateAtIndex\" ");
+        return -1;
+    }
+
+    public int getPlayerPortAtIndex(int index){
+        if(index < playerList.size)
+            return playerList.get(index).getPort();
+
+        Gdx.app.log("Out Of Bounds : ", "playerList in function \"getPlayerPortAtIndex\" ");
+        return -1;
+    }
+
+    public void setPlayerPortAtIndex(int index, int port){
+        if(index < playerList.size)
+            playerList.get(index).setPort(port);
+        else
+            Gdx.app.log("Out Of Bounds : ", "playerList in function \"setPlayerPortAtIndex\" ");
     }
 }

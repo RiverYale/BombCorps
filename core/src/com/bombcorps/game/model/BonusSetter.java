@@ -39,7 +39,7 @@ public class BonusSetter{
         return bonusList;
     }
 
-    public void deleteIndexAt(int index){
+    public void deleteIndexAtIndex(int index){
         if(index < bonusList.size)
             bonusList.removeIndex(index);
         else
