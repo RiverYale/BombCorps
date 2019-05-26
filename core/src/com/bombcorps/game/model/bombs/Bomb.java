@@ -38,7 +38,7 @@ public class Bomb {
     private int stateTime;
 
     private STATE state;
-    public enum STATE{
+    private enum STATE{
         FLY, BOOM, WAIT
     }
 

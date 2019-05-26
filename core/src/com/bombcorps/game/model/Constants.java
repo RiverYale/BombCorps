@@ -12,6 +12,24 @@ public class Constants {
     public static final float VELOCITY_X = 5f;        //水平速度
 
     public static final int HERO_MAX_LEVEL = 5;
+
+    public static final class PLAYER{
+        public static final int STATE_LOCAL = 0;
+        public static final int STATE_OTHERS = 1;
+    }
+
+
+    public static final class BONUS{
+        public static final float BONUS_VELOCITY_Y = -10;
+
+        public static final int ACTIVATED = 2;
+        public static final int GROUNDED = 3;
+
+        public static final Vector2 DIMENSION = new Vector2(5f,5f);
+
+        public static final double BONUS_CHANCE = 0.4f;
+
+    }
     /*
     Bomb类
      */
@@ -74,6 +92,8 @@ public class Constants {
     public static final float VIEWPORT_GUI_WIDTH = 800.0f;
     // GUI Height
     public static final float VIEWPORT_GUI_HEIGHT = 480.0f;
+
+
 
     /*
     Sniper
