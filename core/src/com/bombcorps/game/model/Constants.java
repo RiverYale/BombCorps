@@ -93,11 +93,18 @@ public class Constants {
     public static final int SNIPER = 3;
     public static final int WIZARD = 4;
 
+    public static final int STATE_WAIT = 0;
     public static final int STATE_MOVING = 1;
     public static final int STATE_GROUNDED = 2;
     public static final int STATE_FALLING = 3;
     public static final int STATE_ATTACK = 4;
     public static final int STATE_DEAD = 5;
+
+    public static final class HERO_ACTION{
+        public static final int MOVE = 0;
+        public static final int ATTACK = 1;
+
+    }
 
     public static final float MAX_ENDURENCE = 200;
     public static final float MAX_RAGEPOWER = 100;

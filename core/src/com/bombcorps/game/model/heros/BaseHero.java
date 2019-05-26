@@ -65,7 +65,7 @@ public abstract class BaseHero{
     private Animation attackAnimation;
 
     private enum STATE{          //人物状态
-        FALLING, GROUNDED,MOVING,ATTACK,DEAD
+        WAIT,FALLING, GROUNDED,MOVING,ATTACK,DEAD
     }
 
     public BaseHero(int hero){
