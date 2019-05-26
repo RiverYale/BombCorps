@@ -5,22 +5,26 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
+import com.bombcorps.game.model.Message;
 import com.bombcorps.game.model.World;
 
 public class WorldController {
     private OrthographicCamera camera;
-    private InputController inputController;
+    private InputController input;
     private CameraController cameraController;
+
+    private NetController net;
     private World world;
 
-    public WorldController(Game game, OrthographicCamera camera) {
+    public WorldController(Game game, OrthographicCamera camera, NetController net) {
         this.camera = camera;
+        this.net = net;
         cameraController = new CameraController();
-        inputController = new InputController(this);
+        input = new InputController(this);
     }
 
     public InputProcessor getInputProcessor() {
-        return new GestureDetector(inputController);
+        return new GestureDetector(input);
     }
 
     public OrthographicCamera getCamera() {
@@ -29,5 +33,9 @@ public class WorldController {
 
     public CameraController getCameraController() {
         return cameraController;
+    }
+
+    public NetController getNetController() {
+        return net;
     }
 }

@@ -1,6 +1,7 @@
 package com.bombcorps.game.controller;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Net;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.MathUtils;
@@ -8,11 +9,13 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombcorps.game.model.Constants;
+import com.bombcorps.game.model.Message;
 
 public class InputController implements GestureDetector.GestureListener {
     private WorldController controller;
     private CameraController cameraController;
     private OrthographicCamera camera;
+    private NetController net;
     private float tempZoom, tempInitDis;
     private boolean hasAim;
 
@@ -20,16 +23,22 @@ public class InputController implements GestureDetector.GestureListener {
         this.controller = controller;
         this.cameraController = controller.getCameraController();
         this.camera = controller.getCamera();
+        this.net = controller.getNetController();
     }
 
     //TODO
-    public InputController(CameraController cameraController, OrthographicCamera camera) {
+    public InputController(CameraController cameraController, OrthographicCamera camera, NetController net) {
         this.cameraController = cameraController;
         this.camera = camera;
+        this.net = net;
+        net.openReceiveMsgThread();
     }
 
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
+
+        net.sendCMD(new Message());
+
         Gdx.app.log("zc", "touchDown");
         Vector3 v = new Vector3(x, y, 0);
         camera.unproject(v);

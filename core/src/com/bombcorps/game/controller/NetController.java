@@ -1,5 +1,6 @@
 package com.bombcorps.game.controller;
 
+import com.badlogic.gdx.Gdx;
 import com.bombcorps.game.model.Ai;
 import com.bombcorps.game.model.Message;
 import com.bombcorps.game.model.Player;
@@ -19,7 +20,7 @@ public class NetController {
     private ArrayList<Room> roomList;
     private ArrayList<Player> playerList;
     private ArrayList<Ai> aiList;
-    private Player me;
+    private WorldController world;
     private boolean isStop;
 
     //网络行为协议
@@ -38,14 +39,17 @@ public class NetController {
     private static final int OPERATIONS = 23;     //英雄操作
     private static final int QUIT_GAME = 24;      //退出游戏
 
-    public static final int PORT_SEND = 2430;     //发送端口
-    public static final int PORT_RECEIVE = 2420;  //接收端口
+    private static final int PORT_SEND = 65520;     //发送端口
+    private static final int PORT_RECEIVE = 65530;  //接收端口
 
-    public NetController(Player me) {
+    public NetController() {
         roomList = new ArrayList<Room>();
         playerList = new ArrayList<Player>();
         aiList = new ArrayList<Ai>();
-        this.me = me;
+    }
+
+    public void setWorldController(WorldController world) {
+        this.world = world;
     }
 
     public void init() {
@@ -60,21 +64,19 @@ public class NetController {
 
     //发送消息
     class UdpSend extends Thread {
-        Message msg = null;
-
+        Message msg;
         UdpSend(Message msg) {
             this.msg = msg;
         }
-
         public void run() {
             try {
                 byte[] data = toByteArray(msg);
-                DatagramSocket ds = new DatagramSocket(PORT_SEND);
-                DatagramPacket packet = new DatagramPacket(data, data.length, InetAddress.getByName(""), PORT_SEND);
+                DatagramSocket ds = new DatagramSocket(PORT_SEND);      //192.168.1.255
+                DatagramPacket packet = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), PORT_RECEIVE);
                 packet.setData(data);
                 ds.send(packet);
                 ds.close();
-            } catch (Exception e) {}
+            } catch(Exception e) {}
         }
     }
 
@@ -90,8 +92,7 @@ public class NetController {
     }
 
     public class UdpReceive extends Thread {
-        Message msg = null;
-
+        Message msg;
         public void run() {
             // 消息循环
             while (!isStop) {
@@ -99,25 +100,21 @@ public class NetController {
                     DatagramSocket ds = new DatagramSocket(PORT_RECEIVE);
                     byte[] data = new byte[1024 * 32];
                     DatagramPacket dp = new DatagramPacket(data, data.length);
-                    dp.setData(data);
                     ds.receive(dp);
+                    if(InetAddress.getLocalHost().getHostAddress().equals(dp.getAddress().getHostAddress())){
+                        continue;
+                    }
                     byte[] data2 = new byte[dp.getLength()];
-
                     // 得到接收的数据
                     System.arraycopy(data, 0, data2, 0, data2.length);
                     Message msg = (Message) toObject(data2);
                     ds.close();
-
                     // 解析消息
                     parse(msg);
                 } catch (Exception e) {}
             }
 
         }
-    }
-
-    public void parse(Message msg) {
-
     }
 
     // 对象封装成消息
@@ -152,5 +149,9 @@ public class NetController {
             ex.printStackTrace();
         }
         return obj;
+    }
+
+    public void parse(Message msg) {
+        Gdx.app.log("zc", ""+Thread.currentThread());
     }
 }

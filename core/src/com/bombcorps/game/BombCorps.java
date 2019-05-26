@@ -2,6 +2,7 @@ package com.bombcorps.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Net;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,6 +11,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.bombcorps.game.controller.CameraController;
 import com.bombcorps.game.controller.InputController;
+import com.bombcorps.game.controller.NetController;
+import com.bombcorps.game.model.Player;
 
 public class BombCorps extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -27,7 +30,8 @@ public class BombCorps extends ApplicationAdapter {
         cameraController = new CameraController();
         cameraController.setPosition(0, 0);
         camera = new OrthographicCamera(18, 10);
-        Gdx.input.setInputProcessor(new GestureDetector(new InputController(cameraController, camera)));
+		NetController net = new NetController();
+        Gdx.input.setInputProcessor(new GestureDetector(new InputController(cameraController, camera, net)));
 	}
 
 	@Override
