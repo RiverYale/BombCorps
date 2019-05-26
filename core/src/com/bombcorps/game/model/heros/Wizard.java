@@ -1,7 +1,9 @@
 package com.bombcorps.game.model.heros;
 
-public class Wizard extends AbstractHero {
-    public Wizard(int hero) {
-        super(hero);
+import com.bombcorps.game.model.Constants;
+
+public class Wizard extends BaseHero {
+    public Wizard() {
+        super(Constants.WIZARD);
     }
 }

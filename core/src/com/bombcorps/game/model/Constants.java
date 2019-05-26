@@ -18,6 +18,24 @@ public class Constants {
     public static final float ACCELERATION = -5f;   //加速度
     public static final float VELOCITY_X = 5f;        //水平速度
 
+
+    public static final class PLAYER{
+        public static final int STATE_LOCAL = 0;
+        public static final int STATE_OTHERS = 1;
+    }
+
+
+    public static final class BONUS{
+        public static final float BONUS_VELOCITY_Y = -10;
+
+        public static final int ACTIVATED = 2;
+        public static final int GROUNDED = 3;
+
+        public static final Vector2 DIMENSION = new Vector2(5f,5f);
+
+        public static final double BONUS_CHANCE = 0.4f;
+
+    }
     /*
     Bomb类
      */
@@ -36,6 +54,22 @@ public class Constants {
         public static final float ROUTESCALE = 1f;
     }
 
+    /*
+    Aura光环类
+     */
+    public static final class AURA{
+        public static final int SPARDAAURA = 0;
+        public static final int PROTECTORAURA = 1;
+        public static final int ANGELAURA = 2;
+        public static final int SNIPERAURA = 3;
+        public static final int WIZARDAURA0 = 4;
+        public static final int WIZARDAURA1 = 5;
+        public static final int WAIT = -1;
+
+        public static final Vector2 DIMENSION = new Vector2(5f,5f);
+        public static final Vector2 SCALE = new Vector2(1f,1f);
+        public static final Vector2 ORIGIN = new Vector2(DIMENSION.x / 2, DIMENSION.y / 2);
+    }
 
     /*
     人物状态
