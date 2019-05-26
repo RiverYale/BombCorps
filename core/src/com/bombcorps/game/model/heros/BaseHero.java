@@ -12,6 +12,8 @@ import com.bombcorps.game.model.Constants;
 import com.bombcorps.game.model.auras.Aura;
 
 public abstract class BaseHero{
+
+    private float level;
     /*
         角色基本属性
      */
@@ -63,7 +65,7 @@ public abstract class BaseHero{
     private Animation attackAnimation;
 
     private enum STATE{          //人物状态
-        FALLING, GROUNDED,MOVING,ATTACK,DEAD
+        WAIT,FALLING, GROUNDED,MOVING,ATTACK,DEAD
     }
 
     public BaseHero(int hero){
@@ -294,6 +296,14 @@ public abstract class BaseHero{
     /*
     set 与 put函数
      */
+
+    public void setLevel(float level){
+        this.level = level;
+    }
+
+    public float getLevel(){
+        return level;
+    }
 
     public Aura getAura(){
         return aura;
