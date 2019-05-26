@@ -10,7 +10,7 @@ public class Aura {
     private Vector2 position;
     private AURA state;
 
-    public enum AURA{
+    private enum AURA{
         SPARDAAURA, PROTECTORAURA, ANGELAURA, SNIPERAURA,WIZARDAURA0,WIZARDAURA1,WAIT;
 
         public TextureRegion aura;
