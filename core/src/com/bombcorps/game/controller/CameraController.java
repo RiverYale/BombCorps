@@ -3,7 +3,7 @@ package com.bombcorps.game.controller;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.bombcorps.game.model.Bombs.Bomb;
+import com.bombcorps.game.model.bombs.Bomb;
 import com.bombcorps.game.model.Constants;
 import com.bombcorps.game.model.heros.BaseHero;
 

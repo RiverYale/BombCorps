@@ -37,7 +37,7 @@ public class InputController implements GestureDetector.GestureListener {
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
 
-        net.sendCMD(new Message());
+        net.sendCMD(new Message(10));
 
         Gdx.app.log("zc", "touchDown");
         Vector3 v = new Vector3(x, y, 0);

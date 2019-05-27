@@ -9,6 +9,7 @@ import com.bombcorps.game.model.Message;
 import com.bombcorps.game.model.World;
 
 public class WorldController {
+    private DirctGame game;
     private OrthographicCamera camera;
     private InputController input;
     private CameraController cameraController;
@@ -16,7 +17,8 @@ public class WorldController {
     private NetController net;
     private World world;
 
-    public WorldController(Game game, OrthographicCamera camera, NetController net) {
+    public WorldController(DirctGame game, OrthographicCamera camera, NetController net) {
+        this.game = game;
         this.camera = camera;
         this.net = net;
         cameraController = new CameraController();
