@@ -25,7 +25,7 @@ public class NetController {
     private ArrayList<Player> playerList;
     private ArrayList<Ai> aiList;
     private WorldController world;
-    private boolean isStop;
+    private boolean bool_stop;
     private DirctGame game;
 
     //网络行为协议
@@ -99,6 +99,10 @@ public class NetController {
         return ipaddress;
     }
 
+    public ArrayList<Room> getRoomList() {
+        return roomList;
+    }
+
     public void sendCMD(Message msg) {
         (new UdpSend(msg)).start();
     }
@@ -123,20 +127,20 @@ public class NetController {
 
     // 接收消息
     public void openReceiveMsgThread() {
-        isStop = false;
+        bool_stop = false;
         (new UdpReceive()).start();
     }
 
     // 停止接收消息
     public void stopReceiveMsgThread() {
-        isStop = true;
+        bool_stop = true;
     }
 
     public class UdpReceive extends Thread {
         Message msg;
         public void run() {
             // 消息循环
-            while (!isStop) {
+            while (!bool_stop) {
                 try {
                     DatagramSocket ds = new DatagramSocket(PORT_RECEIVE);
                     byte[] data = new byte[1024 * 32];
@@ -209,59 +213,66 @@ public class NetController {
                 roomList.add(msg.getRoom());
                 break;
             case ENTER_ROOM:
-                if(game.getRoom().getIp().equals(getLocalHostIp())){
-                    m = new Message(ENTER_ROOM);
-                    msg.setFromIp(getLocalHostIp());
-                    for(Player p : game.getRoom().getPlayers()){
-                        msg.setToIp(p.getIp());
-                        sendCMD(m);
+                if(game.inRoom()){
+                    if(game.hasRoom()){
+                        if(!game.getRoom().isFull()){
+                            m = new Message(ENTER_ROOM);
+                            msg.setFromIp(getLocalHostIp());
+                            for(Player p : game.getRoom().getPlayers()){
+                                msg.setToIp(p.getIp());
+                                sendCMD(m);
+                            }
+                        }
+                    }else{
+                        game.getRoom().addPlayer(msg.getPlayer());
                     }
                 }
-                game.getRoom().addPlayer(msg.getPlayer());
                 break;
             case QUIT_ROOM:
-                if(game.getRoom().getIp().equals(getLocalHostIp())){
-                    m = new Message(QUIT_ROOM);
-                    msg.setFromIp(getLocalHostIp());
-                    for(Player p : game.getRoom().getPlayers()){
-                        msg.setToIp(p.getIp());
-                        sendCMD(m);
-                    }
-                }
                 game.getRoom().removePlayer(msg.getPlayer());
                 break;
             case CHOOSE_HERO:
-
+                game.getRoom().updatePlayer(msg.getPlayer());
                 break;
             case CHOOSE_MAP:
-
+                game.getRoom().updateMap(msg.getMap());
                 break;
             case CHOOSE_TEAM:
-
+                game.getRoom().updatePlayer(msg.getPlayer());
                 break;
             case ADD_AI:
-
+                game.getRoom().addAi();
                 break;
             case PREPARE:
-
+                game.getRoom().updatePlayer(msg.getPlayer());
                 break;
             case START:
-
+                game.startGame();
                 break;
             case ROUND_START:
-
+                world.startNextRound();
                 break;
             case ROUND_OVER:
-
+                m = new Message(ROUND_START);
+                m.setFromIp(getLocalHostIp());
+                for(Player p : world.getPlayers()){
+                    m.setToIp(p.getIp());
+                    sendCMD(m);
+                }
+                world.startNextRound();
                 break;
             case SET_BONUS:
-
+                world.setBonus(msg.getBonus());
                 break;
             case OPERATIONS:
-
+                world.playerOperate(msg);
                 break;
             case QUIT_GAME:
-
+                if(world.getWorldIp().equals(msg.getFromIp())){
+                    world.errorStop();
+                }else{
+                    world.playerQuit(msg);
+                }
                 break;
         }
     }

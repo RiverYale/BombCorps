@@ -40,4 +40,8 @@ public class WorldController {
     public NetController getNetController() {
         return net;
     }
+
+    public String getWorldIp(){
+        return world.getIp();
+    }
 }
