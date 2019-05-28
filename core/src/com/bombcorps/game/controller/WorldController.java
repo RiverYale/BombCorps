@@ -112,8 +112,12 @@ public class WorldController {
             case 6:
                 if(world.getIp().equals(curPlayer.getIp())){
                     boolean hasBonus = MathUtils.random(9) > 6; // 30%的几率
-                    net.roundStart(hasBonus);
-                    startNextRound(hasBonus);
+                    Bonus b = null;
+                    if(hasBonus){
+                        b = world.spawnBonus();
+                    }
+                    net.roundStart(b);
+                    startNextRound(b);
                 }else{
                     net.roundOver();
                 }
@@ -121,9 +125,9 @@ public class WorldController {
         }
     }
 
-    public void startNextRound(boolean hasBonus) {
-        if(hasBonus){
-            world.spawnBonus();
+    public void startNextRound(Bonus b) {
+        if(b != null){
+            world.addBonus(b);
         }
         curPlayer = world.getNextPlayer();
         cameraController.setTarget(curPlayer);

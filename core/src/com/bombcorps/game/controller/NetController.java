@@ -250,12 +250,13 @@ public class NetController {
             case ROUND_OVER:
                 m = new Message(ROUND_START);
                 boolean hasBonus = MathUtils.random(9) > 6; // 30%的几率
-                m.setBonus(hasBonus);
-                for(Player p : world.getPlayers()){
-                    m.setToIp(p.getIp());
-                    sendCMD(m);
+                Bonus b = null;
+                if(hasBonus){
+                    b = world.spawnBonus();
                 }
-                world.startNextRound(hasBonus);
+                m.setBonus(b);
+                broadcastInRoom(m);
+                world.startNextRound(b);
                 break;
             case OPERATIONS:
                 world.playerOperate(msg);
@@ -318,16 +319,15 @@ public class NetController {
         broadcastInRoom(m);
     }
 
-    public void roundStart(boolean hasBonus) {
+    public void roundStart(Bonus b) {
         Message m = new Message(ROUND_START);
-        m.setBonus(hasBonus);
-        m.setToIp(roomIp);
-        sendCMD(m);
+        m.setBonus(b);
+        broadcastInRoom(m);
     }
 
     public void roundOver() {
         Message m = new Message(ROUND_OVER);
-        m.setToIp(roomIp);
+        m.setToIp(game.getRoom().getIp());
         sendCMD(m);
     }
 
