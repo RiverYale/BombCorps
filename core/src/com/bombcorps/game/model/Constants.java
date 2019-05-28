@@ -1,8 +1,13 @@
 package com.bombcorps.game.model;
 
+import com.badlogic.gdx.math.Vector2;
+
 public class Constants {
     public static final String HEROES_OBJECTS = "images/heroes.txt";
     public static final String CONFIG = "BombCorpsConfig";
+    public static final float MAX_ZOON_IN = 0.5f;
+    public static final float MAX_ZOON_OUT = 2f;
+
     public static final float ACCELERATION = -5f;   //加速度
     public static final float VELOCITY_X = 5f;        //水平速度
 
@@ -11,24 +16,53 @@ public class Constants {
     Bomb类
      */
     public static final class BOMB{
-        public static final float ROTATE_SPEED = 120;
+        public static final int STATE_FLY = 0;
+        public static final int STATE_BOOM = 1;
+        public static final float BOOM_DURETION = 0.2f;
+        public static final Vector2 BOOM_DIMENSION = new Vector2(5f,5f);
+        public static final Vector2 BOOM_SCALE = new Vector2(1f,1f);
+
+        public static final Vector2 DIMENSION = new Vector2(5f,5f);
+
+        public static final float ROTATE_SPEED = 120f;
         public static final float ACCELERATION = -8f;
+        public static final Vector2 BOMBSCALE = new Vector2(1f,1f);
+        public static final float ROUTESCALE = 1f;
+    }
+
+    /*
+    Aura光环类
+     */
+    public static final class AURA{
+        public static final int SPARDAAURA = 0;
+        public static final int PROTECTORAURA = 1;
+        public static final int ANGELAURA = 2;
+        public static final int SNIPERAURA = 3;
+        public static final int WIZARDAURA0 = 4;
+        public static final int WIZARDAURA1 = 5;
+        public static final int WAIT = -1;
+
+        public static final Vector2 DIMENSION = new Vector2(5f,5f);
+        public static final Vector2 SCALE = new Vector2(1f,1f);
+        public static final Vector2 ORIGIN = new Vector2(DIMENSION.x / 2, DIMENSION.y / 2);
     }
 
     /*
     人物状态
      */
-    public static final int ANGEL = 0;
+    public static final Vector2 HERO_DIMENSION = new Vector2(10f,10f);
+
+    public static final int SPARDA = 0;
     public static final int PROTECTOR = 1;
-    public static final int SNIPER = 2;
-    public static final int SPARDA = 3;
+    public static final int ANGEL = 2;
+    public static final int SNIPER = 3;
     public static final int WIZARD = 4;
 
-    public static final int MOVING = 1;
-    public static final int GROUNDED = 2;
-    public static final int FALLING = 3;
-    public static final int ATTACK = 4;
-    public static final int DEAD = 5;
+    public static final int STATE_MOVING = 1;
+    public static final int STATE_GROUNDED = 2;
+    public static final int STATE_FALLING = 3;
+    public static final int STATE_ATTACK = 4;
+    public static final int STATE_DEAD = 5;
 
     public static final float MAX_ENDURENCE = 200;
     public static final float MAX_RAGEPOWER = 100;

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.bombcorps.game.controller.AssetsController;
@@ -13,6 +14,8 @@ public abstract class AbstractHero {
     /*
         角色基本属性
      */
+    private Rectangle rec;
+
     private float health;         //血量
     private float endurance;      //精力
     private float powerRage;      //怒气值
@@ -47,6 +50,9 @@ public abstract class AbstractHero {
 //    private TextureRegion[] moveRegions;
     private Array<TextureRegion> attackRegions;
 //    private TextureRegion[] attackRegions;
+
+    private TextureRegion moveKeyFrame;
+    private  TextureRegion attackKeyFrame;
 
     private Animation moveAnimation;
     private Animation attackAnimation;
@@ -173,11 +179,12 @@ public abstract class AbstractHero {
         antiArmor = 0;
 
         position = new Vector2();
-        dimension = new Vector2();
+        dimension = Constants.HERO_DIMENSION;
         origin = new Vector2();
         scale = new Vector2();
         velocity = new Vector2();
         acceleration = new Vector2(0,Constants.ACCELERATION);
+        rec = new Rectangle(0,0,dimension.x,dimension.y);
 
         headright = false;
         stateTime = 0;
@@ -250,18 +257,18 @@ public abstract class AbstractHero {
                         !headright, false);
                 break;
             case MOVING:
-                TextureRegion moveFrame = (TextureRegion) moveAnimation.getKeyFrame(stateTime);
+                moveKeyFrame = (TextureRegion) moveAnimation.getKeyFrame(stateTime);
                 stateTime += Gdx.graphics.getDeltaTime();
                 stateTime %= moveAnimation.getAnimationDuration();
 
-                batch.draw(moveFrame, position.x, position.y, origin.x, origin.y, dimension.x, dimension.y,
+                batch.draw(moveKeyFrame, position.x, position.y, origin.x, origin.y, dimension.x, dimension.y,
                         scale.x, scale.y, 0);
                 break;
             case ATTACK:
-                TextureRegion attackFrame = (TextureRegion) attackAnimation.getKeyFrame(stateTime);
+                attackKeyFrame = (TextureRegion) attackAnimation.getKeyFrame(stateTime);
                 stateTime += Gdx.graphics.getDeltaTime();
 
-                batch.draw(attackFrame, position.x, position.y, origin.x, origin.y, dimension.x, dimension.y,
+                batch.draw(attackKeyFrame, position.x, position.y, origin.x, origin.y, dimension.x, dimension.y,
                         scale.x, scale.y, 0);
 
                 if(stateTime > attackAnimation.getAnimationDuration()){
@@ -281,6 +288,14 @@ public abstract class AbstractHero {
     /*
     set 与 put函数
      */
+
+    public Rectangle getRec() {
+        rec.x = position.x;
+        rec.y = position.y;
+
+        return rec;
+    }
+
     public void setAttackTimes(int attackTimes){
         this.attackTimes = attackTimes;
     }

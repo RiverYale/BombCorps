@@ -110,14 +110,14 @@ public class MenuScreen extends AbstractGameScreen {
         stage.addActor(layerOptionsWindow);
 
 
-        }
+    }
     private Table buildBackgroundLayer(){
         Table layer = new Table();
         imgBackground = new Image(new TextureRegion(new Texture(Gdx.files.internal("background1.png")),0,0,1024,576));
         layer.add(imgBackground);
         return layer;
     }
-//    private Table buildObjectsLayer(){
+    //    private Table buildObjectsLayer(){
 //        Table layer = new Table();
 //        return layer;
 //    }
@@ -126,7 +126,6 @@ public class MenuScreen extends AbstractGameScreen {
 //        return layer;
 //    }
     private Table buildControlsLayer(){
-
         Table layer = new Table();
         layer.left().bottom();
         //添加退出按钮
@@ -157,28 +156,20 @@ public class MenuScreen extends AbstractGameScreen {
         btnMenuOptions = new Image(new Texture(Gdx.files.internal("button_setting.png")));
         btnMenuOptions.setSize(80,40);
         layer.add(btnMenuOptions);
-
-
         return layer;
     }
 
     private Table buildOptionsWindowLayer(){
         Table layer = new Table();
         return layer;
-
-
     }
+
     private void onPlayClicked(){
         //切换到LobbyScreen
         //game.setScreen(new LobbyScreen(game));
     }
+
     private void onOptionsClicded(){
 
     }
-
-
-
-
-
-
 }
