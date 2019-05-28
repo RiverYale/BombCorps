@@ -1,6 +1,7 @@
 package com.bombcorps.game.controller;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.MathUtils;
 import com.bombcorps.game.model.Ai;
 import com.bombcorps.game.model.BonusManager;
 import com.bombcorps.game.model.Message;
@@ -40,7 +41,6 @@ public class NetController {
     private static final int START = 18;            //开始
     private static final int ROUND_START = 19;      //回合开始
     private static final int ROUND_OVER = 21;       //回合结束
-    private static final int SET_BONUS = 22;        //产生宝箱
     private static final int OPERATIONS = 23;       //英雄操作
     private static final int QUIT_GAME = 24;        //退出游戏
 
@@ -245,18 +245,17 @@ public class NetController {
                 game.startGame();
                 break;
             case ROUND_START:
-                world.startNextRound();
+                world.startNextRound(msg.getBonus());
                 break;
             case ROUND_OVER:
                 m = new Message(ROUND_START);
+                boolean hasBonus = MathUtils.random(9) > 6; // 30%的几率
+                m.setBonus(hasBonus);
                 for(Player p : world.getPlayers()){
                     m.setToIp(p.getIp());
                     sendCMD(m);
                 }
-                world.startNextRound();
-                break;
-            case SET_BONUS:
-                world.setBonus(msg.getBonus());
+                world.startNextRound(hasBonus);
                 break;
             case OPERATIONS:
                 world.playerOperate(msg);
@@ -319,15 +318,22 @@ public class NetController {
         broadcastInRoom(m);
     }
 
+    public void roundStart(boolean hasBonus) {
+        Message m = new Message(ROUND_START);
+        m.setBonus(hasBonus);
+        m.setToIp(roomIp);
+        sendCMD(m);
+    }
+
     public void roundOver() {
         Message m = new Message(ROUND_OVER);
         m.setToIp(roomIp);
         sendCMD(m);
     }
 
-    public void setBonus(BonusManager bonusManager) {
-        Message m = new Message(SET_BONUS);
-        m.setBonus(bonusManager.getBonusList());
+    public void operate(int op, Player target, float targetX, float tapX, float tapY){
+        Message m = new Message(OPERATIONS);
+        m.setOp(op, target, targetX, tapX, tapY);
         broadcastInRoom(m);
     }
 

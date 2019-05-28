@@ -1,7 +1,6 @@
 package com.bombcorps.game.controller;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Net;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.MathUtils;
@@ -10,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombcorps.game.model.Constants;
 import com.bombcorps.game.model.Message;
+import com.bombcorps.game.model.Player;
 
 public class InputController implements GestureDetector.GestureListener {
     private WorldController controller;
@@ -44,7 +44,7 @@ public class InputController implements GestureDetector.GestureListener {
         camera.unproject(v);
 
         //TODO 确定是否按到了炸弹
-        Rectangle r = new Rectangle();
+        Rectangle r = controller.getCurPlayer().getBallOrBomb();
         if(r.contains(v.x, v.y)){
             hasAim = true;
         }else{
@@ -57,8 +57,23 @@ public class InputController implements GestureDetector.GestureListener {
     public boolean tap(float x, float y, int count, int button) {
         Vector3 v = new Vector3(x, y, 0);
         camera.unproject(v);
-
-        //TODO 轻点选择target
+        int op = controller.getOperations();
+        if(op == -1) {
+            Player p = controller.hasPlayer(v.x, v.y);
+            if (p != null) {
+                cameraController.setTarget(p);
+                // TODO onHeroClicked(p);
+            }
+        } else if (op == 0) {
+            controller.getCurPlayer().setDestX(v.x);
+            controller.resetOperations();
+        } else if (op == 3 || op == 4 || op == 5) {
+            Player p = controller.hasPlayer(v.x, v.y);
+            if (p != null) {
+                controller.getCurPlayer().useSkill(op, p);
+            }
+            controller.resetOperations();
+        }
 
         return false;
     }
@@ -66,13 +81,25 @@ public class InputController implements GestureDetector.GestureListener {
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
         if(hasAim){
-            //TODO 炸弹瞄准
+            Vector3 v = new Vector3(x, y, 0);
+            camera.unproject(v);
+            controller.getCurPlayer().setTapPos(v.x, v.y);
+            controller.resetOperations();
         }else{
             deltaX = -deltaX/Gdx.graphics.getWidth()*(camera.viewportWidth*camera.zoom);
             deltaY = deltaY/Gdx.graphics.getHeight()*(camera.viewportHeight*camera.zoom);
             deltaX += camera.position.x;
             deltaY += camera.position.y;
             cameraController.setPosition(deltaX, deltaY);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean panStop(float x, float y, int pointer, int button) {
+        int op = controller.getOperations();
+        if(op == 1 || op == 2){
+            controller.getCurPlayer().shoot();
         }
         return false;
     }
@@ -91,11 +118,6 @@ public class InputController implements GestureDetector.GestureListener {
     @Override
     public void pinchStop() {
 
-    }
-
-    @Override
-    public boolean panStop(float x, float y, int pointer, int button) {
-        return false;
     }
 
     @Override

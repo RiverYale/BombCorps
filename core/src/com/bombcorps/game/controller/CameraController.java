@@ -3,9 +3,9 @@ package com.bombcorps.game.controller;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.bombcorps.game.model.Player;
 import com.bombcorps.game.model.bombs.Bomb;
 import com.bombcorps.game.model.Constants;
-import com.bombcorps.game.model.heros.BaseHero;
 
 public class CameraController {
     private Vector2 position;
@@ -50,11 +50,11 @@ public class CameraController {
 
     public void update(float deltaTime) {
         if(target != null){
-            if(target instanceof BaseHero){
-                if(((BaseHero) target).getPosition().epsilonEquals(position)){
+            if(target instanceof Player){
+                if(((Player) target).getPosition().epsilonEquals(position)){
                     setTarget(null);
                 }else{
-                    position.lerp(((BaseHero) target).getPosition(), Constants.FOLLOW_SPEED * deltaTime);
+                    position.lerp(((Player) target).getPosition(), Constants.FOLLOW_SPEED * deltaTime);
                 }
             }else if(target instanceof Bomb){
                 if(((Bomb) target).getPosition().epsilonEquals(position)){
