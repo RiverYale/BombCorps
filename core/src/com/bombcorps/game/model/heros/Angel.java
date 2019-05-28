@@ -2,7 +2,7 @@ package com.bombcorps.game.model.heros;
 
 import com.bombcorps.game.model.Constants;
 
-public class Angel extends AbstractHero {
+public class Angel extends BaseHero {
     public Angel(){
         super(Constants.ANGEL);
 

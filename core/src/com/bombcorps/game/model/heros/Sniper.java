@@ -1,8 +1,10 @@
 package com.bombcorps.game.model.heros;
 
-public class Sniper extends AbstractHero {
+import com.bombcorps.game.model.Constants;
 
-    public Sniper(int hero) {
-        super(hero);
+public class Sniper extends BaseHero {
+
+    public Sniper() {
+        super(Constants.SNIPER);
     }
 }

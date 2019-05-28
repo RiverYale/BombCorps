@@ -3,15 +3,49 @@ package com.bombcorps.game.model;
 import com.badlogic.gdx.math.Vector2;
 
 public class Constants {
+    //文件路径、名称
     public static final String HEROES_OBJECTS = "images/heroes.txt";
     public static final String CONFIG = "BombCorpsConfig";
+
+    //CameraHelper
     public static final float MAX_ZOON_IN = 0.5f;
     public static final float MAX_ZOON_OUT = 2f;
+    public static final float FOLLOW_SPEED = 4f;
+
+    //DataController
+    public static final int HERO_MAX_LEVEL = 5;
 
     public static final float ACCELERATION = -5f;   //加速度
     public static final float VELOCITY_X = 5f;        //水平速度
 
-    public static final int HERO_MAX_LEVEL = 5;
+
+    public static final float LEVEL_0 = 1;
+    public static final float LEVEL_1 = 1.1f;
+    public static final float LEVEL_2 = 1.2f;
+    public static final float LEVEL_3 = 1.3f;
+    public static final float LEVEL_4 = 1.4f;
+    public static final float LEVEL_5 = 1.5f;
+
+    public static final class PLAYER{
+        public static final int STATE_LOCAL = 0;
+        public static final int STATE_OTHERS = 1;
+
+        public static final int RIGHT_SIDE = 2;
+        public static final int LEFT_SIDE = 1;
+    }
+
+
+    public static final class BONUS{
+        public static final float BONUS_VELOCITY_Y = -10;
+
+        public static final int ACTIVATED = 2;
+        public static final int GROUNDED = 3;
+
+        public static final Vector2 DIMENSION = new Vector2(5f,5f);
+
+        public static final double BONUS_CHANCE = 0.4f;
+
+    }
     /*
     Bomb类
      */
@@ -52,17 +86,25 @@ public class Constants {
      */
     public static final Vector2 HERO_DIMENSION = new Vector2(10f,10f);
 
+    public static final int NONE = -1;
     public static final int SPARDA = 0;
     public static final int PROTECTOR = 1;
     public static final int ANGEL = 2;
     public static final int SNIPER = 3;
     public static final int WIZARD = 4;
 
+    public static final int STATE_WAIT = 0;
     public static final int STATE_MOVING = 1;
     public static final int STATE_GROUNDED = 2;
     public static final int STATE_FALLING = 3;
     public static final int STATE_ATTACK = 4;
     public static final int STATE_DEAD = 5;
+
+    public static final class HERO_ACTION{
+        public static final int MOVE = 0;
+        public static final int ATTACK = 1;
+
+    }
 
     public static final float MAX_ENDURENCE = 200;
     public static final float MAX_RAGEPOWER = 100;

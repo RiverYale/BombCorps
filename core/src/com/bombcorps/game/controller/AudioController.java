@@ -7,6 +7,8 @@ public class AudioController {
     public static final AudioController instance = new AudioController();
     private Music playingMusic;
 
+    private AudioController() {}
+
     public void play(Music music) {
         stopMusic();
         playingMusic = music;

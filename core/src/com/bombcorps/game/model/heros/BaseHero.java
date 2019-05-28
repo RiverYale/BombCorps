@@ -9,8 +9,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.model.Constants;
+import com.bombcorps.game.model.auras.Aura;
 
-public abstract class AbstractHero {
+public abstract class BaseHero{
+
+    private float level;
     /*
         角色基本属性
      */
@@ -28,6 +31,8 @@ public abstract class AbstractHero {
     /*
     角色其他属性
      */
+    private float destination;
+
     private boolean headright;  //方向  true表示朝右 反之朝左
     private Vector2 position;   //位置
     private Vector2 dimension;  //大小
@@ -41,6 +46,8 @@ public abstract class AbstractHero {
     /*
     渲染英雄
      */
+    private Aura aura;
+
     private float stateTime;
     private int attackTimes;
 
@@ -57,11 +64,11 @@ public abstract class AbstractHero {
     private Animation moveAnimation;
     private Animation attackAnimation;
 
-    public enum STATE{          //人物状态
-        FALLING, GROUNDED,MOVING,ATTACK,DEAD
+    private enum STATE{          //人物状态
+        WAIT,FALLING, GROUNDED,MOVING,ATTACK,DEAD
     }
 
-    public AbstractHero(int hero){
+    public BaseHero(int hero){
         init();
         initHeroRegion(hero);
     }
@@ -170,6 +177,9 @@ public abstract class AbstractHero {
     }
 
     private void init(){
+        aura = new Aura();
+
+        destination = 0;
         health = 0;
         endurance = Constants.MAX_ENDURENCE;
         powerRage = Constants.MAX_RAGEPOWER;
@@ -195,7 +205,7 @@ public abstract class AbstractHero {
 
     public void update(float deltaTime){
         updatePosition(deltaTime);
-
+        aura.update(deltaTime, position);
     }
 
     protected void updatePosition(float deltaTime){
@@ -210,10 +220,7 @@ public abstract class AbstractHero {
                 updateY(deltaTime);
                 break;
             case MOVING:
-                //TODO
-                float destination = 5;      //目的地的x
-
-                if(endurance > 0 && Math.abs(position.x - destination) > 5){
+                if(endurance > 0 && Math.abs(position.x - destination) > 1){
                     endurance -= Constants.MOVE_ENDURANCE_COST;
                     updateX(deltaTime);
 
@@ -237,6 +244,7 @@ public abstract class AbstractHero {
     }
 
     public void render(SpriteBatch batch){
+        aura.render(batch);
         renderHero(batch);
     };
 
@@ -288,6 +296,22 @@ public abstract class AbstractHero {
     /*
     set 与 put函数
      */
+
+    public void setLevel(float level){
+        this.level = level;
+    }
+
+    public float getLevel(){
+        return level;
+    }
+
+    public Aura getAura(){
+        return aura;
+    }
+
+    public void setDestination(float destination){
+        this.destination = destination;
+    }
 
     public Rectangle getRec() {
         rec.x = position.x;

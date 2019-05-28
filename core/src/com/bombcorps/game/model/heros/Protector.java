@@ -1,7 +1,9 @@
 package com.bombcorps.game.model.heros;
 
-public class Protector extends AbstractHero {
-    public Protector(int hero) {
-        super(hero);
+import com.bombcorps.game.model.Constants;
+
+public class Protector extends BaseHero {
+    public Protector() {
+        super(Constants.PROTECTOR);
     }
 }

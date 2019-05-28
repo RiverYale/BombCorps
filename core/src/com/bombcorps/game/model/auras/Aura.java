@@ -10,7 +10,7 @@ public class Aura {
     private Vector2 position;
     private AURA state;
 
-    public enum AURA{
+    private enum AURA{
         SPARDAAURA, PROTECTORAURA, ANGELAURA, SNIPERAURA,WIZARDAURA0,WIZARDAURA1,WAIT;
 
         public TextureRegion aura;
@@ -54,6 +54,9 @@ public class Aura {
             case Constants.AURA.WAIT:
                 state = AURA.WAIT;
                 break;
+            case Constants.AURA.SPARDAAURA:
+                state = AURA.SPARDAAURA;
+                break;
             case Constants.AURA.PROTECTORAURA:
                 state = AURA.PROTECTORAURA;
                 break;
@@ -72,4 +75,6 @@ public class Aura {
         }
 
     }
+
+
 }

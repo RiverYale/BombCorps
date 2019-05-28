@@ -20,7 +20,7 @@ public class AssetsController  implements Disposable, AssetErrorListener {
     private HashMap<String, Sound> soundMap;
     private HashMap<String, Music> musicMap;
 
-    public AssetsController() {
+    private AssetsController() {
         this.assetManager = new AssetManager();
         assetManager.setErrorListener(this);
         textureMap = new HashMap<String, TextureAtlas.AtlasRegion>();
