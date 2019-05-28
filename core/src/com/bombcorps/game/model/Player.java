@@ -7,7 +7,7 @@ public class Player {
     private String ID;
     private BaseHero myHero;
     private int heroType;
-    private int port;
+    private String IP;
     private float[] level;
 
     private boolean ready;
@@ -99,12 +99,12 @@ public class Player {
         return myHero;
     }
 
-    public void setPort(int port){
-        this.port = port;
+    public void setIP(String IP){
+        this.IP = IP;
     }
 
-    public int getPort(){
-        return port;
+    public String getIP(){
+        return IP;
     }
 
     public void setState(int input){

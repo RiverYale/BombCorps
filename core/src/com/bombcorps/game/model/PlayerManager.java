@@ -11,10 +11,10 @@ public class PlayerManager {
         playerList = new Array<Player>();
     }
 
-    public void addPlayer(int port, int side, String ID, float[] level){
+    public void addPlayer(String IP, int side, String ID, float[] level){
         Player player = new Player(ID);
         player.setLevel(level);
-        player.setPort(port);
+        player.setIP(IP);
         player.setSide(side);
 
         playerList.add(player);
@@ -126,17 +126,17 @@ public class PlayerManager {
         return -1;
     }
 
-    public int getPlayerPortAtIndex(int index){
+    public String getPlayerPortAtIndex(int index){
         if(index < playerList.size)
-            return playerList.get(index).getPort();
+            return playerList.get(index).getIP();
 
         Gdx.app.error("Out Of Bounds : ", "playerList in function \"getPlayerPortAtIndex\" ");
-        return -1;
+        return null;
     }
 
-    public void setPlayerPortAtIndex(int index, int port){
+    public void setPlayerPortAtIndex(int index, String IP){
         if(index < playerList.size)
-            playerList.get(index).setPort(port);
+            playerList.get(index).setIP(IP);
         else
             Gdx.app.log("Out Of Bounds : ", "playerList in function \"setPlayerPortAtIndex\" ");
     }

@@ -2,11 +2,23 @@ package com.bombcorps.game.model;
 
 import java.io.Serializable;
 import com.badlogic.gdx.math.Vector2;
+import com.bombcorps.game.controller.NetController;
 
 public class Message implements Serializable{
     private int msg;
-    private String ID;
-    private int port;
+//    private String ID;
+
+    private String fromIp;
+    private String toIp;
+
+    private String mapName;
+    private Player player;
+
+    private boolean hasBonus;
+
+
+
+
 
     /*
     房间内选项
@@ -25,8 +37,21 @@ public class Message implements Serializable{
     private Vector2 bombStartPosition;//炸弹发射的坐标
 
 
+
+
+
+
     public Message(int msg){
         this.msg = msg;
+        this.fromIp = NetController.getLocalHostIp();
+    }
+
+    public String getToIp() {
+        return toIp;
+    }
+
+    public void setToIp(String toIp) {
+        this.toIp = toIp;
     }
 
     public int getDestination() {
@@ -55,6 +80,30 @@ public class Message implements Serializable{
 
     public int getMsg() {
         return msg;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public String getMap() {
+        return mapName;
+    }
+
+    public void setMap(String mapName) {
+        this.mapName = mapName;
+    }
+
+    public boolean hasBonus() {
+        return hasBonus;
+    }
+
+    public void setBonus(boolean hasBonus) {
+        this.hasBonus = hasBonus;
     }
 
     public int getHeroChoosed() {
