@@ -1,54 +1,12 @@
 package com.bombcorps.game.model;
 
-import com.badlogic.gdx.Gdx;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import com.bombcorps.game.controller.AssetsController;
 
-public class BonusSetter{
-    private Array<Bonus> bonusList;
-    private int mapWidth;
-
-    public BonusSetter(int mapWidth){
-        bonusList = new Array<Bonus>();
-        this.mapWidth = mapWidth;
-    }
-
-    public void setBonusByChance(){
-        if(Math.random() > Constants.BONUS.BONUS_CHANCE)
-            return;
-
-        bonusList.add(new Bonus(mapWidth));
-    }
-
-    public void update(float deltaTime){
-        for(int i = 0 ; i < bonusList.size; i++){
-            bonusList.get(i).update(deltaTime);
-        }
-    }
-
-    public void render(SpriteBatch batch){
-        for(int i = 0 ; i < bonusList.size; i++){
-            bonusList.get(i).render(batch);
-        }
-    }
-
-    public Array<Bonus> getBonusList(){
-        return bonusList;
-    }
-
-    public void deleteIndexAtIndex(int index){
-        if(index < bonusList.size)
-            bonusList.removeIndex(index);
-        else
-            Gdx.app.log("Out of Bounds : ", "BonusList");
-    }
-
-}
-
-class Bonus {
+public class Bonus {
     private Vector2 position;
     private Vector2 origin;
     private Vector2 scale;
@@ -58,7 +16,7 @@ class Bonus {
 
     private STATE state;
     private enum STATE{
-         ACTIVATED, GROUNDED
+        ACTIVATED, GROUNDED
     }
 
     public Bonus(int mapWidth){
@@ -91,11 +49,12 @@ class Bonus {
 
     public void render(SpriteBatch batch){
         if(state == STATE.ACTIVATED)
-            batch.draw(bonusBox, position.x, position.y,
-                origin.x, origin.y, dimension.x, dimension.y,
-                scale.x, scale.y,0);
+            batch.draw(parachute, position.x, position.y + dimension.y,
+                    origin.x, origin.y, dimension.x, dimension.y,
+                    scale.x, scale.y,0);
 
-        batch.draw(parachute, position.x, position.y + dimension.y,
+
+        batch.draw(bonusBox, position.x, position.y,
                 origin.x, origin.y, dimension.x, dimension.y,
                 scale.x, scale.y,0);
     }

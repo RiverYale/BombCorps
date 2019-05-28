@@ -27,8 +27,6 @@ public class Bomb {
     private Vector2 boomDimension;
     private Vector2 boomScale;
 
-    private float angle;
-    private float speed;
     private Vector2 velocity;
     private Vector2 acceleration;
     private float rotation;
@@ -58,7 +56,7 @@ public class Bomb {
         dimension = Constants.BOMB.DIMENSION;
         bombScale = Constants.BOMB.BOMBSCALE;
         origin = new Vector2(dimension.x / 2, dimension.y / 2);
-        velocity = new Vector2( (float)(speed * Math.cos(angle)) , (float)(speed * Math.sin(angle)));
+        velocity = new Vector2();
         acceleration = new Vector2(0,Constants.BOMB.ACCELERATION);
         rotation = 0;
 
@@ -273,22 +271,6 @@ public class Bomb {
         this.rotation = rotation;
     }
 
-    public float getAngle() {
-        return angle;
-    }
-
-    public void setAngle(float angle) {
-        this.angle = angle;
-    }
-
-    public float getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(float speed) {
-        this.speed = speed;
-    }
-
     public int getHeroType() {
         return heroType;
     }
@@ -309,10 +291,10 @@ public class Bomb {
 
     public void setState(int state) {
         switch (state){
-            case 0:
+            case Constants.BOMB.STATE_FLY:
                 this.state = STATE.FLY;
                 break;
-            case 1:
+            case Constants.BOMB.STATE_BOOM:
                 stateTime = 0;
                 this.state = STATE.BOOM;
                 break;

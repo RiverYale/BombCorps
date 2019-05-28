@@ -1,16 +1,19 @@
 package com.bombcorps.game.view;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.bombcorps.game.controller.AssetsController;
 
 public abstract class AbstractGameScreen implements Screen {
-    protected Game game;
+    protected DirectedGame game;
 
-    public AbstractGameScreen(Game game) {
+    public AbstractGameScreen(DirectedGame game) {
         this.game = game;
     }
+
+    public abstract InputProcessor getInputProcessor();
 
     public abstract void render(float deltaTime);
 
