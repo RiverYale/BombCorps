@@ -3,8 +3,8 @@ package com.bombcorps.game.model;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.bombcorps.game.model.heros.BaseHero;
 
 import java.util.logging.Level;
 
@@ -34,7 +34,9 @@ public class World {
     //砖块
     public Array<Rock> rocks;
     //英雄
-    public Array<BaseHero> heroes;
+    public Array<Player> playerList;
+
+    public int herotype;
 
     private int MapWidth;
 
@@ -46,7 +48,7 @@ public class World {
         //物品
         rocks = new Array<Rock>();
         //英雄
-        heroes = new Array<BaseHero>();
+        playerList = new Array<Player>();
         Pixmap pixmap = new Pixmap(Gdx.files.internal(filename));
         MapWidth = pixmap.getWidth();
         //从左上到右下扫描
@@ -64,9 +66,7 @@ public class World {
                 else if(BLOCK_TYPE.ROCK.sameColor(currentPixel)){
                     if(lastPixel!=currentPixel){
                         Rock rock = new Rock();
-                        float heightIncreaseFactor = 0.25f;
-                        offsetHeight = -2.5f;
-                        rock.position.set(pixelX,baseHeight*rock.dimension.y*heightIncreaseFactor+offsetHeight);
+                        rock.position.set(pixelX,baseHeight * rock.dimension.y+ offsetHeight);
                         rocks.add(rock);
                     }
                     else {
@@ -75,7 +75,10 @@ public class World {
                 }
                 //英雄出生点
                 else if(BLOCK_TYPE.PLAYER_SPAWNPOINT.sameColor(currentPixel)){
-
+                    Player player = new Player(herotype);
+                    Vector2 position = new Vector2(pixelX,baseHeight +offsetHeight);
+                    player.getMyHero().setPosition(position);
+                    playerList.add(player);
                 }
                 //未知错误
                 else {
@@ -99,6 +102,9 @@ public class World {
     public void render(SpriteBatch batch){
         for (Rock rock : rocks){
             rock.render(batch);
+        }
+        for (Player player : playerList){
+            player.getMyHero().render(batch);
         }
     }
 
