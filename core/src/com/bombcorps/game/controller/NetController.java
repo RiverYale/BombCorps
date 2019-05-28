@@ -2,6 +2,7 @@ package com.bombcorps.game.controller;
 
 import com.badlogic.gdx.Gdx;
 import com.bombcorps.game.model.Ai;
+import com.bombcorps.game.model.BonusManager;
 import com.bombcorps.game.model.Message;
 import com.bombcorps.game.model.Player;
 import com.bombcorps.game.model.Room;
@@ -33,11 +34,9 @@ public class NetController {
     private static final int RE_REFRESH_ROOM = 10;  //回复刷新房间
     private static final int ENTER_ROOM = 11;       //加入房间
     private static final int QUIT_ROOM = 12;        //退出房间
-    private static final int CHOOSE_HERO = 13;      //选择英雄
+    private static final int UPDATE_PLAYER = 13;    //退出房间
     private static final int CHOOSE_MAP = 14;       //选择地图
-    private static final int CHOOSE_TEAM = 15;      //选择队伍
     private static final int ADD_AI = 16;           //添加AI
-    private static final int PREPARE = 17;          //准备
     private static final int START = 18;            //开始
     private static final int ROUND_START = 19;      //回合开始
     private static final int ROUND_OVER = 21;       //回合结束
@@ -204,7 +203,6 @@ public class NetController {
                 if(game.hasRoom()){
                     m = new Message(RE_REFRESH_ROOM);
                     m.setToIp(msg.getFromIp());
-                    m.setFromIp(getLocalHostIp());
                     m.setRoom(game.getRoom());
                     sendCMD(m);
                 }
@@ -217,7 +215,6 @@ public class NetController {
                     if(game.hasRoom()){
                         if(!game.getRoom().isFull()){
                             m = new Message(ENTER_ROOM);
-                            msg.setFromIp(getLocalHostIp());
                             for(Player p : game.getRoom().getPlayers()){
                                 msg.setToIp(p.getIp());
                                 sendCMD(m);
@@ -229,22 +226,20 @@ public class NetController {
                 }
                 break;
             case QUIT_ROOM:
-                game.getRoom().removePlayer(msg.getPlayer());
+                if(game.getRoom().getIp().equals(msg.getFromIp())){
+                    game.getRoom().errorStop();
+                }else{
+                    game.getRoom().removePlayer(msg.getPlayer());
+                }
                 break;
-            case CHOOSE_HERO:
+            case UPDATE_PLAYER:
                 game.getRoom().updatePlayer(msg.getPlayer());
                 break;
             case CHOOSE_MAP:
                 game.getRoom().updateMap(msg.getMap());
                 break;
-            case CHOOSE_TEAM:
-                game.getRoom().updatePlayer(msg.getPlayer());
-                break;
             case ADD_AI:
                 game.getRoom().addAi();
-                break;
-            case PREPARE:
-                game.getRoom().updatePlayer(msg.getPlayer());
                 break;
             case START:
                 game.startGame();
@@ -254,7 +249,6 @@ public class NetController {
                 break;
             case ROUND_OVER:
                 m = new Message(ROUND_START);
-                m.setFromIp(getLocalHostIp());
                 for(Player p : world.getPlayers()){
                     m.setToIp(p.getIp());
                     sendCMD(m);
@@ -275,5 +269,71 @@ public class NetController {
                 }
                 break;
         }
+    }
+
+    public void refreshRoom() {
+        Message m = new Message(REFRESH_ROOM);
+        m.setToIp(getBroadCastIP());
+        sendCMD(m);
+    }
+
+    public void enterRoom(String roomIp, Player me) {
+        Message m = new Message(ENTER_ROOM);
+        m.setToIp(roomIp);
+        m.setPlayer(me);
+        sendCMD(m);
+    }
+
+    public void broadcastInRoom(Message m) {
+        for (Player p : game.getRoom().getPlayers()) {
+            m.setToIp(p.getIp());
+            sendCMD(m);
+        }
+    }
+
+    public void quitRoom(Player me) {
+        Message m = new Message(QUIT_ROOM);
+        m.setPlayer(me);
+        broadcastInRoom(m);
+    }
+
+    public void updatePlayer(Player me) {
+        Message m = new Message(UPDATE_PLAYER);
+        m.setPlayer(me);
+        broadcastInRoom(m);
+    }
+
+    public void chooseMap(String mapName) {
+        Message m = new Message(CHOOSE_MAP);
+        m.setMap(mapName);
+        broadcastInRoom(m);
+    }
+
+    public void addAi() {
+        Message m = new Message(ADD_AI);
+        broadcastInRoom(m);
+    }
+
+    public void startGame() {
+        Message m = new Message(START);
+        broadcastInRoom(m);
+    }
+
+    public void roundOver() {
+        Message m = new Message(ROUND_OVER);
+        m.setToIp(roomIp);
+        sendCMD(m);
+    }
+
+    public void setBonus(BonusManager bonusManager) {
+        Message m = new Message(SET_BONUS);
+        m.setBonus(bonusManager.getBonusList());
+        broadcastInRoom(m);
+    }
+
+    public void quitGame(Player me) {
+        Message m = new Message(QUIT_ROOM);
+        m.setPlayer(me);
+        broadcastInRoom(m);
     }
 }
