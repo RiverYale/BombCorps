@@ -99,11 +99,11 @@ public class Player {
         return myHero;
     }
 
-    public void setIP(String IP){
-        this.IP = IP;
+    public void setIp(String Ip){
+        this.IP = Ip;
     }
 
-    public String getIP(){
+    public String getIp(){
         return IP;
     }
 
