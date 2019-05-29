@@ -61,6 +61,7 @@ public class MenuScreen extends AbstractGameScreen {
 ////        }
 
         //Table.drawDebug(stage);
+        rebulidStage();
     }
     @Override public void resize(int width,int height){
         stage.getViewport().update(width,height);
@@ -147,10 +148,12 @@ public class MenuScreen extends AbstractGameScreen {
         btnMenuPlay.setScale(1.8f);
         layer.bottom();
         layer.add(btnMenuPlay).padLeft(270);
-        btnMenuPlay.addListener(new ChangeListener() {
+        btnMenuPlay.addListener(new InputListener() {
+
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 onPlayClicked();
+                return true;
             }
         });
         //添加设置按钮
