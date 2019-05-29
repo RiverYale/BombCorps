@@ -39,7 +39,6 @@ public class InputController implements GestureDetector.GestureListener {
 
         net.sendCMD(new Message(10));
 
-        Gdx.app.log("zc", "touchDown");
         Vector3 v = new Vector3(x, y, 0);
         camera.unproject(v);
 
@@ -67,14 +66,7 @@ public class InputController implements GestureDetector.GestureListener {
         } else if (op == 0) {
             controller.getCurPlayer().setDestX(v.x);
             controller.resetOperations();
-        } else if (op == 3 || op == 4 || op == 5) {
-            Player p = controller.hasPlayer(v.x, v.y);
-            if (p != null) {
-                controller.getCurPlayer().useSkill(op, p);
-            }
-            controller.resetOperations();
         }
-
         return false;
     }
 

@@ -3,6 +3,7 @@ package com.bombcorps.game.controller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.bombcorps.game.model.Ai;
+import com.bombcorps.game.model.Bonus;
 import com.bombcorps.game.model.Message;
 import com.bombcorps.game.model.Player;
 import com.bombcorps.game.model.Room;
@@ -330,9 +331,9 @@ public class NetController {
         sendCMD(m);
     }
 
-    public void operate(int op, Player target, float targetX, float tapX, float tapY){
+    public void operate(int op,  float targetX, float tapX, float tapY){
         Message m = new Message(OPERATIONS);
-        m.setOp(op, target, targetX, tapX, tapY);
+        m.setOp(op, targetX, tapX, tapY);
         broadcastInRoom(m);
     }
 
