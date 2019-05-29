@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -21,7 +22,7 @@ public class GameScreen extends AbstractGameScreen{
     private WorldRenderer worldRenderer;
     private boolean paused;
 
-    public GameScreen(Game game){
+    public GameScreen(DirectedGame game){
         super(game);
     }
 
@@ -36,11 +37,10 @@ public class GameScreen extends AbstractGameScreen{
         worldRenderer.render();
     }
 
-    /*public InputProcessor getInputProcessor(){
+    public InputProcessor getInputProcessor(){
         return (InputProcessor) worldController;
-    }*/
+    }
     private Stage stage;
-    private Skin skinBombCorps;
 
     private Image imgSkillOne;
     private Image imgSkillTwo;
@@ -52,80 +52,48 @@ public class GameScreen extends AbstractGameScreen{
 
     private void rebuidStage(){
         //build all layers
-        Table layerSkillOne = buildSkillOneLayer();
-        Table layerSkillTwo = buildSkillTwoLayer();
-        Table layerSkillThree = buildSkillThreeLayer();
-        Table layerMovement = buildMovementLayer();
-        Table layerAttrack = buildAtrrackLayer();
-        Table layerEjection = buildEjectionLayer();
-        Table layerTurnEnd = buildTurnEndLayer();
+        Table layerSkill = buildSkillLayer();
         //assemble stage for menu screen
         stage.clear();
         Stack stack = new Stack();
         stage.addActor(stack);
-        //stack.setSize(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
-        stack.add(layerSkillOne);
-        stack.add(layerSkillTwo);
-        stack.add(layerSkillThree);
-        stack.add(layerMovement);
-        stack.add(layerAttrack);
-        stack.add(layerEjection);
-        stack.add(layerTurnEnd);
-    }
+        stack.setSize(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
+        stack.add(layerSkill);
 
-    private Table buildTurnEndLayer(){
+}
+
+    private Table buildSkillLayer(){
         Table layer = new Table();
+
         //+TurnEndLayer
-        imgTurnEnd = new Image(skinBombCorps,"TurnEnd");
+        imgTurnEnd = new Image(new Texture(Gdx.files.internal("TurnEnd.png")));
         layer.add(imgTurnEnd);
-        return layer;
-    }
 
-    private Table buildSkillOneLayer(){
-        Table layer = new Table();
+
         //+SkillOneLayer
-        imgSkillOne = new Image(skinBombCorps,"SkillOne");
+        imgSkillOne = new Image(new Texture(Gdx.files.internal("SkillOne.png")));
         layer.add(imgSkillOne);
-        return layer;
-    }
 
-    private Table buildSkillTwoLayer(){
-        Table layer = new Table();
         //+SkillTwoLayer
-        imgSkillTwo = new Image(skinBombCorps,"SkillTwo");
+        imgSkillTwo = new Image(new Texture(Gdx.files.internal("SkillTwo.png")));
         layer.add(imgSkillTwo);
-        return layer;
-    }
 
-    private Table buildSkillThreeLayer(){
-        Table layer = new Table();
-        //+SkillOneLayer
-        imgSkillThree = new Image(skinBombCorps,"SkillThree");
+        //+SkillThreeLayer
+        imgSkillThree = new Image(new Texture(Gdx.files.internal("SkillThree.png")));
         layer.add(imgSkillThree);
-        return layer;
-    }
 
-    private Table buildAtrrackLayer(){
-        Table layer = new Table();
         //+AttrackLayer
-        imgAttrack = new Image(skinBombCorps,"Attrack");
+        imgAttrack = new Image(new Texture(Gdx.files.internal("Attrck.png")));
         layer.add(imgAttrack);
-        return layer;
-    }
 
-    private Table buildEjectionLayer(){
-        Table layer = new Table();
         //+EjectionLayer
-        imgEjection = new Image(skinBombCorps,"Ejection");
+        imgEjection = new Image(new Texture(Gdx.files.internal("Ejection.png")));
         layer.add(imgEjection);
-        return layer;
-    }
 
-    private Table buildMovementLayer(){
-        Table layer = new Table();
         //+MovementLayer
-        imgMovement = new Image(skinBombCorps,"Movement");
+        imgMovement = new Image(new Texture(Gdx.files.internal("Movement.png")));
         layer.add(imgMovement);
+
         return layer;
     }
 
@@ -136,7 +104,7 @@ public class GameScreen extends AbstractGameScreen{
 
     @Override
     public void show() {
-        worldController = new WorldController(/*game*/);
+        //worldController = new WorldController(game);
         worldRenderer = new WorldRenderer(worldController);
         Gdx.input.setCatchBackKey(true);
     }

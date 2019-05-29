@@ -10,6 +10,47 @@ import java.util.logging.Level;
 
 public class World {
     public static final String TAG = Level.class.getName();
+    private int levelTurn=0;
+    private int Turn=0;
+
+    public Array<Player> getPlayers() {
+        return playerManager.getPlayerList();
+    }
+
+    public String getIp() {
+        return playerManager.getPlayerList().get(0).getIP();
+    }
+
+    public void removePlayer(Player p) {
+        int pIndex;
+        for(pIndex = 0; pIndex < playerManager.getPlayerList().size; pIndex++){
+            if(p.equals(playerManager.getPlayerList().get(pIndex))){
+                break;
+            }
+        }
+        playerManager.deletePlayerAtIndex(pIndex);
+    }
+
+    public void addBonus(Bonus b) {
+        bonusManager.setBonusByChance();
+    }
+
+    public Player getNextPlayer() {
+        Turn++;
+        if(Turn>=playerManager.getPlayerList().size){
+            Turn -= playerManager.getPlayerList().size;
+        }
+        return playerManager.getPlayerList().get(Turn);
+    }
+
+    public Bonus spawnBonus() {
+        return bonusManager.getBonusList().pop();
+    }
+
+    public Player getFirstPlayer() {
+        Turn++;
+        return playerManager.getPlayerList().first();
+    }
 
     public enum BLOCK_TYPE{
         EMPTY(0,0,255),//空地，蓝
@@ -32,53 +73,51 @@ public class World {
     }
 
     //砖块
-    public Array<Rock> rocks;
+    private Array<Rock> rocks;
     //英雄
-    public Array<Player> playerList;
-
-    public int herotype;
-
+    private PlayerManager playerManager;
+    //
+    private BonusManager bonusManager;
+    //地图宽度
     private int MapWidth;
 
-    public  World(String filename){
+    public  World(String filename,PlayerManager playerManager,BonusManager bonusManager){
+        this.bonusManager = bonusManager;
+        this.playerManager = playerManager;
         init(filename);
     }
 
     private void init(String filename){
         //物品
         rocks = new Array<Rock>();
-        //英雄
-        playerList = new Array<Player>();
         Pixmap pixmap = new Pixmap(Gdx.files.internal(filename));
         MapWidth = pixmap.getWidth();
         //从左上到右下扫描
         int lastPixel = -1;
-        for(int pixelY = 0; pixelY < pixmap.getHeight();pixelY++){
-            for(int pixelX = 0; pixelX<pixmap.getWidth();pixelX++){
+        for(int pixelY = 0; pixelY < pixmap.getHeight();pixelY++)
+            for (int pixelX = 0; pixelX < pixmap.getWidth(); pixelX++) {
                 float offsetHeight = 0;
                 float baseHeight = pixmap.getHeight() - pixelY;
-                int currentPixel = pixmap.getPixel(pixelX,pixelY);
+                int currentPixel = pixmap.getPixel(pixelX, pixelY);
                 //空地
-                if(BLOCK_TYPE.EMPTY.sameColor(currentPixel)){
+                if (BLOCK_TYPE.EMPTY.sameColor(currentPixel)) {
 
                 }
                 //障碍物
-                else if(BLOCK_TYPE.ROCK.sameColor(currentPixel)){
-                    if(lastPixel!=currentPixel){
+                else if (BLOCK_TYPE.ROCK.sameColor(currentPixel)) {
+                    if (lastPixel != currentPixel) {
                         Rock rock = new Rock();
-                        rock.position.set(pixelX,baseHeight * rock.dimension.y+ offsetHeight);
+                        rock.position.set(pixelX, baseHeight * rock.dimension.y + offsetHeight);
                         rocks.add(rock);
-                    }
-                    else {
-                        rocks.get(rocks.size-1).increaseLength(1);
+                    } else {
+                        rocks.get(rocks.size - 1).increaseLength(1);
                     }
                 }
                 //英雄出生点
-                else if(BLOCK_TYPE.PLAYER_SPAWNPOINT.sameColor(currentPixel)){
-                    Player player = new Player(herotype);
-                    Vector2 position = new Vector2(pixelX,baseHeight +offsetHeight);
-                    player.getMyHero().setPosition(position);
-                    playerList.add(player);
+                else if (BLOCK_TYPE.PLAYER_SPAWNPOINT.sameColor(currentPixel)) {
+                    Vector2 position = new Vector2(pixelX, baseHeight + offsetHeight);
+                    playerManager.getPlayerList().get(levelTurn).getMyHero().setPosition(position);
+                    levelTurn++;
                 }
                 //未知错误
                 else {
@@ -92,9 +131,6 @@ public class World {
                 }
                 lastPixel = currentPixel;
             }
-
-
-        }
         pixmap.dispose();
         Gdx.app.debug(TAG,"World"+filename+"loaded");
     }
@@ -103,9 +139,8 @@ public class World {
         for (Rock rock : rocks){
             rock.render(batch);
         }
-        for (Player player : playerList){
-            player.getMyHero().render(batch);
-        }
+
+
     }
 
     public int getMapWidth() {

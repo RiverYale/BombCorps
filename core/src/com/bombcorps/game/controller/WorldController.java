@@ -5,11 +5,11 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.Array;
+import com.bombcorps.game.model.Bonus;
 import com.bombcorps.game.model.Message;
 import com.bombcorps.game.model.Player;
 import com.bombcorps.game.model.World;
-
-import java.util.ArrayList;
 
 public class WorldController {
     private DirctGame game;
@@ -18,6 +18,11 @@ public class WorldController {
     private CameraController cameraController;
 
     private NetController net;
+
+    public World getWorld() {
+        return world;
+    }
+
     private World world;
 
     private Player curPlayer;
@@ -64,7 +69,7 @@ public class WorldController {
         return curPlayer;
     }
 
-    public ArrayList<Player> getPlayers() {
+    public Array<Player> getPlayers() {
         return world.getPlayers();
     }
 
