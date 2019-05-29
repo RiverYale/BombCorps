@@ -91,6 +91,10 @@ public class WorldController {
         this.operations = -1;
     }
 
+    public void onHeroClicked(Player p) {
+        game.onHeroClicked(p);
+    }
+
     public void onOperationClicked(int index) {
         switch (index) {
             case 0:
@@ -205,7 +209,7 @@ public class WorldController {
                 onCollisionsPlayerWithBonus(b);
             }
         }
-        if(curPlayer.getBomb().getState() == FLY) { //TODO
+        if(curPlayer.getBomb().getState() == Constants.BOMB.STATE_FLY) {
             r1 = curPlayer.getBomb().getRect();
             for(Rock r : world.rocks) {
                 r2 = r.getRect();

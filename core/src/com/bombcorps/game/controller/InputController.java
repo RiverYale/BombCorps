@@ -61,7 +61,7 @@ public class InputController implements GestureDetector.GestureListener {
             Player p = controller.hasPlayer(v.x, v.y);
             if (p != null) {
                 cameraController.setTarget(p);
-                // TODO onHeroClicked(p);
+                 controller.onHeroClicked(p);
             }
         } else if (op == 0) {
             controller.getCurPlayer().setDestX(v.x);
