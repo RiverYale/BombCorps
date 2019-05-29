@@ -8,11 +8,12 @@ import com.badlogic.gdx.math.MathUtils;
 import com.bombcorps.game.model.Message;
 import com.bombcorps.game.model.Player;
 import com.bombcorps.game.model.World;
+import com.bombcorps.game.view.DirectedGame;
 
 import java.util.ArrayList;
 
-public class WorldController {
-    private DirctGame game;
+pblic class WorldController {
+    private DirectedGame game;
     private OrthographicCamera camera;
     private InputController input;
     private CameraController cameraController;
@@ -23,7 +24,7 @@ public class WorldController {
     private Player curPlayer;
     private int operations;
 
-    public WorldController(DirctGame game, OrthographicCamera camera, NetController net) {
+    public WorldController(DirectedGame game, OrthographicCamera camera, NetController net) {
         this.game = game;
         this.camera = camera;
         this.net = net;

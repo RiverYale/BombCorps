@@ -42,9 +42,10 @@ public class MenuScreen extends AbstractGameScreen {
         super(game);
     }
 
+    //要修改
     @Override
     public InputProcessor getInputProcessor() {
-        return null;
+        return stage;
     }
 
     @Override
@@ -58,8 +59,7 @@ public class MenuScreen extends AbstractGameScreen {
 ////                rebuildStage();
 ////            }
 ////        }
-        stage.act(deltaTime);
-        stage.draw();
+
         //Table.drawDebug(stage);
     }
     @Override public void resize(int width,int height){
@@ -68,7 +68,6 @@ public class MenuScreen extends AbstractGameScreen {
     @Override public void show(){
         stage = new Stage(new StretchViewport(
                 Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT));
-        Gdx.input.setInputProcessor(stage);
         rebulidStage();
     }
     @Override public void hide(){
@@ -296,6 +295,7 @@ public class MenuScreen extends AbstractGameScreen {
         return tbl;
 
     }
+
 
 
 
