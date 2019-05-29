@@ -233,7 +233,6 @@ public class WorldController {
                 break;
             case MOVING:
                 if (heightDifference > 0.25f) { //TODO
-                    curPlayer.se
                     curPlayer.setHeroState(Constants.STATE_GROUNDED);
                 } else {
                     curPlayer.setY(r.getPosition().y + r.getRect().getHeight());
