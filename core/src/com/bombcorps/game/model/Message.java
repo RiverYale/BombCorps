@@ -2,74 +2,108 @@ package com.bombcorps.game.model;
 
 import java.io.Serializable;
 import com.badlogic.gdx.math.Vector2;
+import com.bombcorps.game.controller.NetController;
 
 public class Message implements Serializable{
     private int msg;
-    private String ID;
-    private int port;
 
-    /*
-    房间内选项
-     */
-    private int heroChoosed;   //选择的英雄
-    private String mapNameChoosed;  //选择的地图
-    private int sideChoosed;    //选择的阵营
-    /*
-    游戏内行为
-    */
-    private int heroAction;   //英雄行为
-    //移动信息
-    private int destination;    //英雄移动的目的地
-    //发射炸弹信息
-    private Vector2 bombVelocity;  //炸弹发射的速度
-    private Vector2 bombStartPosition;//炸弹发射的坐标
+    private String fromIp;
+    private String toIp;
 
+    private String mapName;
+    private Player targetPlayer;
+
+    private Bonus bonus;
+
+    private int op;
+    private float targetX;
+    private float tapX;
+    private float tapY;
+
+    private Room room;
 
     public Message(int msg){
         this.msg = msg;
+        this.fromIp = NetController.getLocalHostIp();
     }
 
-    public int getDestination() {
-        return destination;
+    public Room getRoom() {
+        return room;
     }
 
-    public void setDestination(int destination) {
-        this.destination = destination;
+    public Bonus getBonus() {
+        return bonus;
     }
 
-    public void setHeroChoosed(int heroChoosed){
-        this.heroChoosed = heroChoosed;
+    public void setBonus(Bonus bonus) {
+        this.bonus = bonus;
     }
 
-    public void setMapNameChoosed(String mapName){
-        this.mapNameChoosed = mapName;
+    public void setRoom(Room room) {
+        this.room = room;
     }
 
-    public void setSideChoosed(int side){
-        sideChoosed = side;
+    public void setOp(int op, Player player, float targetX, float tapX, float tapY){
+        this.op = op;
+        this.targetPlayer = player;
+        this.targetX = targetX;
+        this.tapX = tapX;
+        this.tapY = tapY;
     }
 
-    public void setHeroAction(int action){
-        heroAction = action;
+    public int getOp() {
+        return op;
     }
+
+    public String getFromIp() {
+        return fromIp;
+    }
+
+    public void setFromIp(String fromIp) {
+        this.fromIp = fromIp;
+    }
+
+    public float getTargetX() {
+        return targetX;
+    }
+
+    public float getTapX() {
+        return tapX;
+    }
+
+    public float getTapY() {
+        return tapY;
+    }
+
+    public String getToIp() {
+        return toIp;
+    }
+
+    public void setToIp(String toIp) {
+        this.toIp = toIp;
+    }
+
+
 
     public int getMsg() {
         return msg;
     }
 
-    public int getHeroChoosed() {
-        return heroChoosed;
+    public Player getTargetPlayer() {
+        return targetPlayer;
     }
 
-    public String getMapNameChoosed() {
-        return mapNameChoosed;
+    public void setTargetPlayer(Player targetPlayer) {
+        this.targetPlayer = targetPlayer;
     }
 
-    public int getSideChoosed() {
-        return sideChoosed;
+    public String getMap() {
+        return mapName;
     }
 
-    public int getHeroAction() {
-        return heroAction;
+    public void setMap(String mapName) {
+        this.mapName = mapName;
     }
+
+
 }

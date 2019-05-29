@@ -3,7 +3,6 @@ package com.bombcorps.game.controller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.bombcorps.game.model.Ai;
-import com.bombcorps.game.model.BonusManager;
 import com.bombcorps.game.model.Message;
 import com.bombcorps.game.model.Player;
 import com.bombcorps.game.model.Room;
@@ -221,7 +220,7 @@ public class NetController {
                             }
                         }
                     }else{
-                        game.getRoom().addPlayer(msg.getPlayer());
+                        game.getRoom().addPlayer(msg.getTargetPlayer());
                     }
                 }
                 break;
@@ -229,11 +228,11 @@ public class NetController {
                 if(game.getRoom().getIp().equals(msg.getFromIp())){
                     game.getRoom().errorStop();
                 }else{
-                    game.getRoom().removePlayer(msg.getPlayer());
+                    game.getRoom().removePlayer(msg.getTargetPlayer());
                 }
                 break;
             case UPDATE_PLAYER:
-                game.getRoom().updatePlayer(msg.getPlayer());
+                game.getRoom().updatePlayer(msg.getTargetPlayer());
                 break;
             case CHOOSE_MAP:
                 game.getRoom().updateMap(msg.getMap());
@@ -250,12 +249,13 @@ public class NetController {
             case ROUND_OVER:
                 m = new Message(ROUND_START);
                 boolean hasBonus = MathUtils.random(9) > 6; // 30%的几率
-                m.setBonus(hasBonus);
-                for(Player p : world.getPlayers()){
-                    m.setToIp(p.getIp());
-                    sendCMD(m);
+                Bonus b = null;
+                if(hasBonus){
+                    b = world.spawnBonus();
                 }
-                world.startNextRound(hasBonus);
+                m.setBonus(b);
+                broadcastInRoom(m);
+                world.startNextRound(b);
                 break;
             case OPERATIONS:
                 world.playerOperate(msg);
@@ -279,7 +279,7 @@ public class NetController {
     public void enterRoom(String roomIp, Player me) {
         Message m = new Message(ENTER_ROOM);
         m.setToIp(roomIp);
-        m.setPlayer(me);
+        m.setTargetPlayer(me);
         sendCMD(m);
     }
 
@@ -292,13 +292,13 @@ public class NetController {
 
     public void quitRoom(Player me) {
         Message m = new Message(QUIT_ROOM);
-        m.setPlayer(me);
+        m.setTargetPlayer(me);
         broadcastInRoom(m);
     }
 
     public void updatePlayer(Player me) {
         Message m = new Message(UPDATE_PLAYER);
-        m.setPlayer(me);
+        m.setTargetPlayer(me);
         broadcastInRoom(m);
     }
 
@@ -318,16 +318,15 @@ public class NetController {
         broadcastInRoom(m);
     }
 
-    public void roundStart(boolean hasBonus) {
+    public void roundStart(Bonus b) {
         Message m = new Message(ROUND_START);
-        m.setBonus(hasBonus);
-        m.setToIp(roomIp);
-        sendCMD(m);
+        m.setBonus(b);
+        broadcastInRoom(m);
     }
 
     public void roundOver() {
         Message m = new Message(ROUND_OVER);
-        m.setToIp(roomIp);
+        m.setToIp(game.getRoom().getIp());
         sendCMD(m);
     }
 
@@ -339,7 +338,7 @@ public class NetController {
 
     public void quitGame(Player me) {
         Message m = new Message(QUIT_ROOM);
-        m.setPlayer(me);
+        m.setTargetPlayer(me);
         broadcastInRoom(m);
     }
 }
