@@ -1,11 +1,10 @@
 package com.bombcorps.game.view;
 
-import com.badlogic.gdx.Game;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.awt.Image;
 import java.awt.Label;
-import java.util.concurrent.LinkedBlockingDeque;
 
 public class LobbyScreen extends AbstractGameScreen{
     private static final String TAG = LobbyScreen.class.getName();
@@ -22,8 +21,13 @@ public class LobbyScreen extends AbstractGameScreen{
     private Label labelShowWinAmount;   //胜场
     private Label labelShowProperty;    //金币数量
 
-    public LobbyScreen(Game game) {
+    public LobbyScreen(DirectedGame game) {
         super(game);
+    }
+
+    @Override
+    public InputProcessor getInputProcessor() {
+        return null;
     }
 
     @Override
