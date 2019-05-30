@@ -49,12 +49,15 @@ public class GameScreen extends AbstractGameScreen{
 
 
 
-    //
+    //英雄详细信息弹窗
     private int heroInfoType;
     private Image imgMyHeroHead;
     private Image imgOtherHeroHead;
     private Window winHeroInfo;
     private Image btnwinHInfoQuit;
+    //游戏异常退出弹窗
+    private Window winErrorQuit;
+    private Image btnWinErrorQuit;
     //
     private Image imgSkillOne;
     private Image imgSkillTwo;
@@ -72,7 +75,7 @@ public class GameScreen extends AbstractGameScreen{
         Table layerSkill = buildSkillLayer();
         Table layerMyHeroHead = buildHeroHeadLayer();
         Table layerHeroInfoWindow = buildHeroInfoWindowLayer();
-
+        Table layerErrorQuitWindow = buildErrorQuitWindowLayer();
 
         //assemble stage for menu screen
         stage.clear();
@@ -83,6 +86,7 @@ public class GameScreen extends AbstractGameScreen{
         stack.add(layerSkill);
         stack.add(layerMyHeroHead);
         stack.add(layerHeroInfoWindow);
+        stack.add(layerErrorQuitWindow);
 
     }
 
@@ -96,15 +100,31 @@ public class GameScreen extends AbstractGameScreen{
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 //点击退出
                 if(false/*是房主*/){
-
+                    onManagerQuitClicked();
                 }else {
-
+                    onQuitClicked();
                 }
                 return true;
             }
         });
         return layer;
     }
+
+    private Table buildErrorQuitWindowBotton(){
+        Table layer = new Table();
+        btnWinErrorQuit = new Image(new Texture(Gdx.files.internal("quit.png")));
+        layer.add(btnWinErrorQuit);
+        btnWinErrorQuit.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                //点击确认
+                onErrorQuitClicked();
+                return true;
+            }
+        });
+        return layer;
+    }
+
 
     private Table buildHeroHeadLayer(){
         Table layer = new Table();
@@ -231,12 +251,26 @@ public class GameScreen extends AbstractGameScreen{
         winHeroInfo = new Window("heroInfo",windowStyle);
         winHeroInfo.setSize(300,300);
         //winOptions.setColor(1,1,1,1f);
-        winHeroInfo.add(buildWinHInfoQuitBotton());
+        winHeroInfo.add(buildErrorQuitWindowBotton());
         winHeroInfo.setVisible(false);
 
         //winOptions.pack();
         winHeroInfo.setPosition(Constants.VIEWPORT_GUI_WIDTH-winHeroInfo.getWidth()-50,50);
         return winHeroInfo;
+    }
+
+    private Table buildErrorQuitWindowLayer(){
+        BitmapFont font =new BitmapFont(Gdx.files.internal("winErrorQuit.fnt"),Gdx.files.internal("winErrorQuit.png"),false);
+        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(new Texture(Gdx.files.internal("window.png"))));
+        winErrorQuit = new Window("ERROR QUIT",windowStyle);
+        winErrorQuit.setSize(300,300);
+        //winOptions.setColor(1,1,1,1f);
+        winErrorQuit.add(buildWinHInfoQuitBotton());
+        winErrorQuit.setVisible(false);
+
+        //winOptions.pack();
+        winErrorQuit.setPosition(Constants.VIEWPORT_GUI_WIDTH-winHeroInfo.getWidth()-50,50);
+        return winErrorQuit;
     }
 
     private Table buildWinHInfoQuitBotton(){
@@ -264,7 +298,7 @@ public class GameScreen extends AbstractGameScreen{
 
     private int myHeroType(){
         int i;
-        for(i=0;!worldController.getPlayers().get(i).isMe();i++){
+        for(i=0;worldController.getPlayers().get(i).getState() != Constants.PLAYER.STATE_LOCAL;i++){
 
         }
         return  worldController.getPlayers().get(i).getHeroType();
@@ -286,6 +320,22 @@ public class GameScreen extends AbstractGameScreen{
             }
         });
         return layer;
+    }
+
+    private void onManagerQuitClicked() {
+        //game.loadScreen
+    }
+
+    private void onQuitClicked() {
+        //game.loadScreen();
+    }
+
+    private void GameOver(){
+
+    }
+
+    private void onErrorQuitClicked() {
+        winErrorQuit.setVisible(false);
     }
 
     @Override
