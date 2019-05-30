@@ -14,7 +14,7 @@ public class PlayerManager {
     public void addPlayer(String IP, int side, String ID, float[] level){
         Player player = new Player(ID);
         player.setLevel(level);
-        player.setIP(IP);
+        player.setIp(IP);
         player.setSide(side);
 
         playerList.add(player);

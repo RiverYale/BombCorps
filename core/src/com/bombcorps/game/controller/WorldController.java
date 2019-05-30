@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
 import com.bombcorps.game.model.Bombs.Bomb;
 import com.bombcorps.game.model.Bonus;
 import com.bombcorps.game.model.Constants;
@@ -70,7 +71,7 @@ pblic class WorldController {
         return curPlayer;
     }
 
-    public ArrayList<Player> getPlayers() {
+    public Array<Player> getPlayers() {
         return world.getPlayers();
     }
 

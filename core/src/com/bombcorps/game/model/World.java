@@ -18,7 +18,7 @@ public class World {
     }
 
     public String getIp() {
-        return playerManager.getPlayerList().get(0).getIP();
+        return playerManager.getPlayerList().get(0).getIp();
     }
 
     public void removePlayer(Player p) {
@@ -139,8 +139,8 @@ public class World {
         for (Rock rock : rocks){
             rock.render(batch);
         }
-
-
+        playerManager.render(batch);
+        bonusManager.render(batch);
     }
 
     public int getMapWidth() {
