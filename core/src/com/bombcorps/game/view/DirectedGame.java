@@ -52,6 +52,9 @@ public abstract class DirectedGame implements ApplicationListener {
     public void playerQuit(){
         //调用GameScreen里面的playequit
     }
+    public void errorStop(){
+        //调用
+    }
 
 
     public void setScreen(AbstractGameScreen screen,
@@ -155,7 +158,7 @@ public abstract class DirectedGame implements ApplicationListener {
             init = false;
         }
     }
-    public boolen is
+
 }
 
 
