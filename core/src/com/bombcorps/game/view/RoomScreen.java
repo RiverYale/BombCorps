@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 
-public class RoomSelect {
+public class RoomScreen {
     private Image smallMap;
     private Image background;
     private String modern;
@@ -15,7 +15,7 @@ public class RoomSelect {
     private String peopleNum;
     private Label roomIfol;
 
-    RoomSelect(Image smallMap,String modern,String hosterName,String peopleNum){
+    RoomScreen(Image smallMap, String modern, String hosterName, String peopleNum){
         this.smallMap = smallMap;
         this.modern = modern;
         this.hosterName = hosterName;

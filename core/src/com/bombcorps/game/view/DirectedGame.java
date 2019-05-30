@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.bombcorps.game.model.Player;
 
 public abstract class DirectedGame implements ApplicationListener {
     private boolean init;
@@ -16,9 +17,42 @@ public abstract class DirectedGame implements ApplicationListener {
     private float t;
     private ScreenTransition screenTransition;
 
+    private MenuScreen menuScreen;
+    private LobbyScreen lobbyScreen;
+    private RoomScreen roomScreen;
+    private GameScreen gameScreen;
+    private PersonalScreen personalScreen;
+
     public void setScreen(AbstractGameScreen screen) {
         setScreen(screen, null);
     }
+    public void loadLobbyScreen(){
+        lobbyScreen = new LobbyScreen(this);
+        setScreen(lobbyScreen);
+    }
+    public void loadRoomScreen(){
+       // roomScreen = new RoomScreen(this);
+        setScreen(roomScreen);
+    }
+    public void loadGameScreen(){
+        gameScreen = new GameScreen(this);
+        setScreen(gameScreen);
+    }
+    public void loadPersonalScreen(){
+        personalScreen = new PersonalScreen(this);
+        setScreen(personalScreen);
+    }
+    public void loadMenuScreen(){
+        menuScreen= new MenuScreen(this);
+        setScreen(menuScreen);
+    }
+    public void onHeroClicked(Player p){
+       gameScreen.onHeroClicked(p);
+    }
+    public void playerQuit(){
+        //调用GameScreen里面的playequit
+    }
+
 
     public void setScreen(AbstractGameScreen screen,
                           ScreenTransition screenTransition) {
@@ -121,6 +155,7 @@ public abstract class DirectedGame implements ApplicationListener {
             init = false;
         }
     }
+    public boolen is
 }
 
 

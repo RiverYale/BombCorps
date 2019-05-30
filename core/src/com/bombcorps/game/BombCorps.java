@@ -13,14 +13,18 @@ import com.bombcorps.game.controller.CameraController;
 import com.bombcorps.game.controller.InputController;
 import com.bombcorps.game.controller.NetController;
 import com.bombcorps.game.model.Player;
+import com.bombcorps.game.view.DirectedGame;
 
 public class BombCorps extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
 
+
 	public int x = 0, y = 0, width = 4, height = 4;
     public OrthographicCamera camera;
     public CameraController cameraController;
+
+
 
 	@Override
 	public void create () {

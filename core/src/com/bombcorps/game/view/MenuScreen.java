@@ -118,13 +118,16 @@ public class MenuScreen extends AbstractGameScreen {
         stack.add(layerBackground);
         stack.add(layerControls);
         stage.addActor(layerOptionsWindow);
+        layerOptionsWindow.setSize(Gdx.graphics.getWidth()/3,Gdx.graphics.getHeight()/3);
+        layerOptionsWindow.setPosition((Gdx.graphics.getWidth()-winOptions.getWidth())/2,(Gdx.graphics.getHeight()-winOptions.getHeight())/2);
 
 
     }
     private Table buildBackgroundLayer(){
         Table layer = new Table();
-        imgBackground = new Image(new TextureRegion(new Texture(Gdx.files.internal("background1.png")),0,0,1024,576));
-        layer.add(imgBackground);
+        imgBackground = new Image(new TextureRegion(new Texture(Gdx.files.internal("background1.png"))));
+        imgBackground.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        layer.addActor(imgBackground);
         return layer;
     }
     private Table buildControlsLayer(){
@@ -174,22 +177,18 @@ public class MenuScreen extends AbstractGameScreen {
         BitmapFont font =new BitmapFont(Gdx.files.internal("winOptions.fnt"),Gdx.files.internal("winOptions.png"),false);
         Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(new Texture(Gdx.files.internal("window.png"))));
         winOptions = new Window("Options",windowStyle);
-        winOptions.setSize(300,300);
         winOptions.add(buildOptWinAudioSettings()).row();
         winOptions.add(bulidOptWinNameSettings()).row();
         winOptions.add(buildOptWinButtons()).pad(5,0,10,0);
         //winOptions.setColor(1,1,1,1f);
-
         winOptions.setVisible(false);
-
         //winOptions.pack();
-        winOptions.setPosition(Constants.VIEWPORT_GUI_WIDTH-winOptions.getWidth()-50,50);
         return winOptions;
 
     }
     private void onPlayClicked(){
         //切换到LobbyScreen
-        //game.setScreen(new LobbyScreen(game));
+        game.loadLobbyScreen();
     }
     private void loadSettings(){
         DataController prefs = DataController.instance;
