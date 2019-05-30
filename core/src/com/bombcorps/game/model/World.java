@@ -3,6 +3,7 @@ package com.bombcorps.game.model;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
@@ -81,10 +82,9 @@ public class World {
     //地图宽度
     private int MapWidth;
 
-    public  World(String filename,PlayerManager playerManager,BonusManager bonusManager){
-        this.bonusManager = bonusManager;
-        this.playerManager = playerManager;
-        init(filename);
+    public  World(Room room){
+        this.playerManager = room.getPlayerManager();
+        init(room.getMapName());
     }
 
     private void init(String filename){
@@ -92,6 +92,7 @@ public class World {
         rocks = new Array<Rock>();
         Pixmap pixmap = new Pixmap(Gdx.files.internal(filename));
         MapWidth = pixmap.getWidth();
+        bonusManager = new BonusManager(MapWidth);
         //从左上到右下扫描
         int lastPixel = -1;
         for(int pixelY = 0; pixelY < pixmap.getHeight();pixelY++)
