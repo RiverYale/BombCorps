@@ -2,6 +2,7 @@ package com.bombcorps.game.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
@@ -53,6 +55,8 @@ public class GameScreen extends AbstractGameScreen{
     private int heroInfoType;
     private Image imgMyHeroHead;
     private Image imgOtherHeroHead;
+    private Label labelMyHeroBasicInfo;
+    private Label labelOtherHeroBasicInfo;
     private Window winHeroInfo;
     private Image btnwinHInfoQuit;
     //游戏异常退出弹窗
@@ -68,15 +72,17 @@ public class GameScreen extends AbstractGameScreen{
     private Image imgTurnEnd;
     //
     private Image btnQuit;
+    private Image btnSettings;
+    private Window winInGameSettings;
 
     private void rebuildStage(){
         //build all layers
-        Table layerQuitBottom = buildQuitBottonLayer();
+        Table layerQuitBottom = buildBottonLayer();
         Table layerSkill = buildSkillLayer();
         Table layerMyHeroHead = buildHeroHeadLayer();
         Table layerHeroInfoWindow = buildHeroInfoWindowLayer();
         Table layerErrorQuitWindow = buildErrorQuitWindowLayer();
-
+        Table layerMyHeroBasicInfoLabelLayer = buildMyHeroBasicInfoLableLayer();
         //assemble stage for menu screen
         stage.clear();
         Stack stack = new Stack();
@@ -87,10 +93,22 @@ public class GameScreen extends AbstractGameScreen{
         stack.add(layerMyHeroHead);
         stack.add(layerHeroInfoWindow);
         stack.add(layerErrorQuitWindow);
+        stack.add(layerMyHeroBasicInfoLabelLayer);
 
     }
 
-    private Table buildQuitBottonLayer(){
+
+    private Table buildMyHeroBasicInfoLableLayer(){
+
+        Table layer =new Table();
+        BitmapFont font = new BitmapFont(Gdx.files.internal("winOptions.fnt"),Gdx.files.internal("winOptions.png"),false);
+        Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.BLACK);
+        labelMyHeroBasicInfo = new Label(" ",labelStyle);
+        layer.add(labelMyHeroBasicInfo);
+        return layer;
+    }
+
+    private Table buildBottonLayer(){
         Table layer = new Table();
         //+ quit botton
         btnQuit = new Image(new Texture(Gdx.files.internal("quit.png")));
@@ -104,6 +122,16 @@ public class GameScreen extends AbstractGameScreen{
                 }else {
                     onQuitClicked();
                 }
+                return true;
+            }
+        });
+        btnSettings = new Image(new Texture(Gdx.files.internal("Setting.png")));
+        layer.add(btnSettings);
+        btnSettings.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                //点击设置
+                winInGameSettings.setVisible(true);
                 return true;
             }
         });
@@ -285,6 +313,9 @@ public class GameScreen extends AbstractGameScreen{
                onWinHInfoQuitBottonClicked();
            }
         });
+
+
+
        return tbl;
     }
 
@@ -304,7 +335,7 @@ public class GameScreen extends AbstractGameScreen{
         return  worldController.getPlayers().get(i).getHeroType();
     }
 
-    public Table onHeroClicked(Player p){
+    private Table onHeroClicked(Player p){
         final int heroType;
         heroType = p.getHeroType();
         Table layer = new Table();
@@ -319,6 +350,12 @@ public class GameScreen extends AbstractGameScreen{
                 return true;
             }
         });
+
+        BitmapFont font = new BitmapFont(Gdx.files.internal("winOptions.fnt"),Gdx.files.internal("winOptions.png"),false);
+        Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.BLACK);
+        labelOtherHeroBasicInfo = new Label(" ",labelStyle);
+        layer.add(labelOtherHeroBasicInfo);
+
         return layer;
     }
 
@@ -327,10 +364,18 @@ public class GameScreen extends AbstractGameScreen{
     }
 
     private void onQuitClicked() {
-        //game.loadScreen();
+        //game.loadLobbyScreen();
     }
 
     private void GameOver(){
+
+    }
+
+    private void playQuit(String ID){
+        BitmapFont font = new BitmapFont(Gdx.files.internal("winOptions.fnt"),Gdx.files.internal("winOptions.png"),false);
+        Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.BLACK);
+        Label label = new Label(ID+" has already quitted the game ,nmsl",labelStyle);
+        stage.addActor(label);
 
     }
 
