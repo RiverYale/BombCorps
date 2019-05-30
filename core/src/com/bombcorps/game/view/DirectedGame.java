@@ -2,10 +2,15 @@ package com.bombcorps.game.view;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.bombcorps.game.controller.NetController;
+import com.bombcorps.game.controller.WorldController;
+import com.bombcorps.game.model.Constants;
 import com.bombcorps.game.model.Player;
+import com.bombcorps.game.model.World;
 
 public abstract class DirectedGame implements ApplicationListener {
     private boolean init;
@@ -22,6 +27,7 @@ public abstract class DirectedGame implements ApplicationListener {
     private RoomScreen roomScreen;
     private GameScreen gameScreen;
     private PersonalScreen personalScreen;
+    private WorldController worldController;
 
     public void setScreen(AbstractGameScreen screen) {
         setScreen(screen, null);
@@ -30,12 +36,21 @@ public abstract class DirectedGame implements ApplicationListener {
         lobbyScreen = new LobbyScreen(this);
         setScreen(lobbyScreen);
     }
-    public void loadRoomScreen(){
-       // roomScreen = new RoomScreen(this);
-        setScreen(roomScreen);
-    }
+//    public void loadRoomScreen(){
+//       // roomScreen = new RoomScreen(this);
+//        setScreen(roomScreen);
+//    }
     public void loadGameScreen(){
-        gameScreen = new GameScreen(this);
+        OrthographicCamera orthographicCamera =new OrthographicCamera();
+        orthographicCamera.viewportHeight =10;
+        orthographicCamera.viewportWidth = 18;
+        NetController netController = new NetController();
+
+        worldController = new WorldController(this,orthographicCamera,netController);
+
+        Gdx.input.setInputProcessor(worldController.getInputProcessor());
+
+        gameScreen = new GameScreen(this,worldController);
         setScreen(gameScreen);
     }
     public void loadPersonalScreen(){
@@ -49,11 +64,19 @@ public abstract class DirectedGame implements ApplicationListener {
     public void onHeroClicked(Player p){
        gameScreen.onHeroClicked(p);
     }
-    public void playerQuit(){
+    public void playerQuit(String Ip){
         //调用GameScreen里面的playequit
+
+        gameScreen.playerQuit(Ip);
     }
     public void errorStop(){
         //调用
+        gameScreen.errorStop();
+    }
+    public World getWorld(){
+
+        World world = new World(roomScreen.getRoom());
+        return world;
     }
 
 

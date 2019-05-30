@@ -18,7 +18,7 @@ import com.bombcorps.game.view.DirectedGame;
 
 import java.util.ArrayList;
 
-pblic class WorldController {
+public class WorldController {
     private DirectedGame game;
     private OrthographicCamera camera;
     private InputController input;
@@ -175,7 +175,7 @@ pblic class WorldController {
 
     public void playerQuit(Message msg) {
         Player p = msg.getPlayera();
-        game.playerQuit(p.getID());
+        game.playerQuit(p.getIp());
         world.removePlayer(p);
     }
 
