@@ -14,6 +14,11 @@ public class Bonus {
     public TextureRegion bonusBox;
     public TextureRegion parachute;
 
+    private TYPE type;
+    private enum TYPE{
+        ADDHEALTH, ADDENDURANCE
+    }
+
     private STATE state;
     private enum STATE{
         ACTIVATED, GROUNDED
@@ -21,6 +26,7 @@ public class Bonus {
 
     public Bonus(int mapWidth){
         init(mapWidth);
+        initType();
     }
 
     public void init(int mapWidth){
@@ -32,6 +38,13 @@ public class Bonus {
         parachute = AssetsController.instance.getRegion("Parachute");
 
         initPosition(mapWidth);
+    }
+
+    public void initType(){
+        if(Math.random() > 0.5)
+            this.type = TYPE.ADDENDURANCE;
+        else
+            this.type = TYPE.ADDHEALTH;
     }
 
     public void initPosition(int mapWidth){
@@ -59,6 +72,7 @@ public class Bonus {
                 scale.x, scale.y,0);
     }
 
+
     public void setState(int input){
         switch (input){
             case Constants.BONUS.GROUNDED:
@@ -69,5 +83,7 @@ public class Bonus {
                 break;
         }
     }
+
+
 
 }

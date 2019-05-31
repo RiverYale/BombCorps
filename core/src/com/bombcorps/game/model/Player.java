@@ -1,6 +1,7 @@
 package com.bombcorps.game.model;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.bombcorps.game.controller.NetController;
+import com.bombcorps.game.model.bombs.Bomb;
 import com.bombcorps.game.model.heros.*;
 
 public class Player {
@@ -8,13 +9,16 @@ public class Player {
     private BaseHero myHero;
     private int heroType;
     private String IP;
-    private float[] level;
+    private int level;
 
     private boolean ready;
 
-    private SIDE side;
-    private enum SIDE {
-        LEFT_SIDE, RIGHT_SIDE
+    private SkillAndBuff skillAndBuff;
+    public Bomb bomb;
+
+    private TEAM team;
+    private enum TEAM{
+        RED,BLUE
     }
 
     private STATE state;
@@ -25,11 +29,13 @@ public class Player {
     public Player(String ID){
         ready = false;
         this.ID = ID;
-        level = new float[5];
         heroType = Constants.NONE;
     }
 
-    public void creatHero(){
+    public void creatHero(SkillAndBuff skillAndBuff, Bomb bomb){
+        this.skillAndBuff = skillAndBuff;
+        this.bomb = bomb;
+
         switch (heroType){
             case Constants.PROTECTOR:
                 myHero = new Protector();
@@ -49,15 +55,66 @@ public class Player {
         }
     }
 
+    public void setDestX(float destination){
+
+    }
+
+    public void setTapX(float velocityX){
+
+    }
+
+    public void setTapY(float velocityY){
+
+    }
+
+    public void shoot(){
+
+/*
+TODO
+ */
+        myHero.setState(Constants.STATE_ATTACK);
+
+        bomb.setState(Constants.BOMB.STATE_FLY);
+    }
+
+    public void useSkill(int op, Player target){
+        switch (op){
+            case 3:
+//                switch (heroType){
+//                    case
+//                }
+//                skillAndBuff.
+        }
+
+    }
+
     public String getID(){
         return ID;
     }
 
-    public void setLevel(float[] level){
+    public void setTeam(int team){
+        switch (team){
+            case Constants.PLAYER.BLUE_TEAM:
+                this.team = TEAM.BLUE;
+                break;
+            case Constants.PLAYER.RED_TEAM:
+                this.team = TEAM.RED;
+                break;
+        }
+    }
+
+    public int getTeam(){
+        if(team == TEAM.BLUE)
+            return Constants.PLAYER.BLUE_TEAM;
+        else
+            return Constants.PLAYER.RED_TEAM;
+    }
+
+    public void setLevel(int level){
         this.level = level;
     }
 
-    public float[] getLevel(){
+    public int getLevel(){
         return level;
     }
 
@@ -69,23 +126,6 @@ public class Player {
         return ready;
     }
 
-    public void setSide(int side){
-        switch (side){
-            case Constants.PLAYER.LEFT_SIDE:
-                this.side = SIDE.LEFT_SIDE;
-                break;
-            case Constants.PLAYER.RIGHT_SIDE:
-                this.side = SIDE.RIGHT_SIDE;
-                break;
-        }
-    }
-
-    public int getSide(){
-        if(side == SIDE.LEFT_SIDE)
-            return Constants.PLAYER.LEFT_SIDE;
-
-        return Constants.PLAYER.RIGHT_SIDE;
-    }
 
     public void setHeroType(int heroType){
         this.heroType = heroType;
@@ -124,5 +164,11 @@ public class Player {
 
         return Constants.PLAYER.STATE_OTHERS;
     }
+
+    public boolean isMe(){
+        return NetController.getLocalHostIp().equals(IP);
+    }
+
+
 
 }

@@ -16,6 +16,12 @@ public class Room {
         init(ownerPort);
     }
 
+    /*
+    TODO
+     */
+
+
+
     private void init(int ownerPort){
         this.ownerPort = ownerPort;
         heroRegion = new TextureRegion[6];

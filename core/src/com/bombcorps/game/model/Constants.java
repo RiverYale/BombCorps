@@ -30,13 +30,15 @@ public class Constants {
         public static final int STATE_LOCAL = 0;
         public static final int STATE_OTHERS = 1;
 
-        public static final int RIGHT_SIDE = 2;
-        public static final int LEFT_SIDE = 1;
+        public static final int RED_TEAM = 2;
+        public static final int BLUE_TEAM = 1;
     }
 
 
     public static final class BONUS{
         public static final float BONUS_VELOCITY_Y = -10;
+        public static final int ADDHEALTH = 0;
+        public static final int ADDENDURANCE = 1;
 
         public static final int ACTIVATED = 2;
         public static final int GROUNDED = 3;
@@ -52,6 +54,9 @@ public class Constants {
     public static final class BOMB{
         public static final int STATE_FLY = 0;
         public static final int STATE_BOOM = 1;
+        public static final int STATE_READY = 2;
+        public static final int STATE_WAIT = 3;
+
         public static final float BOOM_DURETION = 0.2f;
         public static final Vector2 BOOM_DIMENSION = new Vector2(5f,5f);
         public static final Vector2 BOOM_SCALE = new Vector2(1f,1f);
@@ -197,7 +202,7 @@ public class Constants {
         public static final float SKILL_0_DAMAGE_PER_ROUND_PER_LAYER = 50f;
         public static final float SKILL_1_LAYERS_ADD = 3f;
         public static final float SKILL_2_SEAL_ROUND = 1f;
-        public static final float SKILL_3_PERCENTAGE_PER_LAYER = 0.1f;
+        public static final float SKILL_3_PER_LAYER = 60f;
     }
 
     /*
@@ -216,8 +221,8 @@ public class Constants {
         public static final float SKILL_2_ENDURENCE_COST = 80f;
         public static final float SKILL_3_ENDURENCE_COST = 100f;
         public static final float SKILL_1_HEALTH_COST = 100f;
-        public static final float SKILL_2_HEALTH_COST = 100f;
-        public static final float SKILL_3_HEALTH_COST = 100f;
+        public static final float SKILL_2_RAGEPOWER_COST = 100f;
+//        public static final float SKILL_3_HEALTH_COST = 100f;
         /*
         技能效果加成
          */

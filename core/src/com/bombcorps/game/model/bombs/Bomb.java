@@ -37,7 +37,7 @@ public class Bomb {
 
     private STATE state;
     private enum STATE{
-        FLY, BOOM, WAIT
+        FLY, BOOM, WAIT, READY
     }
 
     public Bomb(){
@@ -45,6 +45,8 @@ public class Bomb {
     }
 
     public void init(){
+        state = STATE.WAIT;
+
         stateTime = 0;
         heroType = 0;
         bombType = 0;
@@ -71,6 +73,11 @@ public class Bomb {
                 updatePosition(deltaTime);
                 break;
         }
+    }
+
+    public void initBombEveryRound(){
+        state = STATE.WAIT;
+        bombType = 0;
     }
 
     private void initBomb(){
@@ -149,6 +156,15 @@ public class Bomb {
         }
     }
 
+    public void shoot() {
+        setState(Constants.BOMB.STATE_FLY);
+    }
+
+    public void onCollision() {
+        setState(Constants.BOMB.STATE_BOOM);
+
+    }
+
     protected void updateRotation(float deltaTime){
         rotation += Constants.BOMB.ROTATE_SPEED * deltaTime;
         rotation %= 360;
@@ -168,9 +184,20 @@ public class Bomb {
         switch(state){
             case FLY:
                 renderBomb(batch);
+                break;
             case BOOM:
                 renderBoom(batch);
+                break;
+            case READY:
+                renderReady(batch);
+                break;
         }
+    }
+
+    public void renderReady(SpriteBatch batch){
+        batch.draw(bomb[heroType][bombType], position.x - dimension.x, position.y,
+                origin.x,origin.y,dimension.x,dimension.y,
+                bombScale.x,bombScale.y,0);
     }
 
     public void renderBomb(SpriteBatch batch){
@@ -297,6 +324,9 @@ public class Bomb {
             case Constants.BOMB.STATE_BOOM:
                 stateTime = 0;
                 this.state = STATE.BOOM;
+                break;
+            case Constants.BOMB.STATE_READY:
+                this.state = STATE.READY;
                 break;
         }
     }

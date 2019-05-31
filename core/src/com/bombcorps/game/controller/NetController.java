@@ -214,10 +214,7 @@ public class NetController {
                     if(game.hasRoom()){
                         if(!game.getRoom().isFull()){
                             m = new Message(ENTER_ROOM);
-                            for(Player p : game.getRoom().getPlayers()){
-                                msg.setToIp(p.getIp());
-                                sendCMD(m);
-                            }
+                            broadcastInRoom(m);
                         }
                     }else{
                         game.getRoom().addPlayer(msg.getTargetPlayer());
