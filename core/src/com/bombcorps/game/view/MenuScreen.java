@@ -89,9 +89,11 @@ public class MenuScreen extends AbstractGameScreen {
     private Image btnMenuPlay;
     private Image btnMenuOptions;
     private Image btnQuit;
+    private Image btnAbout;
 
     // options
     private Window winOptions;
+    private Window winAbout;
     private TextButton btnWinOptSave;
     private TextButton btnWinOptCancel;
     private Slider sldSound;
@@ -110,6 +112,7 @@ public class MenuScreen extends AbstractGameScreen {
         Table layerBackground = buildBackgroundLayer();
         Table layerControls = buildControlsLayer();
         Table layerOptionsWindow = buildOptionsWindowLayer();
+        Table layerAboutWindow = bulidAboutWindowLayer();
         // assemble stage for menu screen
         stage.clear();
         Stack stack = new Stack();
@@ -118,6 +121,9 @@ public class MenuScreen extends AbstractGameScreen {
         stack.add(layerBackground);
         stack.add(layerControls);
         stage.addActor(layerOptionsWindow);
+        stage.addActor(layerAboutWindow);
+        layerAboutWindow.setSize(Gdx.graphics.getWidth()/3,Gdx.graphics.getHeight()/3);
+        layerAboutWindow.setPosition((Gdx.graphics.getWidth()-winAbout.getWidth())/2,(Gdx.graphics.getHeight()-winAbout.getHeight())/2);
         layerOptionsWindow.setSize(Gdx.graphics.getWidth()/3,Gdx.graphics.getHeight()/3);
         layerOptionsWindow.setPosition((Gdx.graphics.getWidth()-winOptions.getWidth())/2,(Gdx.graphics.getHeight()-winOptions.getHeight())/2);
 
@@ -171,6 +177,19 @@ public class MenuScreen extends AbstractGameScreen {
                 return true;
             }
         });
+
+        //添加About按钮
+        btnAbout = new Image(new Texture(Gdx.files.internal("button_setting.png")));
+        btnAbout.setScale(1.8f);
+        layer.add(btnAbout).padLeft(270);
+        btnAbout.addListener(new InputListener() {
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                onAboutClicked();
+                return true;
+            }
+        });
         return layer;
     }
     private Table buildOptionsWindowLayer(){
@@ -185,6 +204,21 @@ public class MenuScreen extends AbstractGameScreen {
         //winOptions.pack();
         return winOptions;
 
+    }
+    private  Table bulidAboutWindowLayer(){
+        BitmapFont font =new BitmapFont(Gdx.files.internal("winOptions.fnt"),Gdx.files.internal("winOptions.png"),false);
+        TextureRegionDrawable winResultsDrawable = new TextureRegionDrawable(new Texture(Gdx.files.internal("winresult.png")));
+        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),winResultsDrawable);
+        winAbout = new Window("",windowStyle);
+        winAbout.setSize(Gdx.graphics.getWidth()/3,Gdx.graphics.getHeight()/3);
+        winAbout.setPosition((Gdx.graphics.getWidth()-winAbout.getWidth())/2,(Gdx.graphics.getHeight()-winAbout.getHeight())/2);
+        Label about = new Label("PRODUCERS:\n Zichuan Zhao\n ZhongWei Liu\n WenXin Zhu\n Rui Chen\n YuXuan Qin" ,new Label.LabelStyle(font,Color.BLACK));
+        winAbout.addActor(about);
+        //about.setSize(winAbout.getWidth(),winAbout.getHeight());
+        about.setAlignment(Align.center);
+        about.setPosition(winAbout.getWidth()/2.5f,winAbout.getHeight()/3);
+        winAbout.setVisible(false);
+        return winAbout;
     }
     private void onPlayClicked(){
         //切换到LobbyScreen
@@ -217,10 +251,11 @@ public class MenuScreen extends AbstractGameScreen {
     }
     private void onOptionsClicked(){
         loadSettings();
-        btnMenuPlay.setVisible(false);
-        btnQuit.setVisible(false);
-        btnMenuOptions.setVisible(false);
+
         winOptions.setVisible(true);
+    }
+    private void onAboutClicked(){
+        winAbout.setVisible(true);
     }
     private Table buildOptWinAudioSettings(){
         Table tbl = new Table();
