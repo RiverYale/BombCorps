@@ -104,7 +104,7 @@ public abstract class DirectedGame implements ApplicationListener {
         roomScreen.getRoom();
     }
 
-  
+
 
 
     public void setScreen(AbstractGameScreen screen,
