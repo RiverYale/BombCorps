@@ -2,10 +2,12 @@ package com.bombcorps.game.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.model.Player;
 import com.bombcorps.game.model.PlayerManager;
 import com.bombcorps.game.model.Room;
@@ -18,7 +20,6 @@ public class RoomScreen extends AbstractGameScreen{
     private Image roomBackground;
     private Image doorBlue;
     private Image doorRed;
-    private Image teamBackground;
     private Image selectBackground;
     private Image siteRed[];
     private Image siteBlue[];
@@ -55,6 +56,14 @@ public class RoomScreen extends AbstractGameScreen{
         super(game);
         this.ip = ip;
         this.mode = mode;
+        this.room = new Room(ip,mode);
+
+        hero = new Image[5];
+        hero[0] = new Image(new Texture("roomscreen/Angel_stand.png"));
+        hero[1] = new Image(new Texture("roomscreen/Sparda_stand.png"));
+        hero[2] = new Image(new Texture("roomscreen/Protector_stand.png"));
+        hero[3] = new Image(new Texture("roomscreen/Sniper_stand.png"));
+        hero[4] = new Image(new Texture("roomscreen/Wizard_stand.png"));
     }
 
     @Override
@@ -64,7 +73,10 @@ public class RoomScreen extends AbstractGameScreen{
 
     @Override
     public void render(float deltaTime) {
-
+        Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.act();
+        stage.draw();
     }
 
     @Override
@@ -81,7 +93,7 @@ public class RoomScreen extends AbstractGameScreen{
 
     @Override
     public void hide() {
-
+        stage.dispose();
     }
 
     @Override
@@ -90,6 +102,7 @@ public class RoomScreen extends AbstractGameScreen{
     }
 
     public void rebulidStage(){
+        stage.clear();
         //房间背景
         roomBackground = new Image(new Texture("roomscreen/roombackground.png"));
         roomBackground.setSize(width,height);
@@ -147,10 +160,37 @@ public class RoomScreen extends AbstractGameScreen{
         stage.addActor(siteBlue[2]);
         stage.addActor(siteBlue[3]);
         stage.addActor(selectBackground);
+        bulidTeam();
+        drawButton();
+        drawHero();
     }
 
     public void bulidTeam(){
-        Room room = new Room(ip,mode);
+        numOfRed = room.getPlayerManager().getRedPlayerList().size;
+        numOfBlue = room.getPlayerManager().getBluePlayerList().size;
+        teamRed = new SiteShow[numOfRed];
+        teamBlue = new SiteShow[numOfBlue];
+        //红队赋值
+        for(int i = 0;i < numOfRed;i ++){
+            teamRed[i] = new SiteShow(room.getPlayerManager().getRedPlayerList().get(i).getHeroType(),
+                    room.getPlayerManager().getRedPlayerList().get(i).getID(),
+                    room.getPlayerManager().getRedPlayerList().get(i).getLevel());
+        }
+        //蓝队赋值
+        for(int i = 0;i < numOfBlue;i ++){
+            teamBlue[i] = new SiteShow(room.getPlayerManager().getBluePlayerList().get(i).getHeroType(),
+                    room.getPlayerManager().getBluePlayerList().get(i).getID(),
+                    room.getPlayerManager().getBluePlayerList().get(i).getLevel());
+        }
+        //队伍贴图
+        for(int i = 0;i < numOfRed;i ++){
+            teamRed[i].setPosition(siteRed[i].getX() + siteRed[i].getWidth() / 2,siteRed[i].getY() + siteRed[i].getHeight()/2);
+            teamRed[i].addToStage(stage);
+        }
+        for(int i = 0;i < numOfBlue;i ++){
+            teamBlue[i].setPosition(siteBlue[i].getX() + siteBlue[i].getWidth() / 2,siteBlue[i].getY() + siteBlue[i].getHeight()/2);
+            teamBlue[i].addToStage(stage);
+        }
     }
 
     public void drawButton(){
@@ -176,8 +216,20 @@ public class RoomScreen extends AbstractGameScreen{
                 0.4f * height);
         stage.addActor(btnMapleft);
         stage.addActor(btnMapright);
+
     }
 
+    public void drawHero(){
+        hero[heroSelect].setSize((hero[heroSelect].getWidth()/900)*width,(hero[heroSelect].getHeight()/500)*height);
+        hero[heroSelect].setPosition(selectBackground.getX() + selectBackground.getWidth()/2 - hero[heroSelect].getWidth()/2,
+                btnHeroLeft.getY());
+        stage.addActor(hero[heroSelect]);
+    }
+
+    public void drawMap(){
+        Integer.parseInt(room.getMapName());
+
+    }
     public void setButtonClick(){
 
     }
@@ -198,7 +250,19 @@ public class RoomScreen extends AbstractGameScreen{
 
     }
 
+    public void toRedTeam(){
+
+    }
+
+    public void toBlueTeam(){
+
+    }
+
     public boolean isReady(){
         return ready;
+    }
+
+    public Room getRoom(){
+        return room;
     }
 }
