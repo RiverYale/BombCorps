@@ -49,6 +49,7 @@ public class RoomScreen extends AbstractGameScreen{
     private boolean ready;
 
     private Stage stage;
+    private Room room;
 
     public RoomScreen(DirectedGame game,String ip,int mode) {
         super(game);
@@ -150,12 +151,31 @@ public class RoomScreen extends AbstractGameScreen{
 
     public void bulidTeam(){
         Room room = new Room(ip,mode);
-        Player player = null;
-
     }
 
     public void drawButton(){
-
+        //英雄选择按钮
+        btnHeroLeft = new Image(new Texture("roomscreen/heroleft.png"));
+        btnHeroRight = new Image(new Texture("roomscreen/heroright.png"));
+        btnHeroLeft.setSize(0.06667f * width,0.06f * height);
+        btnHeroRight.setSize(0.06667f * width,0.06f * height);
+        btnHeroLeft.setPosition(selectBackground.getX() + selectBackground.getWidth()/2 - btnMapleft.getWidth()/2- 0.08f*width,
+                0.28f * height);
+        btnHeroRight.setPosition(selectBackground.getX() + selectBackground.getWidth()/2 - btnMapright.getWidth()/2 + 0.08f * width,
+                0.28f * height);
+        stage.addActor(btnHeroLeft);
+        stage.addActor(btnHeroRight);
+        //地图选择按钮
+        btnMapleft = new Image(new Texture("roomscreen/mapleft.png"));
+        btnMapright = new Image(new Texture("roomscreen/mapright.png"));
+        btnMapleft.setSize(0.06667f * width,0.08f * height);
+        btnMapright.setSize(0.06667f * width,0.08f * height);
+        btnMapleft.setPosition(selectBackground.getX() + selectBackground.getWidth()/2 - btnMapleft.getWidth()/2- 0.08f*width,
+                0.4f * height);
+        btnMapright.setPosition(selectBackground.getX() + selectBackground.getWidth()/2 - btnMapright.getWidth()/2 + 0.08f * width,
+                0.4f * height);
+        stage.addActor(btnMapleft);
+        stage.addActor(btnMapright);
     }
 
     public void setButtonClick(){

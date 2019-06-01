@@ -60,6 +60,8 @@ public class LobbyScreen extends AbstractGameScreen{
 
     private Stage stage;
 
+    private NetController netController;
+
     public LobbyScreen(DirectedGame game) {
         super(game);
     }
@@ -214,6 +216,7 @@ public class LobbyScreen extends AbstractGameScreen{
     //建造房间列表
     public void bulidRoomList(){
         //网端获取房间数numOfRoom
+
         roomList.clear();
         for(int i=0;i<numOfRoom;i++){
             //
