@@ -30,8 +30,8 @@ public class LobbyScreen extends AbstractGameScreen{
     private Image lsBackground; //大厅背景
     private Image roomListBackground;   //大厅列表背景
 
-    private Stage perIfoStage;  //个人信息舞台
-    private Stage roomListStage; //房间列表舞台
+//    private Stage perIfoStage;  //个人信息舞台
+//    private Stage roomListStage; //房间列表舞台
 
     private Label labelShowName;    //昵称
     private Label labelShowRate;    //胜率
@@ -223,7 +223,7 @@ public class LobbyScreen extends AbstractGameScreen{
         }
     }
 
-    //显示房价列表
+    //显示房间列表
     public void drawRoomList(){
         float originX = width * 0.488f;
         float originY = height * 0.655f;
