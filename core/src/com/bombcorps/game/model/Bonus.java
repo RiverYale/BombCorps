@@ -44,13 +44,6 @@ public class Bonus {
         initPosition(mapWidth);
     }
 
-//    public void initType(){
-//        if(Math.random() > 0.5)
-//            this.type = TYPE.ADDENDURANCE;
-//        else
-//            this.type = TYPE.ADDHEALTH;
-//    }
-
     public void initPosition(int mapWidth){
         position = new Vector2();
         position.x = (float)Math.random() * (mapWidth - dimension.x);

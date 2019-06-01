@@ -2,16 +2,8 @@ package com.bombcorps.game.model;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.bombcorps.game.model.bombs.Bomb;
-import com.bombcorps.game.model.heros.Angel;
-import com.bombcorps.game.model.heros.BaseHero;
-import com.bombcorps.game.model.heros.Protector;
-import com.bombcorps.game.model.heros.Sniper;
-import com.bombcorps.game.model.heros.Sparda;
-import com.bombcorps.game.model.heros.Wizard;
-import com.sun.jndi.cosnaming.CNCtx;
 
 public class PlayerManager {
 
