@@ -54,6 +54,7 @@ public class GameScreen extends AbstractGameScreen{
         worldController.getWorld().render(batch);
         stage.act();
         stage.draw();
+
         if(worldController.isGameOver()==0){
             GameOver();
         }
@@ -536,6 +537,7 @@ public class GameScreen extends AbstractGameScreen{
         winResults.setPosition((Gdx.graphics.getWidth()-winResults.getWidth())/2,(Gdx.graphics.getHeight()-winResults.getHeight())/2);
 
 
+
         if(worldController.isGameOver()==1){
             virtory = new Image(new Texture(Gdx.files.internal("images/vitory.png")));
             virtory.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
@@ -547,6 +549,7 @@ public class GameScreen extends AbstractGameScreen{
             failed.setPosition((winResults.getWidth()-virtory.getWidth())/2,(winResults.getHeight()-virtory.getHeight())/1.25f);
             winResults.addActor(failed);
         }
+
 
 
         Label goldReceiveLabel = new Label("获得1000金币",new Label.LabelStyle(font,Color.BLACK));
