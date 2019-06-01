@@ -14,6 +14,8 @@ public class Player {
     private String IP;
     private int level;
 
+    private Vector2 tap;
+
     private boolean ready;
 
     public SkillAndBuff skillAndBuff;
@@ -134,7 +136,12 @@ public class Player {
     }
 
     public void setTap(Vector2 tap){
+        this.tap = tap;
         bomb.setVelocity(new Vector2(myHero.getPosition().x - tap.x, myHero.getPosition().y - tap.y));
+    }
+
+    public Vector2 getTap(){
+        return tap;
     }
 
     public void shoot(){
