@@ -69,6 +69,7 @@ public class MenuScreen extends AbstractGameScreen {
     @Override public void show(){
         stage = new Stage(new StretchViewport(
                 Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT));
+        Gdx.input.setInputProcessor(stage);
         rebulidStage();
     }
     @Override public void hide(){
@@ -140,7 +141,7 @@ public class MenuScreen extends AbstractGameScreen {
         Table layer = new Table();
         //添加退出按钮
         btnQuit = new Image(new Texture(Gdx.files.internal("button_quit.png")));
-        btnQuit.setScale(1.8f);
+        btnQuit.setScale(1.8f*Gdx.graphics.getWidth()/1280);
         layer.add(btnQuit);
         btnQuit.addListener(new InputListener(){
 
@@ -154,7 +155,7 @@ public class MenuScreen extends AbstractGameScreen {
 
         //添加play按钮
         btnMenuPlay = new Image(new Texture(Gdx.files.internal("button_start.png")));
-        btnMenuPlay.setScale(1.8f);
+        btnMenuPlay.setScale(1.8f*Gdx.graphics.getWidth()/1280);
         layer.bottom();
         layer.add(btnMenuPlay).padLeft(270);
         btnMenuPlay.addListener(new InputListener() {
@@ -167,7 +168,7 @@ public class MenuScreen extends AbstractGameScreen {
         });
         //添加设置按钮
         btnMenuOptions = new Image(new Texture(Gdx.files.internal("button_setting.png")));
-        btnMenuOptions.setScale(1.8f);
+        btnMenuOptions.setScale(1.8f*Gdx.graphics.getWidth()/1280);
         layer.add(btnMenuOptions).padLeft(270);
         btnMenuOptions.addListener(new InputListener(){
 
@@ -179,8 +180,8 @@ public class MenuScreen extends AbstractGameScreen {
         });
 
         //添加About按钮
-        btnAbout = new Image(new Texture(Gdx.files.internal("button_setting.png")));
-        btnAbout.setScale(1.8f);
+        btnAbout = new Image(new Texture(Gdx.files.internal("button_about.png")));
+        btnAbout.setScale(1.8f*Gdx.graphics.getWidth()/1280);
         layer.add(btnAbout).padLeft(270);
         btnAbout.addListener(new InputListener() {
 
@@ -217,6 +218,7 @@ public class MenuScreen extends AbstractGameScreen {
         //about.setSize(winAbout.getWidth(),winAbout.getHeight());
         about.setAlignment(Align.center);
         about.setPosition(winAbout.getWidth()/2.5f,winAbout.getHeight()/3);
+        about.setScale(Gdx.graphics.getWidth()/1280);
         winAbout.setVisible(false);
         return winAbout;
     }

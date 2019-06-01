@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -44,6 +45,11 @@ public class LobbyScreen extends AbstractGameScreen{
     private Image btnLobbyOptions;  //大厅设置按钮
     private Image btnPageUp;        //列表上翻
     private Image btnPageDown;      //列表下翻
+    private Window winBuildRoom;
+    private Image oneOne;
+    private Image twoTwo;
+    private Image fourFour;
+    private Image cancel;
 
     private int numOfRoom;      //房间个数
     private int numOfPage = 0;      //页数
@@ -128,6 +134,61 @@ public class LobbyScreen extends AbstractGameScreen{
         String showProperty = "Coins:"; //+ 金币数
         labelShowProperty = new Label(showProperty,style);
         labelShowProperty.setFontScale(0.0008f * width);
+        //模式选择窗口
+        TextureRegionDrawable winBuildRoomDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("winbuildroom.png"))));
+        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),winBuildRoomDrawable);
+        winBuildRoom = new Window("",windowStyle);
+        winBuildRoom.setSize(width/2,height/2);
+        winBuildRoom.setPosition(width/4,height/4);
+        cancel = new Image(new Texture("winbuildroomcancel.png"));
+        oneOne = new Image(new Texture("oneone.png"));
+
+        twoTwo = new Image(new Texture("twotwo.png"));
+        fourFour = new Image(new Texture("fourfour.png"));
+        oneOne.setSize(winBuildRoom.getWidth()/4,winBuildRoom.getHeight()/4);
+        twoTwo.setSize(winBuildRoom.getWidth()/4,winBuildRoom.getHeight()/4);
+        fourFour.setSize(winBuildRoom.getWidth()/4,winBuildRoom.getHeight()/4);
+        oneOne.setPosition(winBuildRoom.getWidth()/16,winBuildRoom.getHeight()/2);
+        twoTwo.setPosition(winBuildRoom.getWidth()*6/16,winBuildRoom.getHeight()/2);
+        fourFour.setPosition(winBuildRoom.getWidth()*11/16,winBuildRoom.getHeight()/2);
+        cancel.setSize(winBuildRoom.getWidth()/4,winBuildRoom.getHeight()/4);
+        cancel.setPosition(winBuildRoom.getWidth()*3/8,winBuildRoom.getHeight()/8);
+
+        cancel.addListener(new InputListener(){
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                winBuildRoom.setVisible(false);
+                return true;
+            }
+        });
+        oneOne.addListener(new InputListener(){
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        });
+        twoTwo.addListener(new InputListener(){
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        });
+        fourFour.addListener(new InputListener(){
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        });
+
+        winBuildRoom.addActor(oneOne);
+        winBuildRoom.addActor(twoTwo);
+        winBuildRoom.addActor(fourFour);
+        winBuildRoom.addActor(cancel);
+
         //个人信息布局
         recordTable.add(labelShowName).left();
         recordTable.row();
@@ -145,9 +206,12 @@ public class LobbyScreen extends AbstractGameScreen{
         stage.addActor(roomListBackground);
         stage.addActor(recordTable);
 
+
         bulidRoomList();
         drawRoomList();
         drawButton();
+        stage.addActor(winBuildRoom);
+        winBuildRoom.setVisible(false);
 
     }
     //建造房间列表
@@ -212,7 +276,6 @@ public class LobbyScreen extends AbstractGameScreen{
         stage.addActor(btnPageDown);
         stage.addActor(btnBackToMenu);
         stage.addActor(btnLobbyOptions);
-
         setButtonClick();
     }
 
@@ -222,6 +285,7 @@ public class LobbyScreen extends AbstractGameScreen{
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //弹出创建房间界面
+                winBuildRoom.setVisible(true);
             }
         });
 

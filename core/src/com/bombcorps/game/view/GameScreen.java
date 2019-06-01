@@ -396,7 +396,7 @@ public class GameScreen extends AbstractGameScreen{
         if(){
             virtory = new Image(new Texture(Gdx.files.internal("vitory.png")));
             virtory.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
-            virtory.setPosition((winResults.getWidth()-virtory.getWidth())/2,(winResults.getHeight()-virtory.getHeight())/1.25f);
+            virtory.setPosition(winResults.getWidth()/3,winResults.getHeight()/2);
             winResults.addActor(virtory);
         }else{
             failed = new Image(new Texture(Gdx.files.internal("failed.png")));
@@ -407,13 +407,14 @@ public class GameScreen extends AbstractGameScreen{
 
 
         Label goldReceiveLabel = new Label("获得1000金币",new Label.LabelStyle(font,Color.BLACK));
+        goldReceiveLabel.setScale(Gdx.graphics.getWidth()/1280);
         winResults.addActor(goldReceiveLabel);
         goldReceiveLabel.setSize(winResults.getWidth(),winResults.getHeight()/2);
         goldReceiveLabel.setAlignment(Align.center);
         goldReceiveLabel.setPosition(0,winResults.getHeight()/5);
         Image confirm = new Image(new Texture("confirm.png"));
         confirm.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
-        confirm.setPosition((winResults.getWidth()-virtory.getWidth())/2,50);
+        confirm.setPosition(winResults.getWidth()/3,winResults.getHeight()/6);
         winResults.addActor(confirm);
         confirm.addListener(new InputListener(){
 
