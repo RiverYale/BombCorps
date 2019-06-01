@@ -43,19 +43,19 @@ public class Player {
 
         switch (heroType){
             case Constants.PROTECTOR:
-                myHero = new Protector();
+                myHero = new Protector(level);
                 break;
             case Constants.ANGEL:
-                myHero = new Angel();
+                myHero = new Angel(level);
                 break;
             case Constants.SNIPER:
-                myHero = new Sniper();
+                myHero = new Sniper(level);
                 break;
             case Constants.SPARDA:
-                myHero = new Sparda();
+                myHero = new Sparda(level);
                 break;
             case Constants.WIZARD:
-                myHero = new Wizard();
+                myHero = new Wizard(level);
                 break;
         }
 
