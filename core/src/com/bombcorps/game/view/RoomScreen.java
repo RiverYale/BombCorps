@@ -44,6 +44,9 @@ public class RoomScreen extends AbstractGameScreen{
     private Image btnCancel;
     //英雄号码选择
     private int heroSelect;
+    //地图号码
+    private int mapNum = 0;
+    private Image mapSelect;
     //英雄头像
     private Image hero[];
     //准备标识
@@ -102,7 +105,6 @@ public class RoomScreen extends AbstractGameScreen{
     }
 
     public void rebulidStage(){
-        stage.clear();
         //房间背景
         roomBackground = new Image(new Texture("roomscreen/roombackground.png"));
         roomBackground.setSize(width,height);
@@ -163,6 +165,7 @@ public class RoomScreen extends AbstractGameScreen{
         bulidTeam();
         drawButton();
         drawHero();
+        drawMapSelect();
     }
 
     public void bulidTeam(){
@@ -224,6 +227,16 @@ public class RoomScreen extends AbstractGameScreen{
         hero[heroSelect].setPosition(selectBackground.getX() + selectBackground.getWidth()/2 - hero[heroSelect].getWidth()/2,
                 btnHeroLeft.getY());
         stage.addActor(hero[heroSelect]);
+    }
+
+    public void drawMapSelect(){
+        mapNum = Integer.parseInt(room.getMapName());
+        mapSelect = new Image();
+        switch(mapNum){
+            case 0:
+                mapSelect = new Image(new Texture("roomscreen/map0.png"));
+                break;
+        }
     }
 
     public void drawMap(){
