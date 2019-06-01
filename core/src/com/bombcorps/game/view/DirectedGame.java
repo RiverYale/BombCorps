@@ -69,7 +69,7 @@ public abstract class DirectedGame implements ApplicationListener {
         Constants.CurrentScreenFlag =Constants.MenuScreenFlag;
     }
     public void onHeroClicked(Player p){
-       gameScreen.onHeroClicked(p);
+        gameScreen.onHeroClicked(p);
     }
     public void playerQuit(String Ip){
         //调用GameScreen里面的playequit
@@ -212,5 +212,4 @@ public abstract class DirectedGame implements ApplicationListener {
     }
 
 }
-
 

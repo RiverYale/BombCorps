@@ -292,8 +292,10 @@ public class GameScreen extends AbstractGameScreen{
                 return true;
             }
         });
-
-        labelMyHeroBasicInfo = new Label("HP:1000 AK:90\nED:100 AM:100\nPR:50 CP:20%" ,labelStyle);
+        Player p =new Player(myHeroType());
+        labelMyHeroBasicInfo = new Label("HP:"+p.getMyHero().getHealth()+" AK:"+p.getMyHero().getAttack()+
+                "\nED:"+p.getMyHero().getEndurance()+" AM:"+p.getMyHero().getArmor()+
+                "\nRP:"+p.getMyHero().getRagePower()+" CP:"+p.getMyHero().getCriticalProbability() ,labelStyle);
         labelMyHeroBasicInfo.setFontScale(width/15/labelMyHeroBasicInfo.getPrefWidth()*2);
         labelMyHeroBasicInfo.setPosition(width/15,-labelMyHeroBasicInfo.getHeight()/5);
         layer.addActor(labelMyHeroBasicInfo);
@@ -474,11 +476,6 @@ public class GameScreen extends AbstractGameScreen{
     public void onHeroClicked(Player p){
         final int heroType;
         heroType = p.getHeroType();
-        BitmapFont font = new BitmapFont(Gdx.files.internal("images/winOptions.fnt"),Gdx.files.internal("images/winOptions.png"),false);
-        Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.BLACK);
-        labelOtherHeroBasicInfo = new Label("HP:1000 AK:90\nED:100 AM:100\nPR:50 CP:20% ",labelStyle);
-        labelOtherHeroBasicInfo.setFontScale(width/15/labelOtherHeroBasicInfo.getPrefWidth()*2);
-        labelOtherHeroBasicInfo.setPosition(width/15*13,-labelOtherHeroBasicInfo.getHeight()/5);
         String i;
         if(heroType == 0){
             i = "Sparda";
@@ -491,6 +488,14 @@ public class GameScreen extends AbstractGameScreen{
         }else{
             i = "Wizard";
         }
+        BitmapFont font = new BitmapFont(Gdx.files.internal("images/winOptions.fnt"),Gdx.files.internal("images/winOptions.png"),false);
+        Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.BLACK);
+        labelOtherHeroBasicInfo = new Label("HP:"+p.getMyHero().getHealth()+" AK:"+p.getMyHero().getAttack()+
+                "\nED:"+p.getMyHero().getEndurance()+" AM:"+p.getMyHero().getArmor()+
+                "\nRP:"+p.getMyHero().getRagePower()+" CP:"+p.getMyHero().getCriticalProbability(),labelStyle);
+        labelOtherHeroBasicInfo.setFontScale(width/15/labelOtherHeroBasicInfo.getPrefWidth()*2);
+        labelOtherHeroBasicInfo.setPosition(width/15*13,-labelOtherHeroBasicInfo.getHeight()/5);
+
         TextureRegion textureRegion1 = new TextureRegion();
         textureRegion1 = AssetsController.instance.getRegion(i+"_stand");
 
@@ -609,7 +614,7 @@ public class GameScreen extends AbstractGameScreen{
         paused = false;
     }
 
-    public void ErrorQuit(){
+    public void errorStop(){
         winErrorQuit.setVisible(true);
     }
 

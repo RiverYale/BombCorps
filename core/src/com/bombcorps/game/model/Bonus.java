@@ -28,12 +28,12 @@ public class Bonus {
         ACTIVATED, GROUNDED
     }
 
-    public Bonus(int mapWidth){
+    public Bonus(float mapWidth){
         init(mapWidth);
 //        initType();
     }
 
-    public void init(int mapWidth){
+    public void init(float mapWidth){
         state = STATE.ACTIVATED;
         origin = new Vector2();
         scale = new Vector2();
@@ -44,7 +44,7 @@ public class Bonus {
         initPosition(mapWidth);
     }
 
-    public void initPosition(int mapWidth){
+    public void initPosition(float mapWidth){
         position = new Vector2();
         position.x = (float)Math.random() * (mapWidth - dimension.x);
     }
