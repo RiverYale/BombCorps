@@ -131,7 +131,9 @@ public class Room {
         return mapName;
     }
 
-
+    public int getLIMIT(){
+        return LIMIT;
+    }
 
     public String getOwnerIp(){
         return ownerIp;
