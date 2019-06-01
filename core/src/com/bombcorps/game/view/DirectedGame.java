@@ -10,6 +10,7 @@ import com.bombcorps.game.controller.NetController;
 import com.bombcorps.game.controller.WorldController;
 import com.bombcorps.game.model.Constants;
 import com.bombcorps.game.model.Player;
+import com.bombcorps.game.model.Room;
 import com.bombcorps.game.model.World;
 
 public abstract class DirectedGame implements ApplicationListener {
@@ -99,14 +100,15 @@ public abstract class DirectedGame implements ApplicationListener {
 
     public boolean hasRoom(){
         if(inRoom()){
-            if (roomScreen.getRoom().getIp().equals(NetController.getLocalHostIp())){
+            if (roomScreen.getRoom().getOwnerIp().equals(NetController.getLocalHostIp())){
                 return true;
             }
         }
-        else return false;
+        return false;
     }
-    public void getRoom(){
-        roomScreen.getRoom();
+
+    public Room getRoom(){
+        return roomScreen.getRoom();
     }
 
 

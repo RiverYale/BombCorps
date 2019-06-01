@@ -7,6 +7,7 @@ import com.bombcorps.game.model.Bonus;
 import com.bombcorps.game.model.Message;
 import com.bombcorps.game.model.Player;
 import com.bombcorps.game.model.Room;
+import com.bombcorps.game.view.DirectedGame;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -28,7 +29,7 @@ public class NetController {
     private ArrayList<Ai> aiList;
     private WorldController world;
     private boolean bool_stop;
-    private DirctGame game;
+    private DirectedGame game;
 
     //网络行为协议
     private static final int REFRESH_ROOM = 9;      //刷新房间
@@ -57,7 +58,7 @@ public class NetController {
         this.world = world;
     }
 
-    public void bindGame(DirctGame game) {
+    public void bindGame(DirectedGame game) {
         this.game = game;
     }
 
@@ -223,8 +224,8 @@ public class NetController {
                 }
                 break;
             case QUIT_ROOM:
-                if(game.getRoom().getIp().equals(msg.getFromIp())){
-                    game.getRoom().errorStop();
+                if(game.getRoom().getOwnerIp().equals(msg.getFromIp())){
+                    game.errorQuit();
                 }else{
                     game.getRoom().removePlayer(msg.getTargetPlayer());
                 }
@@ -233,13 +234,13 @@ public class NetController {
                 game.getRoom().updatePlayer(msg.getTargetPlayer());
                 break;
             case CHOOSE_MAP:
-                game.getRoom().updateMap(msg.getMap());
+                game.getRoom().setMapName(msg.getMap());
                 break;
             case ADD_AI:
                 game.getRoom().addAi();
                 break;
             case START:
-                game.startGame();
+                game.loadGameScreen();
                 break;
             case ROUND_START:
                 world.startNextRound(msg.getBonus());
@@ -282,7 +283,7 @@ public class NetController {
     }
 
     public void broadcastInRoom(Message m) {
-        for (Player p : game.getRoom().getPlayers()) {
+        for (Player p : game.getRoom().getPlayerManager().getAllPlayerList()) {
             m.setToIp(p.getIp());
             sendCMD(m);
         }
@@ -324,7 +325,7 @@ public class NetController {
 
     public void roundOver() {
         Message m = new Message(ROUND_OVER);
-        m.setToIp(game.getRoom().getIp());
+        m.setToIp(game.getRoom().getOwnerIp());
         sendCMD(m);
     }
 
