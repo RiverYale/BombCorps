@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.bombcorps.game.model.Player;
+import com.bombcorps.game.model.PlayerManager;
 import com.bombcorps.game.model.Room;
 
 public class RoomScreen extends AbstractGameScreen{
@@ -25,6 +27,7 @@ public class RoomScreen extends AbstractGameScreen{
     private SiteShow teamBlue[];
     //模式
     private int mode;
+    private String ip;
     //红蓝方现有人数
     private int numOfRed;
     private int numOfBlue;
@@ -36,15 +39,20 @@ public class RoomScreen extends AbstractGameScreen{
     private Image btnMapright;
     private Image btnHeroLeft;
     private Image btnHeroRight;
+    private Image btnReady;
+    private Image btnCancel;
     //英雄号码选择
     private int heroSelect;
     //英雄头像
     private Image hero[];
+    //准备标识
+    private boolean ready;
 
     private Stage stage;
 
-    public RoomScreen(DirectedGame game,int mode) {
+    public RoomScreen(DirectedGame game,String ip,int mode) {
         super(game);
+        this.ip = ip;
         this.mode = mode;
     }
 
@@ -141,7 +149,36 @@ public class RoomScreen extends AbstractGameScreen{
     }
 
     public void bulidTeam(){
-        Room room = new Room(mode);
-        //room.
+        Room room = new Room(ip,mode);
+        Player player = null;
+
+    }
+
+    public void drawButton(){
+
+    }
+
+    public void setButtonClick(){
+
+    }
+
+    public void turnLeftHero(){
+
+    }
+
+    public void turnRightHero(){
+
+    }
+
+    public void turnLeftMap(){
+
+    }
+
+    public void turnRightMap(){
+
+    }
+
+    public boolean isReady(){
+        return ready;
     }
 }
