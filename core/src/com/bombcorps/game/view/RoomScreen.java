@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.controller.NetController;
+import com.bombcorps.game.model.Constants;
 import com.bombcorps.game.model.Player;
 import com.bombcorps.game.model.PlayerManager;
 import com.bombcorps.game.model.Room;
@@ -19,6 +20,7 @@ public class RoomScreen extends AbstractGameScreen{
     private static final String TAG = RoomScreen.class.getName();
     private static final float height = Gdx.graphics.getHeight();
     private static final float width = Gdx.graphics.getWidth();
+    private DirectedGame game;
     //背景图片
     private Image roomBackground;
     private Image doorBlue;
@@ -26,6 +28,7 @@ public class RoomScreen extends AbstractGameScreen{
     private Image selectBackground;
     private Image siteRed[];
     private Image siteBlue[];
+    private Image backToLobby;
     //红蓝方队伍
     private SiteShow teamRed[];
     private SiteShow teamBlue[];
@@ -45,6 +48,7 @@ public class RoomScreen extends AbstractGameScreen{
     private Image btnHeroRight;
     private Image btnReady;
     private Image btnCancel;
+    private Image btnBackToLobby;
     //英雄号码选择
     private int heroSelect;
     //地图号码
@@ -58,11 +62,23 @@ public class RoomScreen extends AbstractGameScreen{
     private Stage stage;
     private Room room;
 
+    private Player myplayer;
+
+    private int readyNum = 0;
+
     public RoomScreen(DirectedGame game,String ip,int mode) {
         super(game);
+        this.game = game;
         this.ip = ip;
         this.mode = mode;
         this.room = new Room(ip,mode);
+
+        for(int i = 0;i < room.getPlayerManager().getAllPlayerList().size;i ++){
+            if(NetController.getLocalHostIp() == room.getPlayerManager().getRedPlayerList().get(i).getIp()){
+                myplayer = room.getPlayerManager().getAllPlayerList().get(i);
+                break;
+            }
+        }
 
         hero = new Image[5];
         hero[0] = new Image(new Texture("roomscreen/Angel_stand.png"));
@@ -165,10 +181,12 @@ public class RoomScreen extends AbstractGameScreen{
         stage.addActor(siteBlue[2]);
         stage.addActor(siteBlue[3]);
         stage.addActor(selectBackground);
+
         bulidTeam();
         drawButton();
         drawHero();
         drawMapSelect();
+        setButtonClick();
     }
 
     public void bulidTeam(){
@@ -225,6 +243,36 @@ public class RoomScreen extends AbstractGameScreen{
             stage.addActor(btnMapright);
         }
 
+        backToLobby = new Image(new Texture("roomscreen/backtolobby.png"));
+        backToLobby.setSize(0.045f * width,0.07f * height);
+        backToLobby.setPosition(0.0222f * width,0.91f * height);
+        stage.addActor(backToLobby);
+
+        btnReady = new Image(new Texture("roomscreen/ready.png"));
+        btnCancel = new Image(new Texture("roomscreen/cancel.png"));
+        btnReady.setSize(0.07778f * width,0.06f*height);
+        btnReady.setPosition(selectBackground.getX() + selectBackground.getWidth()/2-btnReady.getWidth()/2,
+                0.16f*height);
+        btnCancel.setSize(0.07778f * width,0.06f*height);
+        btnCancel.setPosition(selectBackground.getX() + selectBackground.getWidth()/2-btnCancel.getWidth()/2,
+                0.16f*height);
+
+        for(int i = 0;i < room.getPlayerManager().getAllPlayerList().size;i ++){
+            if(room.getPlayerManager().getRedPlayerList().get(i).getReady()){
+                readyNum ++;
+            }
+        }
+        if(myplayer.getIp() == room.getOwnerIp() && (readyNum >= (2 * mode - 1))){
+            stage.addActor(btnReady);
+        }
+
+        if(myplayer.getIp() != room.getOwnerIp() && myplayer.getReady()){
+            stage.addActor(btnCancel);
+        }
+
+        if(myplayer.getIp() != room.getOwnerIp() && !myplayer.getReady()){
+            stage.addActor(btnReady);
+        }
     }
 
     public void drawHero(){
@@ -245,57 +293,131 @@ public class RoomScreen extends AbstractGameScreen{
         stage.addActor(mapSelect);
     }
 
-    public void addButtonListener(){
-        //英雄
+    public void setButtonClick(){
+        //英雄选择
         btnHeroLeft.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-
+                turnLeftHero();
             }
         });
-
         btnHeroRight.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-
+                turnRightHero();
             }
         });
-
-
+        //地图左右选择
+        btnMapleft.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                turnLeftMap();
+            }
+        });
+        btnMapright.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                turnRightMap();
+            }
+        });
+        //换边
+        doorRed.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                toRedTeam();
+            }
+        });
+        doorBlue.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                toBlueTeam();
+            }
+        });
+        btnReady.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                toReady();
+            }
+        });
+        btnCancel.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                toCancel();
+            }
+        });
+        btnBackToLobby.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                toLobby();
+            }
+        });
     }
-    public void setButtonClick(){
 
-    }
-
-    public void turnLeftHero(){
-
+    public void turnLeftHero() {
+        if (heroSelect > 0 && !myplayer.getReady()) {
+            heroSelect --;
+        }
+        rebulidStage();
     }
 
     public void turnRightHero(){
-
+        if(heroSelect < 4 && !myplayer.getReady()){
+            heroSelect ++;
+        }
+        rebulidStage();
     }
 
     public void turnLeftMap(){
-
+        if(mapNum > 0 ){
+            mapNum --;
+        }
+        rebulidStage();
     }
 
     public void turnRightMap(){
-
+        if(mapNum < 0){
+            mapNum ++;
+        }
+        rebulidStage();
     }
 
     public void toRedTeam(){
-
+        if(myplayer.getTeam() == Constants.PLAYER.BLUE_TEAM && !myplayer.getReady()){
+            room.switchTeam(myplayer);
+        }
+        rebulidStage();
     }
 
     public void toBlueTeam(){
-
+        if(myplayer.getTeam() == Constants.PLAYER.RED_TEAM && !myplayer.getReady()){
+            room.switchTeam(myplayer);
+        }
+        rebulidStage();
     }
 
-    public boolean isReady(){
-        return ready;
+    public void toReady(){
+        if(myplayer.getIp() == room.getOwnerIp()){
+            //游戏开始
+            game.loadGameScreen();
+        }
+        if(myplayer.getIp() != room.getOwnerIp()){
+            myplayer.setReady(true);
+        }
+    }
+
+    public void toCancel(){
+        myplayer.setReady(false);
     }
 
     public Room getRoom(){
         return room;
+    }
+
+    public void toLobby(){
+        game.loadLobbyScreen();
+    }
+
+    public void errorQuit(){
+        //回到房间列表
     }
 }
