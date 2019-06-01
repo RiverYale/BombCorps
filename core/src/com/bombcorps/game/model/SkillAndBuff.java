@@ -5,19 +5,19 @@ import com.badlogic.gdx.utils.Array;
 
 public class SkillAndBuff {
 
-    private AngelSkill angelSkill;
-    private SpardaSkill spardaSkill;
-    private ProtectorSkill protectorSkill;
-    private SniperSkill sniperSkill;
-    private WizardSkill wizardSkill;
+    public AngelSkill angelSkill;
+    public SpardaSkill spardaSkill;
+    public ProtectorSkill protectorSkill;
+    public SniperSkill sniperSkill;
+    public WizardSkill wizardSkill;
 
+    public boolean canJump;
 
+    public Array<Player> playerListBlue;
+    public Array<Player> playerListRed;
 
-    private Array<Player> playerListBlue;
-    private Array<Player> playerListRed;
-
-    Array<Buff> redBuffs;
-    Array<Buff> blueBuffs;
+    public Array<Buff> redBuffs;
+    public Array<Buff> blueBuffs;
 
 
     public SkillAndBuff(Array<Player> playerlistblue, Array<Player> playerListred){
@@ -33,79 +33,241 @@ public class SkillAndBuff {
 
     }
 
-//    public void updateBuff(){
-//
-//    }
+    public void updateBuffEveryRound(){         //每回合调用
+        for(Buff i : redBuffs)
+            i.updateRoundBuff();
+        for(Buff i : blueBuffs)
+            i.updateRoundBuff();
 
-    public void initSkill(){               //每次操作对象改变，都要调用
+    }
+
+
+    public void initSkillEveryChange(){               //每次操作对象改变，都要调用
         angelSkill = new AngelSkill();
         spardaSkill = new SpardaSkill();
         protectorSkill = new ProtectorSkill();
         sniperSkill = new SniperSkill();
         wizardSkill = new WizardSkill();
+
+        canJump = true;
+
+        for(Buff i : redBuffs)
+            i.updateInstantBuff();
+        for(Buff i : blueBuffs)
+            i.updateInstantBuff();
+    }
+
+    /*
+    弹射技能
+     */
+    public void jump(int team, String IP){
+        Player player;
+        int index = -1;
+        if(team == Constants.PLAYER.RED_TEAM){
+            index = getindex(playerListRed, IP);
+            player = playerListRed.get(index);
+        }else{
+            index = getindex(playerListBlue, IP);
+            player = playerListBlue.get(index);
+        }
+
+        if(canJump && player.getMyHero().getEndurance() >= Constants.TRANSPORT_ENDURENCE_COST){
+            canJump = false;
+            player.getMyHero().setEndurance(player.getMyHero().getEndurance() - Constants.TRANSPORT_ENDURENCE_COST);
+            setBomb(player, 5,0);
+        }
+
     }
 
     public class Buff{
-        Player curPlayer;
+        public Player curPlayer;
 
         public Buff(Player player){
             curPlayer = player;
         }
 
-        public void handleBuffEveryRound(){
-            handleInstantBuff();
+        public void updateRoundBuff(){
+            //update天使技能3
+            for(int i = 0 ; i < angel_skill_3_buff.size ; i++){
+                angel_skill_3_buff.set(i,angel_skill_3_buff.get(i) - 1);
+                if(angel_skill_3_buff.get(i) == 0){
+                    mindamage();
+                    angel_skill_3_buff.removeIndex(i);
+                    i--;
+                }
+            }
+
+            //update 天使技能2debuff
+            if(angel_skill_2_debuff > 0){
+                angel_skill_2_debuff--;
+            }
+
+            if(angel_skill_2_debuff == 0){
+                curPlayer.getMyHero().setAttack(curPlayer.getMyHero().getAttack() + Constants.Angel.SKILL_2_ATTACK_MIN);    //恢复攻击力
+                curPlayer.getMyHero().getAura().get(2).setState(Constants.AURA.WAIT);    //取消光环
+            }
+
+
+            //update 天使被动buff
+            if(angel_self_buff){
+                curPlayer.getMyHero().setHealth(MathUtils.clamp(curPlayer.getMyHero().getHealth() +
+                                Constants.Angel.SKILL_0_HEALTH_PER_ROUND_ADD,
+                        0, curPlayer.getMyHero().getMaxHealth()));
+            }
+
+            //update sparda技能3
+            if(sparda_skill_3_buff > 0){
+//                curPlayer.getMyHero().getAura().setState(Constants.AURA.WAIT);
+                curPlayer.getMyHero().setHealth(MathUtils.clamp(curPlayer.getMyHero().getHealth() +
+                                Constants.Sparda.SKILL_3_HEALTH_EACH_ROUND, 0,curPlayer.getMyHero().getMaxHealth()));
+                sparda_skill_3_buff--;
+            }
+
+            if(sparda_skill_3_buff == 0)
+                curPlayer.getMyHero().getAura().get(0).setState(Constants.AURA.WAIT);  //取消光环
+
+            //update protector技能1
+            for(int i = 0 ; i < protector_skill_1_buff.size ; i++){
+                protector_skill_1_buff.set(i, protector_skill_1_buff.get(i) - 1);
+                if(protector_skill_1_buff.get(i) == 0){
+                    curPlayer.getMyHero().setArmor(curPlayer.getMyHero().getArmor() - Constants.Protector.SKILL_1_ARMOR_ADD);
+                    protector_skill_1_buff.removeIndex(i);
+                    i--;
+                }
+            }
+
+            //update protector技能2
+            for(int i = 0 ; i < protector_skill_2_buff.size ; i++){
+                protector_skill_2_buff.set(i, protector_skill_2_buff.get(i) - 1);
+                if(protector_skill_2_buff.get(i) == 0){
+                    curPlayer.getMyHero().setArmor(curPlayer.getMyHero().getArmor() - Constants.Protector.SKILL_2_ARMOR_ADD);
+                    protector_skill_2_buff.removeIndex(i);
+                    i--;
+                }
+            }
+
+            //update protector技能3
+            if(protector_skill_3_left_round > 1){
+                protector_skill_3_left_round--;
+            }else if(protector_skill_3_left_round == 1){
+//                if(curPlayer.getMyHero().getDecreaseRate() == Constants.Protector.SKILL_3_SELF_DAMAGE_PERCENTAGE){
+                curPlayer.getMyHero().getAura().get(1).setState(Constants.AURA.WAIT);   //取消光环
+
+                protector_skill_3_left_round--;
+                curPlayer.getMyHero().setDecreaseRate(0);
+            }
+
+            //update sniper 技能3
+            if(sniper_skill_3_buff > 1){
+                sniper_skill_3_buff--;
+            }else if(sniper_skill_3_buff == 1){
+                sniper_skill_3_buff--;
+                curPlayer.getMyHero().getAura().get(3).setState(Constants.AURA.WAIT);   //取消光环
+                curPlayer.getMyHero().setCriticalRate(2f);
+            }
+
+            //更新wizard skill_0技能
+            if(wizard_skill_0_debuff == 0) {
+                curPlayer.getMyHero().getAura().get(4).setState(Constants.AURA.WAIT);
+            }
+            else {
+                curPlayer.getMyHero().setHealth(MathUtils.clamp(curPlayer.getMyHero().getHealth() -
+                                wizard_skill_0_debuff * Constants.Wizard.SKILL_0_DAMAGE_PER_ROUND_PER_LAYER, 0,
+                        curPlayer.getMyHero().getMaxHealth()));
+            }
+
+            //更新wizard skill_2禁锢
+            if(wizard_skill_2_debuff > 1){
+                wizard_skill_2_debuff--;
+            }else if(wizard_skill_2_debuff == 1){
+                wizard_skill_2_debuff--;
+                curPlayer.getMyHero().getAura().get(5).setState(Constants.AURA.WAIT);   //取消光环
+            }
 
         }
 
-        private void handleInstantBuff(){
+        private void updateInstantBuff(){
+            //刷新sparda技能一
             for(int i = 0 ; i < sparda_skill_1_buff ; i++){
-                curPlayer.getMyHero().setAttack(curPlayer.getMyHero().getAttack() - Constants.Sparda.ATTACK * 0.1f);
+                curPlayer.getMyHero().setAttack(curPlayer.getMyHero().getAttack() - Constants.Sparda.SKILL_1_ATTACK_ADD);
             }
 
+            //更新sparda技能2
             if(sparda_skill_2_buff > 0)
                 curPlayer.getMyHero().setCriticalProbability(Constants.Sparda.START_CRITICALPROBABILITY);
 
+            //更新sniper技能1
             if(sniper_skill_1_buff > 0)
                 curPlayer.getMyHero().setAntiArmor(0);
 
 
+
+
         }
 
-        Array<Integer> angel_skill_3_buff;      //增加AttackBUFF
-        int angel_skill_2_debuff;               //虚弱剩余时间
-        boolean angel_self_buff;                //天使自身回血buff
+        private void mindamage(){       //天使技能3效果消除
+            switch (curPlayer.getHeroType()){
+                case Constants.ANGEL:
+                    curPlayer.getMyHero().setAttack(curPlayer.getMyHero().getAttack() -
+                            Constants.Angel.ATTACK * Constants.Angel.SKILL_3_TEAMMATE_ATTACK_PERCENTAGE_ADD);
+                    break;
+                case Constants.PROTECTOR:
+                    curPlayer.getMyHero().setAttack(curPlayer.getMyHero().getAttack() -
+                            Constants.Protector.ATTACK * Constants.Angel.SKILL_3_TEAMMATE_ATTACK_PERCENTAGE_ADD);
+                    break;
+                case Constants.SPARDA:
+                    curPlayer.getMyHero().setAttack(curPlayer.getMyHero().getAttack() -
+                            Constants.Sparda.ATTACK * Constants.Angel.SKILL_3_TEAMMATE_ATTACK_PERCENTAGE_ADD);
+                    break;
+                case Constants.SNIPER:
+                    curPlayer.getMyHero().setAttack(curPlayer.getMyHero().getAttack() -
+                            Constants.Sniper.ATTACK * Constants.Angel.SKILL_3_TEAMMATE_ATTACK_PERCENTAGE_ADD);
+                    break;
+                case Constants.WIZARD:
+                    curPlayer.getMyHero().setAttack(curPlayer.getMyHero().getAttack() -
+                            Constants.Wizard.ATTACK * Constants.Angel.SKILL_3_TEAMMATE_ATTACK_PERCENTAGE_ADD);
+                    break;
+            }
+        }
 
-        int sparda_skill_1_buff;                //增加伤害的数量   instant
-        int sparda_skill_2_buff;                //增加暴击的数量   instant
-        boolean sparda_skill_3_buff;            //技能3是否释放
+        public Array<Integer> angel_skill_3_buff;      //增加AttackBUFF
+        public int angel_skill_2_debuff;               //虚弱剩余时间
+        public boolean angel_self_buff;                //天使自身回血buff
 
-        Array<Integer> protector_skill_1_buff;  //技能1BUFF数量和剩余ROUND数量
+        public int sparda_skill_1_buff;                //增加伤害的数量   instant
+        public int sparda_skill_2_buff;                //增加暴击的数量   instant
+        public int sparda_skill_3_buff;            //技能3剩余局数
+
+        public Array<Integer> protector_skill_1_buff;  //技能1BUFF数量和剩余ROUND数量
+        public Array<Integer> protector_skill_2_buff;    //技能2buff数量与剩余盘数
         //skill_3
-        int decrease_received_damage;              //减伤Buff剩余局数
-        int FromIndex;                          //buff来源
-        boolean receive_teammate_damage;    //是否接受队友伤害
+        public int protector_skill_3_left_round;              //减伤Buff剩余局数
+        public int FromIndex;                          //buff来源
 
 //        int sniper_skill_0_buff;        //是否减少暴击几率
 
-        int sniper_skill_1_buff;            //技能1增加穿甲的数量
-        int sniper_skill_3_buff;            //技能3剩余局数
+        public int sniper_skill_1_buff;            //技能1增加穿甲的数量
+        public int sniper_skill_3_buff;            //技能3剩余局数
 
-        int wizard_skill_0_debuff;          //debuff层数
-        int wizard_skill_2_debuff;          //技能2禁锢剩余局数
+        public int wizard_skill_0_debuff;          //debuff层数
+        public int wizard_skill_2_debuff;          //技能2禁锢剩余局数
 
     }
 
     public class AngelSkill{
-        boolean skill_1;
-        boolean skill_2;
-        boolean skill_3;
+        public boolean skill_1;
+        public boolean skill_2;
+        public boolean skill_3;
 
 
-        public void useSkill_1(int team, int index){
+        public void useSkill_1(int team, String IP){
             Player player;
+            int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
+                index = getindex(playerListRed, IP);
                 player = playerListRed.get(index);
             }else{
+                index = getindex(playerListBlue, IP);
                 player = playerListBlue.get(index);
             }
 
@@ -120,11 +282,14 @@ public class SkillAndBuff {
             }
         }
 
-        public void useSkill_2(int team, int index){
+        public void useSkill_2(int team, String IP){
             Player player;
+            int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
+                index = getindex(playerListRed, IP);
                 player = playerListRed.get(index);
             }else{
+                index = getindex(playerListBlue, IP);
                 player = playerListBlue.get(index);
             }
 
@@ -139,11 +304,14 @@ public class SkillAndBuff {
             }
         }
 
-        public void useSkill_3(int team, int index){
+        public void useSkill_3(int team, String IP){
             Player player;
+            int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
+                index = getindex(playerListRed, IP);
                 player = playerListRed.get(index);
             }else{
+                index = getindex(playerListBlue, IP);
                 player = playerListBlue.get(index);
             }
 
@@ -197,18 +365,22 @@ public class SkillAndBuff {
                     break;
             }
         }
+
     }
 
     public class SpardaSkill{
-        boolean skill_1;
-        boolean skill_2;
-        boolean skill_3;
+        public boolean skill_1;
+        public boolean skill_2;
+        public boolean skill_3;
 
-        public void useSkill_1(int team, int index){
+        public void useSkill_1(int team, String IP){
             Player player;
+            int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
+                index = getindex(playerListRed, IP);
                 player = playerListRed.get(index);
             }else{
+                index = getindex(playerListBlue, IP);
                 player = playerListBlue.get(index);
             }
 
@@ -219,7 +391,7 @@ public class SkillAndBuff {
 
                 setBomb(player, Constants.SPARDA, 1);
 
-                player.getMyHero().setAttack(player.getMyHero().getAttack() + 0.1f * Constants.Sparda.ATTACK);
+                player.getMyHero().setAttack(player.getMyHero().getAttack() + Constants.Sparda.SKILL_1_ATTACK_ADD);
                 if(team == Constants.PLAYER.RED_TEAM){
                     redBuffs.get(index).sparda_skill_1_buff++;
                 }else{
@@ -231,11 +403,14 @@ public class SkillAndBuff {
             }
         }
 
-        public void useSkill_2(int team, int index){
+        public void useSkill_2(int team, String IP){
             Player player;
+            int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
+                index = getindex(playerListRed, IP);
                 player = playerListRed.get(index);
             }else{
+                index = getindex(playerListBlue, IP);
                 player = playerListBlue.get(index);
             }
 
@@ -247,7 +422,7 @@ public class SkillAndBuff {
                 setBomb(player, Constants.SPARDA, 1);
 
                 player.getMyHero().setCriticalProbability(MathUtils.clamp(player.getMyHero().getCriticalProbability()
-                        + 0.3f, 0, 1));
+                        + Constants.Sparda.SKILL_2_CRITICALPROBABILITY_ADD, 0, 1));
 
                 if(team == Constants.PLAYER.RED_TEAM){
                     redBuffs.get(index).sparda_skill_2_buff++;
@@ -260,40 +435,50 @@ public class SkillAndBuff {
             }
         }
 
-        public void useSkill_3(int team, int index){
+        public void useSkill_3(int team, String IP){
             Player player;
+            int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
+                index = getindex(playerListRed, IP);
                 player = playerListRed.get(index);
             }else{
+                index = getindex(playerListBlue, IP);
                 player = playerListBlue.get(index);
             }
 
-            if(player.getMyHero().getEndurance() >= Constants.Sparda.SKILL_3_ENDURENCE_COST){
+            if(player.getMyHero().getEndurance() >= Constants.Sparda.SKILL_3_ENDURENCE_COST &&
+                    player.getMyHero().getRagePower() >= Constants.MAX_RAGEPOWER){
                 skill_3 = true;
 
-                player.getMyHero().getAura().setState(Constants.AURA.SPARDAAURA);      //aura
+                player.getMyHero().getAura().get(0).setState(Constants.AURA.SPARDAAURA);      //aura
 
                 if(team == Constants.PLAYER.RED_TEAM){
-                    redBuffs.get(index).sparda_skill_3_buff = true;
+                    redBuffs.get(index).sparda_skill_3_buff = Constants.Sparda.SKILL_3_ROUND;
                 }else{
-                    blueBuffs.get(index).sparda_skill_3_buff = true;
+                    blueBuffs.get(index).sparda_skill_3_buff = Constants.Sparda.SKILL_3_ROUND;
                 }
+                player.getMyHero().setHealth(MathUtils.clamp(player.getMyHero().getHealth() +
+                                Constants.Sparda.SKILL_3_HEALTH_INSTANT, 0,player.getMyHero().getMaxHealth()));
 
                 player.getMyHero().setEndurance(player.getMyHero().getEndurance() - Constants.Sparda.SKILL_3_ENDURENCE_COST);
+                player.getMyHero().setRagePower(player.getMyHero().getRagePower() - Constants.Sparda.SKILL_3_RAGEPOWER_COST);
             }
         }
     }
 
     public class ProtectorSkill{
-        boolean skill_1;
-        boolean skill_2;
-        boolean skill_3;
+        public boolean skill_1;
+        public boolean skill_2;
+        public boolean skill_3;
 
-        public void useSkill_1(int team, int index){
+        public void useSkill_1(int team, String IP){
             Player player;
+            int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
+                index = getindex(playerListRed, IP);
                 player = playerListRed.get(index);
             }else{
+                index = getindex(playerListBlue, IP);
                 player = playerListBlue.get(index);
             }
 
@@ -302,9 +487,8 @@ public class SkillAndBuff {
 
                 skill_1 = true;
 
-                player.getMyHero().getAura().setState(Constants.AURA.PROTECTORAURA);  //aura
 
-                player.getMyHero().setArmor(player.getMyHero().getArmor() + 50);
+                player.getMyHero().setArmor(player.getMyHero().getArmor() + Constants.Protector.SKILL_1_ARMOR_ADD);
 
                 if(team == Constants.PLAYER.RED_TEAM){
                     redBuffs.get(index).protector_skill_1_buff.add(2);
@@ -317,11 +501,14 @@ public class SkillAndBuff {
             }
         }
 
-        public void useSkill_2(int team, int index){
+        public void useSkill_2(int team, String IP){
             Player player;
+            int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
+                index = getindex(playerListRed, IP);
                 player = playerListRed.get(index);
             }else{
+                index = getindex(playerListBlue, IP);
                 player = playerListBlue.get(index);
             }
 
@@ -336,11 +523,14 @@ public class SkillAndBuff {
             }
         }
 
-        public void useSkill_3(int team, int index){
+        public void useSkill_3(int team, String IP){
             Player player;
+            int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
+                index = getindex(playerListRed, IP);
                 player = playerListRed.get(index);
             }else{
+                index = getindex(playerListBlue, IP);
                 player = playerListBlue.get(index);
             }
 
@@ -348,26 +538,32 @@ public class SkillAndBuff {
                     && player.getMyHero().getRagePower() >= Constants.Protector.SKILL_3_POWERRAGE_COST){
                 skill_3 = true;
 
+//                player.getMyHero().getAura().get(1).setState(Constants.AURA.PROTECTORAURA);  //aura
+
                 if(team == Constants.PLAYER.RED_TEAM){
                     for(int i = 0 ; i < redBuffs.size ; i++) {
+                        redBuffs.get(i).protector_skill_3_left_round = Constants.Protector.SKILL_3_ROUND_NUM;
+
                         if(i == index) {
-                            redBuffs.get(i).receive_teammate_damage = true;
-                            redBuffs.get(i).decrease_received_damage = 2;
+                            playerListRed.get(i).getMyHero().setDecreaseRate(Constants.Protector.SKILL_3_SELF_DAMAGE_PERCENTAGE);
                         }else{
-                            redBuffs.get(i).decrease_received_damage = 2;
+                            playerListRed.get(i).getMyHero().setDecreaseRate(Constants.Protector.SKILL_3_TEAMMATE_DAMAGE_PERCENTAGE);
                             redBuffs.get(i).FromIndex = index;
                         }
 
+                        playerListRed.get(i).getMyHero().getAura().get(1).setState(Constants.AURA.PROTECTORAURA);
                     }
                 }else{
                     for(int i = 0 ; i < blueBuffs.size ; i++){
+                        blueBuffs.get(i).protector_skill_3_left_round = Constants.Protector.SKILL_3_ROUND_NUM;
                         if(i == index){
-                            blueBuffs.get(i).receive_teammate_damage = true;
-                            blueBuffs.get(i).decrease_received_damage = 2;
+                            playerListBlue.get(i).getMyHero().setDecreaseRate(Constants.Protector.SKILL_3_SELF_DAMAGE_PERCENTAGE);
                         }else{
-                            blueBuffs.get(i).decrease_received_damage = 2;
+                            playerListBlue.get(i).getMyHero().setDecreaseRate(Constants.Protector.SKILL_3_TEAMMATE_DAMAGE_PERCENTAGE);
                             blueBuffs.get(i).FromIndex = index;
                         }
+
+                        playerListBlue.get(i).getMyHero().getAura().get(1).setState(Constants.AURA.PROTECTORAURA);
                     }
                 }
 
@@ -379,15 +575,18 @@ public class SkillAndBuff {
     }
 
     public class SniperSkill{
-        boolean skill_1;
-        boolean skill_2;
-        boolean skill_3;
+        public boolean skill_1;
+        public boolean skill_2;
+        public boolean skill_3;
 
-        public void useSkill_1(int team, int index){
+        public void useSkill_1(int team, String IP){
             Player player;
+            int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
+                index = getindex(playerListRed, IP);
                 player = playerListRed.get(index);
             }else{
+                index = getindex(playerListBlue, IP);
                 player = playerListBlue.get(index);
             }
 
@@ -411,11 +610,14 @@ public class SkillAndBuff {
             }
         }
 
-        public void useSkill_2(int team, int index){
+        public void useSkill_2(int team, String IP){
             Player player;
+            int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
+                index = getindex(playerListRed, IP);
                 player = playerListRed.get(index);
             }else{
+                index = getindex(playerListBlue, IP);
                 player = playerListBlue.get(index);
             }
 
@@ -429,11 +631,14 @@ public class SkillAndBuff {
             }
         }
 
-        public void useSkill_3(int team, int index){
+        public void useSkill_3(int team, String IP){
             Player player;
+            int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
+                index = getindex(playerListRed, IP);
                 player = playerListRed.get(index);
             }else{
+                index = getindex(playerListBlue, IP);
                 player = playerListBlue.get(index);
             }
 
@@ -441,10 +646,13 @@ public class SkillAndBuff {
                     && player.getMyHero().getRagePower() >= Constants.Sniper.SKILL_3_POWERRAGE_COST){
                 skill_3 = true;
 
+                player.getMyHero().setCriticalRate(3f);
+                player.getMyHero().getAura().get(3).setState(Constants.AURA.SNIPERAURA);
+
                 if(team == Constants.PLAYER.RED_TEAM){
-                    redBuffs.get(index).sniper_skill_3_buff = 2;
+                    redBuffs.get(index).sniper_skill_3_buff = Constants.Sniper.SKILL_3_LEFT_ROUND;
                 }else{
-                    blueBuffs.get(index).sniper_skill_3_buff = 2;
+                    blueBuffs.get(index).sniper_skill_3_buff = Constants.Sniper.SKILL_3_LEFT_ROUND;
                 }
 
                 player.getMyHero().setEndurance(player.getMyHero().getEndurance() - Constants.Sniper.SKILL_3_ENDURENCE_COST);
@@ -456,15 +664,18 @@ public class SkillAndBuff {
     }
 
     public class WizardSkill{
-        boolean skill_1;
-        boolean skill_2;
-        boolean skill_3;
+        public boolean skill_1;
+        public boolean skill_2;
+        public boolean skill_3;
 
-        public void useSkill_1(int team, int index){
+        public void useSkill_1(int team, String IP){
             Player player;
+            int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
+                index = getindex(playerListRed, IP);
                 player = playerListRed.get(index);
             }else{
+                index = getindex(playerListBlue, IP);
                 player = playerListBlue.get(index);
             }
 
@@ -477,11 +688,14 @@ public class SkillAndBuff {
             }
         }
 
-        public void useSkill_2(int team, int index){
+        public void useSkill_2(int team, String IP){
             Player player;
+            int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
+                index = getindex(playerListRed, IP);
                 player = playerListRed.get(index);
             }else{
+                index = getindex(playerListBlue, IP);
                 player = playerListBlue.get(index);
             }
 
@@ -496,11 +710,14 @@ public class SkillAndBuff {
             }
         }
 
-        public void useSkill_3(int team, int index){
+        public void useSkill_3(int team, String IP){
             Player player;
+            int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
+                index = getindex(playerListRed, IP);
                 player = playerListRed.get(index);
             }else{
+                index = getindex(playerListBlue, IP);
                 player = playerListBlue.get(index);
             }
 
@@ -530,6 +747,16 @@ public class SkillAndBuff {
 
     }
 
+    private int getindex(Array<Player> playerList, String IP){
+        int index = -1;
+        for(int i = 0 ; i < playerList.size ; i++){
+            if(playerList.get(i).equals(IP)){
+                index = i;
+            }
+        }
+        return index;
+    }
+
     private void setBomb(Player player,int heroType, int bombType){
         player.bomb.setPosition(player.getMyHero().getPosition());
         player.bomb.setHeroType(heroType);
@@ -537,87 +764,5 @@ public class SkillAndBuff {
         player.bomb.setState(Constants.BOMB.STATE_READY);
     }
 
-//    public void initBuffEveryRound(){
-//        /*
-//        天使被动回血
-//         */
-//        for(Player i : playerListRed)
-//            if(Angel.class.isInstance(i))
-//                i.getMyHero().setHealth(MathUtils.clamp(i.getMyHero().getHealth() + 200, 0, i.getMyHero().getMaxHealth()));
-//        for(Player i : playerListBlue)
-//            if(Angel.class.isInstance(i))
-//                i.getMyHero().setHealth(MathUtils.clamp(i.getMyHero().getHealth() + 200, 0, i.getMyHero().getMaxHealth()));
-//        /*
-//        天使技能3buff
-//         */
-//        initAngelSkill3Buff(Red_angel_skill_3_buff, playerListRed);
-//        initAngelSkill3Buff(Blue_angel_skill_3_buff, playerListBlue);
-//        /*
-//        Wizard Buff
-//        */
-//        for(int i = 0 ; i < wizard_buff_list.length ; i++){
-//            if(i < playerListRed.size){
-//                playerListRed.get(i).getMyHero().setHealth(playerListRed.get(i).getMyHero().getHealth() - 100 * wizard_buff_list[i]);
-//            }else{
-//                playerListBlue.get(i).getMyHero().setHealth(playerListBlue.get(i).getMyHero().getHealth() - 100 * wizard_buff_list[i]);
-//            }
-//
-//        }
-//
-//    }
-
-//    private void initAngelSkill3Buff(Array<Integer> bufflist, Array<Player> playerlist){
-//        for(int i = 0 ; i < bufflist.size ; i++){
-//
-//
-//            bufflist.set(i, bufflist.get(i) - 1);
-//
-//            if(bufflist.get(i).equals(2)){
-//                for(Player k : playerlist){
-//                    k.getMyHero().getAura().setState(Constants.AURA.ANGELAURA);
-////                    j.getMyHero().setAttack(j.getMyHero().getAttack() + Constants.);
-//                    if(Angel.class.isInstance(k))
-//                        k.getMyHero().setAttack(k.getMyHero().getAttack() + Constants.Angel.ATTACK * 0.1f);
-//                    if(Protector.class.isInstance(k))
-//                        k.getMyHero().setAttack(k.getMyHero().getAttack() + Constants.Protector.ATTACK * 0.1f);
-//                    if(Sniper.class.isInstance(k))
-//                        k.getMyHero().setAttack(k.getMyHero().getAttack() + Constants.Sniper.ATTACK * 0.1f);
-//                    if(Wizard.class.isInstance(k))
-//                        k.getMyHero().setAttack(k.getMyHero().getAttack() + Constants.Wizard.ATTACK * 0.1f);
-//                    if(Sparda.class.isInstance(k))
-//                        k.getMyHero().setAttack(k.getMyHero().getAttack() + Constants.Sparda.ATTACK * 0.1f);
-//                }
-//            }
-//
-//            for(Player k : playerlist){
-//                k.getMyHero().setHealth(MathUtils.clamp(k.getMyHero().getHealth() + 200, 0, k.getMyHero().getMaxHealth()));
-//            }
-//
-//            if(bufflist.get(i).equals(0)){
-//                bufflist.removeIndex(i);
-//                for(Player k : playerlist){
-//                    k.getMyHero().getAura().setState(Constants.AURA.ANGELAURA);
-////                    j.getMyHero().setAttack(j.getMyHero().getAttack() + Constants.);
-//                    if(Angel.class.isInstance(k))
-//                        k.getMyHero().setAttack(k.getMyHero().getAttack() - Constants.Angel.ATTACK * 0.1f);
-//                    if(Protector.class.isInstance(k))
-//                        k.getMyHero().setAttack(k.getMyHero().getAttack() - Constants.Protector.ATTACK * 0.1f);
-//                    if(Sniper.class.isInstance(k))
-//                        k.getMyHero().setAttack(k.getMyHero().getAttack() - Constants.Sniper.ATTACK * 0.1f);
-//                    if(Wizard.class.isInstance(k))
-//                        k.getMyHero().setAttack(k.getMyHero().getAttack() - Constants.Wizard.ATTACK * 0.1f);
-//                    if(Sparda.class.isInstance(k))
-//                        k.getMyHero().setAttack(k.getMyHero().getAttack() - Constants.Sparda.ATTACK * 0.1f);
-//                }
-//            }
-//
-//        }
-//
-//        if(bufflist.size == 0)
-//            for(Player i : playerlist){
-//                i.getMyHero().getAura().setState(Constants.AURA.WAIT);
-//            }
-//
-//    }
 
 }

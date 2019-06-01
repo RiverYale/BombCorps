@@ -38,7 +38,9 @@ public class BaseHero{
     private float attack;         //攻击力
     private float antiArmor;
     private float criticalProbability;  //暴击几率
+    private float criticalRate; //暴击倍率
     private float armor;          //护甲值
+    private float decreaseRate;     //减伤率
 
     /*
     角色其他属性
@@ -58,7 +60,7 @@ public class BaseHero{
     /*
     渲染英雄
      */
-    private Aura aura;
+    private Array<Aura> aura;
 
     private float stateTime;
     private int attackTimes;
@@ -75,7 +77,7 @@ public class BaseHero{
     private Animation attackAnimation;
 
     private enum STATE{          //人物状态
-        WAIT,FALLING, GROUNDED,MOVING,ATTACK,DEAD
+        FALLING, GROUNDED,MOVING,ATTACK,DEAD
     }
 
     public BaseHero(int hero){
@@ -159,9 +161,10 @@ public class BaseHero{
         skill_1 = false;
         skill_2 = false;
         skill_3 = false;
+        this.state = STATE.GROUNDED;
 
-        aura = new Aura();
-
+        aura = new Array<Aura>(6);
+        criticalRate = 2;
         destination = 0;
         health = 0;
         endurance = Constants.MAX_ENDURENCE;
@@ -182,6 +185,7 @@ public class BaseHero{
         headright = false;
         stateTime = 0;
         attackTimes = 1;
+        decreaseRate = 0f;
 
     }
 
@@ -189,7 +193,12 @@ public class BaseHero{
 
     public void update(float deltaTime){
         updatePosition(deltaTime);
-        aura.update(deltaTime, position);
+        for(Aura i : aura)
+            i.update(deltaTime, position);
+
+        if(health == 0){
+            state = STATE.DEAD;
+        }
     }
 
     protected void updatePosition(float deltaTime){
@@ -228,9 +237,10 @@ public class BaseHero{
     }
 
     public void render(SpriteBatch batch){
-        aura.render(batch);
+        for(Aura i : aura)
+            i.render(batch);
         renderHero(batch);
-    };
+    }
 
     protected void renderHero(SpriteBatch batch){
 
@@ -265,10 +275,9 @@ public class BaseHero{
 
                 if(stateTime > attackAnimation.getAnimationDuration()){
                     attackTimes--;
+                    state = STATE.GROUNDED;
                     if(attackTimes > 0){
-                        stateTime -= attackAnimation.getAnimationDuration();
-                    }else {
-                        state = STATE.GROUNDED;
+                        endurance = Constants.MAX_ENDURENCE / 2;
                     }
                 }
                 break;
@@ -321,6 +330,14 @@ public class BaseHero{
     set 与 put函数
      */
 
+    public float getCriticalRate() {
+        return criticalRate;
+    }
+
+    public void setCriticalRate(float criticalRate) {
+        this.criticalRate = criticalRate;
+    }
+
     public float getMaxHealth() {
         return maxHealth;
     }
@@ -337,7 +354,7 @@ public class BaseHero{
         return level;
     }
 
-    public Aura getAura(){
+    public Array<Aura> getAura(){
         return aura;
     }
 
@@ -364,18 +381,42 @@ public class BaseHero{
         return state == STATE.DEAD;
     }
 
+    public int getState(){
+        switch (state){
+            case ATTACK:
+                return Constants.STATE_ATTACK;
+            case MOVING:
+                return Constants.STATE_MOVING;
+            case FALLING:
+                return Constants.STATE_FALLING;
+            case DEAD:
+                return Constants.STATE_DEAD;
+            default:
+                return Constants.STATE_GROUNDED;
+        }
+    }
+
     public void setState(int input){
         switch (input){
-            case 1:
+            case Constants.STATE_MOVING:
                 velocity.x = headright? Constants.VELOCITY_X : -Constants.VELOCITY_X;
                 state = STATE.MOVING;
                 break;
-            case 2:
+            case Constants.STATE_GROUNDED:
                 state = STATE.GROUNDED;
                 break;
-            case 3:
+            case Constants.STATE_FALLING:
                 state = STATE.FALLING;
                 break;
+            case Constants.STATE_DEAD:
+                state = STATE.DEAD;
+                break;
+            case Constants.STATE_ATTACK:
+                state = STATE.ATTACK;
+                break;
+//            case Constants.STATE_WAIT:
+//                state = STATE.WAIT;
+//                break;
         }
     }
 
@@ -405,6 +446,10 @@ public class BaseHero{
 
     public void setPosition(Vector2 position) {
         this.position = position;
+    }
+
+    public int getAttackTimes() {
+        return attackTimes;
     }
 
     public void setDirection(boolean direction) {
@@ -449,5 +494,13 @@ public class BaseHero{
 
     public void setAntiArmor(float antiArmor) {
         this.antiArmor = antiArmor;
+    }
+
+    public float getDecreaseRate() {
+        return decreaseRate;
+    }
+
+    public void setDecreaseRate(float decreaseRate) {
+        this.decreaseRate = decreaseRate;
     }
 }

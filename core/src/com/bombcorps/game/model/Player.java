@@ -1,5 +1,8 @@
 package com.bombcorps.game.model;
 
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.bombcorps.game.controller.NetController;
 import com.bombcorps.game.model.bombs.Bomb;
 import com.bombcorps.game.model.heros.*;
@@ -13,7 +16,7 @@ public class Player {
 
     private boolean ready;
 
-    private SkillAndBuff skillAndBuff;
+    public SkillAndBuff skillAndBuff;
     public Bomb bomb;
 
     private TEAM team;
@@ -53,40 +56,253 @@ public class Player {
                 myHero = new Wizard();
                 break;
         }
+
+        switch(level){
+            case 0:
+                myHero.setLevel(Constants.LEVEL_0);
+                break;
+            case 1:
+                myHero.setLevel(Constants.LEVEL_1);
+                break;
+            case 2:
+                myHero.setLevel(Constants.LEVEL_2);
+                break;
+            case 3:
+                myHero.setLevel(Constants.LEVEL_3);
+                break;
+            case 4:
+                myHero.setLevel(Constants.LEVEL_4);
+                break;
+            case 5:
+                myHero.setLevel(Constants.LEVEL_5);
+        }
+
+    }
+
+    public void initHeroEveryRound(){       //每回合调用
+        /*
+        每一回合结束都要把英雄的精力值，怒气值调正初始化
+         */
+        boolean isweaked = false;
+        if(team == TEAM.RED){
+            for(int i = 0 ; i < skillAndBuff.playerListRed.size ; i++){
+                if(IP.equals(skillAndBuff.playerListRed.get(i).getIp())){
+                    if(skillAndBuff.redBuffs.get(i).angel_skill_2_debuff > 0){
+                        isweaked =  true;
+                    }
+                }
+            }
+        }else{
+            for(int i = 0 ; i < skillAndBuff.playerListBlue.size ; i++){
+                if(IP.equals(skillAndBuff.playerListBlue.get(i).getIp())){
+                    if(skillAndBuff.blueBuffs.get(i).angel_skill_2_debuff > 0){
+                        isweaked =  true;
+                    }
+                }
+            }
+        }
+
+        if(isweaked) {
+            myHero.setEndurance(Constants.MAX_ENDURENCE - Constants.Angel.SKILL_2_ENDURANCE_MIN);
+        }else{
+            myHero.setEndurance(Constants.MAX_ENDURENCE);
+        }
+
+        myHero.setRagePower(MathUtils.clamp(myHero.getRagePower() + Constants.RAGEPOWER_ADD_PER_ROUND,
+                0, Constants.MAX_RAGEPOWER));
     }
 
     public void setDestX(float destination){
+        myHero.setDestination(destination);
 
+        if(team == TEAM.RED){   //如果禁锢
+            for(int i = 0 ; i < skillAndBuff.redBuffs.size ; i++){
+                if(getIp().equals(skillAndBuff.playerListRed.get(i).getIp())){
+                    if(skillAndBuff.redBuffs.get(i).wizard_skill_2_debuff > 0)
+                        return;
+                }
+            }
+        }else{
+            for(int i = 0 ; i < skillAndBuff.blueBuffs.size ; i++){
+                if(getIp().equals(skillAndBuff.playerListBlue.get(i).getIp())){
+                    if(skillAndBuff.blueBuffs.get(i).wizard_skill_2_debuff > 0)
+                        return;
+                }
+            }
+        }
+        myHero.setState(Constants.STATE_MOVING);
     }
 
-    public void setTapX(float velocityX){
-
-    }
-
-    public void setTapY(float velocityY){
-
+    public void setTap(Vector2 tap){
+        bomb.setVelocity(new Vector2(myHero.getPosition().x - tap.x, myHero.getPosition().y - tap.y));
     }
 
     public void shoot(){
 
-/*
-TODO
- */
         myHero.setState(Constants.STATE_ATTACK);
-
         bomb.setState(Constants.BOMB.STATE_FLY);
+        bomb.setFromPlayer(this);
     }
 
-    public void useSkill(int op, Player target){
+    public boolean useSkill(int op){
         switch (op){
-            case 3:
-//                switch (heroType){
-//                    case
-//                }
-//                skillAndBuff.
-        }
+            case 1:
+                if(team == TEAM.RED){   //如果禁锢
+                    for(int i = 0 ; i < skillAndBuff.redBuffs.size ; i++){
+                        if(getIp().equals(skillAndBuff.playerListRed.get(i).getIp())){
+                            if(skillAndBuff.redBuffs.get(i).wizard_skill_2_debuff > 0)
+                                return false;
+                        }
+                    }
+                }else{
+                    for(int i = 0 ; i < skillAndBuff.blueBuffs.size ; i++){
+                        if(getIp().equals(skillAndBuff.playerListBlue.get(i).getIp())){
+                            if(skillAndBuff.blueBuffs.get(i).wizard_skill_2_debuff > 0)
+                                return false;
+                        }
+                    }
+                }
 
+                if(!skillAndBuff.canJump)   //已经非过一次
+                    return false;
+
+                if(team == TEAM.RED)
+                    skillAndBuff.jump(Constants.PLAYER.RED_TEAM, IP);
+                else
+                    skillAndBuff.jump(Constants.PLAYER.BLUE_TEAM, IP);
+
+                return true;
+            case 2:
+                if(myHero.getAttackTimes() == 0)
+                    return false;
+
+                return true;
+            default:
+                heroUseSkillOp(op);
+                return false;
+        }
     }
+
+    private void heroUseSkillOp(int op){
+        switch(heroType){
+            case Constants.ANGEL:
+                switch (op){
+                    case 3:
+                        if(team == TEAM.RED)
+                            skillAndBuff.angelSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
+                        else
+                            skillAndBuff.angelSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
+                        break;
+                    case 4:
+                        if(team == TEAM.RED)
+                            skillAndBuff.angelSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
+                        else
+                            skillAndBuff.angelSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
+                        break;
+                    case 5:
+                        if(team == TEAM.RED)
+                            skillAndBuff.angelSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
+                        else
+                            skillAndBuff.angelSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
+                        break;
+                }
+                break;
+
+            case Constants.SPARDA:
+                switch (op){
+                    case 3:
+                        if(team == TEAM.RED)
+                            skillAndBuff.spardaSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
+                        else
+                            skillAndBuff.spardaSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
+                        break;
+                    case 4:
+                        if(team == TEAM.RED)
+                            skillAndBuff.spardaSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
+                        else
+                            skillAndBuff.spardaSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
+                        break;
+                    case 5:
+                        if(team == TEAM.RED)
+                            skillAndBuff.spardaSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
+                        else
+                            skillAndBuff.spardaSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
+                        break;
+                }
+                break;
+
+            case Constants.SNIPER:
+                switch (op){
+                    case 3:
+                        if(team == TEAM.RED)
+                            skillAndBuff.sniperSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
+                        else
+                            skillAndBuff.sniperSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
+                        break;
+                    case 4:
+                        if(team == TEAM.RED)
+                            skillAndBuff.sniperSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
+                        else
+                            skillAndBuff.sniperSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
+                        break;
+                    case 5:
+                        if(team == TEAM.RED)
+                            skillAndBuff.sniperSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
+                        else
+                            skillAndBuff.sniperSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
+                        break;
+                }
+                break;
+
+            case Constants.PROTECTOR:
+                switch (op){
+                    case 3:
+                        if(team == TEAM.RED)
+                            skillAndBuff.protectorSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
+                        else
+                            skillAndBuff.protectorSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
+                        break;
+                    case 4:
+                        if(team == TEAM.RED)
+                            skillAndBuff.protectorSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
+                        else
+                            skillAndBuff.protectorSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
+                        break;
+                    case 5:
+                        if(team == TEAM.RED)
+                            skillAndBuff.protectorSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
+                        else
+                            skillAndBuff.protectorSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
+                        break;
+                }
+                break;
+
+            case Constants.WIZARD:
+                switch (op){
+                    case 3:
+                        if(team == TEAM.RED)
+                            skillAndBuff.wizardSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
+                        else
+                            skillAndBuff.wizardSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
+                        break;
+                    case 4:
+                        if(team == TEAM.RED)
+                            skillAndBuff.wizardSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
+                        else
+                            skillAndBuff.wizardSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
+                        break;
+                    case 5:
+                        if(team == TEAM.RED)
+                            skillAndBuff.wizardSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
+                        else
+                            skillAndBuff.wizardSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
+                        break;
+                }
+                break;
+
+        }
+    }
+
 
     public String getID(){
         return ID;
@@ -169,6 +385,32 @@ TODO
         return NetController.getLocalHostIp().equals(IP);
     }
 
+    public Rectangle getRect(){
+        return myHero.getRec();
+    }
 
+    public Bomb getBomb(){
+        return bomb;
+    }
+
+    public Vector2 getPosition(){
+        return myHero.getPosition();
+    }
+
+    public void setX(float input){
+        myHero.setPosition(new Vector2(input, myHero.getPosition().y));
+    }
+
+    public void setY(float input){
+        myHero.setPosition(new Vector2(myHero.getPosition().x, input));
+    }
+
+    public int getHeroState(){
+        return myHero.getState();
+    }
+
+    public void setHeroState(int input){
+        myHero.setState(input);
+    }
 
 }

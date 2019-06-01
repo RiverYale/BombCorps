@@ -6,17 +6,19 @@ public class Angel extends BaseHero {
 
     public Angel(){
         super(Constants.ANGEL);
+        init();
     }
 
-    protected void init(){
-        this.setMaxHealth(1000f * getLevel());
-        this.setHealth(1000f * getLevel());
-        this.setArmor(50f * getLevel());
-        this.setAttack(50f * getLevel());
-        this.setCriticalProbability(0.2f);
+    private void init(){
+        this.setMaxHealth(Constants.Angel.HEALTH * getLevel());
+        this.setHealth(Constants.Angel.HEALTH * getLevel());
         this.setEndurance(200f);
         this.setRagePower(100f);
-        this.setState(Constants.STATE_WAIT);
+
+        this.setAttack(Constants.Angel.ATTACK * getLevel());
+        this.setCriticalProbability(Constants.Angel.START_CRITICALPROBABILITY);
+        this.setArmor(Constants.Angel.ARMOR * getLevel());
+
     }
 
 

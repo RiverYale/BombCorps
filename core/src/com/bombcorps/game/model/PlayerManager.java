@@ -14,14 +14,7 @@ import com.bombcorps.game.model.heros.Wizard;
 import com.sun.jndi.cosnaming.CNCtx;
 
 public class PlayerManager {
-    public class Buff {
-        public Array<Integer> blue_angel_skill_3_leftRound = new Array<Integer>();
-        public Array<Integer> red_angel_skill_3_leftRound = new Array<Integer>();
-        public int[] blueTeam_angel_skill_2_buff = new int[playerListBlue.size];
-        public int[] redTeam_angel_skill_2_buff = new int[playerListRed.size];
 
-    }
-    private Buff buff;
     private SkillAndBuff skillAndBuff;
 
     private Array<Player> playerListRed;
@@ -90,147 +83,10 @@ public class PlayerManager {
             i.getMyHero().render(batch);
     }
 
-    public void initGameEveryRound(){
-        BaseHero tempHero;
-        Array<Player> list = null;
-        for(int j = 0 ; j < 2 ; j++) {
-            if (j == 0)
-                list = playerListBlue;
-            else
-                list = playerListRed;
 
-            for (Player i : list) {
-                tempHero = i.getMyHero();
-
-                tempHero.setState(Constants.STATE_WAIT);
-                tempHero.setAttackTimes(1);
-                tempHero.setEndurance(Constants.MAX_ENDURENCE);
-
-                tempHero.setRagePower(MathUtils.clamp(i.getMyHero().getRagePower() + 20, 0, 200));
-//            i.getMyHero().set
-            /*
-            skill todo
-             */
-                initAngel(tempHero, list, j);
-
-            }
-
-        }
-        initBuff();
-
-    }
-
-    public void initAngel(BaseHero tempHero, Array<Player> list, int j){
-
-        if(Angel.class.isInstance(tempHero)){
-            tempHero.setHealth(MathUtils.clamp(tempHero.getHealth() + Constants.Angel.SKILL_0_HEALTH_PER_ROUND_ADD,
-                    0,tempHero.getMaxHealth()));
-
-            if(j == 0){
-                if(tempHero.getSkill_3()){
-                    tempHero.setSkill_3(false);
-                    buff.blue_angel_skill_3_leftRound.add(3);
-                }
-            }else{
-                if(tempHero.getSkill_3()){
-                    tempHero.setSkill_3(false);
-                    buff.red_angel_skill_3_leftRound.add(3);
-                }
-            }
-
-        }
-    }
-
-    public void initBuff(){
-        initSkill_2_buff();
-        initAngelSkill_3_Buff();
-    }
-
-    public void initSkill_2_buff(){
-        for(int i = 0 ; i < buff.blueTeam_angel_skill_2_buff.length ; i++){
-            if(buff.blueTeam_angel_skill_2_buff[i] > 0){
-                buff.blueTeam_angel_skill_2_buff[i]--;
-            }else if(buff.blueTeam_angel_skill_2_buff[i] == 0){
-                buff.blueTeam_angel_skill_2_buff[i]--;
-                playerListBlue.get(i).getMyHero().setAttack(playerListBlue.get(i).getMyHero().getAttack() + 50);
-                playerListBlue.get(i).getMyHero().setEndurance(200);
-            }
-        }
-    }
-
-    private void initsideAngelSkil_3_Buff(Array<Integer> skilllist, Array<Player> playerList){
-        for(int i = 0 ; i < skilllist.size ; i++){
-            if(skilllist.get(i) == 3){
-                for(Player k : playerList){
-                    if(!k.getMyHero().isDead())
-                        k.getMyHero().setHealth(MathUtils.clamp(k.getMyHero().getHealth() + 500,
-                                0, k.getMyHero().getMaxHealth()));
-
-                    addAttack(k);
-                }
-            }
-
-            skilllist.set(i,skilllist.get(i) - 1);
-
-            if(skilllist.get(i) == 0){
-                skilllist.removeIndex(i);
-                for(Player k : playerList){
-                    minAttack(k);
-                }
-            }
-        }
-
-    }
-
-    public void initAngelSkill_3_Buff(){
-        initsideAngelSkil_3_Buff(buff.blue_angel_skill_3_leftRound, playerListBlue);
-        initsideAngelSkil_3_Buff(buff.red_angel_skill_3_leftRound, playerListRed);
-    }
-
-
-
-    public void setAngelSkill_2_DeBuffFor(int team, int index){
-        if(team == Constants.PLAYER.BLUE_TEAM){
-            buff.blueTeam_angel_skill_2_buff[index] = 2;
-            playerListBlue.get(index).getMyHero().setEndurance(150);
-            playerListBlue.get(index).getMyHero().setAttack(playerListBlue.get(index).getMyHero().getAttack() - 50);
-        }else{
-            buff.redTeam_angel_skill_2_buff[index] = 2;
-            playerListRed.get(index).getMyHero().setEndurance(150);
-            playerListRed.get(index).getMyHero().setAttack(playerListRed.get(index).getMyHero().getAttack() - 50);
-        }
-    }
-
-    public void setAngelSkill_3_Buff(int team, int index){
-        if(team == Constants.PLAYER.BLUE_TEAM){
-            playerListBlue.get(index).getMyHero()
-        }
-    }
-
-    private void minAttack(Player k){
-        if(Angel.class.isInstance(k))
-            k.getMyHero().setAttack(k.getMyHero().getAttack() - Constants.Angel.ATTACK * 0.1f);
-        if(Protector.class.isInstance(k))
-            k.getMyHero().setAttack(k.getMyHero().getAttack() - Constants.Protector.ATTACK * 0.1f);
-        if(Sniper.class.isInstance(k))
-            k.getMyHero().setAttack(k.getMyHero().getAttack() - Constants.Sniper.ATTACK * 0.1f);
-        if(Wizard.class.isInstance(k))
-            k.getMyHero().setAttack(k.getMyHero().getAttack() - Constants.Wizard.ATTACK * 0.1f);
-        if(Sparda.class.isInstance(k))
-            k.getMyHero().setAttack(k.getMyHero().getAttack() - Constants.Sparda.ATTACK * 0.1f);
-    }
-
-    private void addAttack(Player k){
-        if(Angel.class.isInstance(k))
-            k.getMyHero().setAttack(k.getMyHero().getAttack() + Constants.Angel.ATTACK * 0.1f);
-        if(Protector.class.isInstance(k))
-            k.getMyHero().setAttack(k.getMyHero().getAttack() + Constants.Protector.ATTACK * 0.1f);
-        if(Sniper.class.isInstance(k))
-            k.getMyHero().setAttack(k.getMyHero().getAttack() + Constants.Sniper.ATTACK * 0.1f);
-        if(Wizard.class.isInstance(k))
-            k.getMyHero().setAttack(k.getMyHero().getAttack() + Constants.Wizard.ATTACK * 0.1f);
-        if(Sparda.class.isInstance(k))
-            k.getMyHero().setAttack(k.getMyHero().getAttack() + Constants.Sparda.ATTACK * 0.1f);
+    public void explode(Player player){
+        bomb.setFromPlayer(player);
+        bomb.explode(playerListRed, playerListBlue);
     }
 
     public Array<Player> getAllPlayerList(){
@@ -239,6 +95,14 @@ public class PlayerManager {
         list.addAll(playerListBlue);
 
         return list;
+    }
+
+    public Array<Player> getRedPlayerList(){
+        return playerListRed;
+    }
+
+    public Array<Player> getBluePlayerList(){
+        return playerListBlue;
     }
 
     public Bomb getBomb() {
