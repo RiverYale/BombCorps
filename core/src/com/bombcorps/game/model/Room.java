@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.bombcorps.game.controller.AssetsController;
 
 public class Room {
-    private int ownerPort;
+    private String ownerIp;
 
     private TextureRegion mapRegion;    //地图
     private TextureRegion[] heroRegion; //英雄头像
@@ -59,8 +59,8 @@ public class Room {
     }
 
 
-    private void init(int ownerPort){
-        this.ownerPort = ownerPort;
+    private void init(String onwerIp){
+        this.ownerIp = ownerIp;
         heroRegion = new TextureRegion[6];
         heroRegion[0] = AssetsController.instance.getRegion("Sparda0");
         heroRegion[1] = AssetsController.instance.getRegion("Protector0");
@@ -81,6 +81,14 @@ public class Room {
 
     public String getMapName(){
         return mapName;
+    }
+
+    public String getOwnerIp(){
+        return ownerIp;
+    }
+
+    public void setOwnerIp(String Ip){
+        this.ownerIp = Ip;
     }
 
     public void setMapRegion(TextureRegion mapRegion){
