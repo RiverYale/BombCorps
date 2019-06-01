@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.bombcorps.game.controller.NetController;
 
 import java.util.ArrayList;
 
@@ -59,7 +60,7 @@ public class LobbyScreen extends AbstractGameScreen{
 
     @Override
     public InputProcessor getInputProcessor() {
-        return null;
+        return stage;
     }
 
     @Override
@@ -156,6 +157,7 @@ public class LobbyScreen extends AbstractGameScreen{
         roomList.clear();
         for(int i=0;i<numOfRoom;i++){
             //roomList.add(new RoomSelect());网端获取参数
+
         }
     }
 
