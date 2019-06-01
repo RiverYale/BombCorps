@@ -14,30 +14,19 @@ public class WorldRenderer {
     private OrthographicCamera camera;
     private SpriteBatch batch;
     private WorldController worldController;
-    private ShaderProgram shaderMonpchrome;
 
-    private static final boolean DEBUG_DRAW_BOX2D_WORLD = false;
-    private Box2DDebugRenderer box2DDebugRenderer;
 
     public WorldRenderer(WorldController worldController){
         this.worldController = worldController;
+        camera = worldController.getCamera();
         init();
     }
 
     private void init(){
         batch = new SpriteBatch();
-        //camera = new OrthographicCamera(Constants.VIEWPORT_WIDTH,Constants.VIEWPORT_HEIGHT);
+        camera = new OrthographicCamera(Constants.VIEWPORT_WIDTH,Constants.VIEWPORT_HEIGHT);
         camera.position.set(0,0,0);
         camera.update();
-
-        box2DDebugRenderer = new Box2DDebugRenderer();
-
-        /*shaderMonpchrome = new ShaderProgram(Gdx.files.internal());
-        if (!shaderMonochrome.isCompiled()) {
-            String msg = "Could not compile shader program: " + shaderMonochrome.getLog();
-            throw new GdxRuntimeException(msg);
-        }
-         */
     }
 
     public void render(){
@@ -46,21 +35,20 @@ public class WorldRenderer {
 
 
     private void renderWorld(SpriteBatch batch){
-       //worldController.cameraHelper.applyTo(camera);
+        worldController.getCameraController().applyTo(camera);
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-
-        worldController.World().render(batch);
+        worldController.getWorld().render(batch);
         batch.end();
     }
 
     public void resize(int width,int height){
-
+        camera.viewportWidth =(Constants.VIEWPORT_HEIGHT/height)*width;
+        camera.update();
     }
 
     public void dispose(){
         batch.dispose();
-        //shaderMonochrome.dispose;
     }
 
 
@@ -71,3 +59,4 @@ public class WorldRenderer {
 
 
 }
+

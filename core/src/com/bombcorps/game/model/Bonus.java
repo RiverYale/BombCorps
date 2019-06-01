@@ -3,6 +3,8 @@ package com.bombcorps.game.model;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.bombcorps.game.controller.AssetsController;
 
@@ -14,6 +16,13 @@ public class Bonus {
     public TextureRegion bonusBox;
     public TextureRegion parachute;
 
+    private Rectangle rec;
+
+    private TYPE type;
+    private enum TYPE{
+        ADDHEALTH, ADDENDURANCE
+    }
+
     private STATE state;
     private enum STATE{
         ACTIVATED, GROUNDED
@@ -21,6 +30,7 @@ public class Bonus {
 
     public Bonus(int mapWidth){
         init(mapWidth);
+//        initType();
     }
 
     public void init(int mapWidth){
@@ -37,6 +47,21 @@ public class Bonus {
     public void initPosition(int mapWidth){
         position = new Vector2();
         position.x = (float)Math.random() * (mapWidth - dimension.x);
+    }
+
+    public void attachTo(Player player){
+        switch (type){
+            case ADDENDURANCE:
+                player.getMyHero().setEndurance(MathUtils.clamp(
+                        player.getMyHero().getEndurance() + Constants.BONUS.ENDURENCE,
+                        0, Constants.MAX_ENDURENCE));
+                break;
+            case ADDHEALTH:
+                player.getMyHero().setHealth(MathUtils.clamp(
+                        player.getMyHero().getHealth() + Constants.BONUS.HEALTH,0,
+                        player.getMyHero().getMaxHealth() ));
+                break;
+        }
     }
 
     public void update(float deltaTime){
@@ -59,6 +84,9 @@ public class Bonus {
                 scale.x, scale.y,0);
     }
 
+//    public void
+
+
     public void setState(int input){
         switch (input){
             case Constants.BONUS.GROUNDED:
@@ -68,6 +96,20 @@ public class Bonus {
                 state = STATE.ACTIVATED;
                 break;
         }
+    }
+
+    public void setType(int type){
+        if(type == Constants.BONUS.ADDHEALTH){
+            this.type = TYPE.ADDHEALTH;
+        }else{
+            this.type = TYPE.ADDENDURANCE;
+        }
+    }
+
+    public Rectangle getRect(){
+        rec.x = position.x;
+        rec.y = position.y;
+        return rec;
     }
 
 }

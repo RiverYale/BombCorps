@@ -11,13 +11,24 @@ import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.model.Constants;
 import com.bombcorps.game.model.auras.Aura;
 
-public abstract class BaseHero{
+public class BaseHero{
+
+    /*
+    技能
+     */
+    protected boolean skill_jump;
+    protected boolean skill_1;
+    protected boolean skill_2;
+    protected boolean skill_3;
 
     private float level;
     /*
         角色基本属性
      */
     private Rectangle rec;
+
+
+    private float maxHealth;
 
     private float health;         //血量
     private float endurance;      //精力
@@ -26,7 +37,9 @@ public abstract class BaseHero{
     private float attack;         //攻击力
     private float antiArmor;
     private float criticalProbability;  //暴击几率
+    private float criticalRate; //暴击倍率
     private float armor;          //护甲值
+    private float decreaseRate;     //减伤率
 
     /*
     角色其他属性
@@ -46,7 +59,7 @@ public abstract class BaseHero{
     /*
     渲染英雄
      */
-    private Aura aura;
+    private Array<Aura> aura;
 
     private float stateTime;
     private int attackTimes;
@@ -54,9 +67,7 @@ public abstract class BaseHero{
     private TextureRegion staticRegion;
     private TextureRegion deadRegion;
     private Array<TextureRegion> moveRegions;
-//    private TextureRegion[] moveRegions;
     private Array<TextureRegion> attackRegions;
-//    private TextureRegion[] attackRegions;
 
     private TextureRegion moveKeyFrame;
     private  TextureRegion attackKeyFrame;
@@ -65,7 +76,7 @@ public abstract class BaseHero{
     private Animation attackAnimation;
 
     private enum STATE{          //人物状态
-        WAIT,FALLING, GROUNDED,MOVING,ATTACK,DEAD
+        FALLING, GROUNDED,MOVING,ATTACK,DEAD
     }
 
     public BaseHero(int hero){
@@ -77,9 +88,7 @@ public abstract class BaseHero{
         staticRegion = new TextureRegion();
         deadRegion = new TextureRegion();
         moveRegions = new Array<TextureRegion>();
-//        moveRegions = new TextureRegion[4];
         attackRegions = new Array<TextureRegion>();
-//        attackRegions = new TextureRegion[2];
 
         switch(hero){
             case Constants.ANGEL:
@@ -89,15 +98,9 @@ public abstract class BaseHero{
                 moveRegions.add(AssetsController.instance.getRegion("Angel_move1"));
                 moveRegions.add(AssetsController.instance.getRegion("Angel_move2"));
                 moveRegions.add(AssetsController.instance.getRegion("Angel_move3"));
-//                moveRegions[0] = AssetsController.instance.getRegion("Angel_move0");
-//                moveRegions[1] = AssetsController.instance.getRegion("Angel_move1");
-//                moveRegions[2] = AssetsController.instance.getRegion("Angel_move2");
-//                moveRegions[3] = AssetsController.instance.getRegion("Angel_move3");
 
                 attackRegions.add(AssetsController.instance.getRegion("Angel_attack0"));
                 attackRegions.add(AssetsController.instance.getRegion("Angel_attack1"));
-//                attackRegions[0] = AssetsController.instance.getRegion("Angel_attack0");
-//                attackRegions[1] = AssetsController.instance.getRegion("Angel_attack1");
                 break;
             case Constants.SPARDA:
                 staticRegion = AssetsController.instance.getRegion("Sparda_stand");
@@ -106,15 +109,9 @@ public abstract class BaseHero{
                 moveRegions.add(AssetsController.instance.getRegion("Sparda_move1"));
                 moveRegions.add(AssetsController.instance.getRegion("Sparda_move2"));
                 moveRegions.add(AssetsController.instance.getRegion("Sparda_move3"));
-//                moveRegions[0] = AssetsController.instance.getRegion("Sparda_move0");
-//                moveRegions[1] = AssetsController.instance.getRegion("Sparda_move1");
-//                moveRegions[2] = AssetsController.instance.getRegion("Sparda_move2");
-//                moveRegions[3] = AssetsController.instance.getRegion("Sparda_move3");
 
                 attackRegions.add(AssetsController.instance.getRegion("Sparda_attack0"));
                 attackRegions.add(AssetsController.instance.getRegion("Sparda_attack1"));
-//                attackRegions[0] = AssetsController.instance.getRegion("Sparda_attack0");
-//                attackRegions[1] = AssetsController.instance.getRegion("Sparda_attack1");
                 break;
             case Constants.SNIPER:
                 staticRegion = AssetsController.instance.getRegion("Sniper_stand");
@@ -123,15 +120,9 @@ public abstract class BaseHero{
                 moveRegions.add(AssetsController.instance.getRegion("Sniper_move1"));
                 moveRegions.add(AssetsController.instance.getRegion("Sniper_move2"));
                 moveRegions.add(AssetsController.instance.getRegion("Sniper_move3"));
-//                moveRegions[0] = AssetsController.instance.getRegion("Sniper_move0");
-//                moveRegions[1] = AssetsController.instance.getRegion("Sniper_move1");
-//                moveRegions[2] = AssetsController.instance.getRegion("Sniper_move2");
-//                moveRegions[3] = AssetsController.instance.getRegion("Sniper_move3");
 
                 attackRegions.add(AssetsController.instance.getRegion("Sniper_attack0"));
                 attackRegions.add(AssetsController.instance.getRegion("Sniper_attack1"));
-//                attackRegions[0] = AssetsController.instance.getRegion("Sniper_attack0");
-//                attackRegions[1] = AssetsController.instance.getRegion("Sniper_attack1");
                 break;
             case Constants.WIZARD:
                 staticRegion = AssetsController.instance.getRegion("Wizard_stand");
@@ -140,15 +131,9 @@ public abstract class BaseHero{
                 moveRegions.add(AssetsController.instance.getRegion("Wizard_move1"));
                 moveRegions.add(AssetsController.instance.getRegion("Wizard_move2"));
                 moveRegions.add(AssetsController.instance.getRegion("Wizard_move3"));
-//                moveRegions[0] = AssetsController.instance.getRegion("Wizard_move0");
-//                moveRegions[1] = AssetsController.instance.getRegion("Wizard_move1");
-//                moveRegions[2] = AssetsController.instance.getRegion("Wizard_move2");
-//                moveRegions[3] = AssetsController.instance.getRegion("Wizard_move3");
 
                 attackRegions.add(AssetsController.instance.getRegion("Wizard_attack0"));
                 attackRegions.add(AssetsController.instance.getRegion("Wizard_attack1"));
-//                attackRegions[0] = AssetsController.instance.getRegion("Wizard_attack0");
-//                attackRegions[1] = AssetsController.instance.getRegion("Wizard_attack1");
                 break;
             case Constants.PROTECTOR:
                 staticRegion = AssetsController.instance.getRegion("Protector_stand");
@@ -157,15 +142,9 @@ public abstract class BaseHero{
                 moveRegions.add(AssetsController.instance.getRegion("Protector_move1"));
                 moveRegions.add(AssetsController.instance.getRegion("Protector_move2"));
                 moveRegions.add(AssetsController.instance.getRegion("Protector_move3"));
-//                moveRegions[0] = AssetsController.instance.getRegion("Protector_move0");
-//                moveRegions[1] = AssetsController.instance.getRegion("Protector_move1");
-//                moveRegions[2] = AssetsController.instance.getRegion("Protector_move2");
-//                moveRegions[3] = AssetsController.instance.getRegion("Protector_move3");
 
                 attackRegions.add(AssetsController.instance.getRegion("Protector_attack0"));
                 attackRegions.add(AssetsController.instance.getRegion("Protector_attack1"));
-//                attackRegions[0] = AssetsController.instance.getRegion("Protector_attack0");
-//                attackRegions[1] = AssetsController.instance.getRegion("Protector_attack1");
                 break;
         }
         initAnimation();
@@ -177,8 +156,14 @@ public abstract class BaseHero{
     }
 
     private void init(){
-        aura = new Aura();
+        skill_jump = false;
+        skill_1 = false;
+        skill_2 = false;
+        skill_3 = false;
+        this.state = STATE.GROUNDED;
 
+        aura = new Array<Aura>(6);
+        criticalRate = 2;
         destination = 0;
         health = 0;
         endurance = Constants.MAX_ENDURENCE;
@@ -199,13 +184,20 @@ public abstract class BaseHero{
         headright = false;
         stateTime = 0;
         attackTimes = 1;
+        decreaseRate = 0f;
+
     }
 
 
 
     public void update(float deltaTime){
         updatePosition(deltaTime);
-        aura.update(deltaTime, position);
+        for(Aura i : aura)
+            i.update(deltaTime, position);
+
+        if(health == 0){
+            state = STATE.DEAD;
+        }
     }
 
     protected void updatePosition(float deltaTime){
@@ -244,9 +236,10 @@ public abstract class BaseHero{
     }
 
     public void render(SpriteBatch batch){
-        aura.render(batch);
+        for(Aura i : aura)
+            i.render(batch);
         renderHero(batch);
-    };
+    }
 
     protected void renderHero(SpriteBatch batch){
 
@@ -281,10 +274,9 @@ public abstract class BaseHero{
 
                 if(stateTime > attackAnimation.getAnimationDuration()){
                     attackTimes--;
+                    state = STATE.GROUNDED;
                     if(attackTimes > 0){
-                        stateTime -= attackAnimation.getAnimationDuration();
-                    }else {
-                        state = STATE.GROUNDED;
+                        endurance = Constants.MAX_ENDURENCE / 2;
                     }
                 }
                 break;
@@ -292,10 +284,66 @@ public abstract class BaseHero{
 
     }
 
+    public void setskill_jump(){
+        if(!skill_1 && !skill_2 && !skill_3 && endurance >= 100) {
+            endurance -= 100;
+            skill_jump = true;
+        }
+    }
+
+    public boolean getSkill_jump(){
+        return skill_jump;
+    }
+
+    public boolean getSkill_1() {
+        return skill_1;
+    }
+
+
+    public boolean getSkill_2() {
+        return skill_2;
+    }
+
+
+    public boolean getSkill_3() {
+        return skill_3;
+    }
+
+    public void setSkill_jump(boolean skill_jump) {
+        this.skill_jump = skill_jump;
+    }
+
+    public void setSkill_1(boolean skill_1) {
+        this.skill_1 = skill_1;
+    }
+
+    public void setSkill_2(boolean skill_2) {
+        this.skill_2 = skill_2;
+    }
+
+    public void setSkill_3(boolean skill_3) {
+        this.skill_3 = skill_3;
+    }
 
     /*
     set 与 put函数
      */
+
+    public float getCriticalRate() {
+        return criticalRate;
+    }
+
+    public void setCriticalRate(float criticalRate) {
+        this.criticalRate = criticalRate;
+    }
+
+    public float getMaxHealth() {
+        return maxHealth;
+    }
+
+    public void setMaxHealth(float maxHealth) {
+        this.maxHealth = maxHealth;
+    }
 
     public void setLevel(float level){
         this.level = level;
@@ -305,7 +353,7 @@ public abstract class BaseHero{
         return level;
     }
 
-    public Aura getAura(){
+    public Array<Aura> getAura(){
         return aura;
     }
 
@@ -328,18 +376,46 @@ public abstract class BaseHero{
         velocity.x = VelocityX;
     }
 
+    public boolean isDead(){
+        return state == STATE.DEAD;
+    }
+
+    public int getState(){
+        switch (state){
+            case ATTACK:
+                return Constants.STATE_ATTACK;
+            case MOVING:
+                return Constants.STATE_MOVING;
+            case FALLING:
+                return Constants.STATE_FALLING;
+            case DEAD:
+                return Constants.STATE_DEAD;
+            default:
+                return Constants.STATE_GROUNDED;
+        }
+    }
+
     public void setState(int input){
         switch (input){
-            case 1:
+            case Constants.STATE_MOVING:
                 velocity.x = headright? Constants.VELOCITY_X : -Constants.VELOCITY_X;
                 state = STATE.MOVING;
                 break;
-            case 2:
+            case Constants.STATE_GROUNDED:
                 state = STATE.GROUNDED;
                 break;
-            case 3:
+            case Constants.STATE_FALLING:
                 state = STATE.FALLING;
                 break;
+            case Constants.STATE_DEAD:
+                state = STATE.DEAD;
+                break;
+            case Constants.STATE_ATTACK:
+                state = STATE.ATTACK;
+                break;
+//            case Constants.STATE_WAIT:
+//                state = STATE.WAIT;
+//                break;
         }
     }
 
@@ -369,6 +445,10 @@ public abstract class BaseHero{
 
     public void setPosition(Vector2 position) {
         this.position = position;
+    }
+
+    public int getAttackTimes() {
+        return attackTimes;
     }
 
     public void setDirection(boolean direction) {
@@ -407,4 +487,19 @@ public abstract class BaseHero{
         return headright;
     }
 
+    public float getAntiArmor() {
+        return antiArmor;
+    }
+
+    public void setAntiArmor(float antiArmor) {
+        this.antiArmor = antiArmor;
+    }
+
+    public float getDecreaseRate() {
+        return decreaseRate;
+    }
+
+    public void setDecreaseRate(float decreaseRate) {
+        this.decreaseRate = decreaseRate;
+    }
 }

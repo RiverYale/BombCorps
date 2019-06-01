@@ -42,9 +42,10 @@ public class MenuScreen extends AbstractGameScreen {
         super(game);
     }
 
+    //要修改
     @Override
     public InputProcessor getInputProcessor() {
-        return null;
+        return stage;
     }
 
     @Override
@@ -58,9 +59,9 @@ public class MenuScreen extends AbstractGameScreen {
 ////                rebuildStage();
 ////            }
 ////        }
-        stage.act(deltaTime);
-        stage.draw();
+
         //Table.drawDebug(stage);
+        rebulidStage();
     }
     @Override public void resize(int width,int height){
         stage.getViewport().update(width,height);
@@ -68,7 +69,6 @@ public class MenuScreen extends AbstractGameScreen {
     @Override public void show(){
         stage = new Stage(new StretchViewport(
                 Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT));
-        Gdx.input.setInputProcessor(stage);
         rebulidStage();
     }
     @Override public void hide(){
@@ -89,9 +89,11 @@ public class MenuScreen extends AbstractGameScreen {
     private Image btnMenuPlay;
     private Image btnMenuOptions;
     private Image btnQuit;
+    private Image btnAbout;
 
     // options
     private Window winOptions;
+    private Window winAbout;
     private TextButton btnWinOptSave;
     private TextButton btnWinOptCancel;
     private Slider sldSound;
@@ -110,6 +112,7 @@ public class MenuScreen extends AbstractGameScreen {
         Table layerBackground = buildBackgroundLayer();
         Table layerControls = buildControlsLayer();
         Table layerOptionsWindow = buildOptionsWindowLayer();
+        Table layerAboutWindow = bulidAboutWindowLayer();
         // assemble stage for menu screen
         stage.clear();
         Stack stack = new Stack();
@@ -118,13 +121,19 @@ public class MenuScreen extends AbstractGameScreen {
         stack.add(layerBackground);
         stack.add(layerControls);
         stage.addActor(layerOptionsWindow);
+        stage.addActor(layerAboutWindow);
+        layerAboutWindow.setSize(Gdx.graphics.getWidth()/3,Gdx.graphics.getHeight()/3);
+        layerAboutWindow.setPosition((Gdx.graphics.getWidth()-winAbout.getWidth())/2,(Gdx.graphics.getHeight()-winAbout.getHeight())/2);
+        layerOptionsWindow.setSize(Gdx.graphics.getWidth()/3,Gdx.graphics.getHeight()/3);
+        layerOptionsWindow.setPosition((Gdx.graphics.getWidth()-winOptions.getWidth())/2,(Gdx.graphics.getHeight()-winOptions.getHeight())/2);
 
 
     }
     private Table buildBackgroundLayer(){
         Table layer = new Table();
-        imgBackground = new Image(new TextureRegion(new Texture(Gdx.files.internal("background1.png")),0,0,1024,576));
-        layer.add(imgBackground);
+        imgBackground = new Image(new TextureRegion(new Texture(Gdx.files.internal("background1.png"))));
+        imgBackground.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        layer.addActor(imgBackground);
         return layer;
     }
     private Table buildControlsLayer(){
@@ -148,10 +157,12 @@ public class MenuScreen extends AbstractGameScreen {
         btnMenuPlay.setScale(1.8f);
         layer.bottom();
         layer.add(btnMenuPlay).padLeft(270);
-        btnMenuPlay.addListener(new ChangeListener() {
+        btnMenuPlay.addListener(new InputListener() {
+
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 onPlayClicked();
+                return true;
             }
         });
         //添加设置按钮
@@ -166,28 +177,52 @@ public class MenuScreen extends AbstractGameScreen {
                 return true;
             }
         });
+
+        //添加About按钮
+        btnAbout = new Image(new Texture(Gdx.files.internal("button_setting.png")));
+        btnAbout.setScale(1.8f);
+        layer.add(btnAbout).padLeft(270);
+        btnAbout.addListener(new InputListener() {
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                onAboutClicked();
+                return true;
+            }
+        });
         return layer;
     }
     private Table buildOptionsWindowLayer(){
         BitmapFont font =new BitmapFont(Gdx.files.internal("winOptions.fnt"),Gdx.files.internal("winOptions.png"),false);
         Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(new Texture(Gdx.files.internal("window.png"))));
         winOptions = new Window("Options",windowStyle);
-        winOptions.setSize(300,300);
         winOptions.add(buildOptWinAudioSettings()).row();
         winOptions.add(bulidOptWinNameSettings()).row();
         winOptions.add(buildOptWinButtons()).pad(5,0,10,0);
         //winOptions.setColor(1,1,1,1f);
-
         winOptions.setVisible(false);
-
         //winOptions.pack();
-        winOptions.setPosition(Constants.VIEWPORT_GUI_WIDTH-winOptions.getWidth()-50,50);
         return winOptions;
 
     }
+    private  Table bulidAboutWindowLayer(){
+        BitmapFont font =new BitmapFont(Gdx.files.internal("winOptions.fnt"),Gdx.files.internal("winOptions.png"),false);
+        TextureRegionDrawable winResultsDrawable = new TextureRegionDrawable(new Texture(Gdx.files.internal("winresult.png")));
+        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),winResultsDrawable);
+        winAbout = new Window("",windowStyle);
+        winAbout.setSize(Gdx.graphics.getWidth()/3,Gdx.graphics.getHeight()/3);
+        winAbout.setPosition((Gdx.graphics.getWidth()-winAbout.getWidth())/2,(Gdx.graphics.getHeight()-winAbout.getHeight())/2);
+        Label about = new Label("PRODUCERS:\n Zichuan Zhao\n ZhongWei Liu\n WenXin Zhu\n Rui Chen\n YuXuan Qin" ,new Label.LabelStyle(font,Color.BLACK));
+        winAbout.addActor(about);
+        //about.setSize(winAbout.getWidth(),winAbout.getHeight());
+        about.setAlignment(Align.center);
+        about.setPosition(winAbout.getWidth()/2.5f,winAbout.getHeight()/3);
+        winAbout.setVisible(false);
+        return winAbout;
+    }
     private void onPlayClicked(){
         //切换到LobbyScreen
-        //game.setScreen(new LobbyScreen(game));
+        game.loadLobbyScreen();
     }
     private void loadSettings(){
         DataController prefs = DataController.instance;
@@ -216,10 +251,11 @@ public class MenuScreen extends AbstractGameScreen {
     }
     private void onOptionsClicked(){
         loadSettings();
-        btnMenuPlay.setVisible(false);
-        btnQuit.setVisible(false);
-        btnMenuOptions.setVisible(false);
+
         winOptions.setVisible(true);
+    }
+    private void onAboutClicked(){
+        winAbout.setVisible(true);
     }
     private Table buildOptWinAudioSettings(){
         Table tbl = new Table();
@@ -296,6 +332,7 @@ public class MenuScreen extends AbstractGameScreen {
         return tbl;
 
     }
+
 
 
 

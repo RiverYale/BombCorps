@@ -26,17 +26,24 @@ public class Constants {
     public static final float LEVEL_4 = 1.4f;
     public static final float LEVEL_5 = 1.5f;
 
+    public static final float RAGEPOWER_ADD_PER_ROUND = 30f;
+
     public static final class PLAYER{
         public static final int STATE_LOCAL = 0;
         public static final int STATE_OTHERS = 1;
 
-        public static final int RIGHT_SIDE = 2;
-        public static final int LEFT_SIDE = 1;
+        public static final int RED_TEAM = 2;
+        public static final int BLUE_TEAM = 1;
     }
 
 
     public static final class BONUS{
         public static final float BONUS_VELOCITY_Y = -10;
+        public static final int ADDHEALTH = 0;
+        public static final int ADDENDURANCE = 1;
+        public static final float HEALTH = 400f;
+        public static final float ENDURENCE = 100f;
+
 
         public static final int ACTIVATED = 2;
         public static final int GROUNDED = 3;
@@ -52,6 +59,9 @@ public class Constants {
     public static final class BOMB{
         public static final int STATE_FLY = 0;
         public static final int STATE_BOOM = 1;
+        public static final int STATE_READY = 2;
+        public static final int STATE_WAIT = 3;
+
         public static final float BOOM_DURETION = 0.2f;
         public static final Vector2 BOOM_DIMENSION = new Vector2(5f,5f);
         public static final Vector2 BOOM_SCALE = new Vector2(1f,1f);
@@ -93,7 +103,7 @@ public class Constants {
     public static final int SNIPER = 3;
     public static final int WIZARD = 4;
 
-    public static final int STATE_WAIT = 0;
+//    public static final int STATE_WAIT = 0;
     public static final int STATE_MOVING = 1;
     public static final int STATE_GROUNDED = 2;
     public static final int STATE_FALLING = 3;
@@ -121,6 +131,7 @@ public class Constants {
 
     public static final float VIEWPORT_HEIGHT = 10.0f;
 
+
     /*
     Sniper
      */
@@ -145,6 +156,7 @@ public class Constants {
         public static final float SKILL_1_ANTI_ARMOR_RATE = 0.3f;
         public static final float SKILL_2_SECOND_HIT_DAMAGE_PERCENTAGE = 0.5f;
         public static final float SKILL_3_CRITICALBROBABILITY_DAMAGE_RATE = 3f;
+        public static final int SKILL_3_LEFT_ROUND = 2;
     }
 
     /*
@@ -169,9 +181,9 @@ public class Constants {
         技能效果加成
          */
         public static final float SKILL_0_HEALTH_PER_ROUND_ADD = 150f;
-        public static final float SKILL_1_HEALTH_PERCENTAGE_ADD = 0.1f;
+        public static final float SKILL_1_HEALTH_ADD = 200f;
         public static final int SKILL_2_ROUND_NUM = 2;
-        public static final float SKILL_2_ATTACK_PERCENTAGE_MIN = 0.2f;
+        public static final float SKILL_2_ATTACK_MIN = 50f;
         public static final float SKILL_2_ENDURANCE_MIN = 80f;
         public static final float SKILL_3_TEAMMATE_HEALTH_ADD = 500f;
         public static final float SKILL_3_TEAMMATE_ATTACK_PERCENTAGE_ADD = 0.1f;
@@ -200,8 +212,8 @@ public class Constants {
          */
         public static final float SKILL_0_DAMAGE_PER_ROUND_PER_LAYER = 50f;
         public static final float SKILL_1_LAYERS_ADD = 3f;
-        public static final float SKILL_2_SEAL_ROUND = 1f;
-        public static final float SKILL_3_PERCENTAGE_PER_LAYER = 0.1f;
+        public static final float SKILL_2_SEAL_ROUND = 2f;
+        public static final float SKILL_3_PER_LAYER = 60f;
     }
 
     /*
@@ -219,18 +231,18 @@ public class Constants {
         public static final float SKILL_1_ENDURENCE_COST = 50f;
         public static final float SKILL_2_ENDURENCE_COST = 80f;
         public static final float SKILL_3_ENDURENCE_COST = 100f;
+        public static final float SKILL_3_RAGEPOWER_COST = 100f;
         public static final float SKILL_1_HEALTH_COST = 100f;
-        public static final float SKILL_2_HEALTH_COST = 100f;
-        public static final float SKILL_3_HEALTH_COST = 100f;
+        public static final float SKILL_2_RAGEPOWER_COST = 100f;
         /*
         技能效果加成
          */
-        public static final float SKILL_0_ATTACK_PERCENTAGE_ADD = 0.1f;
         public static final float SKILL_0_HEALTH_PERCENTAGE_ADD = 0.3f;
         public static final float SKILL_1_ATTACK_ADD = 50f;
         public static final float SKILL_2_CRITICALPROBABILITY_ADD = 0.3f;
-        public static final float SKILL_3_POWERRAGE_EACH_ROUND_COST = 20f;
-
+        public static final float SKILL_3_HEALTH_EACH_ROUND = 100f;
+        public static final float SKILL_3_HEALTH_INSTANT = 300f;
+        public static final int SKILL_3_ROUND = 3;
     }
 
     /*
@@ -255,7 +267,8 @@ public class Constants {
         技能效果加成
          */
         public static final float SKILL_1_ARMOR_ADD = 100f;
-        public static final float SKILL_2_SHIELD_PERCENTAGE = 0.2f;
+        public static final int SKILL_2_ROUND = 2;
+        public static final int SKILL_2_ARMOR_ADD = 100;
         public static final int SKILL_3_ROUND_NUM = 2;
         public static final float SKILL_3_TEAMMATE_DAMAGE_PERCENTAGE = 0.4f;
         public static final float SKILL_3_SELF_DAMAGE_PERCENTAGE = 0.6f;

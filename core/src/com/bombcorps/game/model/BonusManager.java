@@ -13,11 +13,11 @@ public class BonusManager {
         this.mapWidth = mapWidth;
     }
 
-    public void setBonusByChance(){
-        if(Math.random() > Constants.BONUS.BONUS_CHANCE)
-            return;
+    public void addBonus(int type){             //输入bonus的类别，产生该种bonus,位置随机
 
-        bonusList.add(new Bonus(mapWidth));
+        Bonus bonus = new Bonus(mapWidth);
+        bonus.setState(type);
+        bonusList.add(bonus);
     }
 
     public void update(float deltaTime){
