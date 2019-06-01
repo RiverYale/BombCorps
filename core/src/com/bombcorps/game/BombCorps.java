@@ -1,58 +1,29 @@
 package com.bombcorps.game;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Interpolation;
+import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.controller.CameraController;
 import com.bombcorps.game.controller.InputController;
 import com.bombcorps.game.controller.NetController;
 import com.bombcorps.game.model.Player;
 import com.bombcorps.game.view.DirectedGame;
+import com.bombcorps.game.view.MenuScreen;
+import com.bombcorps.game.view.ScreenTransition;
 
-public class BombCorps extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
-
-
-	public int x = 0, y = 0, width = 4, height = 4;
-    public OrthographicCamera camera;
-    public CameraController cameraController;
-
-
-
+public class BombCorps extends DirectedGame {
 	@Override
-	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
-
-        cameraController = new CameraController();
-        cameraController.setPosition(0, 0);
-        camera = new OrthographicCamera(18, 10);
-		NetController net = new NetController();
-        Gdx.input.setInputProcessor(new GestureDetector(new InputController(cameraController, camera, net)));
-	}
-
-	@Override
-	public void render () {
-        cameraController.applyTo(camera);
-        batch.setProjectionMatrix(camera.combined);
-
-		Gdx.gl.glClearColor(1, 1, 1, 1.0f);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(img, x, y, width, height);
-        batch.end();
-	}
-	
-	@Override
-	public void dispose () {
-		batch.dispose();
-		img.dispose();
+	public void create() {
+		setScreen(new MenuScreen(this));
 	}
 }
