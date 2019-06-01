@@ -29,7 +29,7 @@ public class NetController {
     private ArrayList<Ai> aiList;
     private WorldController world;
     private boolean bool_stop;
-    private DirctGame game;
+    private DirectedGame game;
 
     //网络行为协议
     private static final int REFRESH_ROOM = 9;      //刷新房间

@@ -28,6 +28,7 @@ public abstract class DirectedGame implements ApplicationListener {
     private GameScreen gameScreen;
     private PersonalScreen personalScreen;
     private WorldController worldController;
+    private NetController netController;
 
     public void setScreen(AbstractGameScreen screen) {
         setScreen(screen, null);
@@ -35,17 +36,19 @@ public abstract class DirectedGame implements ApplicationListener {
     public void loadLobbyScreen(){
         lobbyScreen = new LobbyScreen(this);
         setScreen(lobbyScreen);
+        Constants.CurrentScreenFlag = Constants.LobbyScreenFlag;
     }
     public void loadRoomScreen(){
         roomScreen = new RoomScreen(this);
         setScreen(roomScreen);
+        Constants.CurrentScreenFlag = Constants.RoomScreenFlag;
     }
 
     public void loadGameScreen(){
         OrthographicCamera orthographicCamera =new OrthographicCamera();
         orthographicCamera.viewportHeight =10;
         orthographicCamera.viewportWidth = 18;
-        NetController netController = new NetController();
+        netController = new NetController();
 
         worldController = new WorldController(this,orthographicCamera,netController);
 
@@ -53,14 +56,17 @@ public abstract class DirectedGame implements ApplicationListener {
 
         gameScreen = new GameScreen(this,worldController);
         setScreen(gameScreen);
+        Constants.CurrentScreenFlag = Constants.GameScreenFlag;
     }
     public void loadPersonalScreen(){
         personalScreen = new PersonalScreen(this);
         setScreen(personalScreen);
+        Constants.CurrentScreenFlag = Constants.PersonalScreenFlag;
     }
     public void loadMenuScreen(){
         menuScreen= new MenuScreen(this);
         setScreen(menuScreen);
+        Constants.CurrentScreenFlag =Constants.MenuScreenFlag;
     }
     public void onHeroClicked(Player p){
        gameScreen.onHeroClicked(p);
@@ -79,18 +85,26 @@ public abstract class DirectedGame implements ApplicationListener {
         World world = new World(roomScreen.getRoom());
         return world;
     }
-    public void hasRoom(){
+    public boolean inRoom(){
+        if(Constants.CurrentScreenFlag== Constants.RoomScreenFlag){
+            return true;
+        }
+        else {return false}
+    }
 
+    public boolean hasRoom(){
+        if(inRoom()){
+            if (roomScreen.getRoom().getIp().equals(NetController.getLocalHostIp())){
+                return true;
+            }
+        }
+        else return false;
     }
     public void getRoom(){
-
+        roomScreen.getRoom();
     }
-    public void inRoom(){
 
-    }
-    public void startGame(){
-
-    }
+  
 
 
     public void setScreen(AbstractGameScreen screen,
