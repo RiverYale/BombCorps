@@ -27,7 +27,6 @@ public abstract class DirectedGame implements ApplicationListener {
     private RoomScreen roomScreen;
     private GameScreen gameScreen;
     private PersonalScreen personalScreen;
-    private InfoScreen infoScreen;
     private WorldController worldController;
 
     public void setScreen(AbstractGameScreen screen) {
@@ -38,7 +37,7 @@ public abstract class DirectedGame implements ApplicationListener {
         setScreen(lobbyScreen);
     }
     public void loadRoomScreen(){
-       // roomScreen = new RoomScreen(this);
+        roomScreen = new RoomScreen(this);
         setScreen(roomScreen);
     }
 
@@ -79,6 +78,18 @@ public abstract class DirectedGame implements ApplicationListener {
 
         World world = new World(roomScreen.getRoom());
         return world;
+    }
+    public void hasRoom(){
+
+    }
+    public void getRoom(){
+
+    }
+    public void inRoom(){
+
+    }
+    public void startGame(){
+
     }
 
 

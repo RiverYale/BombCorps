@@ -7,6 +7,7 @@ import com.bombcorps.game.model.Bonus;
 import com.bombcorps.game.model.Message;
 import com.bombcorps.game.model.Player;
 import com.bombcorps.game.model.Room;
+import com.bombcorps.game.view.DirectedGame;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -57,7 +58,7 @@ public class NetController {
         this.world = world;
     }
 
-    public void bindGame(DirctGame game) {
+    public void bindGame(DirectedGame game) {
         this.game = game;
     }
 
