@@ -14,6 +14,8 @@ public class Player {
     private String IP;
     private int level;
 
+    private Vector2 tap;
+
     private boolean ready;
 
     public SkillAndBuff skillAndBuff;
@@ -41,19 +43,19 @@ public class Player {
 
         switch (heroType){
             case Constants.PROTECTOR:
-                myHero = new Protector();
+                myHero = new Protector(level);
                 break;
             case Constants.ANGEL:
-                myHero = new Angel();
+                myHero = new Angel(level);
                 break;
             case Constants.SNIPER:
-                myHero = new Sniper();
+                myHero = new Sniper(level);
                 break;
             case Constants.SPARDA:
-                myHero = new Sparda();
+                myHero = new Sparda(level);
                 break;
             case Constants.WIZARD:
-                myHero = new Wizard();
+                myHero = new Wizard(level);
                 break;
         }
 
@@ -134,7 +136,12 @@ public class Player {
     }
 
     public void setTap(Vector2 tap){
+        this.tap = tap;
         bomb.setVelocity(new Vector2(myHero.getPosition().x - tap.x, myHero.getPosition().y - tap.y));
+    }
+
+    public Vector2 getTap(){
+        return tap;
     }
 
     public void shoot(){

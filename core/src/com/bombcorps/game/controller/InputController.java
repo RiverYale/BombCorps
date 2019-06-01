@@ -43,7 +43,7 @@ public class InputController implements GestureDetector.GestureListener {
         camera.unproject(v);
 
         //TODO 确定是否按到了炸弹
-        Rectangle r = controller.getCurPlayer().getBallOrBomb();
+        Rectangle r = controller.getCurPlayer().getBomb().getRect();
         if(r.contains(v.x, v.y)){
             hasAim = true;
         }else{
@@ -75,7 +75,7 @@ public class InputController implements GestureDetector.GestureListener {
         if(hasAim){
             Vector3 v = new Vector3(x, y, 0);
             camera.unproject(v);
-            controller.getCurPlayer().setTapPos(v.x, v.y);
+            controller.getCurPlayer().setTap(new Vector2(v.x, v.y));
             controller.resetOperations();
         }else{
             deltaX = -deltaX/Gdx.graphics.getWidth()*(camera.viewportWidth*camera.zoom);

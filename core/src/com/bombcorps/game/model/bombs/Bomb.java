@@ -154,24 +154,11 @@ public class Bomb {
         for(int i = 0 ; i < 4 ; i++){
             boom[4][0][i] = AssetsController.instance.getRegion(temp + i);
         }
-//        temp = "WizardBoom";
-//        for(int i = 0 ; i < 4 ; i++){
-//            boom[4][1][i] = AssetsController.instance.getRegion(temp + i);
-//        }
         temp = "heroAppear";
         for(int i = 0 ; i < 4 ; i++){
             boom[5][0][i] = AssetsController.instance.getRegion(temp + i);
         }
     }
-
-//    public void shoot() {
-//        setState(Constants.BOMB.STATE_FLY);
-//    }
-//
-//    public void onCollision() {
-//        setState(Constants.BOMB.STATE_BOOM);
-//
-//    }
 
     protected void updateRotation(float deltaTime){
         rotation += Constants.BOMB.ROTATE_SPEED * deltaTime;
@@ -418,7 +405,6 @@ public class Bomb {
                 case 5:
                     fromPlayer.getMyHero().setPosition(position);
             }
-//        }
 
     }
 
@@ -450,7 +436,6 @@ public class Bomb {
 
             if(i.getMyHero().getDecreaseRate() == Constants.Protector.SKILL_3_TEAMMATE_DAMAGE_PERCENTAGE) {   //减伤率为40%
                 Player protector = null;
-//                realDamage = (int)(realDamage * (1 - i.getMyHero().getDecreaseRate()));
                 if(i.getTeam() == Constants.PLAYER.RED_TEAM){
                     for(int k = 0 ; k < playerListRed.size ; k++){
                         if(i.getIp().equals(playerListRed.get(k).getIp())){
@@ -589,12 +574,6 @@ public class Bomb {
         rec.y = position.y;
         return rec;
     }
-
-//    public void setRec(Rectangle rec) {
-//        this.rec = rec;
-//    }
-
-
 
     public int getState(){
         switch (state){
