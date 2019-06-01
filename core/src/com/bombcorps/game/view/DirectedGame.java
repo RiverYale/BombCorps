@@ -89,9 +89,7 @@ public abstract class DirectedGame implements ApplicationListener {
         if(Constants.CurrentScreenFlag== Constants.RoomScreenFlag){
             return true;
         }
-        else {
             return false;
-        }
     }
 
     public boolean hasRoom(){
@@ -100,7 +98,7 @@ public abstract class DirectedGame implements ApplicationListener {
                 return true;
             }
         }
-        else return false;
+        return false;
     }
     public void getRoom(){
         roomScreen.getRoom();
