@@ -19,15 +19,13 @@ public class RoomSelect {
     private static final float height = Gdx.graphics.getHeight();
     private static final float width = Gdx.graphics.getWidth();
 
-    private Stack stack;
-    private Table table;
-
     private int mapNum;
     private Image backGround;
     private String mode;
     private String hosterName;
     private String personNum;
 
+    private Image smallMap;
     private Label labelMode;
     private Label labelHosterName;
     private Label labelPersonNum;
@@ -35,26 +33,21 @@ public class RoomSelect {
     private boolean click = false;
 
     RoomSelect(int mapNum, String mode, String hosterName, String personNum){
-        stack = new Stack();
-        stack.setSize(0.45f * width,0.1f * height);
-        table = new Table();
-
+        this.mapNum = mapNum;
         this.mode = mode;
         this.hosterName = hosterName;
         this.personNum = personNum;
 
-        Drawable drawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("lobbyscreen/roomshowbackground.png"))));
-        Image smallMap = new Image();
+        backGround = new Image(new Texture(Gdx.files.internal("lobbyscreen/roomshowbackground.png")));
+        backGround.setSize(0.45f * width,0.1f * height);
+
+        //smallMap = new Image();
         switch (mapNum){
             case 0:
                 smallMap = new Image(new Texture(Gdx.files.internal("lobbyscreen/map0.png")));
                 break;
         }
-        smallMap.setScale(0.8f);
-        Image intoRoom = new Image(new Texture(Gdx.files.internal("lobbyscreen/intoroom.png")));
-        intoRoom.setScale(0.8f);
-
-        table.background(drawable);
+        smallMap.setSize(0.035f * width, 0.035f * width);
 
         BitmapFont font = new BitmapFont(Gdx.files.internal("lobbyscreen/test3.fnt"),
                 Gdx.files.internal("lobbyscreen/test3.png"),false);
@@ -66,31 +59,25 @@ public class RoomSelect {
         labelPersonNum = new Label(personNum,style);
         labelPersonNum.setFontScale(0.05f * width / 100);
 
-        table.setFillParent(true);
-        table.pad(0.0333f*width);
-        table.left();
-        table.add(smallMap).padLeft(0.0223f*width);
-        table.add(labelMode).padLeft(0.0223f*width);
-        table.add(labelHosterName).padLeft(0.0223f*width);
-        table.add(labelPersonNum).padLeft(0.0223f*width);
-        table.add(intoRoom).padLeft(0.0223f*width);
-
-        table.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                click = true;
-            }
-        });
-
-        stack.addActor(table);
+        click = false;
+        addListener();
     }
 
     public void setPosition(float x,float y){
-        this.stack.setPosition(x,y);
+        backGround.setPosition(x, y);
+        float middle = backGround.getY() + backGround.getHeight()/2;
+        smallMap.setPosition(x + 0.024f * width, backGround.getY() + backGround.getHeight()/2 -smallMap.getHeight()/2 );
+        labelMode.setPosition(backGround.getX() + 0.07f * width,middle - labelMode.getHeight()/2 );
+        labelHosterName.setPosition(labelMode.getX() + 0.13f * width,labelMode.getY());
+        labelPersonNum.setPosition(labelHosterName.getX() + 0.13f * width,labelMode.getY());
     }
 
     public void addToStage(Stage stage){
-        stage.addActor(this.stack);
+        stage.addActor(backGround);
+        stage.addActor(smallMap);
+        stage.addActor(labelMode);
+        stage.addActor(labelHosterName);
+        stage.addActor(labelPersonNum);
     }
 
     public boolean isClick(){
@@ -99,5 +86,45 @@ public class RoomSelect {
 
     public void update(float deltaTime){
         click = false;
+    }
+
+    public void addListener(){
+        backGround.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                click = true;
+            }
+        });
+
+        smallMap.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                click = true;
+            }
+
+        });
+
+        labelMode.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                click = true;
+            }
+
+        });
+
+        labelHosterName.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                click = true;
+            }
+
+        });
+
+        labelPersonNum.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                click = true;
+            }
+        });
     }
 }
