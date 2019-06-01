@@ -31,6 +31,46 @@ public class Room {
         }
     }
 
+    public void removePlayer(Player player){
+        if(player.getTeam() == Constants.PLAYER.RED_TEAM){
+            for(int i = 0 ; i < playerManager.getRedPlayerList().size ; i++){
+                if(player.getIp().equals(playerManager.getPlayerListRed().get(i).getIp())){
+                    playerManager.getRedPlayerList().removeIndex(i);
+                    break;
+                }
+            }
+        }else{
+            for(int i = 0 ; i < playerManager.getBluePlayerList().size ; i++){
+                if(player.getIp().equals(playerManager.getPlayerListBlue().get(i).getIp())){
+                    playerManager.getBluePlayerList().removeIndex(i);
+                    break;
+                }
+            }
+        }
+    }
+
+    public void updatePlayer(Player player){
+        for(int i = 0 ; i < playerManager.getRedPlayerList().size ; i++){
+            if(player.getIp().equals(playerManager.getPlayerListRed().get(i).getIp())){
+                playerManager.getRedPlayerList().set(i,player);
+                break;
+            }
+        }
+
+        for(int i = 0 ; i < playerManager.getBluePlayerList().size ; i++){
+            if(player.getIp().equals(playerManager.getPlayerListBlue().get(i).getIp())){
+                playerManager.getBluePlayerList().set(i,player);
+                break;
+            }
+        }
+    }
+
+
+
+    public void addAi(){
+
+    }
+
     public void switchTeam(Player player){
         /*
         更换房间
