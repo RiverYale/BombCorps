@@ -31,11 +31,11 @@ public class SiteShow {
         stack.setSize(0.111f * width,0.16f * height);
 
         hero = new Image[5];
-        hero[0] = new Image(new Texture("hero/Angel_stand.png"));
-        hero[1] = new Image(new Texture("hero/Sparda_stand.png"));
-        hero[2] = new Image(new Texture("hero/Protector_stand.png"));
-        hero[3] = new Image(new Texture("hero/Sniper_stand.png"));
-        hero[4] = new Image(new Texture("hero/Wizard_stand.png"));
+        hero[0] = new Image(new Texture("roomscreen/Angel_stand.png"));
+        hero[1] = new Image(new Texture("roomscreen/Sparda_stand.png"));
+        hero[2] = new Image(new Texture("roomscreen/Protector_stand.png"));
+        hero[3] = new Image(new Texture("roomscreen/Sniper_stand.png"));
+        hero[4] = new Image(new Texture("roomscreen/Wizard_stand.png"));
 
         this.heroSelect = heroSelect;
         this.playerName = playerId;
