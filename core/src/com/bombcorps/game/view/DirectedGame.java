@@ -82,7 +82,7 @@ public abstract class DirectedGame implements ApplicationListener {
         gameScreen.errorStop();
     }
     public void errorQuit(){
-        roomScreen.errorQuit();
+//        roomScreen.errorQuit();
     }
     public World getWorld(){
 

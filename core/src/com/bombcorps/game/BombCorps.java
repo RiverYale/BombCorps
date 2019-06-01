@@ -15,7 +15,7 @@ import com.bombcorps.game.controller.NetController;
 import com.bombcorps.game.model.Player;
 import com.bombcorps.game.view.DirectedGame;
 
-public class BombCorps extends ApplicationAdapter {
+public class BombCorps extends DirectedGame {
 	SpriteBatch batch;
 	Texture img;
 
@@ -29,7 +29,7 @@ public class BombCorps extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+//		img = new Texture("badlogic.jpg");
 
         cameraController = new CameraController();
         cameraController.setPosition(0, 0);
