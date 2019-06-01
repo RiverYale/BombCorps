@@ -150,4 +150,14 @@ public class World {
         return playerManager;
     }
 
+    public int getAlivePlayerNum(){
+        int Num = 0;
+        for(Player p : playerManager.getAllPlayerList()){
+            if(p.getMyHero().getState()!=Constants.STATE_DEAD){
+                Num++;
+            }
+        }
+        return Num;
+    }
+
 }
