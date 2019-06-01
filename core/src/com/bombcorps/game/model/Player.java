@@ -114,6 +114,10 @@ public class Player {
                 0, Constants.MAX_RAGEPOWER));
     }
 
+    public float getDestX(){
+        return myHero.getDestination();
+    }
+
     public void setDestX(float destination){
         myHero.setDestination(destination);
 

@@ -91,6 +91,10 @@ public class DataController {
         prefs.flush();
     }
 
+    public float getWinRate() {
+        return (float)personalDataVal[WIN_NUM] / personalDataVal[GAME_NUM];
+    }
+
     public void loadSettings(){
         volSound = MathUtils.clamp(prefs.getFloat("volSound", 0.5f), 0.0f, 1.0f);
         volMusic = MathUtils.clamp(prefs.getFloat("volMusic", 0.5f), 0.0f, 1.0f);

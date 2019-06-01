@@ -95,7 +95,7 @@ public class World {
         rocks = new Array<Rock>();
         Pixmap pixmap = new Pixmap(Gdx.files.internal(filename));
         MapWidth = pixmap.getWidth()*width/Constants.VIEWPORT_WIDTH;
-        bonusManager = new BonusManager(MapWidth);
+        bonusManager = new BonusManager((int)MapWidth);
         //从左上到右下扫描
         for(int pixelY = 0; pixelY < pixmap.getHeight();pixelY++)
             for (int pixelX = 0; pixelX < pixmap.getWidth(); pixelX++) {
