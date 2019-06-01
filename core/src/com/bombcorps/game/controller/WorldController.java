@@ -64,6 +64,10 @@ public class WorldController {
         return net;
     }
 
+    public World getWorld(){
+        return  world;
+    }
+
     public String getWorldIp(){
         return world.getIp();
     }
