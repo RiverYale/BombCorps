@@ -84,9 +84,6 @@ public class Bonus {
                 scale.x, scale.y,0);
     }
 
-//    public void
-
-
     public void setState(int input){
         switch (input){
             case Constants.BONUS.GROUNDED:
