@@ -14,11 +14,12 @@ import com.bombcorps.game.model.Message;
 import com.bombcorps.game.model.Player;
 import com.bombcorps.game.model.Rock;
 import com.bombcorps.game.model.World;
+import com.bombcorps.game.view.DirectedGame;
 
 import java.util.ArrayList;
 
 public class WorldController {
-    private DirctGame game;
+    private DirectedGame game;
     private OrthographicCamera camera;
     private InputController input;
     private CameraController cameraController;
@@ -29,7 +30,7 @@ public class WorldController {
     private Player curPlayer;
     private int operations;
 
-    public WorldController(DirctGame game, OrthographicCamera camera, NetController net) {
+    public WorldController(DirectedGame game, OrthographicCamera camera, NetController net) {
         this.game = game;
         this.camera = camera;
         this.net = net;
@@ -174,7 +175,7 @@ public class WorldController {
 
     public void playerQuit(Message msg) {
         Player p = msg.getPlayera();
-        game.playerQuit(p.getID());
+        game.playerQuit(p.getIp());
         world.removePlayer(p);
     }
 

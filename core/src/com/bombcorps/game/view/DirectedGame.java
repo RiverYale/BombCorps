@@ -2,9 +2,15 @@ package com.bombcorps.game.view;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.bombcorps.game.controller.NetController;
+import com.bombcorps.game.controller.WorldController;
+import com.bombcorps.game.model.Constants;
+import com.bombcorps.game.model.Player;
+import com.bombcorps.game.model.World;
 
 public abstract class DirectedGame implements ApplicationListener {
     private boolean init;
@@ -16,9 +22,68 @@ public abstract class DirectedGame implements ApplicationListener {
     private float t;
     private ScreenTransition screenTransition;
 
+    private MenuScreen menuScreen;
+    private LobbyScreen lobbyScreen;
+    private RoomScreen roomScreen;
+    private GameScreen gameScreen;
+    private PersonalScreen personalScreen;
+    private InfoScreen infoScreen;
+    private WorldController worldController;
+
     public void setScreen(AbstractGameScreen screen) {
         setScreen(screen, null);
     }
+    public void loadLobbyScreen(){
+        lobbyScreen = new LobbyScreen(this);
+        setScreen(lobbyScreen);
+    }
+    public void loadRoomScreen(){
+       // roomScreen = new RoomScreen(this);
+        setScreen(roomScreen);
+    }
+    public void loadInfoScreen(){
+        infoScreen = new InfoScreen(this);
+        setScreen(infoScreen);
+    }
+    public void loadGameScreen(){
+        OrthographicCamera orthographicCamera =new OrthographicCamera();
+        orthographicCamera.viewportHeight =10;
+        orthographicCamera.viewportWidth = 18;
+        NetController netController = new NetController();
+
+        worldController = new WorldController(this,orthographicCamera,netController);
+
+        Gdx.input.setInputProcessor(worldController.getInputProcessor());
+
+        gameScreen = new GameScreen(this,worldController);
+        setScreen(gameScreen);
+    }
+    public void loadPersonalScreen(){
+        personalScreen = new PersonalScreen(this);
+        setScreen(personalScreen);
+    }
+    public void loadMenuScreen(){
+        menuScreen= new MenuScreen(this);
+        setScreen(menuScreen);
+    }
+    public void onHeroClicked(Player p){
+       gameScreen.onHeroClicked(p);
+    }
+    public void playerQuit(String Ip){
+        //调用GameScreen里面的playequit
+
+        gameScreen.playerQuit(Ip);
+    }
+    public void errorStop(){
+        //调用
+        gameScreen.errorStop();
+    }
+    public World getWorld(){
+
+        World world = new World(roomScreen.getRoom());
+        return world;
+    }
+
 
     public void setScreen(AbstractGameScreen screen,
                           ScreenTransition screenTransition) {
@@ -121,6 +186,7 @@ public abstract class DirectedGame implements ApplicationListener {
             init = false;
         }
     }
+
 }
 
 
