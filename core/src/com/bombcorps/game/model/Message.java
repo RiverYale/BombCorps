@@ -43,9 +43,8 @@ public class Message implements Serializable{
         this.room = room;
     }
 
-    public void setOp(int op, Player player, float targetX, float tapX, float tapY){
+    public void setOp(int op, float targetX, float tapX, float tapY){
         this.op = op;
-        this.targetPlayer = player;
         this.targetX = targetX;
         this.tapX = tapX;
         this.tapY = tapY;

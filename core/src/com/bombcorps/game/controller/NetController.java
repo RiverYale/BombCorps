@@ -116,7 +116,7 @@ public class NetController {
             try {
                 byte[] data = toByteArray(msg);
                 DatagramSocket ds = new DatagramSocket(PORT_SEND);
-                DatagramPacket packet = new DatagramPacket(data, data.length, msg.getToIp(), PORT_RECEIVE);
+                DatagramPacket packet = new DatagramPacket(data, data.length, InetAddress.getByName(msg.getToIp()), PORT_RECEIVE);
                 packet.setData(data);
                 ds.send(packet);
                 ds.close();
@@ -215,10 +215,7 @@ public class NetController {
                     if(game.hasRoom()){
                         if(!game.getRoom().isFull()){
                             m = new Message(ENTER_ROOM);
-                            for(Player p : game.getRoom().getPlayers()){
-                                msg.setToIp(p.getIp());
-                                sendCMD(m);
-                            }
+                            broadcastInRoom(m);
                         }
                     }else{
                         game.getRoom().addPlayer(msg.getTargetPlayer());
