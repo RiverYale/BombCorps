@@ -46,6 +46,9 @@ public class GameScreen extends AbstractGameScreen{
         Gdx.gl.glClearColor(0x64/255.0f,0x95/255.0f,0xed/255.0f,0xff/255.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         worldRenderer.render();
+        if(worldController.isGameOver()){
+            GameOver();
+        }
     }
 
     public InputProcessor getInputProcessor(){
@@ -430,7 +433,7 @@ public class GameScreen extends AbstractGameScreen{
 
     }
 
-    private void playQuit(String ID){
+    public void playQuit(String ID){
         BitmapFont font = new BitmapFont(Gdx.files.internal("winOptions.fnt"),Gdx.files.internal("winOptions.png"),false);
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.BLACK);
         Label label = new Label(ID+" has already quitted the game ,nmsl",labelStyle);

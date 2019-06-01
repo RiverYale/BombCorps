@@ -72,7 +72,7 @@ public abstract class DirectedGame implements ApplicationListener {
     public void playerQuit(String Ip){
         //调用GameScreen里面的playequit
 
-        gameScreen.playerQuit(Ip);
+        gameScreen.playQuit(Ip);
     }
     public void errorStop(){
         //调用
