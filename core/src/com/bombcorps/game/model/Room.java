@@ -19,16 +19,16 @@ public class Room {
         this.LIMIT = limit;
     }
 
-    /*
-    TODO
-     */
-    public void add(String IP, String ID){        //优先加入红色
+    public void addPlayer(Player player){
+        add(player.getIp(), player.getID());
+    }
+
+    private void add(String IP, String ID){        //优先加入红色
         if(playerManager.getRedPlayerList().size < LIMIT){
             playerManager.addPlayer(IP, Constants.PLAYER.RED_TEAM, ID);
         }else if(playerManager.getBluePlayerList().size < LIMIT){
             playerManager.addPlayer(IP, Constants.PLAYER.BLUE_TEAM, ID);
         }
-
     }
 
     public void switchTeam(Player player){
@@ -71,6 +71,14 @@ public class Room {
         playerManager = new PlayerManager();
     }
 
+    public boolean isFull(){
+        if(playerManager.getRedPlayerList().size == LIMIT && playerManager.getBluePlayerList().size == LIMIT){
+            return true;
+        }
+
+        return false;
+    }
+
     public PlayerManager getPlayerManager(){
         return playerManager;
     }
@@ -82,6 +90,8 @@ public class Room {
     public String getMapName(){
         return mapName;
     }
+
+
 
     public String getOwnerIp(){
         return ownerIp;
