@@ -14,8 +14,8 @@ public class Room {
 
     private int LIMIT;
 
-    public Room(int ownerPort, int limit){
-        init(ownerPort);
+    public Room(String ownerIp, int limit){
+        init(ownerIp);
         this.LIMIT = limit;
     }
 
