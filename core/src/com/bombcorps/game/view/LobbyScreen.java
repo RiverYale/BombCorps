@@ -181,21 +181,24 @@ public class LobbyScreen extends AbstractGameScreen{
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return super.touchDown(event, x, y, pointer, button);
+                game.loadRoomScreen(1);
+                return true;
             }
         });
         twoTwo.addListener(new InputListener(){
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return super.touchDown(event, x, y, pointer, button);
+                game.loadRoomScreen(2);
+                return true;
             }
         });
         fourFour.addListener(new InputListener(){
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return super.touchDown(event, x, y, pointer, button);
+                game.loadRoomScreen(4);
+                return true;
             }
         });
 

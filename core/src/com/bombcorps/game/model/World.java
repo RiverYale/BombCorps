@@ -21,7 +21,7 @@ public class World {
     }
 
     public String getIp() {
-        return playerManager.getAllPlayerList().get(0).getIp();
+        return hostIP;
     }
 
     public void removePlayer(Player p) {
@@ -85,7 +85,13 @@ public class World {
     //地图宽度
     private float MapWidth;
 
+    private String hostIP;
+
+    private int limit;
+
     public  World(Room room){
+        hostIP = room.getOwnerIp();
+        limit = room.getLIMIT();
         this.playerManager = room.getPlayerManager();
         init(room.getMapName());
     }
@@ -148,6 +154,20 @@ public class World {
 
     public PlayerManager getPlayerManager(){
         return playerManager;
+    }
+
+    public int getAlivePlayerNum(){
+        int Num = 0;
+        for(Player p : playerManager.getAllPlayerList()){
+            if(p.getMyHero().getState()!=Constants.STATE_DEAD){
+                Num++;
+            }
+        }
+        return Num;
+    }
+
+    public int getLimit(){
+        return  limit;
     }
 
 }
