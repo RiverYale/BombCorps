@@ -41,10 +41,7 @@ public abstract class DirectedGame implements ApplicationListener {
        // roomScreen = new RoomScreen(this);
         setScreen(roomScreen);
     }
-    public void loadInfoScreen(){
-        infoScreen = new InfoScreen(this);
-        setScreen(infoScreen);
-    }
+
     public void loadGameScreen(){
         OrthographicCamera orthographicCamera =new OrthographicCamera();
         orthographicCamera.viewportHeight =10;

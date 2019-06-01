@@ -306,7 +306,7 @@ public class GameScreen extends AbstractGameScreen{
         return winHeroInfo;
     }
 
-    private Table buildErrorQuitWindowLayer(){
+    public Table buildErrorQuitWindowLayer(){
         BitmapFont font =new BitmapFont(Gdx.files.internal("winErrorQuit.fnt"),Gdx.files.internal("winErrorQuit.png"),false);
         Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(new Texture(Gdx.files.internal("window.png"))));
         winErrorQuit = new Window("ERROR QUIT",windowStyle);
@@ -320,7 +320,7 @@ public class GameScreen extends AbstractGameScreen{
         return winErrorQuit;
     }
 
-    private Table buildWinHInfoQuitBotton(){
+    public Table buildWinHInfoQuitBotton(){
         Table tbl = new Table();
         btnwinHInfoQuit = new Image(new Texture(Gdx.files.internal("quit.png")));
 
@@ -338,15 +338,15 @@ public class GameScreen extends AbstractGameScreen{
        return tbl;
     }
 
-    private void onWinHInfoQuitBottonClicked() {
+    public void onWinHInfoQuitBottonClicked() {
         winHeroInfo.setVisible(false);
     }
 
-    private void onHeroHeadClicked() {
+    public void onHeroHeadClicked() {
         winHeroInfo.setVisible(true);
     }
 
-    private int myHeroType(){
+    public  int myHeroType(){
         int i;
         for(i=0;worldController.getPlayers().get(i).getState() != Constants.PLAYER.STATE_LOCAL;i++){
 
@@ -354,7 +354,7 @@ public class GameScreen extends AbstractGameScreen{
         return  worldController.getPlayers().get(i).getHeroType();
     }
 
-    private Table onHeroClicked(Player p){
+    public Table onHeroClicked(Player p){
         final int heroType;
         heroType = p.getHeroType();
         Table layer = new Table();
@@ -378,15 +378,15 @@ public class GameScreen extends AbstractGameScreen{
         return layer;
     }
 
-    private void onManagerQuitClicked() {
+    public void onManagerQuitClicked() {
         //game.loadScreen
     }
 
-    private void onQuitClicked() {
+    public void onQuitClicked() {
         //game.loadLobbyScreen();
     }
 
-    private void GameOver(){
+    public void GameOver(){
         //游戏结算的弹窗
         BitmapFont font =new BitmapFont(Gdx.files.internal("winOptions.fnt"),Gdx.files.internal("winOptions.png"),false);
         TextureRegionDrawable winResultsDrawable = new TextureRegionDrawable(new Texture(Gdx.files.internal("winresult.png")));
@@ -415,6 +415,7 @@ public class GameScreen extends AbstractGameScreen{
         goldReceiveLabel.setSize(winResults.getWidth(),winResults.getHeight()/2);
         goldReceiveLabel.setAlignment(Align.center);
         goldReceiveLabel.setPosition(0,winResults.getHeight()/5);
+        goldReceiveLabel.setScale(Gdx.graphics.getWidth()/1280f);
         Image confirm = new Image(new Texture("confirm.png"));
         confirm.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
         confirm.setPosition(winResults.getWidth()/3,winResults.getHeight()/6);
@@ -441,7 +442,7 @@ public class GameScreen extends AbstractGameScreen{
 
     }
 
-    private void onErrorQuitClicked() {
+    public void onErrorQuitClicked() {
         winErrorQuit.setVisible(false);
     }
 
@@ -531,14 +532,14 @@ public void onWinInGameSettingsClicked(){
         }
     });
 }
-    private void onSaveClicked() {
+    public void onSaveClicked() {
         saveSettings();
         onCancelClicked();
     }
-    private void onCancelClicked(){
+    public void onCancelClicked(){
          winInGameSettings.setVisible(false);
     }
-    private void saveSettings(){
+    public void saveSettings(){
         DataController prefs = DataController.instance;
         prefs.setVolSound(sldSound.getValue());
         prefs.setVolMusic(sldMusic.getValue());
