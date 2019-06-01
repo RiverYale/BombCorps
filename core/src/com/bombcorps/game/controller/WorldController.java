@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.bombcorps.game.model.Bombs.Bomb;
+import com.bombcorps.game.model.bombs.Bomb;
 import com.bombcorps.game.model.Bonus;
 import com.bombcorps.game.model.Constants;
 import com.bombcorps.game.model.Message;
@@ -16,8 +16,6 @@ import com.bombcorps.game.model.Player;
 import com.bombcorps.game.model.Rock;
 import com.bombcorps.game.model.World;
 import com.bombcorps.game.view.DirectedGame;
-
-import java.util.ArrayList;
 
 public class WorldController {
     private DirectedGame game;
@@ -45,7 +43,7 @@ public class WorldController {
         net.bindWorldController(this);
         curPlayer = world.getFirstPlayer();
         cameraController.setTarget(curPlayer);
-        AudioController.instance.play(AssetsController.instance.getMusic("")); //TODO
+//        AudioController.instance.play(AssetsController.instance.getMusic("")); //TODO
     }
 
     public InputProcessor getInputProcessor() {
@@ -64,6 +62,10 @@ public class WorldController {
         return net;
     }
 
+    public World getWorld(){
+        return  world;
+    }
+
     public String getWorldIp(){
         return world.getIp();
     }
@@ -78,7 +80,7 @@ public class WorldController {
 
     public Player hasPlayer(float x, float y) {
         for(Player p : world.getPlayers()){
-            if(p.getRec().contains(x, y)){
+            if(p.getRect().contains(x, y)){
                 return p;
             }
         }
@@ -90,7 +92,7 @@ public class WorldController {
     }
 
     public void resetOperations() {
-        net.operate(operations, curPlayer, curPlayer.getDestX(), curPlayer.getTapX(), curPlayer.getTapY());
+        net.operate(operations, curPlayer, curPlayer.getDestX(), curPlayer.getTap().x, curPlayer.getTap().y);
         this.operations = -1;
     }
 
@@ -177,7 +179,7 @@ public class WorldController {
     }
 
     public void playerQuit(Message msg) {
-        Player p = msg.getPlayera();
+        Player p = msg.getTargetPlayer();
         game.playerQuit(p.getIp());
         world.removePlayer(p);
     }
@@ -208,7 +210,7 @@ public class WorldController {
                 onCollisionsPlayerWithRock(r);
             }
         }
-        for (Bonus b : world.bonus) {
+        for (Bonus b : world.bonusManager.getBonusList()) {
             r2 = b.getRect();
             if (r1.overlaps(r2)) {
                 onCollisionsPlayerWithBonus(b);
@@ -247,7 +249,7 @@ public class WorldController {
                 }
                 break;
             case Constants.STATE_FALLING:
-                r.getPosition().y + r.getRect().getHeight();
+                curPlayer.setY(r.getPosition().y + r.getRect().getHeight());
                 curPlayer.setHeroState(Constants.STATE_GROUNDED);
                 break;
         }
@@ -258,7 +260,7 @@ public class WorldController {
     }
 
     private void onCollisionsBombWithRock(Bomb b) {
-        b.explode();
+        world.getPlayerManager().explode(curPlayer);
     }
 
 }
