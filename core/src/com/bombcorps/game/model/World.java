@@ -145,4 +145,9 @@ public class World {
     public float getMapWidth() {
         return MapWidth;
     }
+
+    public PlayerManager getPlayerManager(){
+        return playerManager;
+    }
+
 }
