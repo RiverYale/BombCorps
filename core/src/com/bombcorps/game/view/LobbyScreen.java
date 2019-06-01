@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.bombcorps.game.controller.NetController;
 
 import java.util.ArrayList;
 
@@ -59,13 +60,15 @@ public class LobbyScreen extends AbstractGameScreen{
 
     private Stage stage;
 
+    private NetController netController;
+
     public LobbyScreen(DirectedGame game) {
         super(game);
     }
 
     @Override
     public InputProcessor getInputProcessor() {
-        return null;
+        return stage;
     }
 
     @Override
@@ -134,6 +137,18 @@ public class LobbyScreen extends AbstractGameScreen{
         String showProperty = "Coins:"; //+ 金币数
         labelShowProperty = new Label(showProperty,style);
         labelShowProperty.setFontScale(0.0008f * width);
+        //个人信息布局
+        recordTable.add(labelShowName).left();
+        recordTable.row();
+        recordTable.add(labelShowRate).left();
+        recordTable.row();
+        recordTable.add(labelShowWinAmount).left();
+        recordTable.row();
+        recordTable.add(labelShowProperty).left();
+        Stack stackRecord = new Stack();
+        stackRecord.setPosition(0.08f * width,0.15f * height);
+        stackRecord.setSize(0.35f * width,0.75f * height);
+        stackRecord.addActor(recordTable);
         //模式选择窗口
         TextureRegionDrawable winBuildRoomDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("winbuildroom.png"))));
         Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),winBuildRoomDrawable);
@@ -188,38 +203,23 @@ public class LobbyScreen extends AbstractGameScreen{
         winBuildRoom.addActor(twoTwo);
         winBuildRoom.addActor(fourFour);
         winBuildRoom.addActor(cancel);
-
-        //个人信息布局
-        recordTable.add(labelShowName).left();
-        recordTable.row();
-        recordTable.add(labelShowRate).left();
-        recordTable.row();
-        recordTable.add(labelShowWinAmount).left();
-        recordTable.row();
-        recordTable.add(labelShowProperty).left();
-        Stack stackRecord = new Stack();
-        stackRecord.setPosition(0.08f * width,0.15f * height);
-        stackRecord.setSize(0.35f * width,0.75f * height);
-        stackRecord.addActor(recordTable);
-
         stage.addActor(lsBackground);
         stage.addActor(roomListBackground);
         stage.addActor(recordTable);
-
 
         bulidRoomList();
         drawRoomList();
         drawButton();
         stage.addActor(winBuildRoom);
         winBuildRoom.setVisible(false);
-
     }
     //建造房间列表
     public void bulidRoomList(){
         //网端获取房间数numOfRoom
+
         roomList.clear();
         for(int i=0;i<numOfRoom;i++){
-            //roomList.add(new RoomSelect());网端获取参数
+            //
         }
     }
 
@@ -276,6 +276,7 @@ public class LobbyScreen extends AbstractGameScreen{
         stage.addActor(btnPageDown);
         stage.addActor(btnBackToMenu);
         stage.addActor(btnLobbyOptions);
+
         setButtonClick();
     }
 
@@ -284,7 +285,6 @@ public class LobbyScreen extends AbstractGameScreen{
         btnBuildRoom.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //弹出创建房间界面
                 winBuildRoom.setVisible(true);
             }
         });

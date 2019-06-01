@@ -224,7 +224,7 @@ public class NetController {
                 }
                 break;
             case QUIT_ROOM:
-                if(game.getRoom().getIp().equals(msg.getFromIp())){
+                if(game.getRoom().getOwnerIp().equals(msg.getFromIp())){
                     game.getRoom().errorStop();
                 }else{
                     game.getRoom().removePlayer(msg.getTargetPlayer());
@@ -234,13 +234,13 @@ public class NetController {
                 game.getRoom().updatePlayer(msg.getTargetPlayer());
                 break;
             case CHOOSE_MAP:
-                game.getRoom().updateMap(msg.getMap());
+                game.getRoom().setMapName(msg.getMap());
                 break;
             case ADD_AI:
                 game.getRoom().addAi();
                 break;
             case START:
-                game.startGame();
+                game.loadGameScreen();
                 break;
             case ROUND_START:
                 world.startNextRound(msg.getBonus());
@@ -325,7 +325,7 @@ public class NetController {
 
     public void roundOver() {
         Message m = new Message(ROUND_OVER);
-        m.setToIp(game.getRoom().getIp());
+        m.setToIp(game.getRoom().getOwnerIp());
         sendCMD(m);
     }
 
