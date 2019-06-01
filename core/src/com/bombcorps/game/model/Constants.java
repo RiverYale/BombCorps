@@ -279,7 +279,7 @@ public class Constants {
         public static int LobbyScreenFlag = 2;
         public static int RoomScreenFlag = 3;
         public static int GameScreenFlag = 4;
-        public static int PersonalScreenFlag=5;
+        public static int InfoScreenFlag=5;
 
 
 

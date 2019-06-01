@@ -26,7 +26,7 @@ public abstract class DirectedGame implements ApplicationListener {
     private LobbyScreen lobbyScreen;
     private RoomScreen roomScreen;
     private GameScreen gameScreen;
-    private PersonalScreen personalScreen;
+    private InfoScreen infoScreen;
     private WorldController worldController;
     private NetController netController;
 
@@ -58,10 +58,10 @@ public abstract class DirectedGame implements ApplicationListener {
         setScreen(gameScreen);
         Constants.CurrentScreenFlag = Constants.GameScreenFlag;
     }
-    public void loadPersonalScreen(){
-        personalScreen = new PersonalScreen(this);
-        setScreen(personalScreen);
-        Constants.CurrentScreenFlag = Constants.PersonalScreenFlag;
+    public void loadInfoScreen(){
+        infoScreen = new InfoScreen(this);
+        setScreen(infoScreen);
+        Constants.CurrentScreenFlag = Constants.InfoScreenFlag;
     }
     public void loadMenuScreen(){
         menuScreen= new MenuScreen(this);
@@ -89,7 +89,9 @@ public abstract class DirectedGame implements ApplicationListener {
         if(Constants.CurrentScreenFlag== Constants.RoomScreenFlag){
             return true;
         }
-        else {return false}
+        else {
+            return false;
+        }
     }
 
     public boolean hasRoom(){
