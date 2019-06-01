@@ -614,7 +614,7 @@ public class GameScreen extends AbstractGameScreen{
         paused = false;
     }
 
-    public void ErrorQuit(){
+    public void errorStop(){
         winErrorQuit.setVisible(true);
     }
 
