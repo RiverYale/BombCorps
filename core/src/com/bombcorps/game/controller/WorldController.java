@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.bombcorps.game.model.Bombs.Bomb;
 import com.bombcorps.game.model.Bonus;
@@ -155,15 +156,17 @@ public class WorldController {
                 break;
             case 1:
                 //TODO curPlayer扔球
-                curPlayer.setTapX(tapX);
-                curPlayer.setTapY(tapY);
-                curPlayer.shoot();
+                if(curPlayer.useSkill(op)) {
+                    curPlayer.setTap(new Vector2(tapX, tapY));
+                    curPlayer.shoot();
+                }
                 break;
             case 2:
                 //TODO curPlayer扔炸弹
-                curPlayer.setTapX(tapX);
-                curPlayer.setTapY(tapY);
-                curPlayer.shoot();
+                if(curPlayer.useSkill(op)) {
+                    curPlayer.setTap(new Vector2(tapX, tapY));
+                    curPlayer.shoot();
+                }
                 break;
             case 3:
             case 4:
@@ -234,17 +237,16 @@ public class WorldController {
             return;
         }
         switch (curPlayer.getHeroState()) {
-            case WAIT:
-            case GROUNDED:
+            case Constants.STATE_GROUNDED:
                 break;
-            case MOVING:
+            case Constants.STATE_MOVING:
                 if (heightDifference > 0.25f) { //TODO
                     curPlayer.setHeroState(Constants.STATE_GROUNDED);
                 } else {
                     curPlayer.setY(r.getPosition().y + r.getRect().getHeight());
                 }
                 break;
-            case FALLING:
+            case Constants.STATE_FALLING:
                 r.getPosition().y + r.getRect().getHeight();
                 curPlayer.setHeroState(Constants.STATE_GROUNDED);
                 break;

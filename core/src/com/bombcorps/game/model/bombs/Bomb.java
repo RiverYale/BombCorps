@@ -4,14 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.model.Constants;
+import com.bombcorps.game.model.Player;
 
 public class Bomb {
 
+    Player fromPlayer;
     private int heroType;
     private int bombType;
     private TextureRegion[][] bomb;
@@ -37,7 +40,7 @@ public class Bomb {
 
     private STATE state;
     private enum STATE{
-        FLY, BOOM, WAIT
+        FLY, BOOM, WAIT, READY
     }
 
     public Bomb(){
@@ -45,6 +48,8 @@ public class Bomb {
     }
 
     public void init(){
+        state = STATE.WAIT;
+
         stateTime = 0;
         heroType = 0;
         bombType = 0;
@@ -73,8 +78,13 @@ public class Bomb {
         }
     }
 
+    public void initBombEveryRound(){
+        state = STATE.WAIT;
+        bombType = 0;
+    }
+
     private void initBomb(){
-        bomb = new TextureRegion[5][3];
+        bomb = new TextureRegion[6][3];
         String temp = "";
         for(int i = 0 ; i < 5 ; i++){
             switch (i){
@@ -99,6 +109,7 @@ public class Bomb {
             }
         }
         bomb[2][2] = AssetsController.instance.getRegion("AngelBomb2");
+        bomb[5][0] = AssetsController.instance.getRegion("heroFly");
     }
 
     private void initBoom(){
@@ -106,7 +117,7 @@ public class Bomb {
         boomOrigin = new Vector2(boomDimension.x / 2, boomDimension.y / 2);
         boomScale = Constants.BOMB.BOOM_SCALE;
 
-        boom = new TextureRegion[5][3][4];
+        boom = new TextureRegion[6][3][4];
         String temp = "SpardaBoom";
         for(int i = 0 ; i < 4 ; i++){
             boom[0][0][i] = AssetsController.instance.getRegion(temp + i);
@@ -139,15 +150,28 @@ public class Bomb {
         for(int i = 0 ; i < 4 ; i++){
             boom[3][1][i] = AssetsController.instance.getRegion(temp + i);
         }
-        temp = "WizardBomb";
+        temp = "WizardBoom";
         for(int i = 0 ; i < 4 ; i++){
             boom[4][0][i] = AssetsController.instance.getRegion(temp + i);
         }
-        temp = "WizardBoom";
+//        temp = "WizardBoom";
+//        for(int i = 0 ; i < 4 ; i++){
+//            boom[4][1][i] = AssetsController.instance.getRegion(temp + i);
+//        }
+        temp = "heroAppear";
         for(int i = 0 ; i < 4 ; i++){
-            boom[4][1][i] = AssetsController.instance.getRegion(temp + i);
+            boom[5][0][i] = AssetsController.instance.getRegion(temp + i);
         }
     }
+
+//    public void shoot() {
+//        setState(Constants.BOMB.STATE_FLY);
+//    }
+//
+//    public void onCollision() {
+//        setState(Constants.BOMB.STATE_BOOM);
+//
+//    }
 
     protected void updateRotation(float deltaTime){
         rotation += Constants.BOMB.ROTATE_SPEED * deltaTime;
@@ -168,9 +192,20 @@ public class Bomb {
         switch(state){
             case FLY:
                 renderBomb(batch);
+                break;
             case BOOM:
                 renderBoom(batch);
+                break;
+            case READY:
+                renderReady(batch);
+                break;
         }
+    }
+
+    public void renderReady(SpriteBatch batch){
+        batch.draw(bomb[heroType][bombType], position.x - dimension.x, position.y,
+                origin.x,origin.y,dimension.x,dimension.y,
+                bombScale.x,bombScale.y,0);
     }
 
     public void renderBomb(SpriteBatch batch){
@@ -192,9 +227,279 @@ public class Bomb {
         }
     }
 
+    public void explode(Array<Player> playerListRed, Array<Player> playerListBlue){
+        Array<Player> playersBeingHit = playersBeingHit(playerListRed, playerListBlue);  //被炸到的玩家
+
+//        if(playersBeingHit.size > 0) {
+            switch (heroType) {
+                case Constants.ANGEL:
+                    switch (bombType) {
+                        case 0:
+                            handlePlayerDamage(playersBeingHit,playerListRed, playerListBlue );
+                            break;
+                        case 1:
+                            for(Player i : playersBeingHit){
+                                i.getMyHero().setHealth(MathUtils.clamp(i.getMyHero().getHealth() +
+                                                Constants.Angel.SKILL_1_HEALTH_ADD
+                                        , 0, i.getMyHero().getMaxHealth()));
+                            }
+                            break;
+                        case 2:
+                            /*
+                            TODO 虚弱
+                             */
+                            for(Player i : playersBeingHit){
+                                i.getMyHero().getAura().get(2).setState(Constants.AURA.ANGELAURA);  //虚弱光环
+                                if(i.getTeam() == Constants.PLAYER.RED_TEAM){
+                                    for(int k = 0 ; k < playerListRed.size ; k++){
+                                        if(i.getIp().equals(playerListRed.get(k).getIp())){
+                                            i.skillAndBuff.redBuffs.get(k).angel_skill_2_debuff = Constants.Angel.SKILL_2_ROUND_NUM;
+                                            i.getMyHero().setAttack(i.getMyHero().getAttack() - Constants.Angel.SKILL_2_ATTACK_MIN);
+                                            i.getMyHero().setEndurance(MathUtils.clamp(i.getMyHero().getEndurance() -
+                                                            Constants.Angel.SKILL_2_ENDURANCE_MIN
+                                                            ,0, Constants.MAX_ENDURENCE));
+                                            break;
+                                        }
+                                    }
+                                }else{
+                                    for(int k = 0 ; k < playerListBlue.size ; k++){
+                                        if(i.getIp().equals(playerListBlue.get(k).getIp())){
+                                            i.skillAndBuff.blueBuffs.get(k).angel_skill_2_debuff = Constants.Angel.SKILL_2_ROUND_NUM;
+                                            i.getMyHero().setAttack(i.getMyHero().getAttack() - Constants.Angel.SKILL_2_ATTACK_MIN);
+                                            i.getMyHero().setEndurance(MathUtils.clamp(i.getMyHero().getEndurance() -
+                                                            Constants.Angel.SKILL_2_ENDURANCE_MIN
+                                                    ,0, Constants.MAX_ENDURENCE));
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            break;
+
+                    }
+                    break;
+
+                case Constants.SPARDA:
+                    switch (bombType){
+                        case 0:
+                        case 1:
+                            fromPlayer.getMyHero().setHealth(MathUtils.clamp(fromPlayer.getMyHero().getHealth() +
+                                            damageOutput(fromPlayer.getMyHero().getAttack()) * playersBeingHit.size *
+                                                    Constants.Sparda.SKILL_0_HEALTH_PERCENTAGE_ADD,
+                                    0 , fromPlayer.getMyHero().getMaxHealth()));
+                            handlePlayerDamage(playersBeingHit,playerListRed, playerListBlue );
+                            break;
+                    }
+                    break;
+                case Constants.SNIPER:
+                    switch (bombType){
+                        case 0:
+                        case 1:
+                            boolean skill3On = false;
+                            if(fromPlayer.getTeam() == Constants.PLAYER.RED_TEAM){
+                                for(int i = 0 ; i < playerListRed.size ; i++){
+                                    if(fromPlayer.getIp().equals(playerListRed.get(i).getIp())){
+                                        if(fromPlayer.skillAndBuff.redBuffs.get(i).sniper_skill_3_buff > 0){
+                                            skill3On = true;
+                                        }
+                                    }
+                                }
+                            }else{
+                                for(int i = 0 ; i < playerListBlue.size ; i++){
+                                    if(fromPlayer.getIp().equals(playerListBlue.get(i).getIp())){
+                                        if(fromPlayer.skillAndBuff.blueBuffs.get(i).sniper_skill_3_buff > 0){
+                                            skill3On = true;
+                                        }
+                                    }
+                                }
+                            }
+                            if(playersBeingHit.size > 0 && !skill3On){
+                                fromPlayer.getMyHero().setCriticalProbability(fromPlayer.getMyHero().getCriticalProbability() / 2);
+                                handlePlayerDamage(playersBeingHit,playerListRed, playerListBlue );
+                            }else if(playersBeingHit.size == 0){
+                                fromPlayer.getMyHero().setCriticalProbability(MathUtils.clamp(
+                                        fromPlayer.getMyHero().getCriticalProbability() * 2,
+                                        0,1));
+                            }else{
+                                handlePlayerDamage(playersBeingHit,playerListRed,playerListBlue);
+                            }
+                            break;
+                    }
+                    break;
+                case Constants.PROTECTOR:
+                    switch(bombType){
+                        case 0:
+                            handlePlayerDamage(playersBeingHit,playerListRed, playerListBlue);
+                            break;
+                        case 1:
+                            /*
+                            TODO
+                             */
+                            for(Player i : playersBeingHit){
+                                i.getMyHero().setArmor(i.getMyHero().getArmor() + Constants.Protector.SKILL_2_ARMOR_ADD);
+
+                                if(i.getTeam() == Constants.PLAYER.RED_TEAM){
+                                    for(int k = 0 ; k < playerListRed.size ; k++){
+                                        if(i.getIp().equals(playerListRed.get(k).getIp())){
+                                            i.skillAndBuff.redBuffs.get(k).protector_skill_2_buff.add(Constants.Protector.SKILL_2_ROUND);
+                                            break;
+                                        }
+                                    }
+                                }else{
+                                    for(int k = 0 ; k < playerListBlue.size ; k++){
+                                        if(i.getIp().equals(playerListBlue.get(k).getIp())){
+                                            i.skillAndBuff.blueBuffs.get(k).protector_skill_2_buff.add(Constants.Protector.SKILL_2_ROUND);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            break;
+                    }
+                    break;
+                case Constants.WIZARD:
+                    switch (bombType){
+                        case 0:
+                            for(Player i : playersBeingHit){
+                                i.getMyHero().getAura().get(4).setState(Constants.AURA.WIZARDAURA0);
+
+                                if(i.getTeam() == Constants.PLAYER.RED_TEAM){
+                                    for(int k = 0 ; k < playerListRed.size ; k++){
+                                        if(i.getIp().equals(playerListRed.get(k).getIp())){
+
+                                            //fromplayer的技能1是否激活
+                                            if(!fromPlayer.skillAndBuff.wizardSkill.skill_1)
+                                                i.skillAndBuff.redBuffs.get(k).wizard_skill_0_debuff++;
+                                            else
+                                                i.skillAndBuff.redBuffs.get(k).wizard_skill_0_debuff += 3;
+                                            break;
+                                        }
+                                    }
+                                }else{
+                                    for(int k = 0 ; k < playerListBlue.size ; k++){
+                                        if(i.getIp().equals(playerListBlue.get(k).getIp())){
+                                            i.skillAndBuff.blueBuffs.get(k).wizard_skill_2_debuff = (int)Constants.Wizard.SKILL_2_SEAL_ROUND;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            break;
+                        case 1:
+                            /*
+                            TODO 禁锢
+                             */
+                            for(Player i : playersBeingHit){
+                                i.getMyHero().getAura().get(5).setState(Constants.AURA.WIZARDAURA1);    //设置光环
+
+                                if(i.getTeam() == Constants.PLAYER.RED_TEAM){
+                                    for(int k = 0 ; k < playerListRed.size ; k++){
+                                        if(i.getIp().equals(playerListRed.get(k).getIp())){
+                                            i.skillAndBuff.redBuffs.get(k).wizard_skill_2_debuff = (int)Constants.Wizard.SKILL_2_SEAL_ROUND;
+                                            break;
+                                        }
+                                    }
+                                }else{
+                                    for(int k = 0 ; k < playerListBlue.size ; k++){
+                                        if(i.getIp().equals(playerListBlue.get(k).getIp())){
+                                            i.skillAndBuff.blueBuffs.get(k).wizard_skill_2_debuff = (int)Constants.Wizard.SKILL_2_SEAL_ROUND;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            break;
+                    }
+                    break;
+                case 5:
+                    fromPlayer.getMyHero().setPosition(position);
+            }
+//        }
+
+    }
+
+    private Array<Player> playersBeingHit(Array<Player> playerListRed, Array<Player> playerListBlue){   //被炸到的player
+        Array<Player> list = new Array<Player>();
+        Array<Player> playerList = new Array<Player>();
+        playerList.addAll(playerListRed);
+        playerList.addAll(playerListBlue);
+
+        for(Player i : playerList){
+            if(getRect().overlaps(i.getMyHero().getRec())){
+                list.add(i);
+            }
+        }
+
+        return list;
+    }
+
+
+
+    private void handlePlayerDamage(Array<Player> playerList,
+                                    Array<Player> playerListRed,
+                                    Array<Player> playerListBlue){      //扣所有被打到玩家的血
+        float attack = fromPlayer.getMyHero().getAttack();
+
+        float damage = damageOutput(attack);
+
+        for(Player i : playerList){
+
+            if(i.getMyHero().getDecreaseRate() == Constants.Protector.SKILL_3_TEAMMATE_DAMAGE_PERCENTAGE) {   //减伤率为40%
+                Player protector = null;
+//                realDamage = (int)(realDamage * (1 - i.getMyHero().getDecreaseRate()));
+                if(i.getTeam() == Constants.PLAYER.RED_TEAM){
+                    for(int k = 0 ; k < playerListRed.size ; k++){
+                        if(i.getIp().equals(playerListRed.get(k).getIp())){
+                            protector = playerListRed.get(i.skillAndBuff.redBuffs.get(k).FromIndex);
+                            break;
+                        }
+                    }
+                }else{
+                    for(int k = 0 ; k < playerListBlue.size ; k++){
+                        if(i.getIp().equals(playerListBlue.get(k).getIp())){
+                            protector = playerListBlue.get(i.skillAndBuff.blueBuffs.get(k).FromIndex);
+                            break;
+                        }
+                    }
+                }
+                setdamagedHealth(protector, damage);
+            }
+
+            setdamagedHealth(i,damage);
+        }
+    }
+
+    private void setdamagedHealth(Player player, float damage){     //根据伤害设置生命值
+        damage *= (1 - player.getMyHero().getDecreaseRate());
+        damage *= (1 - player.getMyHero().getArmor() / (player.getMyHero().getArmor() + 100));
+        player.getMyHero().setHealth(MathUtils.clamp(player.getMyHero().getHealth() - damage, 0, player.getMyHero().getMaxHealth()));
+    }
+
+    private float damageOutput(float inputDamage){  //输出伤害
+        float damage = inputDamage;
+        damage += damage * fromPlayer.getMyHero().getAntiArmor();
+        if(Math.random() < fromPlayer.getMyHero().getCriticalProbability()){
+            damage *= fromPlayer.getMyHero().getCriticalRate();
+        }
+
+        return damage;
+    }
+
     /*
     get   set函数
     */
+
+    public Player getFromPlayer() {
+        return fromPlayer;
+    }
+
+    public void setFromPlayer(Player fromPlayer) {
+        this.fromPlayer = fromPlayer;
+    }
 
     public int getBombType() {
         return bombType;
@@ -204,9 +509,9 @@ public class Bomb {
         this.bombType = bombType;
         int boomType = 0;
         switch(heroType){
-            case 1:
-            case 2:
-            case 3:
+            case Constants.PROTECTOR:
+            case Constants.ANGEL:
+            case Constants.SNIPER:
                 boomType = bombType;
                 break;
         }
@@ -279,14 +584,30 @@ public class Bomb {
         this.heroType = heroType;
     }
 
-    public Rectangle getRec() {
+    public Rectangle getRect() {
         rec.x = position.x;
         rec.y = position.y;
         return rec;
     }
 
-    public void setRec(Rectangle rec) {
-        this.rec = rec;
+//    public void setRec(Rectangle rec) {
+//        this.rec = rec;
+//    }
+
+
+
+    public int getState(){
+        switch (state){
+            case FLY:
+                return Constants.BOMB.STATE_FLY;
+            case BOOM:
+                return Constants.BOMB.STATE_BOOM;
+            case READY:
+                return Constants.BOMB.STATE_READY;
+            default:
+                return Constants.BOMB.STATE_WAIT;
+        }
+
     }
 
     public void setState(int state) {
@@ -297,6 +618,9 @@ public class Bomb {
             case Constants.BOMB.STATE_BOOM:
                 stateTime = 0;
                 this.state = STATE.BOOM;
+                break;
+            case Constants.BOMB.STATE_READY:
+                this.state = STATE.READY;
                 break;
         }
     }

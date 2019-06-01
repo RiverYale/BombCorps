@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.bombcorps.game.controller.AssetsController;
 
 public class Room {
-    private int ownerPort;
+    private String ownerIp;
 
     private TextureRegion mapRegion;    //地图
     private TextureRegion[] heroRegion; //英雄头像
@@ -12,12 +12,55 @@ public class Room {
 
     private PlayerManager playerManager;
 
-    public Room(int ownerPort){
+    private int LIMIT;
+
+    public Room(int ownerPort, int limit){
         init(ownerPort);
+        this.LIMIT = limit;
     }
 
-    private void init(int ownerPort){
-        this.ownerPort = ownerPort;
+    /*
+    TODO
+     */
+    public void add(String IP, String ID){        //优先加入红色
+        if(playerManager.getRedPlayerList().size < LIMIT){
+            playerManager.addPlayer(IP, Constants.PLAYER.RED_TEAM, ID);
+        }else if(playerManager.getBluePlayerList().size < LIMIT){
+            playerManager.addPlayer(IP, Constants.PLAYER.BLUE_TEAM, ID);
+        }
+
+    }
+
+    public void switchTeam(Player player){
+        /*
+        更换房间
+         */
+        if(player.getTeam() == Constants.PLAYER.RED_TEAM){
+            for(int i = 0 ; i < playerManager.getRedPlayerList().size ; i++){
+                if(player.getIp().equals(playerManager.getPlayerListRed().get(i).getIp())){
+                    if(playerManager.getBluePlayerList().size < LIMIT){
+                        playerManager.getBluePlayerList().add(playerManager.getRedPlayerList().get(i));
+                        playerManager.getRedPlayerList().removeIndex(i);
+                    }
+
+                }
+            }
+        }else{
+            for(int i = 0 ; i < playerManager.getBluePlayerList().size ; i++){
+                if(player.getIp().equals(playerManager.getPlayerListBlue().get(i).getIp())){
+                    if(playerManager.getRedPlayerList().size < LIMIT){
+                        playerManager.getRedPlayerList().add(playerManager.getBluePlayerList().get(i));
+                        playerManager.getBluePlayerList().removeIndex(i);
+                    }
+                }
+            }
+        }
+
+    }
+
+
+    private void init(String onwerIp){
+        this.ownerIp = ownerIp;
         heroRegion = new TextureRegion[6];
         heroRegion[0] = AssetsController.instance.getRegion("Sparda0");
         heroRegion[1] = AssetsController.instance.getRegion("Protector0");
@@ -38,6 +81,14 @@ public class Room {
 
     public String getMapName(){
         return mapName;
+    }
+
+    public String getOwnerIp(){
+        return ownerIp;
+    }
+
+    public void setOwnerIp(String Ip){
+        this.ownerIp = Ip;
     }
 
     public void setMapRegion(TextureRegion mapRegion){
