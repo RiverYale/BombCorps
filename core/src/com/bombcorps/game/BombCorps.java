@@ -16,43 +16,11 @@ import com.bombcorps.game.model.Player;
 import com.bombcorps.game.view.DirectedGame;
 
 public class BombCorps extends DirectedGame {
-	SpriteBatch batch;
-	Texture img;
-
-
-	public int x = 0, y = 0, width = 4, height = 4;
-    public OrthographicCamera camera;
-    public CameraController cameraController;
-
-
 
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
-//		img = new Texture("badlogic.jpg");
-
-        cameraController = new CameraController();
-        cameraController.setPosition(0, 0);
-        camera = new OrthographicCamera(18, 10);
-		NetController net = new NetController();
-        Gdx.input.setInputProcessor(new GestureDetector(new InputController(cameraController, camera, net)));
+		loadMenuScreen();
 	}
 
-	@Override
-	public void render () {
-        cameraController.applyTo(camera);
-        batch.setProjectionMatrix(camera.combined);
 
-		Gdx.gl.glClearColor(1, 1, 1, 1.0f);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(img, x, y, width, height);
-        batch.end();
-	}
-	
-	@Override
-	public void dispose () {
-		batch.dispose();
-		img.dispose();
-	}
 }
