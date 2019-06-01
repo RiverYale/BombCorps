@@ -3,7 +3,6 @@ package com.bombcorps.game.model;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
@@ -33,7 +32,7 @@ public class World {
     }
 
     public void addBonus(Bonus b) {
-        bonusManager.setBonusByChance();
+        bonusManager.setBonus();
     }
 
     public Player getNextPlayer() {

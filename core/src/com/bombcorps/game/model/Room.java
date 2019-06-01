@@ -12,9 +12,52 @@ public class Room {
 
     private PlayerManager playerManager;
 
-    public Room(int ownerPort){
+    private int LIMIT;
+
+    public Room(int ownerPort, int limit){
         init(ownerPort);
+        this.LIMIT = limit;
     }
+
+    /*
+    TODO
+     */
+    public void add(String IP, String ID){        //优先加入红色
+        if(playerManager.getRedPlayerList().size < LIMIT){
+            playerManager.addPlayer(IP, Constants.PLAYER.RED_TEAM, ID);
+        }else if(playerManager.getBluePlayerList().size < LIMIT){
+            playerManager.addPlayer(IP, Constants.PLAYER.BLUE_TEAM, ID);
+        }
+
+    }
+
+    public void switchTeam(Player player){
+        /*
+        更换房间
+         */
+        if(player.getTeam() == Constants.PLAYER.RED_TEAM){
+            for(int i = 0 ; i < playerManager.getRedPlayerList().size ; i++){
+                if(player.getIp().equals(playerManager.getPlayerListRed().get(i).getIp())){
+                    if(playerManager.getBluePlayerList().size < LIMIT){
+                        playerManager.getBluePlayerList().add(playerManager.getRedPlayerList().get(i));
+                        playerManager.getRedPlayerList().removeIndex(i);
+                    }
+
+                }
+            }
+        }else{
+            for(int i = 0 ; i < playerManager.getBluePlayerList().size ; i++){
+                if(player.getIp().equals(playerManager.getPlayerListBlue().get(i).getIp())){
+                    if(playerManager.getRedPlayerList().size < LIMIT){
+                        playerManager.getRedPlayerList().add(playerManager.getBluePlayerList().get(i));
+                        playerManager.getBluePlayerList().removeIndex(i);
+                    }
+                }
+            }
+        }
+
+    }
+
 
     private void init(int ownerPort){
         this.ownerPort = ownerPort;
