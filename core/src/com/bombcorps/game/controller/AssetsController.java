@@ -7,6 +7,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
 
@@ -19,11 +20,13 @@ public class AssetsController  implements Disposable, AssetErrorListener {
     private HashMap<String, TextureAtlas.AtlasRegion> textureMap;
     private HashMap<String, Sound> soundMap;
     private HashMap<String, Music> musicMap;
+    public BitmapFont font;
 
     private AssetsController() {
         this.assetManager = new AssetManager();
         assetManager.setErrorListener(this);
         textureMap = new HashMap<String, TextureAtlas.AtlasRegion>();
+        font = new BitmapFont(Gdx.files.internal("info/font.fnt"), false);
     }
 
     public void loadTexture(String fileName) {

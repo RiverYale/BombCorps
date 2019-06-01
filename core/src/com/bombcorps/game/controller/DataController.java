@@ -14,12 +14,14 @@ public class DataController {
     public static final int SNIPER = 3;
     public static final int SPARDAR = 4;
     public static final int WIZARD = 5;
+    public static final int GAME_NUM = 6;
+    public static final int WIN_NUM = 7;
     private Preferences prefs;
     private int upLevelCost[] = {100, 200, 300, 400, 500};
     private String name;
     private float volSound;
     private float volMusic;
-    private String personalDataKey[] = {"money", "angel", "protector", "sniper", "sparda", "wizard"};
+    private String personalDataKey[] = {"money", "angel", "protector", "sniper", "sparda", "wizard", "gameNum", "winNum"};
     private int personalDataVal[];
 
     private DataController() {
@@ -62,20 +64,30 @@ public class DataController {
     }
 
     public boolean upLevel(int type){
-        if(type<1 || type>5 || personalDataVal[type]>=Constants.HERO_MAX_LEVEL || personalDataVal[0]<upLevelCost[personalDataVal[type]]){
+        if(type<1 || type>5 || personalDataVal[type]>=Constants.HERO_MAX_LEVEL || personalDataVal[MONEY]<upLevelCost[personalDataVal[type]]){
             return false;
         }
-        personalDataVal[0] -= upLevelCost[personalDataVal[type]];
+        personalDataVal[MONEY] -= upLevelCost[personalDataVal[type]];
         personalDataVal[type]++;
-        prefs.putInteger("money", personalDataVal[0]);
+        prefs.putInteger("money", personalDataVal[MONEY]);
         prefs.putInteger(personalDataKey[type], personalDataVal[type]);
         prefs.flush();
         return true;
     }
 
     public void addMoney(int amount) {
-        personalDataVal[0] += amount;
-        prefs.putInteger("money", personalDataVal[0]);
+        personalDataVal[MONEY] += amount;
+        prefs.putInteger("money", personalDataVal[MONEY]);
+        prefs.flush();
+    }
+
+    public void addGameNum(boolean isWin) {
+        personalDataVal[GAME_NUM]++;
+        prefs.putInteger("gameNum", personalDataVal[GAME_NUM]);
+        if (isWin) {
+            personalDataVal[WIN_NUM]++;
+            prefs.putInteger("gameNum", personalDataVal[WIN_NUM]);
+        }
         prefs.flush();
     }
 

@@ -105,7 +105,6 @@ public class RoomScreen extends AbstractGameScreen{
     }
 
     public void rebulidStage(){
-        stage.clear();
         //房间背景
         roomBackground = new Image(new Texture("roomscreen/roombackground.png"));
         roomBackground.setSize(width,height);
@@ -238,6 +237,11 @@ public class RoomScreen extends AbstractGameScreen{
                 mapSelect = new Image(new Texture("roomscreen/map0.png"));
                 break;
         }
+    }
+
+    public void drawMap(){
+        Integer.parseInt(room.getMapName());
+
     }
     public void setButtonClick(){
 

@@ -131,6 +131,7 @@ public class Constants {
 
     public static final float VIEWPORT_HEIGHT = 10.0f;
 
+
     /*
     Sniper
      */
@@ -272,5 +273,15 @@ public class Constants {
         public static final float SKILL_3_TEAMMATE_DAMAGE_PERCENTAGE = 0.4f;
         public static final float SKILL_3_SELF_DAMAGE_PERCENTAGE = 0.6f;
     }
+    public static int CurrentScreenFlag = 1;
+    public static int MenuScreenFlag = 1;
+    public static int LobbyScreenFlag = 2;
+    public static int RoomScreenFlag = 3;
+    public static int GameScreenFlag = 4;
+    public static int InfoScreenFlag=5;
+
+
+
+
 
 }
