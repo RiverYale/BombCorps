@@ -12,11 +12,19 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.bombcorps.game.controller.AssetsController;
+import com.bombcorps.game.controller.DataController;
 
 public class InfoScreen extends AbstractGameScreen implements InputProcessor{
     private OrthographicCamera camera;
     private SpriteBatch batch;
     private Sprite back, myInfoBoard, heroBoard, heroInfoBoard, heroBigImage, upgrade, skillInfoBoard, bar;
+    private float baseHeroInfo[][] = {
+            {1000f/1500f, 50f/200f, 50f/130f},
+            {1500f/1500f, 70f/200f, 130f/130f},
+            {800f/1500f, 200f/200f, 70f/130f},
+            {1000f/1500f, 130f/200f, 70f/130f},
+            {800f/1500f, 0f/200f, 70f/130f}
+    };
 
     //TODO
 //    private String heroNames[] = {"天使", "守护者", "射手", "狂战士", "巫师"};
@@ -155,9 +163,11 @@ public class InfoScreen extends AbstractGameScreen implements InputProcessor{
         for(int i=0;i<4;i++){
             font.draw(batch, title[i]+": ", 70, 410-i*90);
         }
-        for(int i=0;i<4;i++){
-            font.draw(batch, "Steve", 90, 370-i*90);
-        }
+        DataController dc = DataController.instance;
+        font.draw(batch, dc.getName(), 90, 370);
+        font.draw(batch, dc.getPersonalData(DataController.MONEY)+"", 90, 370-90);
+        font.draw(batch, dc.getPersonalData(DataController.WIN_NUM)+"/"+dc.getPersonalData(DataController.GAME_NUM), 90, 370-2*90);
+        font.draw(batch, dc.getWinRate()+"", 90, 370-3*90);
     }
 
     public void renderHeroList(SpriteBatch batch) {
@@ -172,7 +182,11 @@ public class InfoScreen extends AbstractGameScreen implements InputProcessor{
             }
             batch.draw(regions[4-i], heroBoard.getX()+20, heroBoard.getY()+22);
             font.draw(batch, heroNames[4-i], heroBoard.getX() + 65, heroBoard.getY() + 55);
-            font.draw(batch, "★★☆☆☆", heroBoard.getX() + 65, heroBoard.getY() + 30);
+            char s[] = "☆☆☆☆☆".toCharArray();
+            for(int j=0;j<DataController.instance.getPersonalData(5-i);j++){
+                s[j] = '★';
+            }
+            font.draw(batch, new String(s), heroBoard.getX() + 65, heroBoard.getY() + 30);
             if((4-i) == index){
                 font.setColor(205/255f, 201/255f, 201/255f, 1);
             }
@@ -204,12 +218,16 @@ public class InfoScreen extends AbstractGameScreen implements InputProcessor{
         font.setColor(Color.BLACK);
 
         //属性字
+        char s[] = "☆☆☆☆☆".toCharArray();
+        for(int i=0;i<DataController.instance.getPersonalData(5-index);i++){
+            s[i] = '★';
+        }
         font.getData().setScale(0.9f);
         float x = heroBigImage.getX()+heroBigImage.getWidth()+20;
         float y = heroBigImage.getY()+heroBigImage.getHeight()-5;
         float margin = 30f;
-        font.draw(batch, "称  号: "+ heroNames[index], x, y);
-        font.draw(batch, "等  级: ★★☆☆☆", x, y-margin*1);
+        font.draw(batch, "称  号: " + heroNames[index], x, y);
+        font.draw(batch, "等  级: " + new String(s), x, y-margin*1);
         font.draw(batch, "血  量: ", x, y-margin*2);
         font.draw(batch, "攻击力: ", x, y-margin*3);
         font.draw(batch, "护  甲: ", x, y-margin*4);
@@ -223,7 +241,8 @@ public class InfoScreen extends AbstractGameScreen implements InputProcessor{
 
             bar.setColor(c[i]);
             bar.setY(heroBigImage.getY()+27-30*i);
-            bar.setSize((int)(  120*0.2*i+20  ), bar.getHeight());
+            bar.setSize((int)(120 * baseHeroInfo[index][i]), bar.getHeight());
+
             bar.draw(batch);
         }
 

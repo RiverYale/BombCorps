@@ -92,7 +92,7 @@ public class WorldController {
     }
 
     public void resetOperations() {
-        net.operate(operations, curPlayer, curPlayer.getDestX(), curPlayer.getTap().x, curPlayer.getTap().y);
+        net.operate(operations, curPlayer.getDestX(), curPlayer.getTap().x, curPlayer.getTap().y);
         this.operations = -1;
     }
 
@@ -188,7 +188,7 @@ public class WorldController {
         game.errorStop();
     }
 
-    public boolean isGameOver() {
+    public int isGameOver() {  //0 未结束   1 红赢   2 蓝赢   3 平
         boolean red = false, blue = false;
         for (Player p : world.getPlayers()) {
             if(p.getTeam() == 0){
@@ -197,7 +197,15 @@ public class WorldController {
                 blue = true;
             }
         }
-        return !(red && blue);
+        if (red && blue) {
+            return 0;
+        } else if (red) {
+            return 1;
+        } else if (blue) {
+            return 2;
+        } else {
+            return 3;
+        }
     }
 
     public void testCollisions() {
