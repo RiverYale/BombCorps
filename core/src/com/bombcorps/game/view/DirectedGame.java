@@ -38,8 +38,8 @@ public abstract class DirectedGame implements ApplicationListener {
         setScreen(lobbyScreen);
         Constants.CurrentScreenFlag = Constants.LobbyScreenFlag;
     }
-    public void loadRoomScreen(){
-        roomScreen = new RoomScreen(this);
+    public void loadRoomScreen(int mode){
+        roomScreen = new RoomScreen(this,NetController.getLocalHostIp(),mode);
         setScreen(roomScreen);
         Constants.CurrentScreenFlag = Constants.RoomScreenFlag;
     }
@@ -79,6 +79,9 @@ public abstract class DirectedGame implements ApplicationListener {
     public void errorStop(){
         //调用
         gameScreen.errorStop();
+    }
+    public void errorQuit(){
+        roomScreen.errorQuit();
     }
     public World getWorld(){
 

@@ -4,10 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.bombcorps.game.controller.AssetsController;
+import com.bombcorps.game.controller.NetController;
 import com.bombcorps.game.model.Player;
 import com.bombcorps.game.model.PlayerManager;
 import com.bombcorps.game.model.Room;
@@ -217,8 +220,10 @@ public class RoomScreen extends AbstractGameScreen{
                 0.4f * height);
         btnMapright.setPosition(selectBackground.getX() + selectBackground.getWidth()/2 - btnMapright.getWidth()/2 + 0.08f * width,
                 0.4f * height);
-        stage.addActor(btnMapleft);
-        stage.addActor(btnMapright);
+        if(NetController.getLocalHostIp() == room.getOwnerIp()){
+            stage.addActor(btnMapleft);
+            stage.addActor(btnMapright);
+        }
 
     }
 
@@ -237,10 +242,25 @@ public class RoomScreen extends AbstractGameScreen{
                 mapSelect = new Image(new Texture("roomscreen/map0.png"));
                 break;
         }
+        stage.addActor(mapSelect);
     }
 
-    public void drawMap(){
-        Integer.parseInt(room.getMapName());
+    public void addButtonListener(){
+        //英雄
+        btnHeroLeft.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+
+            }
+        });
+
+        btnHeroRight.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+
+            }
+        });
+
 
     }
     public void setButtonClick(){
