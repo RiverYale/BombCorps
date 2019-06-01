@@ -225,7 +225,7 @@ public class NetController {
                 break;
             case QUIT_ROOM:
                 if(game.getRoom().getOwnerIp().equals(msg.getFromIp())){
-                    game.getRoom().errorStop();
+                    game.errorQuit();
                 }else{
                     game.getRoom().removePlayer(msg.getTargetPlayer());
                 }
@@ -283,7 +283,7 @@ public class NetController {
     }
 
     public void broadcastInRoom(Message m) {
-        for (Player p : game.getRoom().getPlayers()) {
+        for (Player p : game.getRoom().getPlayerManager().getAllPlayerList()) {
             m.setToIp(p.getIp());
             sendCMD(m);
         }
