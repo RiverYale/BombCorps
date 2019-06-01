@@ -5,8 +5,14 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
+import com.bombcorps.game.model.Bombs.Bomb;
+import com.bombcorps.game.model.Bonus;
+import com.bombcorps.game.model.Constants;
 import com.bombcorps.game.model.Message;
 import com.bombcorps.game.model.Player;
+import com.bombcorps.game.model.Rock;
 import com.bombcorps.game.model.World;
 
 import java.util.ArrayList;
@@ -64,7 +70,7 @@ public class WorldController {
         return curPlayer;
     }
 
-    public ArrayList<Player> getPlayers() {
+    public Array<Player> getPlayers() {
         return world.getPlayers();
     }
 
@@ -86,6 +92,10 @@ public class WorldController {
         this.operations = -1;
     }
 
+    public void onHeroClicked(Player p) {
+        game.onHeroClicked(p);
+    }
+
     public void onOperationClicked(int index) {
         switch (index) {
             case 0:
@@ -102,12 +112,8 @@ public class WorldController {
             case 3:
             case 4:
             case 5:
-                if(curPlayer.isNeedTarget(index)){
-                    operations = index;
-                }else{
-                    curPlayer.useSkill(index, null);
-                    resetOperations();
-                }
+                curPlayer.useSkill(index);
+                resetOperations();
                 break;
             case 6:
                 if(world.getIp().equals(curPlayer.getIp())){
@@ -125,6 +131,10 @@ public class WorldController {
         }
     }
 
+    public Bonus spawnBonus() {
+        return world.spawnBonus();
+    }
+
     public void startNextRound(Bonus b) {
         if(b != null){
             world.addBonus(b);
@@ -135,7 +145,6 @@ public class WorldController {
 
     public void playerOperate(Message msg) {
         int op = msg.getOp();
-        Player target = msg.getTarget();
         float targetX = msg.getTargetX();
         float tapX = msg.getTapX();
         float tapY = msg.getTapY();
@@ -158,11 +167,7 @@ public class WorldController {
             case 3:
             case 4:
             case 5:
-                if(curPlayer.isNeedTarget(op)){
-                    curPlayer.useSkill(op, target);
-                }else{
-                    curPlayer.useSkill(op, null);
-                }
+                curPlayer.useSkill(op);
                 break;
         }
     }
@@ -188,4 +193,69 @@ public class WorldController {
         }
         return !(red && blue);
     }
+
+    public void testCollisions() {
+        //TODO Bonus碰Rock? Bomb碰Player?
+        Rectangle r1 = curPlayer.getRect();
+        Rectangle r2;
+        for(Rock r : world.rocks) {
+            r2 = r.getRect();
+            if (r1.overlaps(r2)) {
+                onCollisionsPlayerWithRock(r);
+            }
+        }
+        for (Bonus b : world.bonus) {
+            r2 = b.getRect();
+            if (r1.overlaps(r2)) {
+                onCollisionsPlayerWithBonus(b);
+            }
+        }
+        if(curPlayer.getBomb().getState() == Constants.BOMB.STATE_FLY) {
+            r1 = curPlayer.getBomb().getRect();
+            for(Rock r : world.rocks) {
+                r2 = r.getRect();
+                if (r1.overlaps(r2)) {
+                    onCollisionsBombWithRock(curPlayer.getBomb());
+                }
+            }
+        }
+    }
+
+    private void onCollisionsPlayerWithRock(Rock r) {
+        float heightDifference = Math.abs(curPlayer.getPosition().y - (r.getPosition().y + r.getRect().getHeight()));
+        if (heightDifference > 0.25f) { //TODO
+            boolean hitLeftEdge = curPlayer.getPosition().x > (r.getPosition().x + r.getRect().getWidth() / 2.0f);
+            if (hitLeftEdge) {
+                curPlayer.setX(r.getPosition().x + r.getRect().getWidth());
+            } else {
+                curPlayer.setX(r.getPosition().x - r.getRect().getWidth());
+            }
+            return;
+        }
+        switch (curPlayer.getHeroState()) {
+            case WAIT:
+            case GROUNDED:
+                break;
+            case MOVING:
+                if (heightDifference > 0.25f) { //TODO
+                    curPlayer.setHeroState(Constants.STATE_GROUNDED);
+                } else {
+                    curPlayer.setY(r.getPosition().y + r.getRect().getHeight());
+                }
+                break;
+            case FALLING:
+                r.getPosition().y + r.getRect().getHeight();
+                curPlayer.setHeroState(Constants.STATE_GROUNDED);
+                break;
+        }
+    }
+
+    private void onCollisionsPlayerWithBonus(Bonus b) {
+        b.attachTo(curPlayer);
+    }
+
+    private void onCollisionsBombWithRock(Bomb b) {
+        b.explode();
+    }
+
 }

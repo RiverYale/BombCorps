@@ -22,7 +22,7 @@ public class Rock {
     }
 
     private void init(){
-        dimension.set(1,1.5f);
+        dimension.set(1,1);
         regionLeft = AssetsController.instance.getRegion("rock.left");
         regionRight = AssetsController.instance.getRegion("rock.right");
         regionMiddle = AssetsController.instance.getRegion("rock.middle");
@@ -43,7 +43,7 @@ public class Rock {
         float relY = 0;
         //画左边砖块
         region = regionLeft;
-        relX -= dimension.x/4;
+        relX -= dimension.x;
         batch.draw(region.getTexture(),position.x+relX,position.y+relY,origin.x,origin.y,dimension.x,
                 dimension.y,scale.x,scale.y,rotation,region.getRegionX(),region.getRegionY(),
                 region.getRegionWidth(),region.getRegionHeight(),false,false);
