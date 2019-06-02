@@ -319,10 +319,10 @@ public class MenuScreen extends AbstractGameScreen {
         BitmapFont font =new BitmapFont(Gdx.files.internal("menuscreen/winOptions.fnt"),Gdx.files.internal("menuscreen/winOptions.png"),false);
         DataController prefs = DataController.instance;
         Table tbl = new Table();
-
+        font.getData().setScale(1.5f*width/1280f);
         tbl.pad(10,10,0,10);
         Label lbl = new Label("change your name",new Label.LabelStyle(font, Color.WHITE));
-        lbl.setFontScale(1.5f*width/1280);
+       // lbl.setFontScale(1.5f*width/1280);
         tbl.add(lbl);
         tbl.row();
 
@@ -341,7 +341,7 @@ public class MenuScreen extends AbstractGameScreen {
 
         BitmapFont font =new BitmapFont(Gdx.files.internal("menuscreen/winOptions.fnt"),Gdx.files.internal("menuscreen/winOptions.png"),false);
         Texture texture = new Texture(Gdx.files.internal("menuscreen/savecancelbutton.png"));
-
+        font.getData().setScale(width/1280);
         //添加save按钮并且 初始化事件处理器
         TextureRegionDrawable textureRegionDrawable = new TextureRegionDrawable(texture);
 
