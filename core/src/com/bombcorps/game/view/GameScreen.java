@@ -130,7 +130,7 @@ public class GameScreen extends AbstractGameScreen{
     public Table buildBottonLayer(){
         Table layer = new Table();
         //+ quit botton
-        btnQuit = new Image(new Texture(Gdx.files.internal("images/button_quit.png")));
+        btnQuit = new Image(AssetsController.instance.getRegion("button_quit"));
         btnQuit.setSize(32,32);
         btnQuit.setPosition(0,Gdx.graphics.getHeight()-btnQuit.getHeight());
         layer.addActor(btnQuit);
@@ -141,7 +141,7 @@ public class GameScreen extends AbstractGameScreen{
                 return true;
             }
         });
-        btnSettings = new Image(new Texture(Gdx.files.internal("images/button_setting.png")));
+        btnSettings = new Image(AssetsController.instance.getRegion("button_setting"));
         btnSettings.setSize(32,32);
         btnSettings.setPosition(width-btnSettings.getWidth(),height-btnSettings.getHeight());
         layer.addActor(btnSettings);
@@ -160,7 +160,7 @@ public class GameScreen extends AbstractGameScreen{
         Table layer = new Table();
         float scale;
         //+SkillOneLayer
-        imgSkillOne = new Image(new Texture(Gdx.files.internal("skill/SkillOne.png")));
+        imgSkillOne = new Image(AssetsController.instance.getRegion("SkillOne"));
         scale=width/15/imgSkillOne.getWidth();
         imgSkillOne.setScale(scale);
         imgSkillOne.setPosition(width/2-imgSkillOne.getWidth()*scale*3.5f,0);
@@ -176,7 +176,7 @@ public class GameScreen extends AbstractGameScreen{
         });
 
         //+SkillTwoLayer
-        imgSkillTwo = new Image(new Texture(Gdx.files.internal("skill/SkillTwo.png")));
+        imgSkillTwo = new Image(AssetsController.instance.getRegion("SkillTwo"));
         imgSkillTwo.setScale(scale);
         imgSkillTwo.setPosition(imgSkillOne.getX()+imgSkillOne.getWidth()*scale,0);
         layer.addActor(imgSkillTwo);
@@ -191,7 +191,7 @@ public class GameScreen extends AbstractGameScreen{
         });
 
         //+SkillThreeLayer
-        imgSkillThree = new Image(new Texture(Gdx.files.internal("skill/SkillThree.png")));
+        imgSkillThree = new Image(AssetsController.instance.getRegion("SkillThree"));
         imgSkillThree.setScale(scale);
         imgSkillThree.setPosition(imgSkillTwo.getX()+imgSkillTwo.getWidth()*scale,0);
         layer.addActor(imgSkillThree);
@@ -206,7 +206,7 @@ public class GameScreen extends AbstractGameScreen{
         });
 
         //+MovementLayer
-        imgMove = new Image(new Texture(Gdx.files.internal("skill/move.png")));
+        imgMove = new Image(AssetsController.instance.getRegion("move"));
         imgMove.setScale(scale);
         imgMove.setPosition(imgSkillThree.getX()+imgSkillThree.getWidth()*scale,0);
         layer.addActor(imgMove);
@@ -221,7 +221,7 @@ public class GameScreen extends AbstractGameScreen{
         });
 
         //+AttrackLayer
-        imgAttrack = new Image(new Texture(Gdx.files.internal("skill/attrack.png")));
+        imgAttrack = new Image(AssetsController.instance.getRegion("attrack"));
         imgAttrack.setScale(scale);
         imgAttrack.setPosition(imgMove.getX()+imgMove.getWidth()*scale,0);
         layer.addActor(imgAttrack);
@@ -236,7 +236,7 @@ public class GameScreen extends AbstractGameScreen{
         });
 
         //+EjectionLayer
-        imgEjection = new Image(new Texture(Gdx.files.internal("skill/ejection.png")));
+        imgEjection = new Image(AssetsController.instance.getRegion("ejection"));
         imgEjection.setScale(scale);
         imgEjection.setPosition(imgAttrack.getX()+imgAttrack.getWidth()*scale,0);
         layer.addActor(imgEjection);
@@ -250,7 +250,7 @@ public class GameScreen extends AbstractGameScreen{
             }
         });
         //+TurnEndLayer
-        imgTurnEnd = new Image(new Texture(Gdx.files.internal("Skill/quit.png")));
+        imgTurnEnd = new Image(AssetsController.instance.getRegion("button_quit"));
         imgTurnEnd.setSize(43,35);
         imgTurnEnd.setScale(scale);
         imgTurnEnd.setPosition(imgEjection.getX()+imgEjection.getWidth()*scale,0);
@@ -274,10 +274,10 @@ public class GameScreen extends AbstractGameScreen{
     public Table buildHeroBasicInfoLayer(){
 
         Table layer =new Table();
-        BitmapFont font = new BitmapFont(Gdx.files.internal("images/winOptions.fnt"),Gdx.files.internal("images/winOptions.png"),false);
+        BitmapFont font = AssetsController.instance.font;
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.BLACK);
         //+my hero's head appear
-        imgMyHeroHead = new Image(new Texture(Gdx.files.internal("roomscreen/"+myHeroType()+"_stand.png")));
+        imgMyHeroHead = new Image(AssetsController.instance.getRegion(myHeroType()+"0"));
         imgMyHeroHead.setPosition(0,0);
         imgMyHeroHead.setScale(width/15/imgMyHeroHead.getWidth());
         layer.addActor(imgMyHeroHead);
@@ -290,10 +290,9 @@ public class GameScreen extends AbstractGameScreen{
             }
         });
         Player p =new Player(myHeroType());
-        labelMyHeroBasicInfo = new Label("HP:1000 AK:90\nED:100 AM:100\nPR:50 CP:20% " ,labelStyle);
-        //+p.getMyHero().getHealth()+" AK:"+p.getMyHero().getAttack()+
-        //"\nED:"+p.getMyHero().getEndurance()+" AM:"+p.getMyHero().getArmor()+
-        // "\nRP:"+p.getMyHero().getRagePower()+" CP:"+p.getMyHero().getCriticalProbability()
+        labelMyHeroBasicInfo = new Label("HP" +p.getMyHero().getHealth()+" AK:"+p.getMyHero().getAttack()+
+        "\nED:"+p.getMyHero().getEndurance()+" AM:"+p.getMyHero().getArmor()+
+         "\nRP:"+p.getMyHero().getRagePower()+" CP:"+p.getMyHero().getCriticalProbability(),labelStyle);
         labelMyHeroBasicInfo.setFontScale(width/15/labelMyHeroBasicInfo.getPrefWidth()*2);
         labelMyHeroBasicInfo.setPosition(width/15,-labelMyHeroBasicInfo.getHeight()/5);
         layer.addActor(labelMyHeroBasicInfo);
@@ -302,13 +301,13 @@ public class GameScreen extends AbstractGameScreen{
         labelOtherHeroBasicInfo = new Label("HP:1000 AK:90\nED:100 AM:100\nPR:50 CP:20% ",labelStyle);
         labelOtherHeroBasicInfo.setFontScale(width/15/labelOtherHeroBasicInfo.getPrefWidth()*2);
         labelOtherHeroBasicInfo.setPosition(width-labelOtherHeroBasicInfo.getPrefWidth(),-labelOtherHeroBasicInfo.getHeight()/5);
-        labelOtherHeroBasicInfo.setVisible(true);
+        labelOtherHeroBasicInfo.setVisible(false);
         layer.addActor(labelOtherHeroBasicInfo);
 
-        imgOtherHeroHead = new Image(new Texture(Gdx.files.internal("roomscreen/Angel_stand.png")));
+        imgOtherHeroHead = new Image(AssetsController.instance.getRegion("Angel0"));
         imgOtherHeroHead.setScale(width/15/imgOtherHeroHead.getWidth());
         imgOtherHeroHead.setPosition(width/15*12,0);
-        imgOtherHeroHead.setVisible(true);
+        imgOtherHeroHead.setVisible(false);
         layer.addActor(imgOtherHeroHead);
         imgOtherHeroHead.addListener(new InputListener(){
             @Override
@@ -324,16 +323,15 @@ public class GameScreen extends AbstractGameScreen{
 
     public Table buildHeroInfoWindowLayer(){
         Table layer = new Table();
-        Image background = new Image(new Texture(Gdx.files.internal("Skill/skillDetail/"+myHeroType()+"_skill_detail.png")));
+        Image background = new Image(new Texture(Gdx.files.internal("Skill/"+myHeroType()+"_skill_detail.png")));
         background.setPosition(0,0);
         background.setSize(height/2,height/2);
-        BitmapFont font =new BitmapFont(Gdx.files.internal("images/winOptions.fnt"),Gdx.files.internal("images/winOptions.png"),false);
-        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(new Texture(Gdx.files.internal("images/winresult.png"))));
+        BitmapFont font = AssetsController.instance.font;
+        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(AssetsController.instance.getRegion("winresult")));
         winHeroInfo = new Window("",windowStyle);
         winHeroInfo.setSize(height/2,height/2);
         //winOptions.setColor(1,1,1,1f);
         winHeroInfo.addActor(background);
-        // winHeroInfo.addActor(buildWinHInfoQuitBotton());
         winHeroInfo.setVisible(false);
 
         //winOptions.pack();
@@ -345,13 +343,13 @@ public class GameScreen extends AbstractGameScreen{
 
     public Table buildOtherHeroInfoWindowLayer(){
         Table layer = new Table();
-        Image background = new Image(new Texture(Gdx.files.internal("Skill/skillDetail/"+myHeroType()+"_skill_detail.png")));
+        Image background = new Image(new Texture(Gdx.files.internal("Skill/"+myHeroType()+"_skill_detail.png")));
         background.setPosition(0,0);
         background.setSize(height/2,height/2);
         int heroInfoType;
         heroInfoType = this.heroInfoType;
-        BitmapFont font =new BitmapFont(Gdx.files.internal("images/winOptions.fnt"),Gdx.files.internal("images/winOptions.png"),false);
-        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(new Texture(Gdx.files.internal("images/winresult.png"))));
+        BitmapFont font = AssetsController.instance.font;
+        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(AssetsController.instance.getRegion("winresult")));
         winOtherHeroInfo = new Window("",windowStyle);
         winOtherHeroInfo.setSize(height/2,height/2);
         //winOptions.setColor(1,1,1,1f);
@@ -368,8 +366,8 @@ public class GameScreen extends AbstractGameScreen{
 
     public Table buildErrorQuitWindowBotton(){
         Table layer = new Table();
-        btnWinErrorQuit = new Image(new Texture(Gdx.files.internal("images/button_quit.png")));
-        btnWinErrorQuit.setPosition(winErrorQuit.getWidth()-btnWinErrorQuit.getWidth(),winErrorQuit.getHeight()-btnWinErrorQuit.getHeight());
+        btnWinErrorQuit = new Image(AssetsController.instance.getRegion("confirm"));
+        btnWinErrorQuit.setPosition(winErrorQuit.getWidth()/2-btnWinErrorQuit.getWidth()/2,winErrorQuit.getHeight()/3-btnWinErrorQuit.getHeight()/2);
         layer.addActor(btnWinErrorQuit);
         btnWinErrorQuit.addListener(new InputListener(){
             @Override
@@ -384,13 +382,17 @@ public class GameScreen extends AbstractGameScreen{
 
     public Table buildErrorQuitWindowLayer(){
         Table tbl = new Table();
-        BitmapFont font =new BitmapFont(Gdx.files.internal("images/winOptions.fnt"),Gdx.files.internal("images/winOptions.png"),false);
-        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(new Texture(Gdx.files.internal("images/winresult.png"))));
+        BitmapFont font = AssetsController.instance.font;
+        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(AssetsController.instance.getRegion("winresult")));
         winErrorQuit = new Window("",windowStyle);
+        Label.LabelStyle labelStyle = new Label.LabelStyle(font,Color.BLACK);
+        Label label = new Label("Because Manager is quitted, game error stop.",labelStyle);
         winErrorQuit.setSize(width/2,height/2);
         winErrorQuit.setPosition(width/4,height/4);
+        label.setPosition(winErrorQuit.getWidth()/2-label.getPrefWidth()/2,2/3*winErrorQuit.getHeight()-label.getPrefHeight()/2);
         //winOptions.setColor(1,1,1,1f);
         winErrorQuit.addActor(buildErrorQuitWindowBotton());
+        winErrorQuit.addActor(label);
         winErrorQuit.setVisible(false);
         tbl.addActor(winErrorQuit);
         //winOptions.pack();
@@ -414,7 +416,7 @@ public class GameScreen extends AbstractGameScreen{
     }
 
     public String myHeroType(){
-       /* int i;
+        int i;
         for(i=0;worldController.getPlayers().get(i).getState() != Constants.PLAYER.STATE_LOCAL&&i<worldController.getPlayers().size;i++){
 
         }
@@ -433,8 +435,7 @@ public class GameScreen extends AbstractGameScreen{
         }
         else {
             return "Wizard";
-        }*/
-        return  "Wizard";
+        }
     }
 
     public void onHeroClicked(Player p){
@@ -452,7 +453,7 @@ public class GameScreen extends AbstractGameScreen{
         }else{
             i = "Wizard";
         }
-        BitmapFont font = new BitmapFont(Gdx.files.internal("images/winOptions.fnt"),Gdx.files.internal("images/winOptions.png"),false);
+        BitmapFont font = AssetsController.instance.font;
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.BLACK);
         labelOtherHeroBasicInfo = new Label("HP:"+p.getMyHero().getHealth()+" AK:"+p.getMyHero().getAttack()+
                 "\nED:"+p.getMyHero().getEndurance()+" AM:"+p.getMyHero().getArmor()+
@@ -460,10 +461,8 @@ public class GameScreen extends AbstractGameScreen{
         labelOtherHeroBasicInfo.setFontScale(width/15/labelOtherHeroBasicInfo.getPrefWidth()*2);
         labelOtherHeroBasicInfo.setPosition(width/15*13,-labelOtherHeroBasicInfo.getHeight()/5);
 
-        TextureRegion textureRegion1 = new TextureRegion();
-        textureRegion1 = AssetsController.instance.getRegion(i+"_stand");
 
-        imgOtherHeroHead = new Image(textureRegion1.getTexture());
+        imgOtherHeroHead = new Image(AssetsController.instance.getRegion(i+"0"));
         imgOtherHeroHead.setScale(width/15/imgOtherHeroHead.getWidth());
         imgOtherHeroHead.setPosition(width/15*12,0);
         imgOtherHeroHead.addListener(new InputListener(){
@@ -474,7 +473,7 @@ public class GameScreen extends AbstractGameScreen{
                 return true;
             }
         });
-        Image background = new Image(new Texture(Gdx.files.internal("Skill/skillDetail"+i+"_skill_detail")));
+        Image background = new Image(new Texture(Gdx.files.internal("Skill/"+i+"_skill_detail")));
         background.setPosition(0,0);
         background.setSize(height/2,height/2);
         winOtherHeroInfo.addActor(background);
@@ -492,8 +491,8 @@ public class GameScreen extends AbstractGameScreen{
 
     public void GameOver(){
         //游戏结算的弹窗
-        BitmapFont font =new BitmapFont(Gdx.files.internal("images/winOptions.fnt"),Gdx.files.internal("images/winOptions.png"),false);
-        TextureRegionDrawable winResultsDrawable = new TextureRegionDrawable(new Texture(Gdx.files.internal("images/winresult.png")));
+        BitmapFont font = AssetsController.instance.font;
+        TextureRegionDrawable winResultsDrawable = new TextureRegionDrawable(AssetsController.instance.getRegion("winresult"));
         Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),winResultsDrawable);
         winResults = new Window("",windowStyle);
         winResults.setSize(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
@@ -502,12 +501,12 @@ public class GameScreen extends AbstractGameScreen{
 
 
         if(worldController.isGameOver()==1){
-            virtory = new Image(new Texture(Gdx.files.internal("images/vitory.png")));
+            virtory = new Image(AssetsController.instance.getRegion("vitory"));
             virtory.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
             virtory.setPosition((winResults.getWidth()-virtory.getWidth())/2,(winResults.getHeight()-virtory.getHeight())/1.25f);
             winResults.addActor(virtory);
         }else if(worldController.isGameOver()==2){
-            failed = new Image(new Texture(Gdx.files.internal("images/failed.png")));
+            failed = new Image(AssetsController.instance.getRegion("failed"));
             failed.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
             failed.setPosition((winResults.getWidth()-virtory.getWidth())/2,(winResults.getHeight()-virtory.getHeight())/1.25f);
             winResults.addActor(failed);
@@ -520,7 +519,7 @@ public class GameScreen extends AbstractGameScreen{
         goldReceiveLabel.setSize(winResults.getWidth(),winResults.getHeight()/2);
         goldReceiveLabel.setAlignment(Align.center);
         goldReceiveLabel.setPosition(0,winResults.getHeight()/5);
-        Image confirm = new Image(new Texture("images/confirm.png"));
+        Image confirm = new Image(AssetsController.instance.getRegion("confirm"));
         confirm.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
         confirm.setPosition((winResults.getWidth()-virtory.getWidth())/2,50);
         winResults.addActor(confirm);
@@ -539,9 +538,10 @@ public class GameScreen extends AbstractGameScreen{
     }
 
     public void playQuit(String ID){
-        BitmapFont font = new BitmapFont(Gdx.files.internal("winOptions.fnt"),Gdx.files.internal("winOptions.png"),false);
+        BitmapFont font = AssetsController.instance.font;
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.BLACK);
         Label label = new Label(ID+" has already quitted the game ,nmsl",labelStyle);
+        label.setPosition(0,height/2-label.getPrefHeight()/2);
         stage.addActor(label);
 
     }
@@ -585,8 +585,8 @@ public class GameScreen extends AbstractGameScreen{
     }
 
     public void onWinInGameSettingsClicked(){
-        BitmapFont font =new BitmapFont(Gdx.files.internal("images/winOptions.fnt"),Gdx.files.internal("images/winOptions.png"),false);
-        TextureRegionDrawable winResultsDrawable = new TextureRegionDrawable(new Texture(Gdx.files.internal("images/window.png")));
+        BitmapFont font = AssetsController.instance.font;
+        TextureRegionDrawable winResultsDrawable = new TextureRegionDrawable(AssetsController.instance.getRegion("window"));
         Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),winResultsDrawable);
         winInGameSettings = new Window("Settings",windowStyle);
         Table tbl = new Table();
@@ -602,12 +602,11 @@ public class GameScreen extends AbstractGameScreen{
         Label soundLbl = new Label("Sound",new Label.LabelStyle(font,font.getColor()));
         soundLbl.setFontScale(1.5f*width/1280f);
         tbl.add(soundLbl);
-        Texture sliderBac=new Texture("menuscreen/sliderbackground.png");
+        TextureRegion sliderBac= AssetsController.instance.getRegion("sliderbackground");
         Image image = new Image(sliderBac);
         //TextureRegionDrawable textureRegionDrawable = new TextureRegionDrawable(sliderBac);
         Slider.SliderStyle sliderStyle = new Slider.SliderStyle(new TextureRegionDrawable(sliderBac),
-                new TextureRegionDrawable(new Texture(Gdx.files.internal("menuscreen/sliderkuai.png"))));
-
+                new TextureRegionDrawable(AssetsController.instance.getRegion("sliderkuai")));
         sldSound = new Slider(0.0f,1.0f,0.1f,false,sliderStyle);
         tbl.add(sldSound).width(sldSound.getWidth()*width/1280);
         tbl.row();
@@ -621,12 +620,12 @@ public class GameScreen extends AbstractGameScreen{
 
 
 
-        Texture texture = new Texture(Gdx.files.internal("images/savecancelbutton.png"));
+
 
         //添加save按钮并且 初始化事件处理器
         font.getData().setScale(width/1280);
         //添加save按钮并且 初始化事件处理器
-        TextureRegionDrawable textureRegionDrawable = new TextureRegionDrawable(texture);
+        TextureRegionDrawable textureRegionDrawable = new TextureRegionDrawable(AssetsController.instance.getRegion("savecancelbutton"));
 
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle(textureRegionDrawable,textureRegionDrawable,textureRegionDrawable,font
         );

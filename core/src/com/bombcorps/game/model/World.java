@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.bombcorps.game.controller.AssetsController;
 
 import java.util.logging.Level;
 
@@ -148,7 +149,7 @@ public class World {
     }
 
     public void render(SpriteBatch batch){
-        batch.draw(new Texture(Gdx.files.internal("maps/background.png")),0,0,Gdx.graphics.getWidth()/Constants.VIEWPORT_WIDTH*32,Gdx.graphics.getHeight()/Constants.VIEWPORT_HEIGHT*20);
+        batch.draw(AssetsController.instance.getRegion("background"),0,0,Gdx.graphics.getWidth()/Constants.VIEWPORT_WIDTH*32,Gdx.graphics.getHeight()/Constants.VIEWPORT_HEIGHT*20);
         for (Rock rock : rocks){
             rock.render(batch);
         }
