@@ -105,7 +105,7 @@ public class LobbyScreen extends AbstractGameScreen{
         stage.clear();
         Gdx.input.setInputProcessor(stage);
         //大厅背景
-        lsBackground = new Image(new Texture(Gdx.files.internal("lobbyscreen/lsbackgroud.png")));
+        lsBackground = new Image(new Texture(Gdx.files.internal("lobbyscreen/lsbackground.png")));
         lsBackground.setSize(width,height);
         //房间列表背景
         roomListBackground = new Image(new Texture(Gdx.files.internal("lobbyscreen/roomlistbackground.png")));
