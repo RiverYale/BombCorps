@@ -2,6 +2,7 @@ package com.bombcorps.game.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -96,13 +97,14 @@ public class RoomScreen extends AbstractGameScreen{
         myplayer.setHeroType(Constants.SPARDA);
 
         Gdx.app.log("heroselect",room.getPlayerManager().getRedPlayerList().get(0).getHeroType()+"");
-        Gdx.app.log("owner:",room.getOwnerIp());
+        Gdx.app.log("owner",room.getOwnerIp());
+        Gdx.app.log("myplayer:",myplayer.getIp());
         hero = new Image[5];
-        hero[0] = new Image(new Texture("roomscreen/Angel_stand.png"));
-        hero[1] = new Image(new Texture("roomscreen/Sparda_stand.png"));
-        hero[2] = new Image(new Texture("roomscreen/Protector_stand.png"));
-        hero[3] = new Image(new Texture("roomscreen/Sniper_stand.png"));
-        hero[4] = new Image(new Texture("roomscreen/Wizard_stand.png"));
+        hero[0] = new Image(AssetsController.instance.getRegion("Angel_stand"));
+        hero[1] = new Image(AssetsController.instance.getRegion("Sparda_stand"));
+        hero[2] = new Image(AssetsController.instance.getRegion("Protector_stand"));
+        hero[3] = new Image(AssetsController.instance.getRegion("Sniper_stand"));
+        hero[4] = new Image(AssetsController.instance.getRegion("Wizard_stand"));
     }
 
     @Override
@@ -114,6 +116,7 @@ public class RoomScreen extends AbstractGameScreen{
     public void render(float deltaTime) {
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        //rebulidStage();
         stage.act();
         stage.draw();
     }
@@ -143,17 +146,17 @@ public class RoomScreen extends AbstractGameScreen{
     public void rebulidStage(){
         stage.clear();
         //房间背景
-        roomBackground = new Image(new Texture("roomscreen/roombackground.png"));
+        roomBackground = new Image(AssetsController.instance.getRegion("roombackground"));
         roomBackground.setSize(width,height);
         //红蓝方门
-        doorRed = new Image(new Texture(Gdx.files.internal("roomscreen/reddoor.png")));
-        doorBlue = new Image(new Texture(Gdx.files.internal("roomscreen/bluedoor.png")));
+        doorRed = new Image(AssetsController.instance.getRegion("reddoor"));
+        doorBlue = new Image(AssetsController.instance.getRegion("bluedoor"));
         doorRed.setSize(0.2667f * width, 0.2f * height);
         doorRed.setPosition(0.37f * width, 0.73f * height);
         doorBlue.setSize(0.2667f * width, 0.2f * height);
         doorBlue.setPosition(doorRed.getX() + 0.3f * width, 0.73f * height);
         //空位背景设置
-        Image site = new Image(new Texture("roomscreen/space.png"));
+        Image site = new Image(AssetsController.instance.getRegion("space"));
         site.setSize(doorRed.getWidth() / 2, 0.3f * height);
         site.setPosition(doorRed.getX(), doorRed.getY() - site.getHeight());
         float siteheight = site.getHeight();
@@ -161,8 +164,8 @@ public class RoomScreen extends AbstractGameScreen{
         siteRed = new Image[4];
         siteBlue = new Image[4];
         for (int i = 0; i < 4; i++) {
-            siteRed[i] = new Image(new Texture(Gdx.files.internal("roomscreen/space.png")));
-            siteBlue[i] = new Image(new Texture(Gdx.files.internal("roomscreen/space.png")));
+            siteRed[i] = new Image(AssetsController.instance.getRegion("space"));
+            siteBlue[i] = new Image(AssetsController.instance.getRegion("space"));
             siteRed[i].setSize(sitewidth, siteheight);
             siteBlue[i].setSize(sitewidth, siteheight);
             if (i == 0) {
@@ -183,7 +186,7 @@ public class RoomScreen extends AbstractGameScreen{
             }
         }
         //选择背景
-        selectBackground = new Image(new Texture("roomscreen/selectbackground.png"));
+        selectBackground = new Image(AssetsController.instance.getRegion("selectbackground"));
         selectBackground.setSize(0.26667f * width,0.71f * height);
         selectBackground.setPosition(0.0444f * width,0.13f * height);
 
@@ -245,8 +248,8 @@ public class RoomScreen extends AbstractGameScreen{
 
     public void drawButton(){
         //英雄选择按钮
-        btnHeroLeft = new Image(new Texture("roomscreen/heroleft.png"));
-        btnHeroRight = new Image(new Texture("roomscreen/heroright.png"));
+        btnHeroLeft = new Image(AssetsController.instance.getRegion("heroleft"));
+        btnHeroRight = new Image(AssetsController.instance.getRegion("heroright"));
         btnHeroLeft.setSize(0.06667f * width,0.06f * height);
         btnHeroRight.setSize(0.06667f * width,0.06f * height);
         btnHeroLeft.setPosition(selectBackground.getX() + selectBackground.getWidth()/2 - btnHeroLeft.getWidth()/2- 0.08f*width,
@@ -256,8 +259,8 @@ public class RoomScreen extends AbstractGameScreen{
         stage.addActor(btnHeroLeft);
         stage.addActor(btnHeroRight);
         //地图选择按钮
-        btnMapleft = new Image(new Texture("roomscreen/mapleft.png"));
-        btnMapright = new Image(new Texture("roomscreen/mapright.png"));
+        btnMapleft = new Image(AssetsController.instance.getRegion("mapleft"));
+        btnMapright = new Image(AssetsController.instance.getRegion("mapright"));
         btnMapleft.setSize(0.06667f * width,0.08f * height);
         btnMapright.setSize(0.06667f * width,0.08f * height);
         btnMapleft.setPosition(selectBackground.getX() + selectBackground.getWidth()/2 - btnMapleft.getWidth()/2- 0.08f*width,
@@ -269,13 +272,13 @@ public class RoomScreen extends AbstractGameScreen{
             stage.addActor(btnMapright);
         }
         //返回房间列表按钮
-        backToLobby = new Image(new Texture("roomscreen/backtolobby.png"));
+        backToLobby = new Image(AssetsController.instance.getRegion("mapleft"));
         backToLobby.setSize(0.045f * width,0.07f * height);
         backToLobby.setPosition(0.0222f * width,0.91f * height);
         stage.addActor(backToLobby);
         //开始/取消/开始游戏按钮
-        btnReady = new Image(new Texture("roomscreen/ready.png"));
-        btnCancel = new Image(new Texture("roomscreen/cancel.png"));
+        btnReady = new Image(AssetsController.instance.getRegion("ready"));
+        btnCancel = new Image(AssetsController.instance.getRegion("cancel"));
         btnReady.setSize(0.07778f * width,0.06f*height);
         btnReady.setPosition(selectBackground.getX() + selectBackground.getWidth()/2-btnReady.getWidth()/2,
                 0.16f*height);
@@ -318,7 +321,7 @@ public class RoomScreen extends AbstractGameScreen{
         mapSelect = new Image();
         switch(mapNum){
             case 0:
-                mapSelect = new Image(new Texture("roomscreen/map0.png"));
+                mapSelect = new Image(AssetsController.instance.getRegion("map00"));
                 break;
         }
         mapSelect.setSize(0.23f * width,0.3f * height);
@@ -328,8 +331,8 @@ public class RoomScreen extends AbstractGameScreen{
     }
 
     public void showPersonNum(){
-        BitmapFont font = new BitmapFont(Gdx.files.internal("roomscreen/prosonnum.fnt"), Gdx.files.internal("roomscreen/prosonnum.png"), false);
-        Label.LabelStyle style = new Label.LabelStyle(font, font.getColor());
+        BitmapFont font = AssetsController.instance.font;
+        Label.LabelStyle style = new Label.LabelStyle(font, Color.WHITE);
         String populationRed = room.getPlayerManager().getRedPlayerList().size + "/" + mode;
         String populationBlue = room.getPlayerManager().getBluePlayerList().size + "/" + mode;
         personRed = new Label(populationRed,style);
@@ -348,14 +351,14 @@ public class RoomScreen extends AbstractGameScreen{
     }
 
     public void drawErrorWin(){
-        BitmapFont font = new BitmapFont(Gdx.files.internal("roomscreen/site.fnt"), Gdx.files.internal("roomscreen/site.png"), false);
-        Label.LabelStyle style = new Label.LabelStyle(font, font.getColor());
+        BitmapFont font = AssetsController.instance.font;
+        Label.LabelStyle style = new Label.LabelStyle(font,Color.BLACK);
         Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(new Texture(Gdx.files.internal("images/winresult.png"))));
         winError = new Window("",windowStyle);
         winError.setSize(width/2,height/2);
         winError.setPosition(width/4,height/4);
         Label label = new Label("HosterGone!",style);
-        btnSure = new Image(new Texture("roomscreen/ready.png"));
+        btnSure = new Image(AssetsController.instance.getRegion("ready"));
         label.setPosition(winError.getX() - label.getWidth()/2,winError.getY() - label.getHeight()/2);
         btnSure.setSize(0.07778f * width,0.06f*height);
         btnSure.setPosition(winError.getX() - btnSure.getWidth()/2,winError.getY()-0.3f*winError.getHeight());
@@ -505,7 +508,7 @@ public class RoomScreen extends AbstractGameScreen{
     }
 
     public void toLobby(){
-        game.getNetController().quitRoom(myplayer);
+        //game.getNetController().quitRoom(myplayer);
         game.loadLobbyScreen();
     }
 

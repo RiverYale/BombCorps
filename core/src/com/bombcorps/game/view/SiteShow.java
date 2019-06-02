@@ -1,6 +1,7 @@
 package com.bombcorps.game.view;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.model.Constants;
 
 public class SiteShow {
@@ -26,25 +28,25 @@ public class SiteShow {
     private float height = Gdx.graphics.getHeight();
 
     SiteShow(int heroSelect,String playerId,int level){
-        this.heroSelect = heroSelect;
+        heroSelect = 0;
         table = new Table();
         //table.setSize(100,100);
         stack = new Stack();
         stack.setSize(0.111f * width,0.16f * height);
 
         hero = new Image[5];
-        hero[Constants.ANGEL] = new Image(new Texture("roomscreen/Angel_stand.png"));
-        hero[Constants.SPARDA] = new Image(new Texture("roomscreen/Sparda_stand.png"));
-        hero[Constants.PROTECTOR] = new Image(new Texture("roomscreen/Protector_stand.png"));
-        hero[Constants.SNIPER] = new Image(new Texture("roomscreen/Sniper_stand.png"));
-        hero[Constants.WIZARD] = new Image(new Texture("roomscreen/Wizard_stand.png"));
+        hero[0] = new Image(AssetsController.instance.getRegion("Angel_stand"));
+        hero[1] = new Image(AssetsController.instance.getRegion("Sparda_stand"));
+        hero[2] = new Image(AssetsController.instance.getRegion("Protector_stand"));
+        hero[3] = new Image(AssetsController.instance.getRegion("Sniper_stand"));
+        hero[4] = new Image(AssetsController.instance.getRegion("Wizard_stand"));
 
         this.heroSelect = heroSelect;
         this.playerName = playerId;
         this.level =level;
 
-        BitmapFont font = new BitmapFont(Gdx.files.internal("roomscreen/site.fnt"), Gdx.files.internal("roomscreen/site.png"), false);
-        Label.LabelStyle style = new Label.LabelStyle(font, font.getColor());
+        BitmapFont font = AssetsController.instance.font;
+        Label.LabelStyle style = new Label.LabelStyle(font, Color.BLACK);
         String levelShow = "";
         for(int i=0; i<level;i++){
             levelShow = levelShow + "★";
