@@ -129,6 +129,7 @@ public class RoomScreen extends AbstractGameScreen{
     }
 
     public void rebulidStage(){
+        stage.clear();
         //房间背景
         roomBackground = new Image(new Texture("roomscreen/roombackground.png"));
         roomBackground.setSize(width,height);
@@ -192,7 +193,13 @@ public class RoomScreen extends AbstractGameScreen{
         drawButton();
         drawHero();
         drawMapSelect();
+        drawErrorWin();
         setButtonClick();
+        drawErrorWin();
+
+        if(ownerQuit()){
+            errorQuit();
+        }
     }
 
     public void bulidTeam(){
@@ -248,12 +255,12 @@ public class RoomScreen extends AbstractGameScreen{
             stage.addActor(btnMapleft);
             stage.addActor(btnMapright);
         }
-
+        //返回房间列表按钮
         backToLobby = new Image(new Texture("roomscreen/backtolobby.png"));
         backToLobby.setSize(0.045f * width,0.07f * height);
         backToLobby.setPosition(0.0222f * width,0.91f * height);
         stage.addActor(backToLobby);
-
+        //开始/取消/开始游戏按钮
         btnReady = new Image(new Texture("roomscreen/ready.png"));
         btnCancel = new Image(new Texture("roomscreen/cancel.png"));
         btnReady.setSize(0.07778f * width,0.06f*height);
@@ -262,10 +269,6 @@ public class RoomScreen extends AbstractGameScreen{
         btnCancel.setSize(0.07778f * width,0.06f*height);
         btnCancel.setPosition(selectBackground.getX() + selectBackground.getWidth()/2-btnCancel.getWidth()/2,
                 0.16f*height);
-
-        backToLobby = new Image(new Texture("roomscreen/backtolobby.png"));
-        backToLobby.setSize(0.045f * width,0.07f * height);
-        backToLobby.setPosition(0.0222f * width,0.91f * height);
 
         for(int i = 0;i < room.getPlayerManager().getAllPlayerList().size;i ++){
             if(room.getPlayerManager().getRedPlayerList().get(i).getReady()){
@@ -344,6 +347,7 @@ public class RoomScreen extends AbstractGameScreen{
             public void clicked(InputEvent event, float x,float y){
                 //下翻列表
                 winError.setVisible(false);
+                game.loadLobbyScreen();
             }
         });
     }
@@ -411,6 +415,8 @@ public class RoomScreen extends AbstractGameScreen{
     public void turnLeftHero() {
         if (heroSelect > 0 && !myplayer.getReady()) {
             heroSelect --;
+            myplayer.setHeroType(heroSelect);
+            game.getNetController().updatePlayer(myplayer);
         }
         rebulidStage();
     }
@@ -418,6 +424,8 @@ public class RoomScreen extends AbstractGameScreen{
     public void turnRightHero(){
         if(heroSelect < 4 && !myplayer.getReady()){
             heroSelect ++;
+            myplayer.setHeroType(heroSelect);
+            game.getNetController().updatePlayer(myplayer);
         }
         rebulidStage();
     }
@@ -425,6 +433,8 @@ public class RoomScreen extends AbstractGameScreen{
     public void turnLeftMap(){
         if(mapNum > 0 ){
             mapNum --;
+            room.setMapName("" + mapNum);
+            game.getNetController().chooseMap("" + mapNum);
         }
         rebulidStage();
     }
@@ -432,6 +442,8 @@ public class RoomScreen extends AbstractGameScreen{
     public void turnRightMap(){
         if(mapNum < 0){
             mapNum ++;
+            room.setMapName("" + mapNum);
+            game.getNetController().chooseMap("" + mapNum);
         }
         rebulidStage();
     }
@@ -458,10 +470,12 @@ public class RoomScreen extends AbstractGameScreen{
         if(myplayer.getIp() != room.getOwnerIp()){
             myplayer.setReady(true);
         }
+        rebulidStage();
     }
 
     public void toCancel(){
         myplayer.setReady(false);
+        rebulidStage();
     }
 
     public Room getRoom(){
@@ -469,10 +483,20 @@ public class RoomScreen extends AbstractGameScreen{
     }
 
     public void toLobby(){
+        game.getNetController().quitRoom(myplayer);
         game.loadLobbyScreen();
     }
 
     public void errorQuit(){
-        //回到房间列表
+        winError.setVisible(true);
+    }
+
+    public boolean ownerQuit(){
+        for(int i = 0;i < room.getPlayerManager().getAllPlayerList().size;i ++){
+            if(room.getPlayerManager().getAllPlayerList().get(i).getIp() == room.getOwnerIp()){
+                return false;
+            }
+        }
+        return true;
     }
 }
