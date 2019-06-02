@@ -31,6 +31,10 @@ public abstract class DirectedGame implements ApplicationListener {
     private WorldController worldController;
     private NetController netController;
 
+    public NetController getNetController(){
+        return netController;
+    }
+
     public void setScreen(AbstractGameScreen screen) {
         setScreen(screen, null);
     }
@@ -82,7 +86,7 @@ public abstract class DirectedGame implements ApplicationListener {
         gameScreen.errorStop();
     }
     public void errorQuit(){
-//        roomScreen.errorQuit();
+        roomScreen.errorQuit();
     }
     public World getWorld(){
 
