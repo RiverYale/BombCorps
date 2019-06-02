@@ -69,7 +69,6 @@ public class MenuScreen extends AbstractGameScreen {
     @Override public void show(){
         stage = new Stage(new StretchViewport(
                 Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT));
-        Gdx.input.setInputProcessor(stage);
         rebulidStage();
     }
     @Override public void hide(){
@@ -132,7 +131,7 @@ public class MenuScreen extends AbstractGameScreen {
     }
     private Table buildBackgroundLayer(){
         Table layer = new Table();
-        imgBackground = new Image(new TextureRegion(new Texture(Gdx.files.internal("background1.png"))));
+        imgBackground = new Image(new TextureRegion(new Texture(Gdx.files.internal("images/background1.png"))));
         imgBackground.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         layer.addActor(imgBackground);
         return layer;
@@ -140,8 +139,8 @@ public class MenuScreen extends AbstractGameScreen {
     private Table buildControlsLayer(){
         Table layer = new Table();
         //添加退出按钮
-        btnQuit = new Image(new Texture(Gdx.files.internal("button_quit.png")));
-        btnQuit.setScale(1.8f*Gdx.graphics.getWidth()/1280);
+        btnQuit = new Image(new Texture(Gdx.files.internal("images/button_quit.png")));
+        btnQuit.setScale(1.8f);
         layer.add(btnQuit);
         btnQuit.addListener(new InputListener(){
 
@@ -154,8 +153,8 @@ public class MenuScreen extends AbstractGameScreen {
 
 
         //添加play按钮
-        btnMenuPlay = new Image(new Texture(Gdx.files.internal("button_start.png")));
-        btnMenuPlay.setScale(1.8f*Gdx.graphics.getWidth()/1280);
+        btnMenuPlay = new Image(new Texture(Gdx.files.internal("images/button_start.png")));
+        btnMenuPlay.setScale(1.8f);
         layer.bottom();
         layer.add(btnMenuPlay).padLeft(270);
         btnMenuPlay.addListener(new InputListener() {
@@ -167,8 +166,8 @@ public class MenuScreen extends AbstractGameScreen {
             }
         });
         //添加设置按钮
-        btnMenuOptions = new Image(new Texture(Gdx.files.internal("button_setting.png")));
-        btnMenuOptions.setScale(1.8f*Gdx.graphics.getWidth()/1280);
+        btnMenuOptions = new Image(new Texture(Gdx.files.internal("images/button_setting.png")));
+        btnMenuOptions.setScale(1.8f);
         layer.add(btnMenuOptions).padLeft(270);
         btnMenuOptions.addListener(new InputListener(){
 
@@ -180,8 +179,8 @@ public class MenuScreen extends AbstractGameScreen {
         });
 
         //添加About按钮
-        btnAbout = new Image(new Texture(Gdx.files.internal("button_about.png")));
-        btnAbout.setScale(1.8f*Gdx.graphics.getWidth()/1280);
+        btnAbout = new Image(new Texture(Gdx.files.internal("images/button_setting.png")));
+        btnAbout.setScale(1.8f);
         layer.add(btnAbout).padLeft(270);
         btnAbout.addListener(new InputListener() {
 
@@ -194,8 +193,8 @@ public class MenuScreen extends AbstractGameScreen {
         return layer;
     }
     private Table buildOptionsWindowLayer(){
-        BitmapFont font =new BitmapFont(Gdx.files.internal("winOptions.fnt"),Gdx.files.internal("winOptions.png"),false);
-        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(new Texture(Gdx.files.internal("window.png"))));
+        BitmapFont font =new BitmapFont(Gdx.files.internal("images/winOptions.fnt"),Gdx.files.internal("images/winOptions.png"),false);
+        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(new Texture(Gdx.files.internal("images/window.png"))));
         winOptions = new Window("Options",windowStyle);
         winOptions.add(buildOptWinAudioSettings()).row();
         winOptions.add(bulidOptWinNameSettings()).row();
@@ -207,8 +206,8 @@ public class MenuScreen extends AbstractGameScreen {
 
     }
     private  Table bulidAboutWindowLayer(){
-        BitmapFont font =new BitmapFont(Gdx.files.internal("winOptions.fnt"),Gdx.files.internal("winOptions.png"),false);
-        TextureRegionDrawable winResultsDrawable = new TextureRegionDrawable(new Texture(Gdx.files.internal("winresult.png")));
+        BitmapFont font =new BitmapFont(Gdx.files.internal("images/winOptions.fnt"),Gdx.files.internal("images/winOptions.png"),false);
+        TextureRegionDrawable winResultsDrawable = new TextureRegionDrawable(new Texture(Gdx.files.internal("images/winresult.png")));
         Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),winResultsDrawable);
         winAbout = new Window("",windowStyle);
         winAbout.setSize(Gdx.graphics.getWidth()/3,Gdx.graphics.getHeight()/3);
@@ -218,7 +217,6 @@ public class MenuScreen extends AbstractGameScreen {
         //about.setSize(winAbout.getWidth(),winAbout.getHeight());
         about.setAlignment(Align.center);
         about.setPosition(winAbout.getWidth()/2.5f,winAbout.getHeight()/3);
-        about.setScale(Gdx.graphics.getWidth()/1280);
         winAbout.setVisible(false);
         return winAbout;
     }
@@ -263,7 +261,7 @@ public class MenuScreen extends AbstractGameScreen {
         Table tbl = new Table();
         //添加标题audio
         tbl.pad(10,10,0,10);
-        BitmapFont font =new BitmapFont(Gdx.files.internal("winOptions.png"),Gdx.files.internal("winOptions.png"),false);
+        BitmapFont font =new BitmapFont(Gdx.files.internal("images/winOptions.fnt"),Gdx.files.internal("images/winOptions.png"),false);
         tbl.add(new Label("Audio",new Label.LabelStyle(font,font.getColor()))).colspan(3);
         tbl.row();
         tbl.columnDefaults(0).padRight(10);
@@ -271,8 +269,8 @@ public class MenuScreen extends AbstractGameScreen {
         //添加sound标签 声音滑动控件
         tbl.add(new Label("Sound",new Label.LabelStyle(font,font.getColor())));
 
-        Slider.SliderStyle sliderStyle = new Slider.SliderStyle(new TextureRegionDrawable(new Texture(Gdx.files.internal("sliderbackground.png"))),
-                new TextureRegionDrawable(new Texture(Gdx.files.internal("sliderbackground.png"))));
+        Slider.SliderStyle sliderStyle = new Slider.SliderStyle(new TextureRegionDrawable(new Texture(Gdx.files.internal("images/sliderbackground.png"))),
+                new TextureRegionDrawable(new Texture(Gdx.files.internal("images/sliderbackground.png"))));
 
         sldSound = new Slider(0.0f,1.0f,0.1f,false,sliderStyle);
         tbl.add(sldSound);
@@ -285,7 +283,7 @@ public class MenuScreen extends AbstractGameScreen {
         return tbl;
     }
     private Table bulidOptWinNameSettings(){
-        BitmapFont font =new BitmapFont(Gdx.files.internal("winOptions.fnt"),Gdx.files.internal("winOptions.png"),false);
+        BitmapFont font =new BitmapFont(Gdx.files.internal("images/winOptions.fnt"),Gdx.files.internal("images/winOptions.png"),false);
         DataController prefs = DataController.instance;
         Table tbl = new Table();
 
@@ -293,9 +291,9 @@ public class MenuScreen extends AbstractGameScreen {
         Label lbl = new Label("change your name",new Label.LabelStyle(font, Color.WHITE));
         tbl.add(lbl);
         tbl.row();
-        TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle(font, Color.WHITE, new TextureRegionDrawable(new Texture(Gdx.files.internal("textfieldcusor.png"))),
-                new TextureRegionDrawable(new Texture(Gdx.files.internal("textfieldbackground.png"))),
-                new TextureRegionDrawable(new Texture(Gdx.files.internal("textfieldbackground.png"))));
+        TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle(font, Color.WHITE, new TextureRegionDrawable(new Texture(Gdx.files.internal("images/textfieldcusor.png"))),
+                new TextureRegionDrawable(new Texture(Gdx.files.internal("images/textfieldbackground.png"))),
+                new TextureRegionDrawable(new Texture(Gdx.files.internal("images/textfieldbackground.png"))));
         tfName = new TextField(prefs.getName(),textFieldStyle);
         tbl.add(tfName);
         return tbl;
@@ -305,8 +303,8 @@ public class MenuScreen extends AbstractGameScreen {
         Table tbl = new Table();
         //添加分割线
 
-        BitmapFont font =new BitmapFont(Gdx.files.internal("winOptions.fnt"),Gdx.files.internal("winOptions.png"),false);
-        Texture texture = new Texture(Gdx.files.internal("savecancelbutton .png"));
+        BitmapFont font =new BitmapFont(Gdx.files.internal("images/winOptions.fnt"),Gdx.files.internal("images/winOptions.png"),false);
+        Texture texture = new Texture(Gdx.files.internal("images/savecancelbutton.png"));
 
         //添加save按钮并且 初始化事件处理器
         TextureRegionDrawable textureRegionDrawable = new TextureRegionDrawable(texture);

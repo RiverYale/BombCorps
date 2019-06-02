@@ -19,15 +19,55 @@ public class Room {
         this.LIMIT = limit;
     }
 
-    /*
-    TODO
-     */
-    public void add(String IP, String ID){        //优先加入红色
+    public void addPlayer(Player player){
+        add(player.getIp(), player.getID());
+    }
+
+    private void add(String IP, String ID){        //优先加入红色
         if(playerManager.getRedPlayerList().size < LIMIT){
             playerManager.addPlayer(IP, Constants.PLAYER.RED_TEAM, ID);
         }else if(playerManager.getBluePlayerList().size < LIMIT){
             playerManager.addPlayer(IP, Constants.PLAYER.BLUE_TEAM, ID);
         }
+    }
+
+    public void removePlayer(Player player){
+        if(player.getTeam() == Constants.PLAYER.RED_TEAM){
+            for(int i = 0 ; i < playerManager.getRedPlayerList().size ; i++){
+                if(player.getIp().equals(playerManager.getPlayerListRed().get(i).getIp())){
+                    playerManager.getRedPlayerList().removeIndex(i);
+                    break;
+                }
+            }
+        }else{
+            for(int i = 0 ; i < playerManager.getBluePlayerList().size ; i++){
+                if(player.getIp().equals(playerManager.getPlayerListBlue().get(i).getIp())){
+                    playerManager.getBluePlayerList().removeIndex(i);
+                    break;
+                }
+            }
+        }
+    }
+
+    public void updatePlayer(Player player){
+        for(int i = 0 ; i < playerManager.getRedPlayerList().size ; i++){
+            if(player.getIp().equals(playerManager.getPlayerListRed().get(i).getIp())){
+                playerManager.getRedPlayerList().set(i,player);
+                break;
+            }
+        }
+
+        for(int i = 0 ; i < playerManager.getBluePlayerList().size ; i++){
+            if(player.getIp().equals(playerManager.getPlayerListBlue().get(i).getIp())){
+                playerManager.getBluePlayerList().set(i,player);
+                break;
+            }
+        }
+    }
+
+
+
+    public void addAi(){
 
     }
 
@@ -71,6 +111,14 @@ public class Room {
         playerManager = new PlayerManager();
     }
 
+    public boolean isFull(){
+        if(playerManager.getRedPlayerList().size == LIMIT && playerManager.getBluePlayerList().size == LIMIT){
+            return true;
+        }
+
+        return false;
+    }
+
     public PlayerManager getPlayerManager(){
         return playerManager;
     }
@@ -81,6 +129,10 @@ public class Room {
 
     public String getMapName(){
         return mapName;
+    }
+
+    public int getLIMIT(){
+        return LIMIT;
     }
 
     public String getOwnerIp(){

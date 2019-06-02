@@ -357,6 +357,10 @@ public class BaseHero{
         return aura;
     }
 
+    public float getDestination() {
+        return destination;
+    }
+
     public void setDestination(float destination){
         this.destination = destination;
     }
