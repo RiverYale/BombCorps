@@ -160,7 +160,7 @@ public class LobbyScreen extends AbstractGameScreen{
         stackRecord.setSize(0.35f * width,0.75f * height);
         stackRecord.addActor(recordTable);
         //模式选择窗口
-        TextureRegionDrawable winBuildRoomDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("images/winbuildroom.png"))));
+        TextureRegionDrawable winBuildRoomDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("menuscreen/winbuildroom.png"))));
         Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),winBuildRoomDrawable);
         winBuildRoom = new Window("",windowStyle);
         winBuildRoom.setSize(width/2,height/2);

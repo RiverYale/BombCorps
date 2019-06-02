@@ -34,16 +34,19 @@ public abstract class DirectedGame implements ApplicationListener {
     public void setScreen(AbstractGameScreen screen) {
         setScreen(screen, null);
     }
+
     public void loadLobbyScreen(){
         lobbyScreen = new LobbyScreen(this);
         setScreen(lobbyScreen);
         Constants.CurrentScreenFlag = Constants.LobbyScreenFlag;
     }
+
     public void loadRoomScreen(int mode){
         roomScreen = new RoomScreen(this,NetController.getLocalHostIp(),mode);
         setScreen(roomScreen);
         Constants.CurrentScreenFlag = Constants.RoomScreenFlag;
     }
+
     public void loadinRoomScreen(int roomNum){
         String ip =netController.getRoomList().get(roomNum).getOwnerIp();
         int mode = netController.getRoomList().get(roomNum).getLIMIT();
@@ -66,36 +69,44 @@ public abstract class DirectedGame implements ApplicationListener {
         setScreen(gameScreen);
         Constants.CurrentScreenFlag = Constants.GameScreenFlag;
     }
+
     public void loadInfoScreen(){
         infoScreen = new InfoScreen(this);
         setScreen(infoScreen);
         Constants.CurrentScreenFlag = Constants.InfoScreenFlag;
     }
+
     public void loadMenuScreen(){
         menuScreen= new MenuScreen(this);
         setScreen(menuScreen);
         Constants.CurrentScreenFlag =Constants.MenuScreenFlag;
     }
+
     public void onHeroClicked(Player p){
         gameScreen.onHeroClicked(p);
     }
+
     public void playerQuit(String Ip){
         //调用GameScreen里面的playequit
 
         gameScreen.playQuit(Ip);
     }
+
     public void errorStop(){
         //调用
         gameScreen.errorStop();
     }
+
     public void errorQuit(){
 //        roomScreen.errorQuit();
     }
+
     public World getWorld(){
 
         World world = new World(roomScreen.getRoom());
         return world;
     }
+
     public boolean inRoom(){
         if(Constants.CurrentScreenFlag== Constants.RoomScreenFlag){
             return true;

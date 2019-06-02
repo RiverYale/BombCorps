@@ -143,7 +143,7 @@ public class WorldController {
 
     public void startNextRound(Bonus b) {
         //TODO
-//        initSkillEveryChange();
+        world.getPlayerManager().getSkillAndBuff().initSkillEveryChange();
         if(b != null){
             world.addBonus(b);
         }
@@ -154,8 +154,8 @@ public class WorldController {
             perRound++;
         }
         if (perRound > world.getPlayers().size) {
-//            initHeroEveryRound();
-//            updateBuffEveryRound();
+            curPlayer.initHeroEveryRound();
+            world.getPlayerManager().getSkillAndBuff().updateBuffEveryRound();
             perRound %= world.getPlayers().size;
         }
         cameraController.setTarget(curPlayer);
