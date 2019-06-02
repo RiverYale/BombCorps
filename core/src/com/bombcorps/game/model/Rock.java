@@ -14,9 +14,6 @@ public class Rock {
     public Vector2 position;
     public Vector2 dimension;
     public Rectangle rectangle;
-    public Vector2 origin;
-    public Vector2 scale;
-    public float rotation;
 
     private Texture region;
     private int length;
@@ -25,7 +22,7 @@ public class Rock {
     }
 
     private void init(){
-        region = new Texture(Gdx.files.internal("maps/rock.png"));
+        region = AssetsController.instance.getRegion("rock").getTexture();
         dimension = new Vector2(width/Constants.VIEWPORT_WIDTH,height/Constants.VIEWPORT_HEIGHT);
         position = new Vector2(0,0);
         rectangle = new Rectangle(0,0,dimension.x,dimension.y);
