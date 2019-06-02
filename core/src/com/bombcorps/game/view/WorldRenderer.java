@@ -12,7 +12,7 @@ import com.bombcorps.game.model.Constants;
 
 public class WorldRenderer {
     private OrthographicCamera camera;
-    private SpriteBatch batch;
+    //private SpriteBatch batch;
     private WorldController worldController;
 
     public WorldRenderer(WorldController worldController){
@@ -22,19 +22,20 @@ public class WorldRenderer {
     }
 
     private void init(){
-        batch = new SpriteBatch();
-        camera = new OrthographicCamera(Constants.VIEWPORT_WIDTH,Constants.VIEWPORT_HEIGHT);
-        camera.position.set(0,0,0);
+        // batch = new SpriteBatch();
+        camera = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        worldController.getCameraController().applyTo(camera);
+        camera.position.add(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2,0);
         camera.update();
     }
 
-    public void render(){
+    public void render(SpriteBatch batch){
         renderWorld(batch);
     }
 
 
     private void renderWorld(SpriteBatch batch){
-        worldController.getCameraController().applyTo(camera);
+
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         worldController.getWorld().render(batch);
@@ -47,7 +48,7 @@ public class WorldRenderer {
     }
 
     public void dispose(){
-        batch.dispose();
+        //batch.dispose();
     }
 
 

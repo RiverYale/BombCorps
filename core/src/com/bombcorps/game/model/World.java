@@ -13,7 +13,8 @@ public class World {
     public static final String TAG = Level.class.getName();
     private final float width = Gdx.graphics.getWidth();
     private final float height = Gdx.graphics.getHeight();
-    private int levelTurn=0;
+    private int levelTurnBlue =0;
+    private int levelTurnRed = 0;
     private int Turn=0;
 
     public Array<Player> getPlayers() {
@@ -92,7 +93,7 @@ public class World {
     public  World(Room room){
         hostIP = room.getOwnerIp();
         limit = room.getLIMIT();
-        this.playerManager = room.getPlayerManager();
+        playerManager = room.getPlayerManager();
         init(room.getMapName());
     }
 
@@ -120,9 +121,16 @@ public class World {
                 }
                 //英雄出生点
                 else if (BLOCK_TYPE.PLAYER_SPAWNPOINT.sameColor(currentPixel)) {
-                    Vector2 position = new Vector2(pixelX*width/Constants.VIEWPORT_WIDTH,baseHeight*height/Constants.VIEWPORT_HEIGHT );
-                    playerManager.getAllPlayerList().get(levelTurn).getMyHero().setPosition(position);
-                    levelTurn++;
+                    if(levelTurnBlue <playerManager.getPlayerListBlue().size){
+                        Vector2 position = new Vector2(pixelX*width/Constants.VIEWPORT_WIDTH,baseHeight*height/Constants.VIEWPORT_HEIGHT );
+                        playerManager.getPlayerListBlue().get(levelTurnBlue).getMyHero().setPosition(position);
+                        levelTurnBlue++;
+                    }else if(levelTurnRed < playerManager.getRedPlayerList().size){
+                        Vector2 position = new Vector2(pixelX*width/Constants.VIEWPORT_WIDTH,baseHeight*height/Constants.VIEWPORT_HEIGHT );
+                        playerManager.getPlayerListRed().get(levelTurnRed).getMyHero().setPosition(position);
+                        levelTurnRed++;
+                    }
+
                 }
                 //未知错误
                 else {
@@ -140,7 +148,7 @@ public class World {
     }
 
     public void render(SpriteBatch batch){
-        batch.draw(new Texture(Gdx.files.internal("maps/background.png")),0,0,Gdx.graphics.getWidth()/Constants.VIEWPORT_WIDTH*30,Gdx.graphics.getHeight()/Constants.VIEWPORT_HEIGHT*20);
+        batch.draw(new Texture(Gdx.files.internal("maps/background.png")),0,0,Gdx.graphics.getWidth()/Constants.VIEWPORT_WIDTH*32,Gdx.graphics.getHeight()/Constants.VIEWPORT_HEIGHT*20);
         for (Rock rock : rocks){
             rock.render(batch);
         }

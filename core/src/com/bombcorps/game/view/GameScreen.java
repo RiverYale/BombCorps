@@ -38,12 +38,14 @@ public class GameScreen extends AbstractGameScreen{
     private final float width = Gdx.graphics.getWidth();
     private final float height = Gdx.graphics.getHeight();
     private WorldController worldController;
+    private WorldRenderer worldRenderer;
     private SpriteBatch batch;
     private boolean paused;
 
     public GameScreen(DirectedGame game,WorldController worldController){
         super(game);
         this.worldController = worldController;
+        worldRenderer = new WorldRenderer(worldController);
         batch = new SpriteBatch();
     }
 
@@ -51,7 +53,7 @@ public class GameScreen extends AbstractGameScreen{
     public void render(float deltaTime) {
         Gdx.gl.glClearColor(0x64/255.0f,0x95/255.0f,0xed/255.0f,0xff/255.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        worldController.getWorld().render(batch);
+        worldRenderer.render(batch);
         stage.act();
         stage.draw();
 
@@ -61,7 +63,7 @@ public class GameScreen extends AbstractGameScreen{
     }
 
     public InputProcessor getInputProcessor(){
-        return (InputProcessor) worldController;
+        return stage;
     }
     private Stage stage;
 
@@ -114,18 +116,14 @@ public class GameScreen extends AbstractGameScreen{
         //assemble stage for menu screen
         stage.clear();
         Stack stack = new Stack();
+        stack.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         stage.addActor(stack);
-        stack.setSize(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
         stack.add(layerBottom);
         stack.add(layerSkill);
         stack.add(layerHeroBasicInfoLayer);
         stack.add(layerHeroInfoWindow);
         stack.add(layerOtherHeroInfoWindow);
         stack.add(layerErrorQuitWindow);
-
-        stage.addActor(winInGameSettings);
-
-        winInGameSettings.setVisible(false);
 
     }
 
@@ -134,7 +132,7 @@ public class GameScreen extends AbstractGameScreen{
         //+ quit botton
         btnQuit = new Image(new Texture(Gdx.files.internal("images/button_quit.png")));
         btnQuit.setSize(32,32);
-        btnQuit.setPosition(0,height-btnQuit.getHeight());
+        btnQuit.setPosition(0,Gdx.graphics.getHeight()-btnQuit.getHeight());
         layer.addActor(btnQuit);
         btnQuit.addListener(new InputListener(){
             @Override
@@ -278,10 +276,8 @@ public class GameScreen extends AbstractGameScreen{
         Table layer =new Table();
         BitmapFont font = new BitmapFont(Gdx.files.internal("images/winOptions.fnt"),Gdx.files.internal("images/winOptions.png"),false);
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.BLACK);
-        TextureRegion textureRegion = new TextureRegion();
-        textureRegion = AssetsController.instance.getRegion(myHeroType()+"_stand");
         //+my hero's head appear
-        imgMyHeroHead = new Image(textureRegion.getTexture());
+        imgMyHeroHead = new Image(new Texture(Gdx.files.internal("roomscreen/"+myHeroType()+"_stand.png")));
         imgMyHeroHead.setPosition(0,0);
         imgMyHeroHead.setScale(width/15/imgMyHeroHead.getWidth());
         layer.addActor(imgMyHeroHead);
@@ -294,9 +290,10 @@ public class GameScreen extends AbstractGameScreen{
             }
         });
         Player p =new Player(myHeroType());
-        labelMyHeroBasicInfo = new Label("HP:"+p.getMyHero().getHealth()+" AK:"+p.getMyHero().getAttack()+
-                "\nED:"+p.getMyHero().getEndurance()+" AM:"+p.getMyHero().getArmor()+
-                "\nRP:"+p.getMyHero().getRagePower()+" CP:"+p.getMyHero().getCriticalProbability() ,labelStyle);
+        labelMyHeroBasicInfo = new Label("HP:1000 AK:90\nED:100 AM:100\nPR:50 CP:20% " ,labelStyle);
+        //+p.getMyHero().getHealth()+" AK:"+p.getMyHero().getAttack()+
+        //"\nED:"+p.getMyHero().getEndurance()+" AM:"+p.getMyHero().getArmor()+
+        // "\nRP:"+p.getMyHero().getRagePower()+" CP:"+p.getMyHero().getCriticalProbability()
         labelMyHeroBasicInfo.setFontScale(width/15/labelMyHeroBasicInfo.getPrefWidth()*2);
         labelMyHeroBasicInfo.setPosition(width/15,-labelMyHeroBasicInfo.getHeight()/5);
         layer.addActor(labelMyHeroBasicInfo);
@@ -304,16 +301,14 @@ public class GameScreen extends AbstractGameScreen{
 
         labelOtherHeroBasicInfo = new Label("HP:1000 AK:90\nED:100 AM:100\nPR:50 CP:20% ",labelStyle);
         labelOtherHeroBasicInfo.setFontScale(width/15/labelOtherHeroBasicInfo.getPrefWidth()*2);
-        labelOtherHeroBasicInfo.setPosition(width/15*13,-labelOtherHeroBasicInfo.getHeight()/5);
-        labelOtherHeroBasicInfo.setVisible(false);
+        labelOtherHeroBasicInfo.setPosition(width-labelOtherHeroBasicInfo.getPrefWidth(),-labelOtherHeroBasicInfo.getHeight()/5);
+        labelOtherHeroBasicInfo.setVisible(true);
         layer.addActor(labelOtherHeroBasicInfo);
 
-        TextureRegion textureRegion1 = new TextureRegion();
-        textureRegion1 = AssetsController.instance.getRegion("Sparda_stand");
-        imgOtherHeroHead = new Image(textureRegion1.getTexture());
+        imgOtherHeroHead = new Image(new Texture(Gdx.files.internal("roomscreen/Angel_stand.png")));
         imgOtherHeroHead.setScale(width/15/imgOtherHeroHead.getWidth());
         imgOtherHeroHead.setPosition(width/15*12,0);
-        imgOtherHeroHead.setVisible(false);
+        imgOtherHeroHead.setVisible(true);
         layer.addActor(imgOtherHeroHead);
         imgOtherHeroHead.addListener(new InputListener(){
             @Override
@@ -329,15 +324,16 @@ public class GameScreen extends AbstractGameScreen{
 
     public Table buildHeroInfoWindowLayer(){
         Table layer = new Table();
-        Image background = new Image(new Texture(Gdx.files.internal("Skill/skillDetail/"+myHeroType()+"_skill_detail")));
+        Image background = new Image(new Texture(Gdx.files.internal("Skill/skillDetail/"+myHeroType()+"_skill_detail.png")));
         background.setPosition(0,0);
         background.setSize(height/2,height/2);
         BitmapFont font =new BitmapFont(Gdx.files.internal("images/winOptions.fnt"),Gdx.files.internal("images/winOptions.png"),false);
-        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(new Texture(Gdx.files.internal("winresult.png"))));
+        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(new Texture(Gdx.files.internal("images/winresult.png"))));
         winHeroInfo = new Window("",windowStyle);
         winHeroInfo.setSize(height/2,height/2);
         //winOptions.setColor(1,1,1,1f);
-        winHeroInfo.addActor(buildWinHInfoQuitBotton());
+        winHeroInfo.addActor(background);
+        // winHeroInfo.addActor(buildWinHInfoQuitBotton());
         winHeroInfo.setVisible(false);
 
         //winOptions.pack();
@@ -346,27 +342,12 @@ public class GameScreen extends AbstractGameScreen{
         return layer;
     }
 
-    public Table buildWinHInfoQuitBotton(){
-        Table tbl = new Table();
-        btnwinHInfoQuit = new Image(new Texture(Gdx.files.internal("skill/quit.png")));
-        btnwinHInfoQuit.setPosition(winHeroInfo.getWidth()-btnwinHInfoQuit.getWidth(),winHeroInfo.getHeight()-btnwinHInfoQuit.getHeight());
-        tbl.addActor(btnwinHInfoQuit);
-        btnwinHInfoQuit.addListener(new InputListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                //点击自己英雄头像显示详细信息
-                onWinHInfoQuitBottonClicked();
-                return true;
-            }
-        });
-
-
-
-        return tbl;
-    }
 
     public Table buildOtherHeroInfoWindowLayer(){
         Table layer = new Table();
+        Image background = new Image(new Texture(Gdx.files.internal("Skill/skillDetail/"+myHeroType()+"_skill_detail.png")));
+        background.setPosition(0,0);
+        background.setSize(height/2,height/2);
         int heroInfoType;
         heroInfoType = this.heroInfoType;
         BitmapFont font =new BitmapFont(Gdx.files.internal("images/winOptions.fnt"),Gdx.files.internal("images/winOptions.png"),false);
@@ -374,7 +355,8 @@ public class GameScreen extends AbstractGameScreen{
         winOtherHeroInfo = new Window("",windowStyle);
         winOtherHeroInfo.setSize(height/2,height/2);
         //winOptions.setColor(1,1,1,1f);
-        winOtherHeroInfo.addActor(buildWinOHInfoQuitBotton());
+        winOtherHeroInfo.addActor(background);
+        //winOtherHeroInfo.addActor(buildWinOHInfoQuitBotton());
         winOtherHeroInfo.setVisible(false);
 
         //winOptions.pack();
@@ -383,24 +365,6 @@ public class GameScreen extends AbstractGameScreen{
         return layer;
     }
 
-    public Table buildWinOHInfoQuitBotton(){
-        Table tbl = new Table();
-        btnwinOHInfoQuit = new Image(new Texture(Gdx.files.internal("skill/quit.png")));
-        btnwinOHInfoQuit.setPosition(winOtherHeroInfo.getWidth()-btnwinOHInfoQuit.getWidth(),winOtherHeroInfo.getHeight()-btnwinOHInfoQuit.getHeight());
-        tbl.addActor(btnwinOHInfoQuit);
-        btnwinOHInfoQuit.addListener(new InputListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                //点击他人英雄头像显示详细信息
-                onWinOHInfoQuitBottonClicked();
-                return true;
-            }
-        });
-
-
-
-        return tbl;
-    }
 
     public Table buildErrorQuitWindowBotton(){
         Table layer = new Table();
@@ -433,27 +397,25 @@ public class GameScreen extends AbstractGameScreen{
         return tbl;
     }
 
-
-
-    public void onWinHInfoQuitBottonClicked() {
-        winHeroInfo.setVisible(false);
-    }
-
-    public void onWinOHInfoQuitBottonClicked() {
-        winOtherHeroInfo.setVisible(false);
-    }
-
     public void onOtherHeroHeadClicked() {
-        winOtherHeroInfo.setVisible(true);
+        if(winOtherHeroInfo.isVisible()){
+            winOtherHeroInfo.setVisible(false);
+        }else{
+            winOtherHeroInfo.setVisible(true);
+        }
     }
 
     public void onHeroHeadClicked() {
-        winHeroInfo.setVisible(true);
+        if(winHeroInfo.isVisible()){
+            winHeroInfo.setVisible(false);
+        }else{
+            winHeroInfo.setVisible(true);
+        }
     }
 
     public String myHeroType(){
-        int i;
-        for(i=0;worldController.getPlayers().get(i).getState() != Constants.PLAYER.STATE_LOCAL;i++){
+       /* int i;
+        for(i=0;worldController.getPlayers().get(i).getState() != Constants.PLAYER.STATE_LOCAL&&i<worldController.getPlayers().size;i++){
 
         }
         i = worldController.getPlayers().get(i).getHeroType();
@@ -471,7 +433,8 @@ public class GameScreen extends AbstractGameScreen{
         }
         else {
             return "Wizard";
-        }
+        }*/
+        return  "Wizard";
     }
 
     public void onHeroClicked(Player p){
@@ -524,7 +487,7 @@ public class GameScreen extends AbstractGameScreen{
     }
 
     public void onQuitClicked() {
-        game.loadLobbyScreen();
+        game.loadMenuScreen();
     }
 
     public void GameOver(){
@@ -621,67 +584,81 @@ public class GameScreen extends AbstractGameScreen{
         winErrorQuit.setVisible(true);
     }
 
-public void onWinInGameSettingsClicked(){
+    public void onWinInGameSettingsClicked(){
+        BitmapFont font =new BitmapFont(Gdx.files.internal("images/winOptions.fnt"),Gdx.files.internal("images/winOptions.png"),false);
+        TextureRegionDrawable winResultsDrawable = new TextureRegionDrawable(new Texture(Gdx.files.internal("images/window.png")));
+        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),winResultsDrawable);
+        winInGameSettings = new Window("Settings",windowStyle);
+        Table tbl = new Table();
+        //添加标题audio
+        tbl.pad(10,10,0,10);
+        Label audioLbl = new Label("Audio",new Label.LabelStyle(font,font.getColor()));
+        audioLbl.setFontScale(1.5f*width/1280f);
+        tbl.add(audioLbl).colspan(3);
+        tbl.row();
+        tbl.columnDefaults(0).padRight(10);
+        tbl.columnDefaults(1).padRight(10);
+        //添加sound标签 声音滑动控件
+        Label soundLbl = new Label("Sound",new Label.LabelStyle(font,font.getColor()));
+        soundLbl.setFontScale(1.5f*width/1280f);
+        tbl.add(soundLbl);
+        Texture sliderBac=new Texture("menuscreen/sliderbackground.png");
+        Image image = new Image(sliderBac);
+        //TextureRegionDrawable textureRegionDrawable = new TextureRegionDrawable(sliderBac);
+        Slider.SliderStyle sliderStyle = new Slider.SliderStyle(new TextureRegionDrawable(sliderBac),
+                new TextureRegionDrawable(new Texture(Gdx.files.internal("menuscreen/sliderkuai.png"))));
 
-    BitmapFont font =new BitmapFont(Gdx.files.internal("winOptions.fnt"),Gdx.files.internal("winOptions.png"),false);
-    TextureRegionDrawable winResultsDrawable = new TextureRegionDrawable(new Texture(Gdx.files.internal("winOptions.png")));
-    Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),winResultsDrawable);
-    winInGameSettings = new Window("Settings",windowStyle);
-    Table tbl = new Table();
-    //添加标题audio
-    tbl.pad(10,10,0,10);
-    tbl.add(new Label("Audio",new Label.LabelStyle(font,font.getColor()))).colspan(3);
-    tbl.row();
-    tbl.columnDefaults(0).padRight(10);
-    tbl.columnDefaults(1).padRight(10);
-    //添加sound标签 声音滑动控件
-    tbl.add(new Label("Sound",new Label.LabelStyle(font,font.getColor())));
+        sldSound = new Slider(0.0f,1.0f,0.1f,false,sliderStyle);
+        tbl.add(sldSound).width(sldSound.getWidth()*width/1280);
+        tbl.row();
+        //添加music标签 音乐滑动控件
+        Label musicLbl = new Label("Music",new Label.LabelStyle(font,font.getColor()));
+        tbl.add(musicLbl);
+        musicLbl.setFontScale(1.5f*width/1280);
+        sldMusic = new Slider(0.0f,1.0f,0.1f,false,sliderStyle);
+        tbl.add(sldMusic).width(sldMusic.getWidth()*width/1280);
+        tbl.row();
 
-    Slider.SliderStyle sliderStyle = new Slider.SliderStyle(new TextureRegionDrawable(new Texture(Gdx.files.internal("sliderbackground.png"))),
-            new TextureRegionDrawable(new Texture(Gdx.files.internal("sliderbackground.png"))));
 
-    sldSound = new Slider(0.0f,1.0f,0.1f,false,sliderStyle);
-    tbl.add(sldSound);
-    tbl.row();
-    //添加music标签 音乐滑动控件
-    tbl.add(new Label("Music",new Label.LabelStyle(font,font.getColor())));
-    sldMusic = new Slider(0.0f,1.0f,0.1f,false,sliderStyle);
-    tbl.add(sldMusic);
-    tbl.row();
-    winInGameSettings.addActor(tbl);
-    winInGameSettings.setVisible(true);
-    Texture texture = new Texture(Gdx.files.internal("savecancelbutton .png"));
 
-    //添加save按钮并且 初始化事件处理器
-    TextureRegionDrawable textureRegionDrawable = new TextureRegionDrawable(texture);
+        Texture texture = new Texture(Gdx.files.internal("images/savecancelbutton.png"));
 
-    TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle(textureRegionDrawable,textureRegionDrawable,textureRegionDrawable,font
-    );
-    btnWinOptSave = new TextButton("Save",textButtonStyle);
+        //添加save按钮并且 初始化事件处理器
+        font.getData().setScale(width/1280);
+        //添加save按钮并且 初始化事件处理器
+        TextureRegionDrawable textureRegionDrawable = new TextureRegionDrawable(texture);
 
-    tbl.add(btnWinOptSave).padLeft(20);
-    btnWinOptSave.addListener(new ChangeListener() {
-        @Override
-        public void changed(ChangeEvent event, Actor actor) {
-            onSaveClicked();
-        }
-    });
-    // 添加cancel按钮并且 初始化事件处理器
-    btnWinOptCancel = new TextButton("Cancel", textButtonStyle);
-    tbl.add(btnWinOptCancel).padRight(20);
-    btnWinOptCancel.addListener(new ChangeListener() {
-        @Override
-        public void changed(ChangeEvent event, Actor actor) {
-            onCancelClicked();
-        }
-    });
-}
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle(textureRegionDrawable,textureRegionDrawable,textureRegionDrawable,font
+        );
+        btnWinOptSave = new TextButton("Save",textButtonStyle);
+        tbl.add(btnWinOptSave).width(btnWinOptSave.getWidth()*width/1280f).height(btnWinOptSave.getHeight()*width/1280).padLeft(20*width/1280);
+        btnWinOptSave.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                onSaveClicked();
+            }
+        });
+        // 添加cancel按钮并且 初始化事件处理器
+        btnWinOptCancel = new TextButton("Cancel", textButtonStyle);
+        tbl.add(btnWinOptCancel).width(btnWinOptSave.getWidth()*width/1280f).height(btnWinOptSave.getHeight()*width/1280).padLeft(20*width/1280);
+        btnWinOptCancel.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                onCancelClicked();
+            }
+        });
+        winInGameSettings.addActor(tbl);
+        winInGameSettings.setSize(width/2,height/2);
+        winInGameSettings.setPosition(width/4,height/4);
+        winInGameSettings.setVisible(true);
+        stage.addActor(winInGameSettings);
+    }
     private void onSaveClicked() {
         saveSettings();
         onCancelClicked();
     }
     public void onCancelClicked(){
-         winInGameSettings.setVisible(false);
+        winInGameSettings.setVisible(false);
     }
     public void saveSettings(){
         DataController prefs = DataController.instance;

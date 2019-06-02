@@ -31,10 +31,6 @@ public abstract class DirectedGame implements ApplicationListener {
     private WorldController worldController;
     private NetController netController;
 
-    public NetController getNetController(){
-        return netController;
-    }
-
     public void setScreen(AbstractGameScreen screen) {
         setScreen(screen, null);
     }
@@ -49,9 +45,10 @@ public abstract class DirectedGame implements ApplicationListener {
         Constants.CurrentScreenFlag = Constants.RoomScreenFlag;
     }
     public void loadinRoomScreen(int roomNum){
-        String ip = netController.getRoomList().get(roomNum).getOwnerIp();
+        String ip =netController.getRoomList().get(roomNum).getOwnerIp();
         int mode = netController.getRoomList().get(roomNum).getLIMIT();
         roomScreen = new RoomScreen(this,ip,mode);
+        setScreen(roomScreen);
         Constants.CurrentScreenFlag = Constants.RoomScreenFlag;
     }
 
@@ -92,7 +89,7 @@ public abstract class DirectedGame implements ApplicationListener {
         gameScreen.errorStop();
     }
     public void errorQuit(){
-        roomScreen.errorQuit();
+//        roomScreen.errorQuit();
     }
     public World getWorld(){
 
@@ -121,7 +118,9 @@ public abstract class DirectedGame implements ApplicationListener {
         return roomScreen.getRoom();
     }
 
-
+    public NetController getNetController(){
+        return netController;
+    }
 
 
     public void setScreen(AbstractGameScreen screen,
