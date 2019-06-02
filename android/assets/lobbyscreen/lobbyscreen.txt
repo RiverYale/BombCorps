@@ -1,0 +1,130 @@
+lobbyscreen.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+pageup
+  rotate: false
+  xy: 934, 98
+  size: 66, 46
+  orig: 66, 46
+  offset: 0, 0
+  index: -1
+oneone
+  rotate: false
+  xy: 522, 810
+  size: 177, 99
+  orig: 177, 99
+  offset: 0, 0
+  index: -1
+pagedown
+  rotate: false
+  xy: 934, 2
+  size: 66, 46
+  orig: 66, 46
+  offset: 0, 0
+  index: -1
+left
+  rotate: false
+  xy: 830, 142
+  size: 102, 68
+  orig: 102, 68
+  offset: 0, 0
+  index: -1
+lsbackground
+  rotate: false
+  xy: 572, 212
+  size: 323, 239
+  orig: 323, 239
+  offset: 0, 0
+  index: -1
+refresh
+  rotate: false
+  xy: 830, 72
+  size: 102, 68
+  orig: 102, 68
+  offset: 0, 0
+  index: -1
+recordbackground
+  rotate: false
+  xy: 2, 2
+  size: 568, 806
+  orig: 568, 808
+  offset: 0, 2
+  index: -1
+fourfour
+  rotate: false
+  xy: 281, 911
+  size: 239, 99
+  orig: 239, 99
+  offset: 0, 0
+  index: -1
+home
+  rotate: false
+  xy: 701, 2
+  size: 102, 68
+  orig: 102, 68
+  offset: 0, 0
+  index: -1
+intoroom
+  rotate: false
+  xy: 934, 50
+  size: 66, 46
+  orig: 66, 46
+  offset: 0, 0
+  index: -1
+roomshowbackground
+  rotate: false
+  xy: 682, 981
+  size: 146, 41
+  orig: 146, 41
+  offset: 0, 0
+  index: -1
+winbuildroomcancel
+  rotate: false
+  xy: 522, 911
+  size: 158, 70
+  orig: 158, 70
+  offset: 0, 0
+  index: -1
+user
+  rotate: false
+  xy: 682, 911
+  size: 102, 68
+  orig: 102, 68
+  offset: 0, 0
+  index: -1
+roomlistbackground
+  rotate: false
+  xy: 2, 810
+  size: 277, 177
+  orig: 277, 177
+  offset: 0, 0
+  index: -1
+right
+  rotate: false
+  xy: 830, 2
+  size: 102, 68
+  orig: 102, 68
+  offset: 0, 0
+  index: -1
+button_setting
+  rotate: false
+  xy: 522, 983
+  size: 43, 35
+  orig: 43, 35
+  offset: 0, 0
+  index: -1
+twotwo
+  rotate: false
+  xy: 281, 810
+  size: 239, 99
+  orig: 239, 99
+  offset: 0, 0
+  index: -1
+back
+  rotate: false
+  xy: 934, 98
+  size: 66, 46
+  orig: 66, 46
+  offset: 0, 0
+  index: -1
