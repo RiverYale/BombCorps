@@ -70,6 +70,8 @@ public class LobbyScreen extends AbstractGameScreen{
         super(game);
         this.game = game;
         netController = game.getNetController();
+
+        roomList = new ArrayList<RoomSelect>();
     }
 
     @Override
@@ -158,16 +160,16 @@ public class LobbyScreen extends AbstractGameScreen{
         stackRecord.setSize(0.35f * width,0.75f * height);
         stackRecord.addActor(recordTable);
         //模式选择窗口
-        TextureRegionDrawable winBuildRoomDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("lobbyscreen/winbuildroom.png"))));
+        TextureRegionDrawable winBuildRoomDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("images/winbuildroom.png"))));
         Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),winBuildRoomDrawable);
         winBuildRoom = new Window("",windowStyle);
         winBuildRoom.setSize(width/2,height/2);
         winBuildRoom.setPosition(width/4,height/4);
-        cancel = new Image(new Texture("lobbyscreen/winbuildroomcancel.png"));
-        oneOne = new Image(new Texture("lobbyscreen/oneone.png"));
+        cancel = new Image(new Texture("images/winbuildroomcancel.png"));
+        oneOne = new Image(new Texture("images/oneone.png"));
 
-        twoTwo = new Image(new Texture("lobbyscreen/twotwo.png"));
-        fourFour = new Image(new Texture("lobbyscreen/fourfour.png"));
+        twoTwo = new Image(new Texture("images/twotwo.png"));
+        fourFour = new Image(new Texture("images/fourfour.png"));
         oneOne.setSize(winBuildRoom.getWidth()/4,winBuildRoom.getHeight()/4);
         twoTwo.setSize(winBuildRoom.getWidth()/4,winBuildRoom.getHeight()/4);
         fourFour.setSize(winBuildRoom.getWidth()/4,winBuildRoom.getHeight()/4);
@@ -227,7 +229,7 @@ public class LobbyScreen extends AbstractGameScreen{
     //建造房间列表
     public void bulidRoomList(){
         //网端获取房间数numOfRoom
-        numOfRoom = netController.getRoomList().size();
+        numOfRoom  = 0;
         roomList.clear();
         for(int i=0;i<numOfRoom;i++){
             if (!netController.getRoomList().get(i).isFull()){
@@ -264,8 +266,12 @@ public class LobbyScreen extends AbstractGameScreen{
         }
 
         for(int i = 0;i < 4;i++){
+            if(roomList.size() == 0){
+                break;
+            }
             if (roomList.get(i + numOfPage).isClick()){
                 game.loadinRoomScreen(originNum.get(i + numOfPage));
+
             }
         }
     }
