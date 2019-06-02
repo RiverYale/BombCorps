@@ -59,25 +59,25 @@ public class Player {
                 break;
         }
 
-        switch(level){
-            case 0:
-                myHero.setLevel(Constants.LEVEL_0);
-                break;
-            case 1:
-                myHero.setLevel(Constants.LEVEL_1);
-                break;
-            case 2:
-                myHero.setLevel(Constants.LEVEL_2);
-                break;
-            case 3:
-                myHero.setLevel(Constants.LEVEL_3);
-                break;
-            case 4:
-                myHero.setLevel(Constants.LEVEL_4);
-                break;
-            case 5:
-                myHero.setLevel(Constants.LEVEL_5);
-        }
+//        switch(level){
+//            case 0:
+//                myHero.setLevel(Constants.LEVEL_0);
+//                break;
+//            case 1:
+//                myHero.setLevel(Constants.LEVEL_1);
+//                break;
+//            case 2:
+//                myHero.setLevel(Constants.LEVEL_2);
+//                break;
+//            case 3:
+//                myHero.setLevel(Constants.LEVEL_3);
+//                break;
+//            case 4:
+//                myHero.setLevel(Constants.LEVEL_4);
+//                break;
+//            case 5:
+//                myHero.setLevel(Constants.LEVEL_5);
+//        }
 
     }
 
