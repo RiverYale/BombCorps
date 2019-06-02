@@ -4,11 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.controller.NetController;
 import com.bombcorps.game.model.Constants;
@@ -32,6 +35,9 @@ public class RoomScreen extends AbstractGameScreen{
     //红蓝方队伍
     private SiteShow teamRed[];
     private SiteShow teamBlue[];
+    //异常退出弹窗
+    private Window winError;
+    private Image btnSure;
     //模式
     private int mode;
     private String ip;
@@ -48,7 +54,6 @@ public class RoomScreen extends AbstractGameScreen{
     private Image btnHeroRight;
     private Image btnReady;
     private Image btnCancel;
-    private Image btnBackToLobby;
     //英雄号码选择
     private int heroSelect;
     //地图号码
@@ -183,6 +188,7 @@ public class RoomScreen extends AbstractGameScreen{
         stage.addActor(selectBackground);
 
         bulidTeam();
+        showPersonNum();
         drawButton();
         drawHero();
         drawMapSelect();
@@ -257,6 +263,10 @@ public class RoomScreen extends AbstractGameScreen{
         btnCancel.setPosition(selectBackground.getX() + selectBackground.getWidth()/2-btnCancel.getWidth()/2,
                 0.16f*height);
 
+        backToLobby = new Image(new Texture("roomscreen/backtolobby.png"));
+        backToLobby.setSize(0.045f * width,0.07f * height);
+        backToLobby.setPosition(0.0222f * width,0.91f * height);
+
         for(int i = 0;i < room.getPlayerManager().getAllPlayerList().size;i ++){
             if(room.getPlayerManager().getRedPlayerList().get(i).getReady()){
                 readyNum ++;
@@ -291,6 +301,51 @@ public class RoomScreen extends AbstractGameScreen{
                 break;
         }
         stage.addActor(mapSelect);
+    }
+
+    public void showPersonNum(){
+        BitmapFont font = new BitmapFont(Gdx.files.internal("roomscreen/prosonnum.fnt"), Gdx.files.internal("roomscreen/prosonnum.png"), false);
+        Label.LabelStyle style = new Label.LabelStyle(font, font.getColor());
+        String populationRed = room.getPlayerManager().getRedPlayerList().size + "/" + mode;
+        String populationBlue = room.getPlayerManager().getBluePlayerList().size + "/" + mode;
+        personRed = new Label(populationRed,style);
+        personBlue = new Label(populationBlue,style);
+        personRed.setSize(0.04888f * width,0.057f * height);
+        personBlue.setSize(0.04888f * width,0.057f * height);
+        personRed.setFontScale(0.001f * width,0.0015f * height);
+        personBlue.setFontScale(0.001f * width,0.0015f * height);
+        personRed.setPosition(doorRed.getX() + doorRed.getWidth()/2 - personRed.getWidth()/2,
+                doorRed.getY());
+        personBlue.setPosition(doorBlue.getX() + doorBlue.getWidth()/2 - personBlue.getWidth()/2,
+                doorBlue.getY());
+
+        stage.addActor(personRed);
+        stage.addActor(personBlue);
+    }
+
+    public void drawErrorWin(){
+        BitmapFont font = new BitmapFont(Gdx.files.internal("roomscreen/site.fnt"), Gdx.files.internal("roomscreen/site.png"), false);
+        Label.LabelStyle style = new Label.LabelStyle(font, font.getColor());
+        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(new Texture(Gdx.files.internal("winresult.png"))));
+        winError = new Window("",windowStyle);
+        winError.setSize(width/2,height/2);
+        winError.setPosition(width/4,height/4);
+        Label label = new Label("HosterGone!",style);
+        btnSure = new Image(new Texture("roomscreen/ready.png"));
+        btnSure.setSize(0.07778f * width,0.06f*height);
+        btnSure.setPosition(winError.getX() - btnSure.getWidth()/2,winError.getY()-0.3f*winError.getHeight());
+        winError.addActor(label);
+        winError.addActor(btnSure);
+        stage.addActor(winError);
+        winError.setVisible(false);
+
+        btnSure.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x,float y){
+                //下翻列表
+                winError.setVisible(false);
+            }
+        });
     }
 
     public void setButtonClick(){
@@ -345,7 +400,7 @@ public class RoomScreen extends AbstractGameScreen{
                 toCancel();
             }
         });
-        btnBackToLobby.addListener(new ClickListener(){
+        backToLobby.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
                 toLobby();

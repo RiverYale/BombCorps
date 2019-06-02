@@ -31,6 +31,10 @@ public abstract class DirectedGame implements ApplicationListener {
     private WorldController worldController;
     private NetController netController;
 
+    public NetController getNetController(){
+        return netController;
+    }
+
     public void setScreen(AbstractGameScreen screen) {
         setScreen(screen, null);
     }
