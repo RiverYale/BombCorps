@@ -55,6 +55,7 @@ public class LobbyScreen extends AbstractGameScreen{
 
     private int numOfRoom;      //房间个数
     private int numOfPage = 0;      //页数
+    private ArrayList<Integer> originNum = new ArrayList<Integer>();
 
     private ArrayList<RoomSelect> roomList; //房间列表
    // private ArrayList<String> mode;
@@ -243,6 +244,7 @@ public class LobbyScreen extends AbstractGameScreen{
                 String personNum = netController.getRoomList().get(i).getPlayerManager().getAllPlayerList().size +
                         "/" + netController.getRoomList().get(i).getLIMIT();
                 roomList.add(new RoomSelect(mapNum,mode,hostName,personNum));
+                originNum.add(i);
             }
         }
         numOfRoom = roomList.size();
@@ -259,6 +261,12 @@ public class LobbyScreen extends AbstractGameScreen{
             }
             roomList.get(i + numOfPage).setPosition(originX,originY - i * intervalY);
             roomList.get(i + numOfPage).addToStage(stage);
+        }
+
+        for(int i = 0;i < 4;i++){
+            if (roomList.get(i + numOfPage).isClick()){
+                game.loadinRoomScreen(originNum.get(i + numOfPage));
+            }
         }
     }
 

@@ -2,6 +2,7 @@ package com.bombcorps.game.model;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.BufferUtils;
 
 public class SkillAndBuff {
 
@@ -23,6 +24,8 @@ public class SkillAndBuff {
     public SkillAndBuff(Array<Player> playerlistblue, Array<Player> playerListred){
         this.playerListBlue = playerlistblue;
         this.playerListRed = playerListred;
+        redBuffs = new Array<Buff>();
+        blueBuffs = new Array<Buff>();
 
         for(int i = 0 ; i < playerListRed.size ; i++){
             redBuffs.add(new Buff(playerListred.get(i)));
