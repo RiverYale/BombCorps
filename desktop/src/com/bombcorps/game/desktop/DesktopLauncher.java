@@ -7,8 +7,8 @@ import com.bombcorps.game.BombCorps;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width = 1350;
-		config.height = 700;
+		config.width = 900;
+		config.height = 500;
 		new LwjglApplication(new BombCorps(), config);
 	}
 }

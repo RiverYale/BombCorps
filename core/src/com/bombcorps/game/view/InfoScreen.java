@@ -27,11 +27,11 @@ public class InfoScreen extends AbstractGameScreen implements InputProcessor{
 
     private String heroNames[] = {"天使", "守护者", "射手", "狂战士", "巫师"};
 //    private String heroNames[] = {"Angel", "Protector", "Sniper", "Sparda", "Wizard"};
-    private TextureRegion regions[] = {AssetsController.instance.getRegion("Angel0"),
-                                       AssetsController.instance.getRegion("Protector0"),
-                                       AssetsController.instance.getRegion("Sniper0"),
-                                       AssetsController.instance.getRegion("Sparda0"),
-                                       AssetsController.instance.getRegion("Wizard0")};
+    private TextureRegion regions[] = {AssetsController.instance.getRegion("Angel_stand"),
+                                       AssetsController.instance.getRegion("Protector_stand"),
+                                       AssetsController.instance.getRegion("Sniper_stand"),
+                                       AssetsController.instance.getRegion("Sparda_stand"),
+                                       AssetsController.instance.getRegion("Wizard_stand")};
 
     private int index = 0;
     private BitmapFont font;

@@ -69,7 +69,7 @@ public class SiteShow {
     }
 
     public void setPosition(float x,float y){
-        Gdx.app.log("heroselect",heroSelect+"");
+        //Gdx.app.log("heroselect",heroSelect+"");
         hero[heroSelect].setSize((hero[heroSelect].getWidth()/900)*width,(hero[heroSelect].getHeight()/500)*height);
         hero[heroSelect].setPosition(x - hero[heroSelect].getWidth() / 2,y + 0.04f * height);
         //hero[heroSelect].debug();

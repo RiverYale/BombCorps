@@ -18,7 +18,6 @@ import com.bombcorps.game.controller.DataController;
 import com.bombcorps.game.controller.NetController;
 import com.bombcorps.game.model.Constants;
 import com.bombcorps.game.model.Player;
-import com.bombcorps.game.model.PlayerManager;
 import com.bombcorps.game.model.Room;
 
 public class RoomScreen extends AbstractGameScreen{
@@ -84,20 +83,20 @@ public class RoomScreen extends AbstractGameScreen{
 
         room.setMapName("0");
 
-        myplayer = new Player(NetController.getLocalHostIp());
-
+        myplayer = new Player(DataController.instance.getName());
+        myplayer.setIp(NetController.getLocalHostIp());
 
         room.getPlayerManager().addPlayer(NetController.getLocalHostIp(),Constants.PLAYER.RED_TEAM,dc.getName());
-        for(int i = 0;i < room.getPlayerManager().getAllPlayerList().size;i ++){
-            if(NetController.getLocalHostIp() == room.getPlayerManager().getRedPlayerList().get(i).getIp()){
-                myplayer = room.getPlayerManager().getAllPlayerList().get(i);
-                break;
-            }
-        }
+//        for(int i = 0;i < room.getPlayerManager().getAllPlayerList().size;i ++){
+//            if(NetController.getLocalHostIp() == room.getPlayerManager().getRedPlayerList().get(i).getIp()){
+//                myplayer = room.getPlayerManager().getAllPlayerList().get(i);
+//                break;
+//            }
+//        }
         myplayer.setHeroType(Constants.SPARDA);
 
         Gdx.app.log("heroselect",room.getPlayerManager().getRedPlayerList().get(0).getHeroType()+"");
-        Gdx.app.log("owner",room.getOwnerIp());
+        Gdx.app.log("ownerIp",room.getOwnerIp());
         Gdx.app.log("myplayer:",myplayer.getIp());
         hero = new Image[5];
         hero[0] = new Image(AssetsController.instance.getRegion("Angel_stand"));
@@ -321,7 +320,7 @@ public class RoomScreen extends AbstractGameScreen{
         mapSelect = new Image();
         switch(mapNum){
             case 0:
-                mapSelect = new Image(AssetsController.instance.getRegion("map00"));
+                mapSelect = new Image(new Texture("map/map00.png"));
                 break;
         }
         mapSelect.setSize(0.23f * width,0.3f * height);
@@ -353,7 +352,7 @@ public class RoomScreen extends AbstractGameScreen{
     public void drawErrorWin(){
         BitmapFont font = AssetsController.instance.font;
         Label.LabelStyle style = new Label.LabelStyle(font,Color.BLACK);
-        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(new Texture(Gdx.files.internal("images/winresult.png"))));
+        Window.WindowStyle windowStyle = new Window.WindowStyle(font,Color.BLACK,new TextureRegionDrawable(AssetsController.instance.getRegion("winresult")));
         winError = new Window("",windowStyle);
         winError.setSize(width/2,height/2);
         winError.setPosition(width/4,height/4);

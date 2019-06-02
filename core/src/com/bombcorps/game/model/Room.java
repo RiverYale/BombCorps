@@ -102,11 +102,11 @@ public class Room {
     private void init(String onwerIp){
         this.ownerIp = ownerIp;
         heroRegion = new TextureRegion[6];
-        heroRegion[0] = AssetsController.instance.getRegion("Sparda0");
-        heroRegion[1] = AssetsController.instance.getRegion("Protector0");
-        heroRegion[2] = AssetsController.instance.getRegion("Angel0");
-        heroRegion[3] = AssetsController.instance.getRegion("Sniper0");
-        heroRegion[4] = AssetsController.instance.getRegion("Wizard0");
+        heroRegion[0] = AssetsController.instance.getRegion("Sparda_stand");
+        heroRegion[1] = AssetsController.instance.getRegion("Protector_stand");
+        heroRegion[2] = AssetsController.instance.getRegion("Angel_stand");
+        heroRegion[3] = AssetsController.instance.getRegion("Sniper_stand");
+        heroRegion[4] = AssetsController.instance.getRegion("Wizard_stand");
 
         playerManager = new PlayerManager();
     }
