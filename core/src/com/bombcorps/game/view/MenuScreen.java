@@ -235,7 +235,7 @@ public class MenuScreen extends AbstractGameScreen {
         winAbout = new Window("",windowStyle);
         font.getData().setScale(width/1280f,width/1280f);
         winAbout.setSize(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
-        Label about = new Label("PRODUCERS:\n Zichuan Zhao\n ZhongWei Liu\n WenXin Zhu\n Rui Chen\n YuXuan Qin" ,new Label.LabelStyle(font,Color.BLACK));
+        Label about = new Label("制作者:\n 赵子川\n 刘忠伟\n 朱文鑫\n 陈锐\n 覃钰璇" ,new Label.LabelStyle(font,Color.BLACK));
         winAbout.addActor(about);
 //        btnQuit = new Image(new Texture(Gdx.files.internal("menuscreen/button_quit.png")));
         btnQuit = new Image(AssetsController.instance.getRegion("button_quit"));
