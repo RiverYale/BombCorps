@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.bombcorps.game.controller.AssetsController;
+import com.bombcorps.game.controller.DataController;
 import com.bombcorps.game.controller.NetController;
 import com.bombcorps.game.model.Constants;
 import com.bombcorps.game.model.Player;
@@ -55,7 +56,7 @@ public class RoomScreen extends AbstractGameScreen{
     private Image btnReady;
     private Image btnCancel;
     //英雄号码选择
-    private int heroSelect;
+    private int heroSelect = 0;
     //地图号码
     private int mapNum = 0;
     private Image mapSelect;
@@ -78,13 +79,24 @@ public class RoomScreen extends AbstractGameScreen{
         this.mode = mode;
         this.room = new Room(ip,mode);
 
+        DataController dc = DataController.instance;
+
+        room.setMapName("0");
+
+        myplayer = new Player(NetController.getLocalHostIp());
+
+
+        room.getPlayerManager().addPlayer(NetController.getLocalHostIp(),Constants.PLAYER.RED_TEAM,dc.getName());
         for(int i = 0;i < room.getPlayerManager().getAllPlayerList().size;i ++){
             if(NetController.getLocalHostIp() == room.getPlayerManager().getRedPlayerList().get(i).getIp()){
                 myplayer = room.getPlayerManager().getAllPlayerList().get(i);
                 break;
             }
         }
+        myplayer.setHeroType(Constants.SPARDA);
 
+        Gdx.app.log("heroselect",room.getPlayerManager().getRedPlayerList().get(0).getHeroType()+"");
+        Gdx.app.log("owner:",room.getOwnerIp());
         hero = new Image[5];
         hero[0] = new Image(new Texture("roomscreen/Angel_stand.png"));
         hero[1] = new Image(new Texture("roomscreen/Sparda_stand.png"));
@@ -149,8 +161,8 @@ public class RoomScreen extends AbstractGameScreen{
         siteRed = new Image[4];
         siteBlue = new Image[4];
         for (int i = 0; i < 4; i++) {
-            siteRed[i] = new Image(new Texture(Gdx.files.internal("site.png")));
-            siteBlue[i] = new Image(new Texture(Gdx.files.internal("site.png")));
+            siteRed[i] = new Image(new Texture(Gdx.files.internal("roomscreen/space.png")));
+            siteBlue[i] = new Image(new Texture(Gdx.files.internal("roomscreen/space.png")));
             siteRed[i].setSize(sitewidth, siteheight);
             siteBlue[i].setSize(sitewidth, siteheight);
             if (i == 0) {
@@ -197,9 +209,9 @@ public class RoomScreen extends AbstractGameScreen{
         setButtonClick();
         drawErrorWin();
 
-        if(ownerQuit()){
-            errorQuit();
-        }
+//        if(ownerQuit()){
+//            errorQuit();
+//        }
     }
 
     public void bulidTeam(){
@@ -212,6 +224,7 @@ public class RoomScreen extends AbstractGameScreen{
             teamRed[i] = new SiteShow(room.getPlayerManager().getRedPlayerList().get(i).getHeroType(),
                     room.getPlayerManager().getRedPlayerList().get(i).getID(),
                     room.getPlayerManager().getRedPlayerList().get(i).getLevel());
+            Gdx.app.log("heroselect",room.getPlayerManager().getRedPlayerList().get(i).getHeroType()+"");
         }
         //蓝队赋值
         for(int i = 0;i < numOfBlue;i ++){
@@ -236,9 +249,9 @@ public class RoomScreen extends AbstractGameScreen{
         btnHeroRight = new Image(new Texture("roomscreen/heroright.png"));
         btnHeroLeft.setSize(0.06667f * width,0.06f * height);
         btnHeroRight.setSize(0.06667f * width,0.06f * height);
-        btnHeroLeft.setPosition(selectBackground.getX() + selectBackground.getWidth()/2 - btnMapleft.getWidth()/2- 0.08f*width,
+        btnHeroLeft.setPosition(selectBackground.getX() + selectBackground.getWidth()/2 - btnHeroLeft.getWidth()/2- 0.08f*width,
                 0.28f * height);
-        btnHeroRight.setPosition(selectBackground.getX() + selectBackground.getWidth()/2 - btnMapright.getWidth()/2 + 0.08f * width,
+        btnHeroRight.setPosition(selectBackground.getX() + selectBackground.getWidth()/2 - btnHeroRight.getWidth()/2 + 0.08f * width,
                 0.28f * height);
         stage.addActor(btnHeroLeft);
         stage.addActor(btnHeroRight);
@@ -275,6 +288,10 @@ public class RoomScreen extends AbstractGameScreen{
                 readyNum ++;
             }
         }
+
+//        Gdx.app.log("playerIp",myplayer.getIp());
+//        Gdx.app.log("ownerIp",room.getOwnerIp());
+
         if(myplayer.getIp() == room.getOwnerIp() && (readyNum >= (2 * mode - 1))){
             stage.addActor(btnReady);
         }
@@ -289,6 +306,7 @@ public class RoomScreen extends AbstractGameScreen{
     }
 
     public void drawHero(){
+        //Gdx.app.log("size",hero[heroSelect].getWidth()+""+hero[heroSelect].getHeight());
         hero[heroSelect].setSize((hero[heroSelect].getWidth()/900)*width,(hero[heroSelect].getHeight()/500)*height);
         hero[heroSelect].setPosition(selectBackground.getX() + selectBackground.getWidth()/2 - hero[heroSelect].getWidth()/2,
                 btnHeroLeft.getY());
@@ -303,6 +321,9 @@ public class RoomScreen extends AbstractGameScreen{
                 mapSelect = new Image(new Texture("roomscreen/map0.png"));
                 break;
         }
+        mapSelect.setSize(0.23f * width,0.3f * height);
+        mapSelect.setPosition(selectBackground.getX() + selectBackground.getWidth()/2 - mapSelect.getWidth()/2,
+                0.51f * height);
         stage.addActor(mapSelect);
     }
 
@@ -329,18 +350,19 @@ public class RoomScreen extends AbstractGameScreen{
     public void drawErrorWin(){
         BitmapFont font = new BitmapFont(Gdx.files.internal("roomscreen/site.fnt"), Gdx.files.internal("roomscreen/site.png"), false);
         Label.LabelStyle style = new Label.LabelStyle(font, font.getColor());
-        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(new Texture(Gdx.files.internal("winresult.png"))));
+        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(new Texture(Gdx.files.internal("images/winresult.png"))));
         winError = new Window("",windowStyle);
         winError.setSize(width/2,height/2);
         winError.setPosition(width/4,height/4);
         Label label = new Label("HosterGone!",style);
         btnSure = new Image(new Texture("roomscreen/ready.png"));
+        label.setPosition(winError.getX() - label.getWidth()/2,winError.getY() - label.getHeight()/2);
         btnSure.setSize(0.07778f * width,0.06f*height);
         btnSure.setPosition(winError.getX() - btnSure.getWidth()/2,winError.getY()-0.3f*winError.getHeight());
         winError.addActor(label);
         winError.addActor(btnSure);
-        stage.addActor(winError);
         winError.setVisible(false);
+        stage.addActor(winError);
 
         btnSure.addListener(new ClickListener(){
             @Override
@@ -417,8 +439,8 @@ public class RoomScreen extends AbstractGameScreen{
             heroSelect --;
             myplayer.setHeroType(heroSelect);
             game.getNetController().updatePlayer(myplayer);
+            rebulidStage();
         }
-        rebulidStage();
     }
 
     public void turnRightHero(){
@@ -426,8 +448,8 @@ public class RoomScreen extends AbstractGameScreen{
             heroSelect ++;
             myplayer.setHeroType(heroSelect);
             game.getNetController().updatePlayer(myplayer);
+            rebulidStage();
         }
-        rebulidStage();
     }
 
     public void turnLeftMap(){
