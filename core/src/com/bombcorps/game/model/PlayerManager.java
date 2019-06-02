@@ -194,6 +194,10 @@ public class PlayerManager {
         return playerListBlue;
     }
 
+    public SkillAndBuff getSkillAndBuff(){
+        return skillAndBuff;
+    }
+
     public void setPlayerStateAtIndex(int index, int state, int team){
         if(team == Constants.PLAYER.RED_TEAM){
             if(index < playerListRed.size)

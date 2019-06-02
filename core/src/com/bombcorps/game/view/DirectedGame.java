@@ -82,7 +82,7 @@ public abstract class DirectedGame implements ApplicationListener {
         gameScreen.errorStop();
     }
     public void errorQuit(){
-        roomScreen.errorQuit();
+//        roomScreen.errorQuit();
     }
     public World getWorld(){
 
@@ -93,7 +93,9 @@ public abstract class DirectedGame implements ApplicationListener {
         if(Constants.CurrentScreenFlag== Constants.RoomScreenFlag){
             return true;
         }
+        else {
             return false;
+        }
     }
 
     public boolean hasRoom(){

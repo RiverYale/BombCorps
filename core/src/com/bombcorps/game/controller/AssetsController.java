@@ -74,5 +74,6 @@ public class AssetsController  implements Disposable, AssetErrorListener {
     public void dispose() {
         textureMap.clear();
         assetManager.dispose();
+        font.dispose();
     }
 }
