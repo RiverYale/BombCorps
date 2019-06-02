@@ -260,6 +260,11 @@ public class LobbyScreen extends AbstractGameScreen{
             roomList.get(i + numOfPage).setPosition(originX,originY - i * intervalY);
             roomList.get(i + numOfPage).addToStage(stage);
         }
+
+        for(int i = 0;i < 4;i++){
+            if (roomList.get(i + numOfPage).isClick()){
+            }
+        }
     }
 
     //按键布局
