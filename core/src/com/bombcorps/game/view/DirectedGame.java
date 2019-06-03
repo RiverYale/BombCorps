@@ -29,7 +29,7 @@ public abstract class DirectedGame implements ApplicationListener {
     private GameScreen gameScreen;
     private InfoScreen infoScreen;
     private WorldController worldController;
-    private NetController netController;
+    private NetController netController = new NetController();
 
     public void setScreen(AbstractGameScreen screen) {
         setScreen(screen, null);
@@ -59,7 +59,6 @@ public abstract class DirectedGame implements ApplicationListener {
         OrthographicCamera orthographicCamera =new OrthographicCamera();
         orthographicCamera.viewportHeight =10;
         orthographicCamera.viewportWidth = 18;
-        netController = new NetController();
 
         worldController = new WorldController(this,orthographicCamera,netController);
 

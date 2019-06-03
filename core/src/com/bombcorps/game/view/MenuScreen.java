@@ -104,7 +104,7 @@ public class MenuScreen extends AbstractGameScreen {
     private Slider sldSound;
     private Slider sldMusic;
     private TextField tfName;
-
+    BitmapFont font = AssetsController.instance.font;
 
 
 //    // debug
@@ -209,7 +209,7 @@ public class MenuScreen extends AbstractGameScreen {
     private Table buildOptionsWindowLayer(){
 
 //        BitmapFont font =new BitmapFont(Gdx.files.internal("menuscreen/winOptions.fnt"), Gdx.files.internal("menuscreen/winOptions.png"),false);
-        BitmapFont font = AssetsController.instance.font;
+        //BitmapFont font = AssetsController.instance.font;
 //        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(new Texture(Gdx.files.internal("menuscreen/window.png"))));
         Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(AssetsController.instance.getRegion("window")));
         winOptions = new Window("Options",windowStyle);
@@ -228,7 +228,7 @@ public class MenuScreen extends AbstractGameScreen {
     private  Table bulidAboutWindowLayer(){
 
 //        BitmapFont font =new BitmapFont(Gdx.files.internal("menuscreen/winOptions.fnt"),Gdx.files.internal("menuscreen/winOptions.png"),false);
-        BitmapFont font = AssetsController.instance.font;
+       // BitmapFont font = AssetsController.instance.font;
 //        TextureRegionDrawable winResultsDrawable = new TextureRegionDrawable(new Texture(Gdx.files.internal("menuscreen/winresult.png")));
         TextureRegionDrawable winResultsDrawable = new TextureRegionDrawable(AssetsController.instance.getRegion("winresult"));
         Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),winResultsDrawable);
@@ -299,7 +299,7 @@ public class MenuScreen extends AbstractGameScreen {
         //添加标题audio
         tbl.pad(10,10,0,10);
 //        BitmapFont font =new BitmapFont(Gdx.files.internal("menuscreen/winOptions.fnt"),Gdx.files.internal("menuscreen/winOptions.png"),false);
-        BitmapFont font = AssetsController.instance.font;
+        //BitmapFont font = AssetsController.instance.font;
         Label audioLbl = new Label("Audio",new Label.LabelStyle(font,font.getColor()));
         audioLbl.setFontScale(1.5f*width/1280f);
         tbl.add(audioLbl).colspan(3);
@@ -332,7 +332,7 @@ public class MenuScreen extends AbstractGameScreen {
     }
     private Table buildOptWinNameSettings(){
 //        BitmapFont font =new BitmapFont(Gdx.files.internal("menuscreen/winOptions.fnt"),Gdx.files.internal("menuscreen/winOptions.png"),false);
-        BitmapFont font = AssetsController.instance.font;
+        //BitmapFont font = AssetsController.instance.font;
         DataController prefs = DataController.instance;
         Table tbl = new Table();
         font.getData().setScale(1.5f*width/1280f);
@@ -356,9 +356,7 @@ public class MenuScreen extends AbstractGameScreen {
     }
     private Table buildOptWinButtons(){
         Table tbl = new Table();
-        //添加分割线
-
-        BitmapFont font = AssetsController.instance.font;
+       // BitmapFont font = AssetsController.instance.font;
 //        Texture texture = new Texture(Gdx.files.internal("menuscreen/savecancelbutton.png"));
         TextureRegion texture = AssetsController.instance.getRegion("savecancelbutton");
         font.getData().setScale(width/1280);
