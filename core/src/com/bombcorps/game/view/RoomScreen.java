@@ -77,7 +77,9 @@ public class RoomScreen extends AbstractGameScreen{
         this.game = game;
         this.ip = ip;
         this.mode = mode;
+        Gdx.app.log("IP", ip);
         this.room = new Room(ip,mode);
+        Gdx.app.log("ownerIp",room.getOwnerIp());
 
         DataController dc = DataController.instance;
 
@@ -86,7 +88,7 @@ public class RoomScreen extends AbstractGameScreen{
         myplayer = new Player(DataController.instance.getName());
         myplayer.setIp(NetController.getLocalHostIp());
 
-        room.getPlayerManager().addPlayer(NetController.getLocalHostIp(),Constants.PLAYER.RED_TEAM,dc.getName());
+        room.addPlayer(new Player("asd"));
 //        for(int i = 0;i < room.getPlayerManager().getAllPlayerList().size;i ++){
 //            if(NetController.getLocalHostIp() == room.getPlayerManager().getRedPlayerList().get(i).getIp()){
 //                myplayer = room.getPlayerManager().getAllPlayerList().get(i);
@@ -95,9 +97,8 @@ public class RoomScreen extends AbstractGameScreen{
 //        }
         myplayer.setHeroType(Constants.SPARDA);
 
-        Gdx.app.log("heroselect",room.getPlayerManager().getRedPlayerList().get(0).getHeroType()+"");
-        Gdx.app.log("ownerIp",room.getOwnerIp());
-        Gdx.app.log("myplayer:",myplayer.getIp());
+//        Gdx.app.log("heroselect",room.getPlayerManager().getRedPlayerList().get(0).getHeroType()+"");
+//        Gdx.app.log("myplayer:",myplayer.getIp());
         hero = new Image[5];
         hero[0] = new Image(AssetsController.instance.getRegion("Angel_stand"));
         hero[1] = new Image(AssetsController.instance.getRegion("Sparda_stand"));

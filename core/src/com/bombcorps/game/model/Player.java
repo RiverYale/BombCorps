@@ -150,9 +150,9 @@ public class Player {
 
     public void shoot(){
 
-        myHero.setState(Constants.STATE_ATTACK);
-        bomb.setState(Constants.BOMB.STATE_FLY);
         bomb.setFromPlayer(this);
+        bomb.setState(Constants.BOMB.STATE_FLY);
+        myHero.setState(Constants.STATE_ATTACK);
     }
 
     public boolean useSkill(int op){

@@ -99,7 +99,7 @@ public class Room {
     }
 
 
-    private void init(String onwerIp){
+    private void init(String ownerIp){
         this.ownerIp = ownerIp;
         heroRegion = new TextureRegion[6];
         heroRegion[0] = AssetsController.instance.getRegion("Sparda_stand");
