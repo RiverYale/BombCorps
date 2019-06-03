@@ -78,6 +78,8 @@ public class RoomScreen extends AbstractGameScreen{
 
     private int readyNum = 0;
 
+    DataController dc = DataController.instance;
+
     public RoomScreen(DirectedGame game,String ip,int mode) {
         super(game);
         this.game = game;
@@ -91,7 +93,7 @@ public class RoomScreen extends AbstractGameScreen{
         Gdx.input.setInputProcessor(stage2);
 
 
-        DataController dc = DataController.instance;
+
         room.setMapName("0");
         myplayer = new Player(dc.getName());
         myplayer.setIp(NetController.getLocalHostIp());
@@ -109,6 +111,7 @@ public class RoomScreen extends AbstractGameScreen{
         }
 
         myplayer.setHeroType(Constants.SPARDA);
+        myplayer.setLevel(dc.getPersonalData(Constants.SPARDA));
 
         Gdx.app.log("heroselect",room.getPlayerManager().getRedPlayerList().get(0).getHeroType()+"");
         Gdx.app.log("ownerIp",room.getOwnerIp());
@@ -523,6 +526,7 @@ public class RoomScreen extends AbstractGameScreen{
         if (heroSelect > 0 && !myplayer.getReady()) {
             heroSelect --;
             myplayer.setHeroType(heroSelect);
+            myplayer.setLevel(dc.getPersonalData(heroSelect));
             game.getNetController().updatePlayer(myplayer);
         }
     }
@@ -531,6 +535,7 @@ public class RoomScreen extends AbstractGameScreen{
         if(heroSelect < 4 && !myplayer.getReady()){
             heroSelect ++;
             myplayer.setHeroType(heroSelect);
+            myplayer.setLevel(dc.getPersonalData(heroSelect));
             game.getNetController().updatePlayer(myplayer);
         }
     }
