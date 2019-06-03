@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -28,7 +29,7 @@ public class SiteShow {
     private float height = Gdx.graphics.getHeight();
 
     SiteShow(int heroSelect,String playerId,int level){
-        heroSelect = 0;
+        this.heroSelect = heroSelect;
         table = new Table();
         //table.setSize(100,100);
         stack = new Stack();
@@ -79,5 +80,10 @@ public class SiteShow {
     public void addToStage(Stage stage){
         stage.addActor(hero[heroSelect]);
         stage.addActor(stack);
+    }
+
+    public void addToBatch(SpriteBatch batch){
+        hero[heroSelect].draw(batch,1);
+        stack.draw(batch,1);
     }
 }

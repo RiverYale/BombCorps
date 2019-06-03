@@ -168,6 +168,7 @@ public class NetController {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         try {
             ObjectOutputStream oos = new ObjectOutputStream(bos);
+            Gdx.app.log("zc", (obj instanceof Message)+"");
             oos.writeObject(obj);
             oos.flush();
             bytes = bos.toByteArray();

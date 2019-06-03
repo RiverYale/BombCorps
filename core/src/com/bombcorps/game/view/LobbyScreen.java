@@ -22,6 +22,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.controller.DataController;
 import com.bombcorps.game.controller.NetController;
+import com.bombcorps.game.model.Player;
 
 import java.util.ArrayList;
 
@@ -137,7 +138,7 @@ public class LobbyScreen extends AbstractGameScreen{
         String showName = "Name:" +  dc.getName(); //+ 昵称
         labelShowName = new Label(showName,style);
         labelShowName.setFontScale(0.002f * width);
-        labelShowName.debug();
+        //labelShowName.debug();
 
         String showRate = "Rate:" + dc.getPersonalData(DataController.WIN_NUM)+"/"+dc.getPersonalData(DataController.GAME_NUM);  //+ 胜率
         labelShowRate = new Label(showRate,style);
@@ -171,6 +172,10 @@ public class LobbyScreen extends AbstractGameScreen{
         winBuildRoom.setSize(width/2,height/2);
         winBuildRoom.setPosition(width/4,height/4);
         cancel = new Image(AssetsController.instance.getRegion("winbuildroomcancel"));
+
+//        Player myplayer = new Player(dc.getName());
+//        myplayer.setIp(NetController.getLocalHostIp());
+
         oneOne = new Image(AssetsController.instance.getRegion("oneone"));
 
         twoTwo = new Image(AssetsController.instance.getRegion("twotwo"));
@@ -197,6 +202,7 @@ public class LobbyScreen extends AbstractGameScreen{
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 game.loadRoomScreen(1);
+                //game.getNetController().enterRoom(NetController.getLocalHostIp(),myplayer);
                 return true;
             }
         });
@@ -205,6 +211,7 @@ public class LobbyScreen extends AbstractGameScreen{
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 game.loadRoomScreen(2);
+                //game.getNetController().enterRoom(NetController.getLocalHostIp(),myplayer);
                 return true;
             }
         });
@@ -213,6 +220,7 @@ public class LobbyScreen extends AbstractGameScreen{
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 game.loadRoomScreen(4);
+                //game.getNetController().enterRoom(NetController.getLocalHostIp(),myplayer);
                 return true;
             }
         });
@@ -269,14 +277,12 @@ public class LobbyScreen extends AbstractGameScreen{
             roomList.get(i + numOfPage).setPosition(originX,originY - i * intervalY);
             roomList.get(i + numOfPage).addToStage(stage);
         }
-
         for(int i = 0;i < 4;i++){
             if(roomList.size() == 0){
                 break;
             }
             if (roomList.get(i + numOfPage).isClick()){
                 game.loadinRoomScreen(originNum.get(i + numOfPage));
-
             }
         }
     }
