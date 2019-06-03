@@ -36,11 +36,11 @@ public class SiteShow {
         stack.setSize(0.111f * width,0.16f * height);
 
         hero = new Image[5];
-        hero[0] = new Image(AssetsController.instance.getRegion("Angel_stand"));
-        hero[1] = new Image(AssetsController.instance.getRegion("Sparda_stand"));
-        hero[2] = new Image(AssetsController.instance.getRegion("Protector_stand"));
-        hero[3] = new Image(AssetsController.instance.getRegion("Sniper_stand"));
-        hero[4] = new Image(AssetsController.instance.getRegion("Wizard_stand"));
+        hero[Constants.ANGEL] = new Image(AssetsController.instance.getRegion("Angel_stand"));
+        hero[Constants.SPARDA] = new Image(AssetsController.instance.getRegion("Sparda_stand"));
+        hero[Constants.PROTECTOR] = new Image(AssetsController.instance.getRegion("Protector_stand"));
+        hero[Constants.SNIPER] = new Image(AssetsController.instance.getRegion("Sniper_stand"));
+        hero[Constants.WIZARD] = new Image(AssetsController.instance.getRegion("Wizard_stand"));
 
         this.heroSelect = heroSelect;
         this.playerName = playerId;

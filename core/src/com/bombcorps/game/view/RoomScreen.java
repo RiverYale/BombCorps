@@ -83,34 +83,37 @@ public class RoomScreen extends AbstractGameScreen{
         this.room = new Room(ip,mode);
         batch = new SpriteBatch();
         stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+
 
         DataController dc = DataController.instance;
-
         room.setMapName("0");
-
         myplayer = new Player(dc.getName());
         myplayer.setIp(NetController.getLocalHostIp());
-//        myplayer.setHeroType(Constants.SPARDA);
-        game.getNetController().enterRoom(ip,myplayer);
-        //game.getNetController().updatePlayer(myplayer);
-        //room.getPlayerManager().addPlayer(NetController.getLocalHostIp(),Constants.PLAYER.RED_TEAM,dc.getName());
+
+        if(!NetController.getLocalHostIp().equals(this.ip)){
+            game.getNetController().enterRoom(this.ip,myplayer);
+        }
+
+        room.addPlayer(myplayer);
         for(int i = 0;i < room.getPlayerManager().getAllPlayerList().size;i ++){
             if(NetController.getLocalHostIp().equals(room.getPlayerManager().getRedPlayerList().get(i).getIp())){
                 myplayer = room.getPlayerManager().getAllPlayerList().get(i);
                 break;
             }
         }
+
         myplayer.setHeroType(Constants.SPARDA);
 
         Gdx.app.log("heroselect",room.getPlayerManager().getRedPlayerList().get(0).getHeroType()+"");
         Gdx.app.log("ownerIp",room.getOwnerIp());
         Gdx.app.log("myplayer:",myplayer.getIp());
         hero = new Image[5];
-        hero[0] = new Image(AssetsController.instance.getRegion("Angel_stand"));
-        hero[1] = new Image(AssetsController.instance.getRegion("Sparda_stand"));
-        hero[2] = new Image(AssetsController.instance.getRegion("Protector_stand"));
-        hero[3] = new Image(AssetsController.instance.getRegion("Sniper_stand"));
-        hero[4] = new Image(AssetsController.instance.getRegion("Wizard_stand"));
+        hero[Constants.ANGEL] = new Image(AssetsController.instance.getRegion("Angel_stand"));
+        hero[Constants.SPARDA] = new Image(AssetsController.instance.getRegion("Sparda_stand"));
+        hero[Constants.PROTECTOR] = new Image(AssetsController.instance.getRegion("Protector_stand"));
+        hero[Constants.SNIPER] = new Image(AssetsController.instance.getRegion("Sniper_stand"));
+        hero[Constants.WIZARD] = new Image(AssetsController.instance.getRegion("Wizard_stand"));
 
         drawImage();
         drawButton();
@@ -151,7 +154,6 @@ public class RoomScreen extends AbstractGameScreen{
     @Override
     public void show() {
         //stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -320,12 +322,12 @@ public class RoomScreen extends AbstractGameScreen{
         }
         //准备人数
         for(int i = 0;i < room.getPlayerManager().getAllPlayerList().size;i ++){
-            if(room.getPlayerManager().getRedPlayerList().get(i).getReady()){
+            if(room.getPlayerManager().getAllPlayerList().get(i).getReady()){
                 readyNum ++;
             }
         }
         //准备/取消按钮布置
-        if(myplayer.getIp().equals(room.getOwnerIp()) && (readyNum >= (2 * mode - 1))){
+        if(myplayer.getIp().equals(room.getOwnerIp()) && !(readyNum >= (2 * mode - 1))){
             btnReady.draw(batch,1);
         }
 
@@ -417,7 +419,7 @@ public class RoomScreen extends AbstractGameScreen{
         btnSure.setPosition(winError.getX() - btnSure.getWidth()/2,winError.getY()-0.3f*winError.getHeight());
         winError.addActor(label);
         winError.addActor(btnSure);
-        winError.setVisible(false);
+        winError.setVisible(true);
         btnSure.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x,float y){
@@ -427,11 +429,12 @@ public class RoomScreen extends AbstractGameScreen{
             }
         });
         stage.addActor(btnSure);
+        //winError.draw(batch,1);
     }
 
     public void batchAddWinError(){
-        if(ownerQuit()){
-            winError.draw(batch,1);
+        if(!ownerQuit()){
+            //winError.draw(batch,1);
             errorQuit();
         }
     }
@@ -531,6 +534,7 @@ public class RoomScreen extends AbstractGameScreen{
     public void toRedTeam(){
         if(myplayer.getTeam() == Constants.PLAYER.BLUE_TEAM && !myplayer.getReady()){
             room.switchTeam(myplayer);
+            game.getNetController().updatePlayer(myplayer);
         }
     }
 
@@ -541,13 +545,14 @@ public class RoomScreen extends AbstractGameScreen{
     }
 
     public void toReady(){
-        if(myplayer.getIp().equals(room.getOwnerIp())){
-            //游戏开始
-            game.loadGameScreen();
-        }
-        if(!myplayer.getIp().equals(room.getOwnerIp())){
-            myplayer.setReady(true);
-        }
+        Gdx.app.log("intogame","Yes");
+//        if(myplayer.getIp().equals(room.getOwnerIp())){
+//            //游戏开始
+//            game.loadGameScreen();
+//        }
+//        if(!myplayer.getIp().equals(room.getOwnerIp())){
+//            myplayer.setReady(true);
+//        }
     }
 
     public void toCancel(){

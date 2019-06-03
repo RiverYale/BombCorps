@@ -7,7 +7,10 @@ import com.bombcorps.game.controller.NetController;
 import com.bombcorps.game.model.bombs.Bomb;
 import com.bombcorps.game.model.heros.*;
 
-public class Player {
+import java.io.Serializable;
+import java.util.Set;
+
+public class Player implements Serializable {
     private String ID;
     private BaseHero myHero;
     private int heroType;
