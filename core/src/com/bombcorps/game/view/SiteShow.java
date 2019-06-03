@@ -52,6 +52,9 @@ public class SiteShow {
         for(int i=0; i<level;i++){
             levelShow = levelShow + "★";
         }
+        for(int i=0;i<(5-level);i++){
+            levelShow = levelShow + "☆";
+        }
         labelPlayerName = new Label(playerName,style);
         labelPlayerName.setOrigin(labelPlayerName.getWidth() / 2,labelPlayerName.getHeight() / 2);
         labelPlayerName.setFontScale(0.000555f * width,0.001f * height);

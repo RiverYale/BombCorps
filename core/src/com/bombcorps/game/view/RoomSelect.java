@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -83,6 +84,14 @@ public class RoomSelect {
         stage.addActor(labelPersonNum);
     }
 
+    public void addToBatch(SpriteBatch batch){
+        backGround.draw(batch,1);
+        smallMap.draw(batch,1);
+        labelMode.draw(batch,1);
+        labelHosterName.draw(batch,1);
+        labelPersonNum.draw(batch,1);
+    }
+
     public boolean isClick(){
         return click;
     }
@@ -130,4 +139,6 @@ public class RoomSelect {
             }
         });
     }
+
+
 }
