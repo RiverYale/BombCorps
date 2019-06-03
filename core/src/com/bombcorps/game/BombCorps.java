@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
+import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.controller.CameraController;
 import com.bombcorps.game.controller.InputController;
 import com.bombcorps.game.controller.NetController;
@@ -19,6 +20,10 @@ public class BombCorps extends DirectedGame {
 
 	@Override
 	public void create () {
+		AssetsController.instance.loadTexture("menuscreen/menuscreen.txt");
+		AssetsController.instance.loadTexture("lobbyscreen/lobbyscreen.txt");
+		AssetsController.instance.loadTexture("roomscreen/roomscreen.txt");
+		AssetsController.instance.loadTexture("infoscreen/infoscreen.txt");
 		loadMenuScreen();
 	}
 

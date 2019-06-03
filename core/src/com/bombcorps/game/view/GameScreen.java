@@ -585,7 +585,6 @@ public class GameScreen extends AbstractGameScreen{
     }
 
     public void onWinInGameSettingsClicked(){
-        System.out.print("nmsl");
         BitmapFont font =new BitmapFont(Gdx.files.internal("images/winOptions.fnt"),Gdx.files.internal("images/winOptions.png"),false);
         TextureRegionDrawable winResultsDrawable = new TextureRegionDrawable(new Texture(Gdx.files.internal("images/window.png")));
         Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),winResultsDrawable);
@@ -593,39 +592,46 @@ public class GameScreen extends AbstractGameScreen{
         Table tbl = new Table();
         //添加标题audio
         tbl.pad(10,10,0,10);
-        tbl.add(new Label("Audio",new Label.LabelStyle(font,font.getColor()))).colspan(3);
+        Label audioLbl = new Label("Audio",new Label.LabelStyle(font,font.getColor()));
+        audioLbl.setFontScale(1.5f*width/1280f);
+        tbl.add(audioLbl).colspan(3);
         tbl.row();
         tbl.columnDefaults(0).padRight(10);
         tbl.columnDefaults(1).padRight(10);
         //添加sound标签 声音滑动控件
-        tbl.add(new Label("Sound",new Label.LabelStyle(font,font.getColor())));
-
-        Slider.SliderStyle sliderStyle = new Slider.SliderStyle(new TextureRegionDrawable(new Texture(Gdx.files.internal("images/sliderbackground.png"))),
-                new TextureRegionDrawable(new Texture(Gdx.files.internal("images/sliderbackground.png"))));
+        Label soundLbl = new Label("Sound",new Label.LabelStyle(font,font.getColor()));
+        soundLbl.setFontScale(1.5f*width/1280f);
+        tbl.add(soundLbl);
+        Texture sliderBac=new Texture("menuscreen/sliderbackground.png");
+        Image image = new Image(sliderBac);
+        //TextureRegionDrawable textureRegionDrawable = new TextureRegionDrawable(sliderBac);
+        Slider.SliderStyle sliderStyle = new Slider.SliderStyle(new TextureRegionDrawable(sliderBac),
+                new TextureRegionDrawable(new Texture(Gdx.files.internal("menuscreen/sliderkuai.png"))));
 
         sldSound = new Slider(0.0f,1.0f,0.1f,false,sliderStyle);
-        tbl.add(sldSound);
+        tbl.add(sldSound).width(sldSound.getWidth()*width/1280);
         tbl.row();
         //添加music标签 音乐滑动控件
-        tbl.add(new Label("Music",new Label.LabelStyle(font,font.getColor())));
+        Label musicLbl = new Label("Music",new Label.LabelStyle(font,font.getColor()));
+        tbl.add(musicLbl);
+        musicLbl.setFontScale(1.5f*width/1280);
         sldMusic = new Slider(0.0f,1.0f,0.1f,false,sliderStyle);
-        tbl.add(sldMusic);
+        tbl.add(sldMusic).width(sldMusic.getWidth()*width/1280);
         tbl.row();
-        winInGameSettings.addActor(tbl);
-        winInGameSettings.setSize(width/2,height/2);
-        winInGameSettings.setPosition(width/4,height/4);
-        winInGameSettings.setVisible(true);
-        stage.addActor(winInGameSettings);
+
+
+
         Texture texture = new Texture(Gdx.files.internal("images/savecancelbutton.png"));
 
+        //添加save按钮并且 初始化事件处理器
+        font.getData().setScale(width/1280);
         //添加save按钮并且 初始化事件处理器
         TextureRegionDrawable textureRegionDrawable = new TextureRegionDrawable(texture);
 
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle(textureRegionDrawable,textureRegionDrawable,textureRegionDrawable,font
         );
         btnWinOptSave = new TextButton("Save",textButtonStyle);
-
-        tbl.add(btnWinOptSave).padLeft(20);
+        tbl.add(btnWinOptSave).width(btnWinOptSave.getWidth()*width/1280f).height(btnWinOptSave.getHeight()*width/1280).padLeft(20*width/1280);
         btnWinOptSave.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -634,13 +640,18 @@ public class GameScreen extends AbstractGameScreen{
         });
         // 添加cancel按钮并且 初始化事件处理器
         btnWinOptCancel = new TextButton("Cancel", textButtonStyle);
-        tbl.add(btnWinOptCancel).padRight(20);
+        tbl.add(btnWinOptCancel).width(btnWinOptSave.getWidth()*width/1280f).height(btnWinOptSave.getHeight()*width/1280).padLeft(20*width/1280);
         btnWinOptCancel.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 onCancelClicked();
             }
         });
+        winInGameSettings.addActor(tbl);
+        winInGameSettings.setSize(width/2,height/2);
+        winInGameSettings.setPosition(width/4,height/4);
+        winInGameSettings.setVisible(true);
+        stage.addActor(winInGameSettings);
     }
     private void onSaveClicked() {
         saveSettings();

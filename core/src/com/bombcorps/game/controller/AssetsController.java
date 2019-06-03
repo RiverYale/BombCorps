@@ -26,7 +26,7 @@ public class AssetsController  implements Disposable, AssetErrorListener {
         this.assetManager = new AssetManager();
         assetManager.setErrorListener(this);
         textureMap = new HashMap<String, TextureAtlas.AtlasRegion>();
-        font = new BitmapFont(Gdx.files.internal("info/font.fnt"), false);
+        font = new BitmapFont(Gdx.files.internal("font/font.fnt"), false);
     }
 
     public void loadTexture(String fileName) {

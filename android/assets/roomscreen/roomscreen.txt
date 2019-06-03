@@ -1,0 +1,95 @@
+roomscreen.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+backtolobby
+  rotate: false
+  xy: 130, 279
+  size: 66, 46
+  orig: 66, 46
+  offset: 0, 0
+  index: -1
+mapleft
+  rotate: false
+  xy: 2, 441
+  size: 102, 68
+  orig: 102, 68
+  offset: 0, 0
+  index: -1
+roombackground
+  rotate: false
+  xy: 2, 2
+  size: 323, 239
+  orig: 323, 239
+  offset: 0, 0
+  index: -1
+winresult
+  rotate: false
+  xy: 327, 55
+  size: 156, 68
+  orig: 156, 68
+  offset: 0, 0
+  index: -1
+heroright
+  rotate: false
+  xy: 62, 279
+  size: 66, 46
+  orig: 66, 46
+  offset: 0, 0
+  index: -1
+reddoor
+  rotate: false
+  xy: 62, 327
+  size: 77, 41
+  orig: 77, 41
+  offset: 0, 0
+  index: -1
+ready
+  rotate: false
+  xy: 327, 125
+  size: 155, 75
+  orig: 155, 75
+  offset: 0, 0
+  index: -1
+selectbackground
+  rotate: false
+  xy: 2, 279
+  size: 58, 90
+  orig: 58, 90
+  offset: 0, 0
+  index: -1
+bluedoor
+  rotate: false
+  xy: 198, 243
+  size: 77, 41
+  orig: 77, 41
+  offset: 0, 0
+  index: -1
+mapright
+  rotate: false
+  xy: 2, 371
+  size: 102, 68
+  orig: 102, 68
+  offset: 0, 0
+  index: -1
+cancel
+  rotate: false
+  xy: 327, 202
+  size: 155, 75
+  orig: 155, 75
+  offset: 0, 0
+  index: -1
+heroleft
+  rotate: false
+  xy: 130, 279
+  size: 66, 46
+  orig: 66, 46
+  offset: 0, 0
+  index: -1
+space
+  rotate: false
+  xy: 327, 2
+  size: 162, 51
+  orig: 162, 51
+  offset: 0, 0
+  index: -1

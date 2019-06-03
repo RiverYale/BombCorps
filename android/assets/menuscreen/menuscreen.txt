@@ -1,0 +1,95 @@
+menuscreen.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+button_setting
+  rotate: false
+  xy: 2, 780
+  size: 43, 35
+  orig: 43, 35
+  offset: 0, 0
+  index: -1
+textfieldcusor
+  rotate: false
+  xy: 146, 680
+  size: 24, 14
+  orig: 32, 24
+  offset: 2, 5
+  index: -1
+savecancelbutton
+  rotate: false
+  xy: 132, 632
+  size: 157, 46
+  orig: 157, 46
+  offset: 0, 0
+  index: -1
+slidercusor
+  rotate: false
+  xy: 146, 680
+  size: 24, 14
+  orig: 32, 24
+  offset: 2, 5
+  index: -1
+sliderkuai
+  rotate: false
+  xy: 132, 680
+  size: 12, 18
+  orig: 12, 18
+  offset: 0, 0
+  index: -1
+button_about
+  rotate: false
+  xy: 2, 854
+  size: 43, 35
+  orig: 43, 35
+  offset: 0, 0
+  index: -1
+textfieldbackground
+  rotate: false
+  xy: 132, 580
+  size: 300, 50
+  orig: 300, 50
+  offset: 0, 0
+  index: -1
+winresult
+  rotate: false
+  xy: 2, 710
+  size: 156, 68
+  orig: 156, 68
+  offset: 0, 0
+  index: -1
+background1
+  rotate: false
+  xy: 2, 2
+  size: 1024, 576
+  orig: 1024, 576
+  offset: 0, 0
+  index: -1
+button_start
+  rotate: false
+  xy: 291, 632
+  size: 43, 35
+  orig: 43, 35
+  offset: 0, 0
+  index: -1
+window
+  rotate: false
+  xy: 2, 580
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+button_quit
+  rotate: false
+  xy: 2, 817
+  size: 43, 35
+  orig: 43, 35
+  offset: 0, 0
+  index: -1
+sliderbackground
+  rotate: false
+  xy: 132, 700
+  size: 161, 7
+  orig: 161, 7
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,46 @@
+infoscreen.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+back
+  rotate: false
+  xy: 2, 175
+  size: 66, 46
+  orig: 66, 46
+  offset: 0, 0
+  index: -1
+upgrade
+  rotate: false
+  xy: 70, 175
+  size: 146, 41
+  orig: 146, 41
+  offset: 0, 0
+  index: -1
+board
+  rotate: false
+  xy: 270, 122
+  size: 58, 90
+  orig: 58, 90
+  offset: 0, 0
+  index: -1
+white
+  rotate: false
+  xy: 270, 2
+  size: 126, 118
+  orig: 126, 118
+  offset: 0, 0
+  index: -1
+background
+  rotate: false
+  xy: 2, 2
+  size: 266, 171
+  orig: 266, 171
+  offset: 0, 0
+  index: -1
+listItem
+  rotate: false
+  xy: 2, 223
+  size: 54, 27
+  orig: 54, 27
+  offset: 0, 0
+  index: -1

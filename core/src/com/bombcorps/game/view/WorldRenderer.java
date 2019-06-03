@@ -15,7 +15,6 @@ public class WorldRenderer {
     //private SpriteBatch batch;
     private WorldController worldController;
 
-
     public WorldRenderer(WorldController worldController){
         this.worldController = worldController;
         camera = worldController.getCamera();

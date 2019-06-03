@@ -25,6 +25,7 @@ public class WorldController {
 
     private NetController net;
     private World world;
+    private int perRound = 0;
 
     private Player curPlayer;
     private int operations;
@@ -43,6 +44,7 @@ public class WorldController {
         net.bindWorldController(this);
         curPlayer = world.getFirstPlayer();
         cameraController.setTarget(curPlayer);
+//        gameBegin();
 //        AudioController.instance.play(AssetsController.instance.getMusic("")); //TODO
     }
 
@@ -140,10 +142,22 @@ public class WorldController {
     }
 
     public void startNextRound(Bonus b) {
+        //TODO
+        world.getPlayerManager().getSkillAndBuff().initSkillEveryChange();
         if(b != null){
             world.addBonus(b);
         }
         curPlayer = world.getNextPlayer();
+        perRound++;
+        while (curPlayer.getMyHero().getState() == Constants.STATE_DEAD){
+            curPlayer = world.getNextPlayer();
+            perRound++;
+        }
+        if (perRound > world.getPlayers().size) {
+            curPlayer.initHeroEveryRound();
+            world.getPlayerManager().getSkillAndBuff().updateBuffEveryRound();
+            perRound %= world.getPlayers().size;
+        }
         cameraController.setTarget(curPlayer);
     }
 
