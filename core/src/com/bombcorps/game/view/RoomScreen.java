@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
@@ -49,6 +50,7 @@ public class RoomScreen extends AbstractGameScreen{
     //人数显示
     private Label personRed;
     private Label personBlue;
+    private Label errorMsg;
     //按钮
     private Image btnMapleft;
     private Image btnMapright;
@@ -67,6 +69,7 @@ public class RoomScreen extends AbstractGameScreen{
     private boolean ready;
 
     private Stage stage;
+    private Stage stage2;
     private SpriteBatch batch;
 
     private Room room;
@@ -83,7 +86,9 @@ public class RoomScreen extends AbstractGameScreen{
         this.room = new Room(ip,mode);
         batch = new SpriteBatch();
         stage = new Stage();
+        stage2 = new Stage();
         Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(stage2);
 
 
         DataController dc = DataController.instance;
@@ -130,20 +135,22 @@ public class RoomScreen extends AbstractGameScreen{
     public void render(float deltaTime) {
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         batch.begin();
 
         batchAddImage();
         batchAddButton();
         batchAddHero();
         batchAddMap();
-        batchAddWinError();
         batchAddPersonNum();
         bulidTeam();
         if(ownerQuit()){
+            batchAddErrorMsg();
             errorQuit();
         }
-
         batch.end();
+//        stage2.act();
+//        stage2.draw();
     }
 
     @Override
@@ -299,11 +306,11 @@ public class RoomScreen extends AbstractGameScreen{
         btnReady = new Image(AssetsController.instance.getRegion("ready"));
         btnCancel = new Image(AssetsController.instance.getRegion("cancel"));
         btnReady.setSize(0.07778f * width,0.06f*height);
-        btnReady.setPosition(selectBackground.getX() + selectBackground.getWidth()/2-btnReady.getWidth()/2,
+        btnReady.setPosition(selectBackground.getX() + selectBackground.getWidth()/2-btnReady.getWidth()/2-0.06f*width,
                 0.16f*height);
         stage.addActor(btnReady);
         btnCancel.setSize(0.07778f * width,0.06f*height);
-        btnCancel.setPosition(selectBackground.getX() + selectBackground.getWidth()/2-btnCancel.getWidth()/2,
+        btnCancel.setPosition(selectBackground.getX() + selectBackground.getWidth()/2-btnCancel.getWidth()/2+0.06f*width,
                 0.16f*height);
         stage.addActor(btnCancel);
     }
@@ -416,20 +423,15 @@ public class RoomScreen extends AbstractGameScreen{
         btnSure = new Image(AssetsController.instance.getRegion("ready"));
         label.setPosition(winError.getX() - label.getWidth()/2,winError.getY() - label.getHeight()/2);
         btnSure.setSize(0.07778f * width,0.06f*height);
-        btnSure.setPosition(winError.getX() - btnSure.getWidth()/2,winError.getY()-0.3f*winError.getHeight());
+        btnSure.setPosition(winError.getX() +winError.getWidth()/2- btnSure.getWidth()/2,
+                winError.getY() + winError.getHeight()/2-0.3f*winError.getHeight());
         winError.addActor(label);
         winError.addActor(btnSure);
         winError.setVisible(true);
-        btnSure.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x,float y){
-                //下翻列表
-                winError.setVisible(false);
-                game.loadLobbyScreen();
-            }
-        });
-        stage.addActor(btnSure);
-        //winError.draw(batch,1);
+        //btnSure.debug()
+        stage2.addActor(winError);
+        stage2.addActor(btnSure);
+        Gdx.app.log("",btnSure.getWidth() + " " +btnSure.getHeight());
     }
 
     public void batchAddWinError(){
@@ -437,6 +439,15 @@ public class RoomScreen extends AbstractGameScreen{
             //winError.draw(batch,1);
             errorQuit();
         }
+    }
+
+    public void batchAddErrorMsg(){
+        BitmapFont font = AssetsController.instance.font;
+        Label.LabelStyle style = new Label.LabelStyle(font,Color.RED);
+        errorMsg = new Label("<-- Owner Has Lost!Please Quit!",style);
+        errorMsg.setPosition(backToLobby.getX()+0.05556f*width,backToLobby.getY() + backToLobby.getHeight()/2 -errorMsg.getHeight()/2);
+        errorMsg.setFontScale(1.0f);
+        errorMsg.draw(batch,1);
     }
 
     public void setButtonClick(){
@@ -497,13 +508,22 @@ public class RoomScreen extends AbstractGameScreen{
                 toLobby();
             }
         });
+        btnSure.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x,float y){
+                //下翻列表
+                Gdx.app.log("quit","Yes");
+                winError.setVisible(false);
+                game.loadLobbyScreen();
+            }
+        });
     }
 
     public void turnLeftHero() {
         if (heroSelect > 0 && !myplayer.getReady()) {
             heroSelect --;
             myplayer.setHeroType(heroSelect);
-            //game.getNetController().updatePlayer(myplayer);
+            game.getNetController().updatePlayer(myplayer);
         }
     }
 
@@ -511,7 +531,7 @@ public class RoomScreen extends AbstractGameScreen{
         if(heroSelect < 4 && !myplayer.getReady()){
             heroSelect ++;
             myplayer.setHeroType(heroSelect);
-            //game.getNetController().updatePlayer(myplayer);
+            game.getNetController().updatePlayer(myplayer);
         }
     }
 
@@ -541,22 +561,26 @@ public class RoomScreen extends AbstractGameScreen{
     public void toBlueTeam(){
         if(myplayer.getTeam() == Constants.PLAYER.RED_TEAM && !myplayer.getReady()){
             room.switchTeam(myplayer);
+            game.getNetController().updatePlayer(myplayer);
         }
     }
 
     public void toReady(){
         Gdx.app.log("intogame","Yes");
-//        if(myplayer.getIp().equals(room.getOwnerIp())){
-//            //游戏开始
-//            game.loadGameScreen();
-//        }
-//        if(!myplayer.getIp().equals(room.getOwnerIp())){
-//            myplayer.setReady(true);
-//        }
+        if(myplayer.getIp().equals(room.getOwnerIp())){
+            //游戏开始
+            game.getNetController().startGame();
+            game.loadGameScreen();
+        }
+        if(!myplayer.getIp().equals(room.getOwnerIp())){
+            myplayer.setReady(true);
+            game.getNetController().updatePlayer(myplayer);
+        }
     }
 
     public void toCancel(){
         myplayer.setReady(false);
+        game.getNetController().updatePlayer(myplayer);
     }
 
     public Room getRoom(){
@@ -567,12 +591,21 @@ public class RoomScreen extends AbstractGameScreen{
 //        if (game.getNetController() == null) {
 //            Gdx.app.log("zc", "Null");
 //        }
-        //game.getNetController().quitRoom(myplayer);
+        game.getNetController().quitRoom(myplayer);
         game.loadLobbyScreen();
     }
 
     public void errorQuit(){
-        winError.setVisible(true);
+        //winError.setVisible(true);
+        btnHeroLeft.setTouchable(Touchable.disabled);
+        btnHeroRight.setTouchable(Touchable.disabled);
+        btnReady.setTouchable(Touchable.disabled);
+        btnCancel.setTouchable(Touchable.disabled);
+        btnMapleft.setTouchable(Touchable.disabled);
+        btnMapright.setTouchable(Touchable.disabled);
+        doorRed.setTouchable(Touchable.disabled);
+        doorBlue.setTouchable(Touchable.disabled);
+        errorMsg.setVisible(true);
     }
 
     public boolean ownerQuit(){
