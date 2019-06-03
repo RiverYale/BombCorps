@@ -389,6 +389,7 @@ public class LobbyScreen extends AbstractGameScreen{
 
     //刷新房间
     public void refreshRoomList(){
+        netController.refreshRoom();
         rebulidStage();
     }
 

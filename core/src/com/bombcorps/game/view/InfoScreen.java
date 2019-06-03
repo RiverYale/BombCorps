@@ -263,8 +263,7 @@ public class InfoScreen extends AbstractGameScreen implements InputProcessor{
         if (upgrade.getBoundingRectangle().contains(v.x, v.y)) {
             DataController.instance.upLevel(index + 1);
         } else if(back.getBoundingRectangle().contains(v.x, v.y)){
-            //TODO
-            Gdx.app.exit();
+            game.loadLobbyScreen();
         }
 
         return false;

@@ -334,7 +334,7 @@ public class RoomScreen extends AbstractGameScreen{
             }
         }
         //准备/取消按钮布置
-        if(myplayer.getIp().equals(room.getOwnerIp()) && !(readyNum >= (2 * mode - 1))){
+        if(myplayer.getIp().equals(room.getOwnerIp()) && (readyNum >= (2 * mode - 1))){
             btnReady.draw(batch,1);
         }
 
