@@ -116,7 +116,7 @@ public class RoomScreen extends AbstractGameScreen{
         }
 
         myplayer.setHeroType(Constants.SPARDA);
-        myplayer.setLevel(dc.getPersonalData(Constants.SPARDA));
+        myplayer.setLevel(dc.getPersonalData(DataController.SPARDAR));
 
         Gdx.app.log("heroselect",room.getPlayerManager().getRedPlayerList().get(0).getHeroType()+"");
         Gdx.app.log("ownerIp",room.getOwnerIp());
