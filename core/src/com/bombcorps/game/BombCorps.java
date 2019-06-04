@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.controller.CameraController;
+import com.bombcorps.game.controller.DataController;
 import com.bombcorps.game.controller.InputController;
 import com.bombcorps.game.controller.NetController;
 import com.bombcorps.game.model.Player;
@@ -24,7 +25,11 @@ public class BombCorps extends DirectedGame {
 		AssetsController.instance.loadTexture("lobbyscreen/lobbyscreen.txt");
 		AssetsController.instance.loadTexture("roomscreen/roomscreen.txt");
 		AssetsController.instance.loadTexture("infoscreen/infoscreen.txt");
+		AssetsController.instance.loadTexture("hero/heroes.txt");
 		loadMenuScreen();
+//		DataController.instance.loadPersonalData();
+//		DataController.instance.loadSettings();
+//		loadInfoScreen();
 	}
 
 

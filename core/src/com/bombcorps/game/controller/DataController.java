@@ -63,6 +63,10 @@ public class DataController {
         return personalDataVal[type];
     }
 
+    public int getUpLevelCost(int type) {
+        return upLevelCost[personalDataVal[type]];
+    }
+
     public boolean upLevel(int type){
         if(type<1 || type>5 || personalDataVal[type]>=Constants.HERO_MAX_LEVEL || personalDataVal[MONEY]<upLevelCost[personalDataVal[type]]){
             return false;
@@ -92,6 +96,9 @@ public class DataController {
     }
 
     public float getWinRate() {
+        if (personalDataVal[GAME_NUM] == 0) {
+            return 0;
+        }
         return (float)personalDataVal[WIN_NUM] / personalDataVal[GAME_NUM];
     }
 

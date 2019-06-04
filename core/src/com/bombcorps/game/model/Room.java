@@ -3,7 +3,9 @@ package com.bombcorps.game.model;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.bombcorps.game.controller.AssetsController;
 
-public class Room {
+import java.io.Serializable;
+
+public class Room implements Serializable {
     private String ownerIp;
 
     private TextureRegion mapRegion;    //地图
@@ -80,6 +82,7 @@ public class Room {
                 if(player.getIp().equals(playerManager.getPlayerListRed().get(i).getIp())){
                     if(playerManager.getBluePlayerList().size < LIMIT){
                         playerManager.getBluePlayerList().add(playerManager.getRedPlayerList().get(i));
+                        playerManager.getRedPlayerList().get(i).setTeam(Constants.PLAYER.BLUE_TEAM);
                         playerManager.getRedPlayerList().removeIndex(i);
                     }
 
@@ -90,6 +93,7 @@ public class Room {
                 if(player.getIp().equals(playerManager.getPlayerListBlue().get(i).getIp())){
                     if(playerManager.getRedPlayerList().size < LIMIT){
                         playerManager.getRedPlayerList().add(playerManager.getBluePlayerList().get(i));
+                        playerManager.getBluePlayerList().get(i).setTeam(Constants.PLAYER.RED_TEAM);
                         playerManager.getBluePlayerList().removeIndex(i);
                     }
                 }
@@ -99,14 +103,14 @@ public class Room {
     }
 
 
-    private void init(String onwerIp){
+    private void init(String ownerIp){
         this.ownerIp = ownerIp;
         heroRegion = new TextureRegion[6];
-        heroRegion[0] = AssetsController.instance.getRegion("Sparda0");
-        heroRegion[1] = AssetsController.instance.getRegion("Protector0");
-        heroRegion[2] = AssetsController.instance.getRegion("Angel0");
-        heroRegion[3] = AssetsController.instance.getRegion("Sniper0");
-        heroRegion[4] = AssetsController.instance.getRegion("Wizard0");
+        heroRegion[0] = AssetsController.instance.getRegion("Sparda_stand");
+        heroRegion[1] = AssetsController.instance.getRegion("Protector_stand");
+        heroRegion[2] = AssetsController.instance.getRegion("Angel_stand");
+        heroRegion[3] = AssetsController.instance.getRegion("Sniper_stand");
+        heroRegion[4] = AssetsController.instance.getRegion("Wizard_stand");
 
         playerManager = new PlayerManager();
     }

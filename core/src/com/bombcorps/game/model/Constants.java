@@ -28,6 +28,11 @@ public class Constants {
 
     public static final float RAGEPOWER_ADD_PER_ROUND = 30f;
 
+    public static final class AI{
+        public static final float AIDETINATION = 5f;
+        public static final float BOMB_VELOCITY_X = 5f;
+    }
+
     public static final class PLAYER{
         public static final int STATE_LOCAL = 0;
         public static final int STATE_OTHERS = 1;

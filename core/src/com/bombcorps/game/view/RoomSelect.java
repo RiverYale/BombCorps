@@ -1,6 +1,7 @@
 package com.bombcorps.game.view;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.bombcorps.game.controller.AssetsController;
 
 
 public class RoomSelect {
@@ -38,20 +40,21 @@ public class RoomSelect {
         this.hosterName = hosterName;
         this.personNum = personNum;
 
-        backGround = new Image(new Texture(Gdx.files.internal("lobbyscreen/roomshowbackground.png")));
+        //backGround = new Image(new Texture(Gdx.files.internal("lobbyscreen/roomshowbackground.png")));
+        backGround = new Image(AssetsController.instance.getRegion("roomshowbackground"));
         backGround.setSize(0.45f * width,0.1f * height);
 
         //smallMap = new Image();
         switch (mapNum){
             case 0:
-                smallMap = new Image(new Texture(Gdx.files.internal("lobbyscreen/map0.png")));
+                //smallMap = new Image(new Texture(Gdx.files.internal("lobbyscreen/map0.png")));
+                smallMap = new Image(AssetsController.instance.getRegion("map0"));
                 break;
         }
         smallMap.setSize(0.035f * width, 0.035f * width);
 
-        BitmapFont font = new BitmapFont(Gdx.files.internal("lobbyscreen/test3.fnt"),
-                Gdx.files.internal("lobbyscreen/test3.png"),false);
-        Label.LabelStyle style = new Label.LabelStyle(font,font.getColor());
+        BitmapFont font = AssetsController.instance.font;
+        Label.LabelStyle style = new Label.LabelStyle(font, Color.WHITE);
         labelMode = new Label(mode, style);
         labelMode.setFontScale(0.05f * width / 100);
         labelHosterName = new Label(hosterName,style);

@@ -8,7 +8,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.bombcorps.game.controller.AssetsController;
 
-public class Bonus {
+import java.io.Serializable;
+
+public class Bonus implements Serializable {
     private Vector2 position;
     private Vector2 origin;
     private Vector2 scale;

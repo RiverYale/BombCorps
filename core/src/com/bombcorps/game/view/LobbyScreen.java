@@ -2,6 +2,7 @@ package com.bombcorps.game.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -18,8 +19,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.controller.DataController;
 import com.bombcorps.game.controller.NetController;
+import com.bombcorps.game.model.Player;
 
 import java.util.ArrayList;
 
@@ -70,7 +73,6 @@ public class LobbyScreen extends AbstractGameScreen{
         super(game);
         this.game = game;
         netController = game.getNetController();
-
         roomList = new ArrayList<RoomSelect>();
     }
 
@@ -113,20 +115,21 @@ public class LobbyScreen extends AbstractGameScreen{
         stage.clear();
         Gdx.input.setInputProcessor(stage);
         //大厅背景
-        lsBackground = new Image(new Texture(Gdx.files.internal("lobbyscreen/lsbackground.png")));
+        lsBackground = new Image(AssetsController.instance.getRegion("lsbackground"));
         lsBackground.setSize(width,height);
         //房间列表背景
-        roomListBackground = new Image(new Texture(Gdx.files.internal("lobbyscreen/roomlistbackground.png")));
+        roomListBackground = new Image(AssetsController.instance.getRegion("roomlistbackground"));
         roomListBackground.setSize(0.53f * width,0.688f * height);
         roomListBackground.setPosition(0.45f * width,0.16f * height);
         //label字体风格
-        BitmapFont font = new BitmapFont(Gdx.files.internal("lobbyscreen/test3.fnt"),
-                Gdx.files.internal("lobbyscreen/test3.png"),false);
-        Label.LabelStyle style = new Label.LabelStyle(font,font.getColor());
+        BitmapFont font = AssetsController.instance.font;
+        //font.setColor(1,1,1,1);
+        Label.LabelStyle style = new Label.LabelStyle(font,Color.WHITE);
 
         Table recordTable = new Table();
         recordTable.clear();
-        Drawable recordbackground = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("lobbyscreen/recordbackground.png"))));
+        //Drawable recordbackground = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("lobbyscreen/recordbackground.png"))));
+        Drawable recordbackground = new TextureRegionDrawable(new TextureRegion(AssetsController.instance.getRegion("recordbackground")));
         recordTable.setSize(0.35f * width,0.75f * height);
         recordTable.background(recordbackground);
 
@@ -134,19 +137,21 @@ public class LobbyScreen extends AbstractGameScreen{
 
         String showName = "Name:" +  dc.getName(); //+ 昵称
         labelShowName = new Label(showName,style);
-        labelShowName.setFontScale(0.0008f * width);
+        labelShowName.setFontScale(0.002f * width);
+        //labelShowName.debug();
 
         String showRate = "Rate:" + dc.getPersonalData(DataController.WIN_NUM)+"/"+dc.getPersonalData(DataController.GAME_NUM);  //+ 胜率
-        labelShowRate = new Label(showName,style);
-        labelShowRate.setFontScale(0.0008f * width);
+        labelShowRate = new Label(showRate,style);
+        labelShowRate.setFontScale(0.002f * width);
 
         String showWinAmount = "Win:" + dc.getPersonalData(DataController.WIN_NUM);  //+ 胜场
         labelShowWinAmount = new Label(showWinAmount,style);
-        labelShowWinAmount.setFontScale(0.0008f * width);
+        labelShowWinAmount.setFontScale(0.002f * width);
 
         String showProperty = "Coins:" + dc.getPersonalData(DataController.MONEY); //+ 金币数
         labelShowProperty = new Label(showProperty,style);
-        labelShowProperty.setFontScale(0.0008f * width);
+        labelShowProperty.setFontScale(0.002f * width);
+        font.setColor(0,0,0,0);
         //个人信息布局
         recordTable.add(labelShowName).left();
         recordTable.row();
@@ -156,20 +161,25 @@ public class LobbyScreen extends AbstractGameScreen{
         recordTable.row();
         recordTable.add(labelShowProperty).left();
         Stack stackRecord = new Stack();
-        stackRecord.setPosition(0.08f * width,0.15f * height);
+        recordTable.setPosition(0.08f * width,0.15f * height);
         stackRecord.setSize(0.35f * width,0.75f * height);
         stackRecord.addActor(recordTable);
         //模式选择窗口
-        TextureRegionDrawable winBuildRoomDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("menuscreen/winbuildroom.png"))));
+        //TextureRegionDrawable winBuildRoomDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("menuscreen/winbuildroom.png"))));
+        TextureRegionDrawable winBuildRoomDrawable = new TextureRegionDrawable(AssetsController.instance.getRegion("winresult"));
         Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),winBuildRoomDrawable);
         winBuildRoom = new Window("",windowStyle);
         winBuildRoom.setSize(width/2,height/2);
         winBuildRoom.setPosition(width/4,height/4);
-        cancel = new Image(new Texture("images/winbuildroomcancel.png"));
-        oneOne = new Image(new Texture("images/oneone.png"));
+        cancel = new Image(AssetsController.instance.getRegion("winbuildroomcancel"));
 
-        twoTwo = new Image(new Texture("images/twotwo.png"));
-        fourFour = new Image(new Texture("images/fourfour.png"));
+//        Player myplayer = new Player(dc.getName());
+//        myplayer.setIp(NetController.getLocalHostIp());
+
+        oneOne = new Image(AssetsController.instance.getRegion("oneone"));
+
+        twoTwo = new Image(AssetsController.instance.getRegion("twotwo"));
+        fourFour = new Image(AssetsController.instance.getRegion("fourfour"));
         oneOne.setSize(winBuildRoom.getWidth()/4,winBuildRoom.getHeight()/4);
         twoTwo.setSize(winBuildRoom.getWidth()/4,winBuildRoom.getHeight()/4);
         fourFour.setSize(winBuildRoom.getWidth()/4,winBuildRoom.getHeight()/4);
@@ -192,6 +202,7 @@ public class LobbyScreen extends AbstractGameScreen{
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 game.loadRoomScreen(1);
+                //game.getNetController().enterRoom(NetController.getLocalHostIp(),myplayer);
                 return true;
             }
         });
@@ -200,6 +211,7 @@ public class LobbyScreen extends AbstractGameScreen{
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 game.loadRoomScreen(2);
+                //game.getNetController().enterRoom(NetController.getLocalHostIp(),myplayer);
                 return true;
             }
         });
@@ -208,6 +220,7 @@ public class LobbyScreen extends AbstractGameScreen{
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 game.loadRoomScreen(4);
+                //game.getNetController().enterRoom(NetController.getLocalHostIp(),myplayer);
                 return true;
             }
         });
@@ -264,14 +277,12 @@ public class LobbyScreen extends AbstractGameScreen{
             roomList.get(i + numOfPage).setPosition(originX,originY - i * intervalY);
             roomList.get(i + numOfPage).addToStage(stage);
         }
-
         for(int i = 0;i < 4;i++){
             if(roomList.size() == 0){
                 break;
             }
             if (roomList.get(i + numOfPage).isClick()){
                 game.loadinRoomScreen(originNum.get(i + numOfPage));
-
             }
         }
     }
@@ -279,32 +290,32 @@ public class LobbyScreen extends AbstractGameScreen{
     //按键布局
     public void drawButton(){
         //创建房间按钮
-        btnBuildRoom = new Image(new Texture(Gdx.files.internal("lobbyscreen/home.png")));
+        btnBuildRoom = new Image(AssetsController.instance.getRegion("home"));
         btnBuildRoom.setSize(0.1f * width,0.1f * height);
         btnBuildRoom.setPosition(0.54f * width,0.04f * height);
         //刷新房间列表按钮
-        btnRefresh = new Image(new Texture(Gdx.files.internal("lobbyscreen/refresh.png")));
+        btnRefresh = new Image(AssetsController.instance.getRegion("refresh"));
         btnRefresh.setSize(0.1f * width,0.1f * height);
         btnRefresh.setPosition(btnBuildRoom.getX() + 0.13f * width,0.04f * height);
         //个人信息按钮
-        btnPersonalIfo = new Image(new Texture(Gdx.files.internal("lobbyscreen/user.png")));
+        btnPersonalIfo = new Image(AssetsController.instance.getRegion("user"));
         btnPersonalIfo.setSize(0.1f * width,0.1f * height);
         btnPersonalIfo.setPosition(btnBuildRoom.getX() + 0.26f * width,0.04f *height);
 
         //上一页按钮
-        btnPageUp = new Image(new Texture(Gdx.files.internal("lobbyscreen/pageup.png")));
+        btnPageUp = new Image(AssetsController.instance.getRegion("pageup"));
         btnPageUp.setSize(0.0444f * width,0.06f * height);
         btnPageUp.setPosition(0.6222f * width,0.26f * height);
         //下一页按钮
-        btnPageDown = new Image(new Texture(Gdx.files.internal("lobbyscreen/pagedown.png")));
+        btnPageDown = new Image(AssetsController.instance.getRegion("pagedown"));
         btnPageDown.setSize(0.0444f * width,0.06f * height);
         btnPageDown.setPosition(btnPageUp.getX() + 0.15f * width,0.26f * height);
         //返回主页按钮
-        btnBackToMenu = new Image(new Texture(Gdx.files.internal("lobbyscreen/back.png")));
+        btnBackToMenu = new Image(AssetsController.instance.getRegion("back"));
         btnBackToMenu.setSize(0.045f * width,0.07f * height);
         btnBackToMenu.setPosition(0.0222f * width,0.91f * height);
         //设置按钮
-        btnLobbyOptions = new Image(new Texture(Gdx.files.internal("lobbyscreen/button_setting.png")));
+        btnLobbyOptions = new Image(AssetsController.instance.getRegion("button_setting"));
         btnLobbyOptions.setSize(0.045f * width,0.07f * height);
         btnLobbyOptions.setPosition(0.91f * width,0.91f * height);
 

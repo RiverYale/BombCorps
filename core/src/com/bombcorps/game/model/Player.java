@@ -7,7 +7,10 @@ import com.bombcorps.game.controller.NetController;
 import com.bombcorps.game.model.bombs.Bomb;
 import com.bombcorps.game.model.heros.*;
 
-public class Player {
+import java.io.Serializable;
+import java.util.Set;
+
+public class Player implements Serializable {
     private String ID;
     private BaseHero myHero;
     private int heroType;
@@ -150,9 +153,9 @@ public class Player {
 
     public void shoot(){
 
-        myHero.setState(Constants.STATE_ATTACK);
-        bomb.setState(Constants.BOMB.STATE_FLY);
         bomb.setFromPlayer(this);
+        bomb.setState(Constants.BOMB.STATE_FLY);
+        myHero.setState(Constants.STATE_ATTACK);
     }
 
     public boolean useSkill(int op){

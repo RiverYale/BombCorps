@@ -1,7 +1,6 @@
 package com.bombcorps.game.view;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -26,15 +25,13 @@ public class InfoScreen extends AbstractGameScreen implements InputProcessor{
             {800f/1500f, 0f/200f, 70f/130f}
     };
 
-    //TODO
-//    private String heroNames[] = {"天使", "守护者", "射手", "狂战士", "巫师"};
-    private String heroNames[] = {"Angel", "Protector", "Sniper", "Sparda", "Wizard"};
-    private TextureRegion regions[] = {AssetsController.instance.getRegion("Angel0"),
-                                       AssetsController.instance.getRegion("Protector0"),
-                                       AssetsController.instance.getRegion("Sniper0"),
-                                       AssetsController.instance.getRegion("Sparda0"),
-                                       AssetsController.instance.getRegion("Wizard0")};
-
+    private String heroNames[] = {"天使", "守护者", "射手", "狂战士", "巫师"};
+//    private String heroNames[] = {"Angel", "Protector", "Sniper", "Sparda", "Wizard"};
+    private TextureRegion regions[] = {AssetsController.instance.getRegion("Angel_stand"),
+                                       AssetsController.instance.getRegion("Protector_stand"),
+                                       AssetsController.instance.getRegion("Sniper_stand"),
+                                       AssetsController.instance.getRegion("Sparda_stand"),
+                                       AssetsController.instance.getRegion("Wizard_stand")};
 
     private int index = 0;
     private BitmapFont font;
@@ -52,28 +49,26 @@ public class InfoScreen extends AbstractGameScreen implements InputProcessor{
                     "          但牺牲攻击力\n" +
                     "技能一：消耗10怒气+50精力，增加护甲\n" +
                     "技能二：消耗80精力+30怒气，发射一枚\n" +
-                    "        护盾弹，为目标附加一层20%已\n" +
-                    "        损失生命值的护盾\n" +
+                    "        护盾弹，为目标增加100点护甲\n" +
                     "技能三：消耗100精力+100怒气，两回合\n" +
                     "        内获得60%减伤效果，且分担友\n" +
                     "        方受到伤害的40%",
             "被动技能：具有高攻击力，且每次攻击成\n" +
-                    "          功会增加暴击几率，一旦触发\n" +
-                    "          则几率减半\n" +
+                    "          攻击成功暴击几率减半，失败\n" +
+                    "          暴击几率加倍\n" +
                     "技能一：消耗50精力+10怒气获得30%穿甲\n" +
                     "技能二：消耗80精力+30怒气，获得额外\n" +
                     "        一次攻击机会，精力和怒气减半\n" +
                     "技能三：消耗100精力+100怒气，接下来\n" +
                     "        两回合暴击几率不减少，且暴\n" +
                     "        击伤害变为300%",
-            "被动技能：具备吸血能力，且血量越低，\n" +
-                    "          攻击力与吸血能力越高\n" +
+            "被动技能：具备吸血30%能力\n" +
                     "技能一：消耗100血量+50精力，提高攻击力\n" +
                     "技能二：消耗80精力+30怒气，下次攻击\n" +
                     "        获得额外30%暴击几率加成\n" +
-                    "技能三：消耗100精力，每回合怒气减少\n" +
-                    "        20，受到的伤害转化为怒气消耗\n" +
-                    "        直至为0，攻击吸血增加怒气\n",
+                    "技能三：消耗100精力，和100怒气，\n" +
+                    "        立即获得300的血量补给，\n" +
+                    "        接下来3回合每回合回100血\n",
             "被动技能：无法造成物理伤害，但对目标\n" +
                     "          积累一层中毒效果，目标每回\n" +
                     "          合根据层数扣除血量\n" +
@@ -212,14 +207,20 @@ public class InfoScreen extends AbstractGameScreen implements InputProcessor{
         font.draw(batch, description[index], skillInfoBoard.getX()+15, skillInfoBoard.getY() + 200);
 
         //升级按钮
-        font.setColor(255/255f, 246/255f, 143/255f, 1);
+
         font.getData().setScale(0.8f);
-        font.draw(batch, "升 级", upgrade.getX()+20, upgrade.getY()+20);
+        int cost = DataController.instance.getUpLevelCost(index+1);
+        if (cost > DataController.instance.getPersonalData(DataController.MONEY)) {
+            font.setColor(Color.GRAY);
+        } else {
+            font.setColor(255/255f, 246/255f, 143/255f, 1);
+        }
+        font.draw(batch, "升级("+cost+")", upgrade.getX()+5, upgrade.getY()+20);
         font.setColor(Color.BLACK);
 
         //属性字
         char s[] = "☆☆☆☆☆".toCharArray();
-        for(int i=0;i<DataController.instance.getPersonalData(5-index);i++){
+        for(int i=0;i<DataController.instance.getPersonalData(1+index);i++){
             s[i] = '★';
         }
         font.getData().setScale(0.9f);
@@ -259,11 +260,10 @@ public class InfoScreen extends AbstractGameScreen implements InputProcessor{
                 break;
             }
         }
-        //TODO
         if (upgrade.getBoundingRectangle().contains(v.x, v.y)) {
-            Gdx.app.log("zc", "upgrade is clicked");
+            DataController.instance.upLevel(index + 1);
         } else if(back.getBoundingRectangle().contains(v.x, v.y)){
-            Gdx.app.log("zc", "back is clicked");
+            //TODO
             Gdx.app.exit();
         }
 
@@ -292,14 +292,6 @@ public class InfoScreen extends AbstractGameScreen implements InputProcessor{
 
     @Override
     public boolean keyDown(int keycode) {
-        //TODO
-        if(keycode == Input.Keys.UP){
-            index+=4;
-            index %= 5;
-        } else if (keycode == Input.Keys.DOWN) {
-            index++;
-            index %= 5;
-        }
         return false;
     }
 

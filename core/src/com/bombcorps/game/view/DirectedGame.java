@@ -37,12 +37,14 @@ public abstract class DirectedGame implements ApplicationListener {
 
     public void loadLobbyScreen(){
         lobbyScreen = new LobbyScreen(this);
+        netController.bindGame(this);
         setScreen(lobbyScreen);
         Constants.CurrentScreenFlag = Constants.LobbyScreenFlag;
     }
 
     public void loadRoomScreen(int mode){
         roomScreen = new RoomScreen(this,NetController.getLocalHostIp(),mode);
+        netController.bindGame(this);
         setScreen(roomScreen);
         Constants.CurrentScreenFlag = Constants.RoomScreenFlag;
     }
@@ -59,6 +61,7 @@ public abstract class DirectedGame implements ApplicationListener {
         OrthographicCamera orthographicCamera =new OrthographicCamera();
         orthographicCamera.viewportHeight =10;
         orthographicCamera.viewportWidth = 18;
+        //netController = new NetController();
 
         worldController = new WorldController(this,orthographicCamera,netController);
 
@@ -129,6 +132,9 @@ public abstract class DirectedGame implements ApplicationListener {
     }
 
     public NetController getNetController(){
+        if (netController == null) {
+            Gdx.app.log("zc", "netNull");
+        }
         return netController;
     }
 
