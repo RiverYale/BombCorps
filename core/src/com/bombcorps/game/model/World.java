@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.bombcorps.game.Pillar;
 import com.bombcorps.game.controller.AssetsController;
 
 import java.util.logging.Level;
@@ -61,7 +62,8 @@ public class World {
     public enum BLOCK_TYPE{
         EMPTY(0,0,255),//空地，蓝
         ROCK(0,255,0),//砖块，绿
-        PLAYER_SPAWNPOINT(255,255,255);//英雄出生点，白
+        PLAYER_SPAWNPOINT(255,255,255),//英雄出生点，白
+        PILLAR(255,0,0);//柱子，红
         private int color;
 
         BLOCK_TYPE(int r, int g, int b){
@@ -80,6 +82,8 @@ public class World {
 
     //砖块
     public Array<Rock> rocks;
+    //柱子
+    public Array<Pillar> pillars;
     //英雄
     private PlayerManager playerManager;
     //
@@ -107,7 +111,7 @@ public class World {
         //从左上到右下扫描
         for(int pixelY = 0; pixelY < pixmap.getHeight();pixelY++)
             for (int pixelX = 0; pixelX < pixmap.getWidth(); pixelX++) {
-                float baseHeight = pixmap.getHeight() - pixelY;
+                float baseHeight = pixmap.getHeight() - pixelY-1;
                 int currentPixel = pixmap.getPixel(pixelX, pixelY);
                 //空地
                 if (BLOCK_TYPE.EMPTY.sameColor(currentPixel)) {
@@ -119,6 +123,24 @@ public class World {
                     rock.position.set(pixelX*rock.dimension.x, baseHeight*rock.dimension.y);
                     rock.rectangle.setPosition(rock.position);
                     rocks.add(rock);
+                }
+                //柱子
+                else if(BLOCK_TYPE.PILLAR.sameColor(currentPixel)){
+                    Pillar pillar = new Pillar();
+                    Vector2 position = new Vector2(pixelX*pillar.getDimension().x, (baseHeight)*pillar.getDimension().y);
+                    pillar.setPosition(position);
+                    if(baseHeight == 0){
+                        pillar.setState(Pillar.State.BASE);
+                        pillars.add(pillar);
+                        break;
+                    }
+                    int BPixel = pixmap.getPixel(pixelX,pixelY+1);
+                    if(!BLOCK_TYPE.PILLAR.sameColor(BPixel)){
+                        pillar.setState(Pillar.State.BASE);
+                    }else {
+                        pillar.setState(Pillar.State.MIDDLE);
+                    }
+                    pillars.add(pillar);
                 }
                 //英雄出生点
                 else if (BLOCK_TYPE.PLAYER_SPAWNPOINT.sameColor(currentPixel)) {
@@ -152,6 +174,9 @@ public class World {
         batch.draw(AssetsController.instance.getRegion("background"),0,0,Gdx.graphics.getWidth()/Constants.VIEWPORT_WIDTH*32,Gdx.graphics.getHeight()/Constants.VIEWPORT_HEIGHT*20);
         for (Rock rock : rocks){
             rock.render(batch);
+        }
+        for(Pillar pillar : pillars){
+            pillar.render(batch);
         }
         playerManager.render(batch);
         bonusManager.render(batch);
