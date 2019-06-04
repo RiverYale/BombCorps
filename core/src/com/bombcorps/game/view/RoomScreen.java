@@ -59,7 +59,7 @@ public class RoomScreen extends AbstractGameScreen{
     private Image btnReady;
     private Image btnCancel;
     //英雄号码选择
-    private int heroSelect = 0;
+    private int heroSelect = Constants.SPARDA;
     //地图号码
     private int mapNum = 0;
     private Image mapSelect;
@@ -71,7 +71,6 @@ public class RoomScreen extends AbstractGameScreen{
     private boolean ready;
 
     private Stage stage;
-    private Stage stage2;
     private SpriteBatch batch;
 
     private Room room;
@@ -85,6 +84,8 @@ public class RoomScreen extends AbstractGameScreen{
 
     DataController dc = DataController.instance;
 
+    private int level[];
+
     public RoomScreen(DirectedGame game,String ip,int mode) {
         super(game);
         this.game = game;
@@ -93,12 +94,7 @@ public class RoomScreen extends AbstractGameScreen{
         this.room = new Room(ip,mode);
         batch = new SpriteBatch();
         stage = new Stage();
-        stage2 = new Stage();
         Gdx.input.setInputProcessor(stage);
-        Gdx.input.setInputProcessor(stage2);
-
-
-
         room.setMapName("0");
         myplayer = new Player(dc.getName());
         myplayer.setIp(NetController.getLocalHostIp());
@@ -115,12 +111,21 @@ public class RoomScreen extends AbstractGameScreen{
             }
         }
 
+        level= new int[5];
+
+        level[Constants.SPARDA] = DataController.SPARDAR;
+        level[Constants.WIZARD] = DataController.WIZARD;
+        level[Constants.SNIPER] = DataController.SNIPER;
+        level[Constants.PROTECTOR] = DataController.PROTECTOR;
+        level[Constants.ANGEL] = DataController.ANGEL;
+
         myplayer.setHeroType(Constants.SPARDA);
         myplayer.setLevel(dc.getPersonalData(DataController.SPARDAR));
 
-        Gdx.app.log("heroselect",room.getPlayerManager().getRedPlayerList().get(0).getHeroType()+"");
-        Gdx.app.log("ownerIp",room.getOwnerIp());
-        Gdx.app.log("myplayer:",myplayer.getIp());
+
+//        Gdx.app.log("heroselect",room.getPlayerManager().getRedPlayerList().get(0).getHeroType()+"");
+//        Gdx.app.log("ownerIp",room.getOwnerIp());
+//        Gdx.app.log("myplayer:",myplayer.getIp());
         hero = new Image[5];
         hero[Constants.ANGEL] = new Image(AssetsController.instance.getRegion("Angel_stand"));
         hero[Constants.SPARDA] = new Image(AssetsController.instance.getRegion("Sparda_stand"));
@@ -445,8 +450,8 @@ public class RoomScreen extends AbstractGameScreen{
         winError.addActor(btnSure);
         winError.setVisible(true);
         //btnSure.debug()
-        stage2.addActor(winError);
-        stage2.addActor(btnSure);
+//        stage2.addActor(winError);
+//        stage2.addActor(btnSure);
         Gdx.app.log("",btnSure.getWidth() + " " +btnSure.getHeight());
     }
 
@@ -530,7 +535,7 @@ public class RoomScreen extends AbstractGameScreen{
         if (heroSelect > 0 && !myplayer.getReady()) {
             heroSelect --;
             myplayer.setHeroType(heroSelect);
-            myplayer.setLevel(dc.getPersonalData(heroSelect));
+            myplayer.setLevel(dc.getPersonalData(level[heroSelect]));
             game.getNetController().updatePlayer(myplayer);
         }
     }
@@ -539,7 +544,7 @@ public class RoomScreen extends AbstractGameScreen{
         if(heroSelect < 4 && !myplayer.getReady()){
             heroSelect ++;
             myplayer.setHeroType(heroSelect);
-            myplayer.setLevel(dc.getPersonalData(heroSelect));
+            myplayer.setLevel(dc.getPersonalData(level[heroSelect]));
             game.getNetController().updatePlayer(myplayer);
         }
     }
@@ -561,15 +566,14 @@ public class RoomScreen extends AbstractGameScreen{
     }
 
     public void toRedTeam(){
+        Gdx.app.log("team",myplayer.getTeam()+"");
         if(myplayer.getTeam() == Constants.PLAYER.BLUE_TEAM && !myplayer.getReady()){
             room.switchTeam(myplayer);
             game.getNetController().updatePlayer(myplayer);
-            Gdx.app.log("Reddoor","click");
         }
     }
 
     public void toBlueTeam(){
-        Gdx.app.log("Bluedoor","click");
         Gdx.app.log("team",myplayer.getTeam()+"");
         if(myplayer.getTeam() == Constants.PLAYER.RED_TEAM && !myplayer.getReady()){
             room.switchTeam(myplayer);
