@@ -75,6 +75,12 @@ public class Room implements Serializable {
         for(int i = 0 ; i < playerManager.getRedPlayerList().size ; i++){
             if(player.getIp().equals(playerManager.getPlayerListRed().get(i).getIp())){
                 playerManager.getRedPlayerList().set(i,player);
+
+                if(player.getTeam() == Constants.PLAYER.BLUE_TEAM){
+                    playerManager.getBluePlayerList().add(player);
+                    playerManager.getRedPlayerList().removeIndex(i);
+                }
+
                 break;
             }
         }
@@ -82,9 +88,20 @@ public class Room implements Serializable {
         for(int i = 0 ; i < playerManager.getBluePlayerList().size ; i++){
             if(player.getIp().equals(playerManager.getPlayerListBlue().get(i).getIp())){
                 playerManager.getBluePlayerList().set(i,player);
+
+                if(player.getTeam() == Constants.PLAYER.RED_TEAM){
+                    playerManager.getRedPlayerList().add(player);
+                    playerManager.getBluePlayerList().removeIndex(i);
+                }
+
                 break;
             }
         }
+
+//        for(int i = 0 ; i < playerManager.getRedPlayerList().size ; i++){
+//            if()
+//        }
+
     }
 
 
