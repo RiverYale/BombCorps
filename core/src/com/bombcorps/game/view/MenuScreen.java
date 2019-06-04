@@ -101,10 +101,16 @@ public class MenuScreen extends AbstractGameScreen {
     private Window winAbout;
     private TextButton btnWinOptSave;
     private TextButton btnWinOptCancel;
+    private TextButton textButtonPlay;
+    private TextButton textButtonSettings;
+    private TextButton textButtonAbout;
+    private TextButton textButtonQuit;
     private Slider sldSound;
     private Slider sldMusic;
     private TextField tfName;
     BitmapFont font = AssetsController.instance.font;
+
+
 
 
 //    // debug
@@ -142,16 +148,32 @@ public class MenuScreen extends AbstractGameScreen {
         return layer;
     }
     private Table buildControlsLayer(){
+        TextureRegion texture = new TextureRegion(new Texture("menuscreen/menutextbutton.png"));
+        TextureRegionDrawable textureRegionDrawable = new TextureRegionDrawable(texture);
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle(textureRegionDrawable,textureRegionDrawable,textureRegionDrawable,font
+        );
         Table layer = new Table();
         //添加退出按钮
 //        btnQuit = new Image(new Texture(Gdx.files.internal("menuscreen/button_quit.png")));
         btnQuit = new Image(AssetsController.instance.getRegion("button_quit"));
+        float y = btnQuit.getHeight()*1.8f*Gdx.graphics.getWidth()/1280;
+        float x = btnQuit.getWidth()*1.8f*Gdx.graphics.getWidth()/1280;
         btnQuit.setScale(1.8f*Gdx.graphics.getWidth()/1280);
-
         layer.addActor(btnQuit);
-
+        btnQuit.setPosition(Gdx.graphics.getWidth()/10,2*Gdx.graphics.getHeight()/3-6*y);
         btnQuit.addListener(new InputListener(){
 
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                Gdx.app.exit();
+                return true;
+            }
+        });
+        textButtonQuit = new TextButton("退出",textButtonStyle);
+        layer.addActor(textButtonQuit);
+        textButtonQuit.setPosition(Gdx.graphics.getWidth()/10+x,2*Gdx.graphics.getHeight()/3-6*y);
+        textButtonQuit.setSize(3*x,y);
+        textButtonQuit.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.exit();
@@ -166,9 +188,20 @@ public class MenuScreen extends AbstractGameScreen {
         btnMenuPlay.setScale(1.8f*Gdx.graphics.getWidth()/1280);
 
         layer.addActor(btnMenuPlay);
-        btnMenuPlay.setPosition(Gdx.graphics.getWidth()/3-1.8f*Gdx.graphics.getWidth()/1280*btnMenuPlay.getWidth()/3,0);
+        btnMenuPlay.setPosition(Gdx.graphics.getWidth()/10,2*Gdx.graphics.getHeight()/3-y);
         btnMenuPlay.addListener(new InputListener() {
 
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                onPlayClicked();
+                return true;
+            }
+        });
+        textButtonPlay = new TextButton("开始游戏",textButtonStyle);
+        layer.addActor(textButtonPlay);
+        textButtonPlay.setPosition(Gdx.graphics.getWidth()/10+x,2*Gdx.graphics.getHeight()/3-y);
+        textButtonPlay.setSize(3*x,y);
+        textButtonPlay.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 onPlayClicked();
@@ -180,7 +213,7 @@ public class MenuScreen extends AbstractGameScreen {
         btnMenuOptions = new Image(AssetsController.instance.getRegion("button_setting"));
         btnMenuOptions.setScale(1.8f*Gdx.graphics.getWidth()/1280);
 
-        btnMenuOptions.setPosition(2*Gdx.graphics.getWidth()/3-3.6f*Gdx.graphics.getWidth()/1280*btnMenuPlay.getWidth()/3,0);
+        btnMenuOptions.setPosition(Gdx.graphics.getWidth()/10,2*Gdx.graphics.getHeight()/3-8*y/3);
         btnMenuOptions.addListener(new InputListener(){
 
             @Override
@@ -190,14 +223,36 @@ public class MenuScreen extends AbstractGameScreen {
             }
         });
         layer.addActor(btnMenuOptions);
+        textButtonSettings = new TextButton("设置",textButtonStyle);
+        layer.addActor(textButtonSettings);
+        textButtonSettings.setPosition(Gdx.graphics.getWidth()/10+x,2*Gdx.graphics.getHeight()/3-8*y/3);
+        textButtonSettings.setSize(3*x,y);
+        textButtonSettings.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                onOptionsClicked();
+                return true;
+            }
+        });
         //添加About按钮
 //        btnAbout = new Image(new Texture(Gdx.files.internal("menuscreen/button_about.png")));
         btnAbout = new Image(AssetsController.instance.getRegion("button_about"));
         btnAbout.setScale(1.8f*Gdx.graphics.getWidth()/1280);
         layer.addActor(btnAbout);
-        btnAbout.setPosition(Gdx.graphics.getWidth()-btnAbout.getWidth()*1.8f*Gdx.graphics.getWidth()/1280,0);
+        btnAbout.setPosition(Gdx.graphics.getWidth()/10,2*Gdx.graphics.getHeight()/3-13*y/3);
         btnAbout.addListener(new InputListener() {
 
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                onAboutClicked();
+                return true;
+            }
+        });
+        textButtonAbout = new TextButton("关于",textButtonStyle);
+        layer.addActor(textButtonAbout);
+        textButtonAbout.setPosition(Gdx.graphics.getWidth()/10+x,2*Gdx.graphics.getHeight()/3-13*y/3);
+        textButtonAbout.setSize(3*x,y);
+        textButtonAbout.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 onAboutClicked();
@@ -245,6 +300,10 @@ public class MenuScreen extends AbstractGameScreen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 winAbout.setVisible(false);
+                textButtonQuit.setVisible(true);
+                textButtonAbout.setVisible(true);
+                textButtonSettings.setVisible(true);
+                textButtonPlay.setVisible(true);
                 return true;
             }
         });
@@ -278,35 +337,52 @@ public class MenuScreen extends AbstractGameScreen {
     private void onSaveClicked() {
         saveSettings();
         onCancelClicked();
+        textButtonQuit.setVisible(true);
+        textButtonAbout.setVisible(true);
+        textButtonSettings.setVisible(true);
+        textButtonPlay.setVisible(true);
+
     }
     private void onCancelClicked(){
-        btnMenuPlay.setVisible(true);
-        btnMenuOptions.setVisible(true);
-        btnQuit.setVisible(true);
         winOptions.setVisible(false);
+        textButtonQuit.setVisible(true);
+        textButtonAbout.setVisible(true);
+        textButtonSettings.setVisible(true);
+        textButtonPlay.setVisible(true);
     }
     private void onOptionsClicked(){
         loadSettings();
         winOptions.setVisible(true);
+        textButtonQuit.setVisible(false);
+        textButtonAbout.setVisible(false);
+        textButtonSettings.setVisible(false);
+        textButtonPlay.setVisible(false);
+
     }
     private void onAboutClicked(){
         winAbout.setVisible(true);
+        textButtonQuit.setVisible(false);
+        textButtonAbout.setVisible(false);
+        textButtonSettings.setVisible(false);
+        textButtonPlay.setVisible(false);
     }
     private Table buildOptWinAudioSettings(){
         Table tbl = new Table();
         //添加标题audio
-        tbl.pad(10,10,0,10);
+        tbl.pad(0,10,0,10);
+
 //        BitmapFont font =new BitmapFont(Gdx.files.internal("menuscreen/winOptions.fnt"),Gdx.files.internal("menuscreen/winOptions.png"),false);
         Label audioLbl = new Label("Audio",new Label.LabelStyle(font,font.getColor()));
-        audioLbl.setFontScale(1.5f*width/1280f);
+        audioLbl.setFontScale(1.3f*width/1280f);
         tbl.add(audioLbl).colspan(3);
         tbl.row();
         tbl.columnDefaults(0).padRight(10);
         tbl.columnDefaults(1).padRight(10);
         //添加sound标签 声音滑动控件
+
         Label soundLbl = new Label("Sound",new Label.LabelStyle(font,font.getColor()));
-        soundLbl.setFontScale(1.5f*width/1280f);
-        tbl.add(soundLbl);
+        soundLbl.setFontScale(1.3f*width/1280f);
+        tbl.add(soundLbl).padTop(20*width/1280);
 //        Texture sliderBac=new Texture("menuscreen/sliderbackground.png");
         TextureRegion sliderBac = AssetsController.instance.getRegion("sliderbackground");
         Image image = new Image(sliderBac);
@@ -316,14 +392,14 @@ public class MenuScreen extends AbstractGameScreen {
                 new TextureRegionDrawable(AssetsController.instance.getRegion("sliderkuai")));
 
         sldSound = new Slider(0.0f,1.0f,0.1f,false,sliderStyle);
-        tbl.add(sldSound).width(sldSound.getWidth()*width/1280);
+        tbl.add(sldSound).width(sldSound.getWidth()*width/1280).padTop(20*width/1280);
         tbl.row();
         //添加music标签 音乐滑动控件
         Label musicLbl = new Label("Music",new Label.LabelStyle(font,font.getColor()));
-        tbl.add(musicLbl);
-        musicLbl.setFontScale(1.5f*width/1280);
+        tbl.add(musicLbl).padTop(20*width/1280);
+        musicLbl.setFontScale(1.3f*width/1280);
         sldMusic = new Slider(0.0f,1.0f,0.1f,false,sliderStyle);
-        tbl.add(sldMusic).width(sldMusic.getWidth()*width/1280);
+        tbl.add(sldMusic).width(sldMusic.getWidth()*width/1280).padTop(20*width/1280);
         tbl.row();
         return tbl;
     }
@@ -335,7 +411,7 @@ public class MenuScreen extends AbstractGameScreen {
         tbl.pad(10,10,0,10);
         Label lbl = new Label("change your name",new Label.LabelStyle(font, Color.WHITE));
        // lbl.setFontScale(1.5f*width/1280);
-        tbl.add(lbl);
+        tbl.add(lbl).padTop(20*width/1280);
         tbl.row();
 
 //        TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle(font, Color.WHITE, new TextureRegionDrawable(new Texture(Gdx.files.internal("menuscreen/textfieldcusor.png"))),
@@ -346,23 +422,27 @@ public class MenuScreen extends AbstractGameScreen {
                 new TextureRegionDrawable(AssetsController.instance.getRegion("textfieldbackground")));
 
         tfName = new TextField(prefs.getName(),textFieldStyle);
-        tbl.add(tfName).width(tfName.getPrefWidth()*width/1280f).height(tfName.getPrefHeight()*width/1280f);
+        tfName.setAlignment(Align.center);
+        tbl.add(tfName).width(tfName.getPrefWidth()*width/1280f).height(tfName.getPrefHeight()*width/1280f).padTop(20*width/1280);
         return tbl;
 
     }
     private Table buildOptWinButtons(){
         Table tbl = new Table();
+
         //添加分割线
-//        Texture texture = new Texture(Gdx.files.internal("menuscreen/savecancelbutton.png"));
-        TextureRegion texture = AssetsController.instance.getRegion("savecancelbutton");
+        Texture texture = new Texture(Gdx.files.internal("menuscreen/savecancelbutton.png"));
+        //TextureRegion texture = AssetsController.instance.getRegion("savecancelbutton");
         font.getData().setScale(width/1280);
         //添加save按钮并且 初始化事件处理器
         TextureRegionDrawable textureRegionDrawable = new TextureRegionDrawable(texture);
 
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle(textureRegionDrawable,textureRegionDrawable,textureRegionDrawable,font
         );
+
+
         btnWinOptSave = new TextButton("Save",textButtonStyle);
-        tbl.add(btnWinOptSave).width(btnWinOptSave.getWidth()*width/1280f).height(btnWinOptSave.getHeight()*width/1280).padLeft(20*width/1280);
+        tbl.add(btnWinOptSave).width(btnWinOptSave.getWidth()*width/1280f).height(btnWinOptSave.getHeight()*width/1280).padLeft(20*width/1280).padTop(20*width/1280);
         btnWinOptSave.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -371,7 +451,7 @@ public class MenuScreen extends AbstractGameScreen {
         });
         // 添加cancel按钮并且 初始化事件处理器
         btnWinOptCancel = new TextButton("Cancel", textButtonStyle);
-        tbl.add(btnWinOptCancel).width(btnWinOptSave.getWidth()*width/1280f).height(btnWinOptSave.getHeight()*width/1280).padLeft(20*width/1280);
+        tbl.add(btnWinOptCancel).width(btnWinOptSave.getWidth()*width/1280f).height(btnWinOptSave.getHeight()*width/1280).padLeft(20*width/1280).padTop(20*width/1280);
         btnWinOptCancel.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
