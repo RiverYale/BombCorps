@@ -197,7 +197,7 @@ public class NetController {
     }
 
     public void parse(Message msg) {
-        Gdx.app.log("zc", ""+ msg.getMsg());
+        //Gdx.app.log("zc", ""+ msg.getMsg());
         Message m;
         switch(msg.getMsg()){
             case REFRESH_ROOM:
