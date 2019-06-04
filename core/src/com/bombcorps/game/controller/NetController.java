@@ -271,6 +271,7 @@ public class NetController {
     }
 
     public void refreshRoom() {
+        roomList.clear();
         Message m = new Message(REFRESH_ROOM);
         m.setToIp(getBroadCastIP());
         sendCMD(m);

@@ -98,7 +98,8 @@ public class RoomScreen extends AbstractGameScreen{
         myplayer = new Player(dc.getName());
         myplayer.setIp(NetController.getLocalHostIp());
         //myplayer.setHeroType(Constants.SPARDA);
-
+        Gdx.app.log("Room IP",room.getOwnerIp());
+        Gdx.app.log("My IP",""+ NetController.getLocalHostIp());
         if(!NetController.getLocalHostIp().equals(this.ip)){
             game.getNetController().enterRoom(this.ip,myplayer);
         }
