@@ -197,7 +197,7 @@ public class NetController {
     }
 
     public void parse(Message msg) {
-        Gdx.app.log("zc", ""+ msg.getMsg());
+        //Gdx.app.log("zc", ""+ msg.getMsg());
         Message m;
         switch(msg.getMsg()){
             case REFRESH_ROOM:
@@ -271,6 +271,7 @@ public class NetController {
     }
 
     public void refreshRoom() {
+        roomList.clear();
         Message m = new Message(REFRESH_ROOM);
         m.setToIp(getBroadCastIP());
         sendCMD(m);
@@ -281,6 +282,7 @@ public class NetController {
         m.setToIp(roomIp);
         m.setTargetPlayer(me);
         sendCMD(m);
+        Gdx.app.log("someone","join in");
     }
 
     public void broadcastInRoom(Message m) {

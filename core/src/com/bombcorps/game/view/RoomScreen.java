@@ -85,30 +85,38 @@ public class RoomScreen extends AbstractGameScreen{
 
     private int level[];
 
-    public RoomScreen(DirectedGame game,String ip,int mode) {
+    public RoomScreen(DirectedGame game,String ip,int mode,Room room) {
         super(game);
         this.game = game;
         this.ip = ip;
         this.mode = mode;
-        this.room = new Room(ip,mode);
+        this.room = room;
         batch = new SpriteBatch();
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         room.setMapName("0");
         myplayer = new Player(dc.getName());
         myplayer.setIp(NetController.getLocalHostIp());
-
+        //myplayer.setHeroType(Constants.SPARDA);
+        Gdx.app.log("Room IP",room.getOwnerIp());
+        Gdx.app.log("My IP",""+ NetController.getLocalHostIp());
         if(!NetController.getLocalHostIp().equals(this.ip)){
             game.getNetController().enterRoom(this.ip,myplayer);
         }
 
+
+
         room.addPlayer(myplayer);
+        Gdx.app.log("People",""+ room.getPlayerManager().getAllPlayerList().size);
+        Gdx.app.log("Red",""+room.getPlayerManager().getRedPlayerList().size);
+        Gdx.app.log("Blue",""+room.getPlayerManager().getBluePlayerList().size);
         for(int i = 0;i < room.getPlayerManager().getAllPlayerList().size;i ++){
-            if(NetController.getLocalHostIp().equals(room.getPlayerManager().getRedPlayerList().get(i).getIp())){
+            if(NetController.getLocalHostIp().equals(room.getPlayerManager().getAllPlayerList().get(i).getIp())){
                 myplayer = room.getPlayerManager().getAllPlayerList().get(i);
                 break;
             }
         }
+        Gdx.app.log("myplayerTeam",""+myplayer.getTeam());
 
         level= new int[5];
 
@@ -565,19 +573,25 @@ public class RoomScreen extends AbstractGameScreen{
     }
 
     public void toRedTeam(){
-        Gdx.app.log("team",myplayer.getTeam()+"");
         if(myplayer.getTeam() == Constants.PLAYER.BLUE_TEAM && !myplayer.getReady()){
             room.switchTeam(myplayer);
+            Gdx.app.log("team",myplayer.getTeam()+"");
             game.getNetController().updatePlayer(myplayer);
+            Gdx.app.log("team",myplayer.getTeam()+"");
         }
+        Gdx.app.log("RedNum",room.getPlayerManager().getRedPlayerList().size+" ");
+        Gdx.app.log("BlueNum",room.getPlayerManager().getBluePlayerList().size+" ");
     }
 
     public void toBlueTeam(){
-        Gdx.app.log("team",myplayer.getTeam()+"");
         if(myplayer.getTeam() == Constants.PLAYER.RED_TEAM && !myplayer.getReady()){
             room.switchTeam(myplayer);
+            Gdx.app.log("team",myplayer.getTeam()+"");
             game.getNetController().updatePlayer(myplayer);
+            Gdx.app.log("team",myplayer.getTeam()+"");
         }
+        Gdx.app.log("RedNum",room.getPlayerManager().getRedPlayerList().size+" ");
+        Gdx.app.log("BlueNum",room.getPlayerManager().getBluePlayerList().size+" ");
     }
 
     public void toReady(){

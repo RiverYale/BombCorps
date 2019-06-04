@@ -42,20 +42,20 @@ public abstract class DirectedGame implements ApplicationListener {
         Constants.CurrentScreenFlag = Constants.LobbyScreenFlag;
     }
 
-    public void loadRoomScreen(int mode){
-        roomScreen = new RoomScreen(this,NetController.getLocalHostIp(),mode);
+    public void loadRoomScreen(Room room){
+        roomScreen = new RoomScreen(this,NetController.getLocalHostIp(),room.getLIMIT(),room);
         netController.bindGame(this);
         setScreen(roomScreen);
         Constants.CurrentScreenFlag = Constants.RoomScreenFlag;
     }
 
-    public void loadinRoomScreen(int roomNum){
-        String ip =netController.getRoomList().get(roomNum).getOwnerIp();
-        int mode = netController.getRoomList().get(roomNum).getLIMIT();
-        roomScreen = new RoomScreen(this,ip,mode);
-        setScreen(roomScreen);
-        Constants.CurrentScreenFlag = Constants.RoomScreenFlag;
-    }
+//    public void loadinRoomScreen(int roomNum){
+//        String ip =netController.getRoomList().get(roomNum).getOwnerIp();
+//        int mode = netController.getRoomList().get(roomNum).getLIMIT();
+//        roomScreen = new RoomScreen(this,ip,mode);
+//        setScreen(roomScreen);
+//        Constants.CurrentScreenFlag = Constants.RoomScreenFlag;
+//    }
 
     public void loadGameScreen(){
         OrthographicCamera orthographicCamera =new OrthographicCamera();

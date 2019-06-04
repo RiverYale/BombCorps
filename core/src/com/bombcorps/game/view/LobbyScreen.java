@@ -24,6 +24,7 @@ import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.controller.DataController;
 import com.bombcorps.game.controller.NetController;
 import com.bombcorps.game.model.Player;
+import com.bombcorps.game.model.Room;
 
 import java.util.ArrayList;
 
@@ -62,8 +63,8 @@ public class LobbyScreen extends AbstractGameScreen{
    // private ArrayList<String> mode;
 
     private Stage stage;
-    private Stage stage2;
-    private SpriteBatch batch;
+    //private Stage stage2;
+    //private SpriteBatch batch;
 
     private NetController netController;
 
@@ -76,9 +77,9 @@ public class LobbyScreen extends AbstractGameScreen{
         netController.openReceiveMsgThread();
         roomList = new ArrayList<RoomSelect>();
 
-        batch = new SpriteBatch();
-        stage2 = new Stage();
-        Gdx.input.setInputProcessor(stage2);
+       // batch = new SpriteBatch();
+        //stage2 = new Stage();
+        //Gdx.input.setInputProcessor(stage2);
     }
 
     @Override
@@ -93,11 +94,17 @@ public class LobbyScreen extends AbstractGameScreen{
         stage.act();
         stage.draw();
 
-        batch.begin();
-        bulidRoomList();
-        drawRoomList();
-        batch.end();
-
+        for(int i = 0;i < 4;i++){
+            if(roomList.size() == 0 || (i + numOfPage*4 + 1) > roomList.size()){
+                break;
+            }
+            //Gdx.app.log("i numOfPage",i+" "+numOfPage);
+            if (roomList.get(i + numOfPage*4).isClick()){
+                Gdx.app.log("Room","click");
+                game.loadRoomScreen(game.getNetController().getRoomList().get(i + numOfPage));
+            }
+            roomList.get(i +numOfPage*4).update();
+        }
     }
 
     @Override
@@ -166,9 +173,9 @@ public class LobbyScreen extends AbstractGameScreen{
         //个人信息布局
         recordTable.add(labelShowName).left().height(70);
         recordTable.row();
-        recordTable.add(labelShowRate).left().height(70);
-        recordTable.row();
         recordTable.add(labelShowWinAmount).left().height(70);
+        recordTable.row();
+        recordTable.add(labelShowRate).left().height(70);
         recordTable.row();
         recordTable.add(labelShowProperty).left().height(70);
         Stack stackRecord = new Stack();
@@ -212,7 +219,8 @@ public class LobbyScreen extends AbstractGameScreen{
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                game.loadRoomScreen(1);
+                Room room = new Room(NetController.getLocalHostIp(),1);
+                game.loadRoomScreen(room);
                 //game.getNetController().enterRoom(NetController.getLocalHostIp(),myplayer);
                 return true;
             }
@@ -221,7 +229,8 @@ public class LobbyScreen extends AbstractGameScreen{
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                game.loadRoomScreen(2);
+                Room room = new Room(NetController.getLocalHostIp(),2);
+                game.loadRoomScreen(room);
                 //game.getNetController().enterRoom(NetController.getLocalHostIp(),myplayer);
                 return true;
             }
@@ -230,7 +239,8 @@ public class LobbyScreen extends AbstractGameScreen{
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                game.loadRoomScreen(4);
+                Room room = new Room(NetController.getLocalHostIp(),4);
+                game.loadRoomScreen(room);
                 //game.getNetController().enterRoom(NetController.getLocalHostIp(),myplayer);
                 return true;
             }
@@ -244,8 +254,8 @@ public class LobbyScreen extends AbstractGameScreen{
         stage.addActor(roomListBackground);
         stage.addActor(recordTable);
 
-        //bulidRoomList();
-        //drawRoomList();
+        bulidRoomList();
+        drawRoomList();
         drawButton();
         stage.addActor(winBuildRoom);
         winBuildRoom.setVisible(false);
@@ -253,22 +263,23 @@ public class LobbyScreen extends AbstractGameScreen{
     //建造房间列表
     public void bulidRoomList(){
         //网端获取房间数numOfRoom
+        numOfRoom = 0;
         numOfRoom  = game.getNetController().getRoomList().size();
+        Gdx.app.log("numofroom",""+numOfRoom);
         roomList.clear();
         for(int i=0;i<numOfRoom;i++){
             if (!netController.getRoomList().get(i).isFull()){
                 int mapNum = Integer.parseInt(netController.getRoomList().get(i).getMapName());
                 String mode = netController.getRoomList().get(i).getLIMIT() + "vs" + netController.getRoomList().get(i).getLIMIT();
-                String hostName = "";
+                String hostName = "";  //
                 for(int j=0;j<netController.getRoomList().get(i).getPlayerManager().getAllPlayerList().size;j++){
-                    if(netController.getRoomList().get(i).getPlayerManager().getAllPlayerList().get(j).getIp() ==
-                       netController.getRoomList().get(i).getOwnerIp()){
+                    if(netController.getRoomList().get(i).getPlayerManager().getAllPlayerList().get(j).getIp().equals(netController.getRoomList().get(i).getOwnerIp())){
                         hostName = netController.getRoomList().get(i).getPlayerManager().getAllPlayerList().get(j).getID();
                         break;
                     }
                 }
                 String personNum = netController.getRoomList().get(i).getPlayerManager().getAllPlayerList().size +
-                        "/" + netController.getRoomList().get(i).getLIMIT();
+                        "/" + netController.getRoomList().get(i).getLIMIT()*2;
                 roomList.add(new RoomSelect(mapNum,mode,hostName,personNum));
                 originNum.add(i);
             }
@@ -278,27 +289,29 @@ public class LobbyScreen extends AbstractGameScreen{
 
     //显示房间列表
     public void drawRoomList(){
-        stage2.clear();
+        //stage2.clear();
         float originX = width * 0.488f;
         float originY = height * 0.655f;
         float intervalY = height * 0.105f;
         for(int i = 0;i < 4;i ++) {
-            if ((i + numOfPage + 1) > roomList.size()) {
+            if ((i + numOfPage*4 + 1) > roomList.size()) {
                 break;
             }
-            roomList.get(i + numOfPage).setPosition(originX,originY - i * intervalY);
-            roomList.get(i + numOfPage).addToStage(stage2);
-            roomList.get(i + numOfPage).addToBatch(batch);
+            roomList.get(i + numOfPage*4).setPosition(originX,originY - i * intervalY);
+            roomList.get(i + numOfPage*4).addToStage(stage);
+            //roomList.get(i + numOfPage*4).addToBatch(batch);
         }
-        for(int i = 0;i < 4;i++){
-            if(roomList.size() == 0){
-                break;
-            }
-            if (roomList.get(i + numOfPage).isClick()){
-                game.loadinRoomScreen(originNum.get(i + numOfPage));
-            }
-            roomList.get(i +numOfPage).update(Gdx.graphics.getDeltaTime());
-        }
+//        for(int i = 0;i < 4;i++){
+//            if(roomList.size() == 0 || (i + numOfPage*4 + 1) > roomList.size()){
+//                break;
+//            }
+//            Gdx.app.log("i numOfPage",i+" "+numOfPage);
+//            if (roomList.get(i + numOfPage*4).isClick()){
+//                Gdx.app.log("Room","click");
+//                game.loadRoomScreen(game.);
+//            }
+//            //roomList.get(i +numOfPage*4).update(Gdx.graphics.getDeltaTime());
+//        }
     }
 
     //按键布局
@@ -404,7 +417,7 @@ public class LobbyScreen extends AbstractGameScreen{
     //刷新房间
     public void refreshRoomList(){
         netController.refreshRoom();
-        //rebulidStage();
+        rebulidStage();
     }
 
 
