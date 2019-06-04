@@ -579,6 +579,8 @@ public class RoomScreen extends AbstractGameScreen{
             game.getNetController().updatePlayer(myplayer);
             Gdx.app.log("team",myplayer.getTeam()+"");
         }
+        Gdx.app.log("RedNum",room.getPlayerManager().getRedPlayerList().size+" ");
+        Gdx.app.log("BlueNum",room.getPlayerManager().getBluePlayerList().size+" ");
     }
 
     public void toBlueTeam(){
@@ -588,6 +590,8 @@ public class RoomScreen extends AbstractGameScreen{
             game.getNetController().updatePlayer(myplayer);
             Gdx.app.log("team",myplayer.getTeam()+"");
         }
+        Gdx.app.log("RedNum",room.getPlayerManager().getRedPlayerList().size+" ");
+        Gdx.app.log("BlueNum",room.getPlayerManager().getBluePlayerList().size+" ");
     }
 
     public void toReady(){

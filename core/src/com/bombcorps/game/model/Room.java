@@ -103,9 +103,9 @@ public class Room implements Serializable {
                     if(playerManager.getBluePlayerList().size < LIMIT){
                         playerManager.getBluePlayerList().add(playerManager.getRedPlayerList().get(i));
                         playerManager.getRedPlayerList().get(i).setTeam(Constants.PLAYER.BLUE_TEAM);
-                        Gdx.app.log("Team",playerManager.getBluePlayerList().get(i).getTeam()+"");
+                        //Gdx.app.log("Team",playerManager.getBluePlayerList().get(i).getTeam()+"");
                         playerManager.getRedPlayerList().removeIndex(i);
-                        Gdx.app.log("Team2",playerManager.getBluePlayerList().get(0).getTeam()+"");
+                        //Gdx.app.log("Team2",playerManager.getBluePlayerList().get(0).getTeam()+"");
                     }
 
                 }
@@ -116,9 +116,9 @@ public class Room implements Serializable {
                     if(playerManager.getRedPlayerList().size < LIMIT){
                         playerManager.getRedPlayerList().add(playerManager.getBluePlayerList().get(i));
                         playerManager.getBluePlayerList().get(i).setTeam(Constants.PLAYER.RED_TEAM);
-                        Gdx.app.log("Team",playerManager.getBluePlayerList().get(i).getTeam()+"");
+                        //Gdx.app.log("Team",playerManager.getBluePlayerList().get(i).getTeam()+"");
                         playerManager.getBluePlayerList().removeIndex(i);
-                        Gdx.app.log("Team2",playerManager.getRedPlayerList().get(i).getTeam()+"");
+                        //Gdx.app.log("Team2",playerManager.getRedPlayerList().get(0).getTeam()+"");
                     }
                 }
             }
