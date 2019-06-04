@@ -281,6 +281,7 @@ public class NetController {
         m.setToIp(roomIp);
         m.setTargetPlayer(me);
         sendCMD(m);
+        Gdx.app.log("someone","join in");
     }
 
     public void broadcastInRoom(Message m) {

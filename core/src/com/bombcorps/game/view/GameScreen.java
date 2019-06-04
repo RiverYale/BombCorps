@@ -527,7 +527,7 @@ public class GameScreen extends AbstractGameScreen{
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                game.loadRoomScreen(worldController.getWorld().getLimit());
+                //game.loadRoomScreen();
                 winResults.setVisible(false);
                 return true;
 

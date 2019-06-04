@@ -1,5 +1,6 @@
 package com.bombcorps.game.model;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.bombcorps.game.controller.AssetsController;
 
@@ -102,6 +103,7 @@ public class Room implements Serializable {
                     if(playerManager.getBluePlayerList().size < LIMIT){
                         playerManager.getBluePlayerList().add(playerManager.getRedPlayerList().get(i));
                         playerManager.getRedPlayerList().get(i).setTeam(Constants.PLAYER.BLUE_TEAM);
+                        Gdx.app.log("Team",playerManager.getBluePlayerList().get(i).getTeam()+"");
                         playerManager.getRedPlayerList().removeIndex(i);
                     }
 
@@ -113,6 +115,7 @@ public class Room implements Serializable {
                     if(playerManager.getRedPlayerList().size < LIMIT){
                         playerManager.getRedPlayerList().add(playerManager.getBluePlayerList().get(i));
                         playerManager.getBluePlayerList().get(i).setTeam(Constants.PLAYER.RED_TEAM);
+                        Gdx.app.log("Team",playerManager.getBluePlayerList().get(i).getTeam()+"");
                         playerManager.getBluePlayerList().removeIndex(i);
                     }
                 }

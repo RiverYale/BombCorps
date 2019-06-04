@@ -33,13 +33,15 @@ public class RoomSelect {
     private Label labelHosterName;
     private Label labelPersonNum;
 
-    private boolean click = false;
+    private boolean click;
 
     RoomSelect(int mapNum, String mode, String hosterName, String personNum){
         this.mapNum = mapNum;
         this.mode = mode;
         this.hosterName = hosterName;
         this.personNum = personNum;
+
+        click = false;
 
         //backGround = new Image(new Texture(Gdx.files.internal("lobbyscreen/roomshowbackground.png")));
         backGround = new Image(AssetsController.instance.getRegion("roomshowbackground"));
@@ -57,11 +59,11 @@ public class RoomSelect {
         BitmapFont font = AssetsController.instance.font;
         Label.LabelStyle style = new Label.LabelStyle(font, Color.WHITE);
         labelMode = new Label(mode, style);
-        labelMode.setFontScale(0.05f * width / 100);
+        labelMode.setFontScale(0.1f * width / 100);
         labelHosterName = new Label(hosterName,style);
-        labelHosterName.setFontScale(0.05f * width / 100);
+        labelHosterName.setFontScale(0.1f * width / 100);
         labelPersonNum = new Label(personNum,style);
-        labelPersonNum.setFontScale(0.05f * width / 100);
+        labelPersonNum.setFontScale(0.1f * width / 100);
 
         click = false;
         addListener();
@@ -84,19 +86,11 @@ public class RoomSelect {
         stage.addActor(labelPersonNum);
     }
 
-    public void addToBatch(SpriteBatch batch){
-        backGround.draw(batch,1);
-        smallMap.draw(batch,1);
-        labelMode.draw(batch,1);
-        labelHosterName.draw(batch,1);
-        labelPersonNum.draw(batch,1);
-    }
-
     public boolean isClick(){
         return click;
     }
 
-    public void update(float deltaTime){
+    public void update(){
         click = false;
     }
 
@@ -104,6 +98,7 @@ public class RoomSelect {
         backGround.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("Room","click");
                 click = true;
             }
         });
@@ -111,6 +106,7 @@ public class RoomSelect {
         smallMap.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("Room","click");
                 click = true;
             }
 
@@ -119,6 +115,7 @@ public class RoomSelect {
         labelMode.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("Room","click");
                 click = true;
             }
 
@@ -127,6 +124,7 @@ public class RoomSelect {
         labelHosterName.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("Room","click");
                 click = true;
             }
 
@@ -135,6 +133,7 @@ public class RoomSelect {
         labelPersonNum.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("Room","click");
                 click = true;
             }
         });
