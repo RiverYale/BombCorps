@@ -283,18 +283,6 @@ public class NetController {
     }
 
     public void broadcastInRoom(Message m) {
-        // 查看bindGame
-        if (game == null) {
-            Gdx.app.log("game", "null");
-        } else if (game.getRoom() == null) {
-            Gdx.app.log("room","null");
-        } else if (game.getRoom().getPlayerManager() == null) {
-            Gdx.app.log("manager", "null");
-        } else if (game.getRoom().getPlayerManager().getAllPlayerList() == null) {
-            Gdx.app.log("list", "null");
-        }else{
-            Gdx.app.log("zc", "not null");
-        }
         for (Player p : game.getRoom().getPlayerManager().getAllPlayerList()) {
             m.setToIp(p.getIp());
             sendCMD(m);

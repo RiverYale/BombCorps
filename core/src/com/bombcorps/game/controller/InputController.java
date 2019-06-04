@@ -26,14 +26,6 @@ public class InputController implements GestureDetector.GestureListener {
         this.net = controller.getNetController();
     }
 
-    //TODO
-    public InputController(CameraController cameraController, OrthographicCamera camera, NetController net) {
-        this.cameraController = cameraController;
-        this.camera = camera;
-        this.net = net;
-        net.openReceiveMsgThread();
-    }
-
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
 
