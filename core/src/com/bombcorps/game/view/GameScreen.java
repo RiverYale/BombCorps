@@ -42,6 +42,52 @@ public class GameScreen extends AbstractGameScreen{
     private SpriteBatch batch;
     private boolean paused;
 
+    private String[] description = {
+            "被动技能：具备吸血30%能力\n" +
+                    "技能一：消耗100血量+50精力，提高攻击力\n" +
+                    "技能二：消耗80精力+30怒气，下次攻击\n" +
+                    "获得额外30%暴击几率加成\n" +
+                    "技能三：消耗100精力，和100怒气，\n" +
+                    "立即获得300的血量补给，\n" +
+                    "接下来3回合每回合回100血\n",
+            "被动技能：远高于平均的血量与护甲，\n" +
+                    "但牺牲攻击力\n" +
+                    "技能一：消耗10怒气+50精力，增加护甲\n" +
+                    "技能二：消耗80精力+30怒气，发射一枚\n" +
+                    "护盾弹，为目标增加100点护甲\n" +
+                    "技能三：消耗100精力+100怒气，两回合\n" +
+                    "内获得60%减伤效果，且分担友\n" +
+                    "方受到伤害的40%",
+            "被动技能：牺牲护甲与攻击力，获得每回\n" +
+                    "合固定回血的能力\n" +
+                    "技能一：发射一枚恢复弹，为目标治疗\n" +
+                    "10%最大生命值\n" +
+                    "技能二：消耗80精力+30怒气,发射一枚虚\n" +
+                    "弱弹，减少其攻击力、精力值\n" +
+                    "技能三：消耗100精力+100怒气，友方集\n" +
+                    "体回500血，接下来3回合友方\n" +
+                    "增加10%伤害",
+            "被动技能：具有高攻击力，且每次攻击成\n" +
+                    "攻击成功暴击几率减半，失败\n" +
+                    "暴击几率加倍\n" +
+                    "技能一：消耗50精力+10怒气获得30%穿甲\n" +
+                    "技能二：消耗80精力+30怒气，获得额外\n" +
+                    "一次攻击机会，精力和怒气减半\n" +
+                    "技能三：消耗100精力+100怒气，接下来\n" +
+                    "两回合暴击几率不减少，且暴\n" +
+                    "击伤害变为300%",
+            "被动技能：无法造成物理伤害，但对目标\n" +
+                    "积累一层中毒效果，目标每回\n" +
+                    "合根据层数扣除血量\n" +
+                    "技能一：下次攻击附加3层中毒效果\n" +
+                    "技能二：消耗80精力+30怒气，攻击禁锢\n" +
+                    "目标1回合\n" +
+                    "技能三：消耗100精力+100怒气，消耗所\n" +
+                    "有敌方的标记层数，对受到标记的单\n" +
+                    "位造成10%最大生命值*层数的伤害"
+
+    };
+
     public GameScreen(DirectedGame game,WorldController worldController){
         super(game);
         this.worldController = worldController;
@@ -294,7 +340,7 @@ public class GameScreen extends AbstractGameScreen{
         "\nED:"+p.getMyHero().getEndurance()+" AM:"+p.getMyHero().getArmor()+
          "\nRP:"+p.getMyHero().getRagePower()+" CP:"+p.getMyHero().getCriticalProbability(),labelStyle);
         labelMyHeroBasicInfo.setFontScale(width/15/labelMyHeroBasicInfo.getPrefWidth()*2);
-        labelMyHeroBasicInfo.setPosition(width/15,-labelMyHeroBasicInfo.getHeight()/5);
+        labelMyHeroBasicInfo.setPosition(width/15,0);
         layer.addActor(labelMyHeroBasicInfo);
 
 
@@ -323,17 +369,18 @@ public class GameScreen extends AbstractGameScreen{
 
     public Table buildHeroInfoWindowLayer(){
         Table layer = new Table();
-        Image background = new Image(new Texture(Gdx.files.internal("Skill/"+myHeroType()+"_skill_detail.png")));
-        background.setPosition(0,0);
-        background.setSize(height/2,height/2);
         BitmapFont font = AssetsController.instance.font;
-        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(AssetsController.instance.getRegion("winresult")));
+        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(AssetsController.instance.getRegion("textfieldbackground")));
         winHeroInfo = new Window("",windowStyle);
         winHeroInfo.setSize(height/2,height/2);
         //winOptions.setColor(1,1,1,1f);
-        winHeroInfo.addActor(background);
         winHeroInfo.setVisible(false);
-
+        Label.LabelStyle labelStyle = new Label.LabelStyle(font,Color.BLACK);
+        Label label = new Label(description[myHeroTypeI()],labelStyle);
+        label.setFontScaleX(18*winHeroInfo.getWidth()/label.getPrefWidth()/20);
+        label.setFontScaleY(8*winHeroInfo.getHeight()/label.getPrefHeight()/9);
+        label.setPosition(winHeroInfo.getWidth()/2-label.getPrefWidth()/2,0);
+        winHeroInfo.addActor(label);
         //winOptions.pack();
         winHeroInfo.setPosition(0,imgMyHeroHead.getHeight());
         layer.addActor(winHeroInfo);
@@ -343,20 +390,15 @@ public class GameScreen extends AbstractGameScreen{
 
     public Table buildOtherHeroInfoWindowLayer(){
         Table layer = new Table();
-        Image background = new Image(new Texture(Gdx.files.internal("Skill/"+myHeroType()+"_skill_detail.png")));
-        background.setPosition(0,0);
-        background.setSize(height/2,height/2);
         int heroInfoType;
         heroInfoType = this.heroInfoType;
         BitmapFont font = AssetsController.instance.font;
-        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(AssetsController.instance.getRegion("winresult")));
+        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(AssetsController.instance.getRegion("textfieldbackground")));
         winOtherHeroInfo = new Window("",windowStyle);
         winOtherHeroInfo.setSize(height/2,height/2);
         //winOptions.setColor(1,1,1,1f);
-        winOtherHeroInfo.addActor(background);
         //winOtherHeroInfo.addActor(buildWinOHInfoQuitBotton());
         winOtherHeroInfo.setVisible(false);
-
         //winOptions.pack();
         winOtherHeroInfo.setPosition(width-winOtherHeroInfo.getWidth(),imgMyHeroHead.getHeight());
         layer.addActor(winOtherHeroInfo);
@@ -389,7 +431,7 @@ public class GameScreen extends AbstractGameScreen{
         Label label = new Label("Because Manager is quitted, game error stop.",labelStyle);
         winErrorQuit.setSize(width/2,height/2);
         winErrorQuit.setPosition(width/4,height/4);
-        label.setPosition(winErrorQuit.getWidth()/2-label.getPrefWidth()/2,2/3*winErrorQuit.getHeight()-label.getPrefHeight()/2);
+        label.setPosition(winErrorQuit.getWidth()/2-label.getPrefWidth()/2,2*winErrorQuit.getHeight()/3-label.getPrefHeight()/2);
         //winOptions.setColor(1,1,1,1f);
         winErrorQuit.addActor(buildErrorQuitWindowBotton());
         winErrorQuit.addActor(label);
@@ -438,6 +480,16 @@ public class GameScreen extends AbstractGameScreen{
         }
     }
 
+    public int myHeroTypeI(){
+        int i;
+        for(i=0;worldController.getPlayers().get(i).getState() != Constants.PLAYER.STATE_LOCAL&&i<worldController.getPlayers().size;i++){
+
+        }
+        i = worldController.getPlayers().get(i).getHeroType();
+        return i;
+    }
+
+
     public void onHeroClicked(Player p){
         final int heroType;
         heroType = p.getHeroType();
@@ -473,10 +525,11 @@ public class GameScreen extends AbstractGameScreen{
                 return true;
             }
         });
-        Image background = new Image(new Texture(Gdx.files.internal("Skill/"+i+"_skill_detail")));
-        background.setPosition(0,0);
-        background.setSize(height/2,height/2);
-        winOtherHeroInfo.addActor(background);
+        Label label = new Label(description[heroType],labelStyle);
+        label.setFontScaleX(18*winOtherHeroInfo.getWidth()/label.getPrefWidth()/20);
+        label.setFontScaleY(8*winOtherHeroInfo.getHeight()/label.getPrefHeight()/9);
+        label.setPosition(winOtherHeroInfo.getWidth()/2-label.getPrefWidth()/2,0);
+        winOtherHeroInfo.addActor(label);
         imgOtherHeroHead.setVisible(true);
         labelOtherHeroBasicInfo.setVisible(true);
     }

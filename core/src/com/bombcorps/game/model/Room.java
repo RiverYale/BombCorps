@@ -122,6 +122,7 @@ public class Room implements Serializable {
                         playerManager.getRedPlayerList().get(i).setTeam(Constants.PLAYER.BLUE_TEAM);
                         Gdx.app.log("Team",playerManager.getBluePlayerList().get(i).getTeam()+"");
                         playerManager.getRedPlayerList().removeIndex(i);
+                        Gdx.app.log("Team2",playerManager.getBluePlayerList().get(0).getTeam()+"");
                     }
 
                 }
@@ -134,6 +135,7 @@ public class Room implements Serializable {
                         playerManager.getBluePlayerList().get(i).setTeam(Constants.PLAYER.RED_TEAM);
                         Gdx.app.log("Team",playerManager.getBluePlayerList().get(i).getTeam()+"");
                         playerManager.getBluePlayerList().removeIndex(i);
+                        Gdx.app.log("Team2",playerManager.getRedPlayerList().get(i).getTeam()+"");
                     }
                 }
             }
