@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.bombcorps.game.Pillar;
+//import com.bombcorps.game.Pillar;
 import com.bombcorps.game.controller.AssetsController;
 
 import java.util.logging.Level;

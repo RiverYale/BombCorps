@@ -100,7 +100,6 @@ public class LobbyScreen extends AbstractGameScreen{
             }
             //Gdx.app.log("i numOfPage",i+" "+numOfPage);
             if (roomList.get(i + numOfPage*4).isClick()){
-                Gdx.app.log("Room","click");
                 game.loadRoomScreen(game.getNetController().getRoomList().get(i + numOfPage));
             }
             roomList.get(i +numOfPage*4).update();

@@ -98,7 +98,6 @@ public class RoomSelect {
         backGround.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("Room","click");
                 click = true;
             }
         });
@@ -106,7 +105,6 @@ public class RoomSelect {
         smallMap.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("Room","click");
                 click = true;
             }
 
@@ -115,7 +113,6 @@ public class RoomSelect {
         labelMode.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("Room","click");
                 click = true;
             }
 
@@ -124,7 +121,6 @@ public class RoomSelect {
         labelHosterName.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("Room","click");
                 click = true;
             }
 
@@ -133,7 +129,6 @@ public class RoomSelect {
         labelPersonNum.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("Room","click");
                 click = true;
             }
         });
