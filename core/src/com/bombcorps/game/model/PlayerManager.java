@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.bombcorps.game.model.bombs.Bomb;
 
+import java.util.ArrayList;
+
 public class PlayerManager {
 
     private SkillAndBuff skillAndBuff;
@@ -30,6 +32,19 @@ public class PlayerManager {
             playerListRed.add(player);
         else
             playerListBlue.add(player);
+    }
+
+    public void addPlayerList(ArrayList<Message.MPlayer> list) {
+        for (Message.MPlayer m : list) {
+            switch (m.team){
+                case BLUE:
+                    addPlayer(m.IP, Constants.PLAYER.BLUE_TEAM, m.ID);
+                    break;
+                case RED:
+                    addPlayer(m.IP, Constants.PLAYER.RED_TEAM, m.ID);
+                    break;
+            }
+        }
     }
 
     public void deletePlayerAtIndex(int index, int side){

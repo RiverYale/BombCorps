@@ -21,18 +21,33 @@ public class Bonus implements Serializable {
     private Rectangle rec;
 
     private TYPE type;
-    private enum TYPE{
+    public enum TYPE{
         ADDHEALTH, ADDENDURANCE
     }
 
     private STATE state;
-    private enum STATE{
+    public enum STATE{
         ACTIVATED, GROUNDED
     }
 
     public Bonus(float mapWidth){
         init(mapWidth);
 //        initType();
+    }
+
+    public Bonus(Message.MBonus m) {
+        position = m.position;
+        origin = m.origin;
+        scale = m.scale;
+        dimension = m.dimension;
+        type = m.type;
+        state = m.state;
+        bonusBox = AssetsController.instance.getRegion("BonusBox");
+        parachute = AssetsController.instance.getRegion("Parachute");
+    }
+
+    public Message.MBonus getMBonus() {
+        return new Message.MBonus(position, origin, scale, dimension, type, state);
     }
 
     public void init(float mapWidth){

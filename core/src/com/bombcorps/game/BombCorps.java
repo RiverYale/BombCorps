@@ -26,6 +26,7 @@ public class BombCorps extends DirectedGame {
 		AssetsController.instance.loadTexture("lobbyscreen/lobbyscreen.txt");
 		AssetsController.instance.loadTexture("roomscreen/roomscreen.txt");
 		AssetsController.instance.loadTexture("infoscreen/infoscreen.txt");
+		AssetsController.instance.loadTexture("map/map.txt");
 		AssetsController.instance.loadTexture("hero/heroes.txt");
 		DataController.instance.loadSettings();
 		DataController.instance.loadPersonalData();

@@ -75,7 +75,6 @@ public class RoomScreen extends AbstractGameScreen{
     private SpriteBatch batch;
 
     private Room room;
-
     private Player myplayer;
 
     private int readyNum = 0;

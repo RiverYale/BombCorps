@@ -202,6 +202,7 @@ public class NetController {
         switch(msg.getMsg()){
             case REFRESH_ROOM:
                 if(game.hasRoom()){
+                    Gdx.app.log("zc", "hasRoom");
                     m = new Message(RE_REFRESH_ROOM);
                     m.setToIp(msg.getFromIp());
                     m.setRoom(game.getRoom());
