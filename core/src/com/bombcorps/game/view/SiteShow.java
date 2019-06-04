@@ -16,6 +16,8 @@ import com.bombcorps.game.model.Constants;
 public class SiteShow {
     private int heroSelect;
     private Image hero[];
+    private float heroWidth[];
+    private float heroHeight[];
     private String playerName;
     private int level;
 
@@ -41,6 +43,13 @@ public class SiteShow {
         hero[Constants.PROTECTOR] = new Image(AssetsController.instance.getRegion("Protector_stand"));
         hero[Constants.SNIPER] = new Image(AssetsController.instance.getRegion("Sniper_stand"));
         hero[Constants.WIZARD] = new Image(AssetsController.instance.getRegion("Wizard_stand"));
+
+        heroWidth = new float[5];
+        heroHeight = new float[5];
+        for(int i = 0;i < 5;i ++){
+            heroWidth[i] = hero[i].getWidth();
+            heroHeight[i] = hero[i].getHeight();
+        }
 
         this.heroSelect = heroSelect;
         this.playerName = playerId;
@@ -74,7 +83,7 @@ public class SiteShow {
 
     public void setPosition(float x,float y){
         //Gdx.app.log("heroselect",heroSelect+"");
-        hero[heroSelect].setSize((hero[heroSelect].getWidth()/900)*width,(hero[heroSelect].getHeight()/500)*height);
+        hero[heroSelect].setSize((heroWidth[heroSelect]/900)*width,(heroHeight[heroSelect]/500)*height);
         hero[heroSelect].setPosition(x - hero[heroSelect].getWidth() / 2,y + 0.04f * height);
         //hero[heroSelect].debug();
         stack.setPosition(x - stack.getWidth() / 2,y - 0.12f * height);

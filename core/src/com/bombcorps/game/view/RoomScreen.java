@@ -65,6 +65,8 @@ public class RoomScreen extends AbstractGameScreen{
     private Image mapSelect;
     //英雄头像
     private Image hero[];
+    private float heroHeight[];
+    private float heroWidth[];
     //准备标识
     private boolean ready;
 
@@ -77,6 +79,9 @@ public class RoomScreen extends AbstractGameScreen{
     private Player myplayer;
 
     private int readyNum = 0;
+
+    private BitmapFont font = AssetsController.instance.font;
+    private Label.LabelStyle stylePersonNum = new Label.LabelStyle(font, Color.WHITE);
 
     DataController dc = DataController.instance;
 
@@ -111,7 +116,7 @@ public class RoomScreen extends AbstractGameScreen{
         }
 
         myplayer.setHeroType(Constants.SPARDA);
-        myplayer.setLevel(dc.getPersonalData(Constants.SPARDA));
+        myplayer.setLevel(dc.getPersonalData(DataController.SPARDAR));
 
         Gdx.app.log("heroselect",room.getPlayerManager().getRedPlayerList().get(0).getHeroType()+"");
         Gdx.app.log("ownerIp",room.getOwnerIp());
@@ -122,10 +127,16 @@ public class RoomScreen extends AbstractGameScreen{
         hero[Constants.PROTECTOR] = new Image(AssetsController.instance.getRegion("Protector_stand"));
         hero[Constants.SNIPER] = new Image(AssetsController.instance.getRegion("Sniper_stand"));
         hero[Constants.WIZARD] = new Image(AssetsController.instance.getRegion("Wizard_stand"));
+        heroWidth = new float[5];
+        heroHeight = new float[5];
+        for(int i = 0;i < 5;i ++){
+            heroWidth[i] = hero[i].getWidth();
+            heroHeight[i] = hero[i].getHeight();
+        }
 
         drawImage();
         drawButton();
-        drawErrorWin();
+        //drawErrorWin();
         setButtonClick();
     }
 
@@ -319,12 +330,12 @@ public class RoomScreen extends AbstractGameScreen{
     }
 
     public void batchAddButton(){
-        //英雄选择按钮
-        btnHeroLeft.draw(batch,1);
-        btnHeroRight.draw(batch,1);
         //换边按钮(门)
         doorRed.draw(batch,1);
         doorBlue.draw(batch,1);
+        //英雄选择按钮
+        btnHeroLeft.draw(batch,1);
+        btnHeroRight.draw(batch,1);
         //选择地图按钮
         if(NetController.getLocalHostIp().equals(room.getOwnerIp())){
             btnMapleft.draw(batch,1);
@@ -372,7 +383,9 @@ public class RoomScreen extends AbstractGameScreen{
     }
 
     public void batchAddHero(){
-        hero[heroSelect].setSize((hero[heroSelect].getWidth()/900)*width,(hero[heroSelect].getHeight()/500)*height);
+        //Gdx.app.log("",hero[heroSelect].getWidth()+ " "+ hero[heroSelect].getHeight());
+        //Gdx.app.log("",hero[heroSelect].getMinWidth()+ " " + hero[heroSelect].getMinHeight());
+        hero[heroSelect].setSize((heroWidth[heroSelect]/900)*width,(heroHeight[heroSelect]/500)*height);
         hero[heroSelect].setPosition(selectBackground.getX() + selectBackground.getWidth()/2 - hero[heroSelect].getWidth()/2,
                 btnHeroLeft.getY());
         //stage.addActor(hero[heroSelect]);
@@ -394,13 +407,13 @@ public class RoomScreen extends AbstractGameScreen{
         mapSelect.draw(batch,1);
     }
 
+
+
     public void batchAddPersonNum(){
-        BitmapFont font = AssetsController.instance.font;
-        Label.LabelStyle style = new Label.LabelStyle(font, Color.WHITE);
         String populationRed = room.getPlayerManager().getRedPlayerList().size + "/" + mode;
         String populationBlue = room.getPlayerManager().getBluePlayerList().size + "/" + mode;
-        personRed = new Label(populationRed,style);
-        personBlue = new Label(populationBlue,style);
+        personRed = new Label(populationRed,stylePersonNum);
+        personBlue = new Label(populationBlue,stylePersonNum);
         personRed.setSize(0.04888f * width,0.057f * height);
         personBlue.setSize(0.04888f * width,0.057f * height);
         personRed.setFontScale(0.001f * width,0.0015f * height);
@@ -511,15 +524,6 @@ public class RoomScreen extends AbstractGameScreen{
                 toLobby();
             }
         });
-        btnSure.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x,float y){
-                //下翻列表
-                Gdx.app.log("quit","Yes");
-                winError.setVisible(false);
-                game.loadLobbyScreen();
-            }
-        });
     }
 
     public void turnLeftHero() {
@@ -560,10 +564,13 @@ public class RoomScreen extends AbstractGameScreen{
         if(myplayer.getTeam() == Constants.PLAYER.BLUE_TEAM && !myplayer.getReady()){
             room.switchTeam(myplayer);
             game.getNetController().updatePlayer(myplayer);
+            Gdx.app.log("Reddoor","click");
         }
     }
 
     public void toBlueTeam(){
+        Gdx.app.log("Bluedoor","click");
+        Gdx.app.log("team",myplayer.getTeam()+"");
         if(myplayer.getTeam() == Constants.PLAYER.RED_TEAM && !myplayer.getReady()){
             room.switchTeam(myplayer);
             game.getNetController().updatePlayer(myplayer);
@@ -593,9 +600,6 @@ public class RoomScreen extends AbstractGameScreen{
     }
 
     public void toLobby(){
-//        if (game.getNetController() == null) {
-//            Gdx.app.log("zc", "Null");
-//        }
         game.getNetController().quitRoom(myplayer);
         game.loadLobbyScreen();
     }
