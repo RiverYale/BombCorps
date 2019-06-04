@@ -56,14 +56,14 @@ public class Room implements Serializable {
     public void removePlayer(Player player){
         if(player.getTeam() == Constants.PLAYER.RED_TEAM){
             for(int i = 0 ; i < playerManager.getRedPlayerList().size ; i++){
-                if(player.getIp().equals(playerManager.getPlayerListRed().get(i).getIp())){
+                if(player.getIp().equals(playerManager.getRedPlayerList().get(i).getIp())){
                     playerManager.getRedPlayerList().removeIndex(i);
                     break;
                 }
             }
         }else{
             for(int i = 0 ; i < playerManager.getBluePlayerList().size ; i++){
-                if(player.getIp().equals(playerManager.getPlayerListBlue().get(i).getIp())){
+                if(player.getIp().equals(playerManager.getBluePlayerList().get(i).getIp())){
                     playerManager.getBluePlayerList().removeIndex(i);
                     break;
                 }
@@ -72,9 +72,21 @@ public class Room implements Serializable {
     }
 
     public void updatePlayer(Player player){
+
+//        Gdx.app.log("blue Size", "" + playerManager.getBluePlayerList().size);
+//        Gdx.app.log("red Size", "" + playerManager.getRedPlayerList().size);
+//
+        Gdx.app.log("player Team is", "" + player.getTeam());
         for(int i = 0 ; i < playerManager.getRedPlayerList().size ; i++){
-            if(player.getIp().equals(playerManager.getPlayerListRed().get(i).getIp())){
-                playerManager.getRedPlayerList().set(i,player);
+            if(player.getIp().equals(playerManager.getRedPlayerList().get(i).getIp())){
+                Gdx.app.log("red", "activated!");
+//                playerManager.getRedPlayerList().set(i,player);
+
+                playerManager.getRedPlayerList().get(i).setHeroType(player.getHeroType());
+                playerManager.getRedPlayerList().get(i).setState(player.getState());
+                playerManager.getRedPlayerList().get(i).setTeam(player.getTeam());
+                playerManager.getRedPlayerList().get(i).setReady(player.getReady());
+                playerManager.getRedPlayerList().get(i).setLevel(player.getLevel());
 
                 if(player.getTeam() == Constants.PLAYER.BLUE_TEAM){
                     playerManager.getBluePlayerList().add(player);
@@ -86,8 +98,14 @@ public class Room implements Serializable {
         }
 
         for(int i = 0 ; i < playerManager.getBluePlayerList().size ; i++){
-            if(player.getIp().equals(playerManager.getPlayerListBlue().get(i).getIp())){
-                playerManager.getBluePlayerList().set(i,player);
+            if(player.getIp().equals(playerManager.getBluePlayerList().get(i).getIp())){
+//                playerManager.getBluePlayerList().set(i,player);
+                Gdx.app.log("blue", "activated!");
+                playerManager.getBluePlayerList().get(i).setHeroType(player.getHeroType());
+                playerManager.getBluePlayerList().get(i).setState(player.getState());
+                playerManager.getBluePlayerList().get(i).setTeam(player.getTeam());
+                playerManager.getBluePlayerList().get(i).setReady(player.getReady());
+                playerManager.getBluePlayerList().get(i).setLevel(player.getLevel());
 
                 if(player.getTeam() == Constants.PLAYER.RED_TEAM){
                     playerManager.getRedPlayerList().add(player);
@@ -98,9 +116,8 @@ public class Room implements Serializable {
             }
         }
 
-//        for(int i = 0 ; i < playerManager.getRedPlayerList().size ; i++){
-//            if()
-//        }
+
+
 
     }
 
@@ -116,31 +133,31 @@ public class Room implements Serializable {
          */
         if(player.getTeam() == Constants.PLAYER.RED_TEAM){
             for(int i = 0 ; i < playerManager.getRedPlayerList().size ; i++){
-                if(player.getIp().equals(playerManager.getPlayerListRed().get(i).getIp())){
+                if(player.getIp().equals(playerManager.getRedPlayerList().get(i).getIp())){
                     if(playerManager.getBluePlayerList().size < LIMIT){
                         playerManager.getBluePlayerList().add(playerManager.getRedPlayerList().get(i));
                         playerManager.getRedPlayerList().get(i).setTeam(Constants.PLAYER.BLUE_TEAM);
-                        Gdx.app.log("Team",playerManager.getBluePlayerList().get(i).getTeam()+"");
+//                        Gdx.app.log("Team",playerManager.getBluePlayerList().get(i).getTeam()+"");
                         playerManager.getRedPlayerList().removeIndex(i);
-                        Gdx.app.log("Team2",playerManager.getBluePlayerList().get(0).getTeam()+"");
+//                        Gdx.app.log("Team2",playerManager.getBluePlayerList().get(0).getTeam()+"");
                     }
 
                 }
             }
         }else{
             for(int i = 0 ; i < playerManager.getBluePlayerList().size ; i++){
-                if(player.getIp().equals(playerManager.getPlayerListBlue().get(i).getIp())){
+                if(player.getIp().equals(playerManager.getBluePlayerList().get(i).getIp())){
                     if(playerManager.getRedPlayerList().size < LIMIT){
                         playerManager.getRedPlayerList().add(playerManager.getBluePlayerList().get(i));
                         playerManager.getBluePlayerList().get(i).setTeam(Constants.PLAYER.RED_TEAM);
-                        Gdx.app.log("Team",playerManager.getBluePlayerList().get(i).getTeam()+"");
+//                        Gdx.app.log("Team",playerManager.getBluePlayerList().get(i).getTeam()+"");
                         playerManager.getBluePlayerList().removeIndex(i);
-                        Gdx.app.log("Team2",playerManager.getRedPlayerList().get(i).getTeam()+"");
+//                        Gdx.app.log("Team2",playerManager.getRedPlayerList().get(i).getTeam()+"");
                     }
                 }
             }
         }
-
+//        Gdx.app.log("Team Size", "" + playerManager.getRedPlayerList().size + playerManager.getBluePlayerList().size);
     }
 
 
