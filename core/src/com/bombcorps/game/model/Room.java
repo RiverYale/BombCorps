@@ -56,14 +56,14 @@ public class Room implements Serializable {
     public void removePlayer(Player player){
         if(player.getTeam() == Constants.PLAYER.RED_TEAM){
             for(int i = 0 ; i < playerManager.getRedPlayerList().size ; i++){
-                if(player.getIp().equals(playerManager.getPlayerListRed().get(i).getIp())){
+                if(player.getIp().equals(playerManager.getRedPlayerList().get(i).getIp())){
                     playerManager.getRedPlayerList().removeIndex(i);
                     break;
                 }
             }
         }else{
             for(int i = 0 ; i < playerManager.getBluePlayerList().size ; i++){
-                if(player.getIp().equals(playerManager.getPlayerListBlue().get(i).getIp())){
+                if(player.getIp().equals(playerManager.getBluePlayerList().get(i).getIp())){
                     playerManager.getBluePlayerList().removeIndex(i);
                     break;
                 }
@@ -73,18 +73,47 @@ public class Room implements Serializable {
 
     public void updatePlayer(Player player){
         for(int i = 0 ; i < playerManager.getRedPlayerList().size ; i++){
-            if(player.getIp().equals(playerManager.getPlayerListRed().get(i).getIp())){
-                playerManager.getRedPlayerList().set(i,player);
+            if(player.getIp().equals(playerManager.getRedPlayerList().get(i).getIp())){
+                Gdx.app.log("red", "activated!");
+//                playerManager.getRedPlayerList().set(i,player);
+
+                playerManager.getRedPlayerList().get(i).setHeroType(player.getHeroType());
+                playerManager.getRedPlayerList().get(i).setState(player.getState());
+                playerManager.getRedPlayerList().get(i).setTeam(player.getTeam());
+                playerManager.getRedPlayerList().get(i).setReady(player.getReady());
+                playerManager.getRedPlayerList().get(i).setLevel(player.getLevel());
+
+                if(player.getTeam() == Constants.PLAYER.BLUE_TEAM){
+                    playerManager.getBluePlayerList().add(player);
+                    playerManager.getRedPlayerList().removeIndex(i);
+                }
+
                 break;
             }
         }
 
         for(int i = 0 ; i < playerManager.getBluePlayerList().size ; i++){
-            if(player.getIp().equals(playerManager.getPlayerListBlue().get(i).getIp())){
-                playerManager.getBluePlayerList().set(i,player);
+            if(player.getIp().equals(playerManager.getBluePlayerList().get(i).getIp())){
+//                playerManager.getBluePlayerList().set(i,player);
+                Gdx.app.log("blue", "activated!");
+                playerManager.getBluePlayerList().get(i).setHeroType(player.getHeroType());
+                playerManager.getBluePlayerList().get(i).setState(player.getState());
+                playerManager.getBluePlayerList().get(i).setTeam(player.getTeam());
+                playerManager.getBluePlayerList().get(i).setReady(player.getReady());
+                playerManager.getBluePlayerList().get(i).setLevel(player.getLevel());
+
+                if(player.getTeam() == Constants.PLAYER.RED_TEAM){
+                    playerManager.getRedPlayerList().add(player);
+                    playerManager.getBluePlayerList().removeIndex(i);
+                }
+
                 break;
             }
         }
+
+
+
+
     }
 
 
@@ -99,7 +128,7 @@ public class Room implements Serializable {
          */
         if(player.getTeam() == Constants.PLAYER.RED_TEAM){
             for(int i = 0 ; i < playerManager.getRedPlayerList().size ; i++){
-                if(player.getIp().equals(playerManager.getPlayerListRed().get(i).getIp())){
+                if(player.getIp().equals(playerManager.getRedPlayerList().get(i).getIp())){
                     if(playerManager.getBluePlayerList().size < LIMIT){
                         playerManager.getBluePlayerList().add(playerManager.getRedPlayerList().get(i));
                         playerManager.getRedPlayerList().get(i).setTeam(Constants.PLAYER.BLUE_TEAM);
@@ -112,7 +141,7 @@ public class Room implements Serializable {
             }
         }else{
             for(int i = 0 ; i < playerManager.getBluePlayerList().size ; i++){
-                if(player.getIp().equals(playerManager.getPlayerListBlue().get(i).getIp())){
+                if(player.getIp().equals(playerManager.getBluePlayerList().get(i).getIp())){
                     if(playerManager.getRedPlayerList().size < LIMIT){
                         playerManager.getRedPlayerList().add(playerManager.getBluePlayerList().get(i));
                         playerManager.getBluePlayerList().get(i).setTeam(Constants.PLAYER.RED_TEAM);

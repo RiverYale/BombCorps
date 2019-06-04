@@ -200,10 +200,12 @@ public class NetController {
     }
 
     public void parse(Message msg) {
+        Gdx.app.log("zc", ""+ msg.getMsg());
         Message m;
         switch(msg.getMsg()){
             case REFRESH_ROOM:
                 if(game.hasRoom()){
+                    Gdx.app.log("zc", "hasRoom");
                     m = new Message(RE_REFRESH_ROOM);
                     m.setToIp(msg.getFromIp());
                     m.setRoom(game.getRoom());
@@ -278,8 +280,8 @@ public class NetController {
     }
 
     public void refreshRoom() {
-        Message m = new Message(REFRESH_ROOM);
         roomList.clear();
+        Message m = new Message(REFRESH_ROOM);
         m.setToIp(getBroadCastIP());
         sendCMD(m);
     }

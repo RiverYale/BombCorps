@@ -32,7 +32,7 @@ public abstract class DirectedGame implements ApplicationListener {
     protected NetController netController = new NetController();
 
     public void setScreen(AbstractGameScreen screen) {
-        setScreen(screen, null);
+        setScreen(screen,null);
     }
 
     public void loadLobbyScreen(){

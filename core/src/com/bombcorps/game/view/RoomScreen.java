@@ -575,19 +575,19 @@ public class RoomScreen extends AbstractGameScreen{
     public void toRedTeam(){
         if(myplayer.getTeam() == Constants.PLAYER.BLUE_TEAM && !myplayer.getReady()){
             room.switchTeam(myplayer);
-            Gdx.app.log("team",myplayer.getTeam()+"");
             game.getNetController().updatePlayer(myplayer);
-            Gdx.app.log("team",myplayer.getTeam()+"");
         }
+        Gdx.app.log("RedNum",room.getPlayerManager().getRedPlayerList().size+" ");
+        Gdx.app.log("BlueNum",room.getPlayerManager().getBluePlayerList().size+" ");
     }
 
     public void toBlueTeam(){
         if(myplayer.getTeam() == Constants.PLAYER.RED_TEAM && !myplayer.getReady()){
             room.switchTeam(myplayer);
-            Gdx.app.log("team",myplayer.getTeam()+"");
             game.getNetController().updatePlayer(myplayer);
-            Gdx.app.log("team",myplayer.getTeam()+"");
         }
+        Gdx.app.log("RedNum",room.getPlayerManager().getRedPlayerList().size+" ");
+        Gdx.app.log("BlueNum",room.getPlayerManager().getBluePlayerList().size+" ");
     }
 
     public void toReady(){
