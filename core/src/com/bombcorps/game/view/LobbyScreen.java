@@ -74,7 +74,6 @@ public class LobbyScreen extends AbstractGameScreen{
         super(game);
         this.game = game;
         netController = game.getNetController();
-        netController.openReceiveMsgThread();
         roomList = new ArrayList<RoomSelect>();
 
        // batch = new SpriteBatch();
@@ -417,7 +416,6 @@ public class LobbyScreen extends AbstractGameScreen{
     //刷新房间
     public void refreshRoomList(){
         netController.refreshRoom();
-        rebulidStage();
     }
 
 

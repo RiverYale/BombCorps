@@ -92,7 +92,7 @@ public class NetController {
                 }
 
             }
-        } catch (SocketException e) {
+        } catch (Exception e) {
             System.out.print("获取本地IP失败");
             e.printStackTrace();
         }
@@ -146,14 +146,17 @@ public class NetController {
                     byte[] data = new byte[1024 * 32];
                     DatagramPacket dp = new DatagramPacket(data, data.length);
                     ds.receive(dp);
-                    if(InetAddress.getLocalHost().getHostAddress().equals(dp.getAddress().getHostAddress())){
-                        continue;
-                    }
                     byte[] data2 = new byte[dp.getLength()];
                     // 得到接收的数据
                     System.arraycopy(data, 0, data2, 0, data2.length);
                     Message msg = (Message) toObject(data2);
                     ds.close();
+                    Gdx.app.log("zc", "get");
+                    //若是自己则不解析
+                    if(getLocalHostIp().equals(dp.getAddress().getHostAddress())){
+                        continue;
+                    }
+                    Gdx.app.log("zc", ""+ msg.getMsg());
                     // 解析消息
                     parse(msg);
                 } catch (Exception e) {}
@@ -197,12 +200,10 @@ public class NetController {
     }
 
     public void parse(Message msg) {
-        Gdx.app.log("zc", ""+ msg.getMsg());
         Message m;
         switch(msg.getMsg()){
             case REFRESH_ROOM:
                 if(game.hasRoom()){
-                    Gdx.app.log("zc", "hasRoom");
                     m = new Message(RE_REFRESH_ROOM);
                     m.setToIp(msg.getFromIp());
                     m.setRoom(game.getRoom());
@@ -211,6 +212,7 @@ public class NetController {
                 break;
             case RE_REFRESH_ROOM:
                 roomList.add(msg.getRoom());
+                game.updateLobbyScreen();
                 break;
             case ENTER_ROOM:
                 if(game.inRoom()){
@@ -223,6 +225,7 @@ public class NetController {
                         game.getRoom().addPlayer(msg.getTargetPlayer());
                     }
                 }
+                game.updateRoomScreen();
                 break;
             case QUIT_ROOM:
                 if(game.getRoom().getOwnerIp().equals(msg.getFromIp())){
@@ -230,15 +233,19 @@ public class NetController {
                 }else{
                     game.getRoom().removePlayer(msg.getTargetPlayer());
                 }
+                game.updateRoomScreen();
                 break;
             case UPDATE_PLAYER:
                 game.getRoom().updatePlayer(msg.getTargetPlayer());
+                game.updateRoomScreen();
                 break;
             case CHOOSE_MAP:
                 game.getRoom().setMapName(msg.getMap());
+                game.updateRoomScreen();
                 break;
             case ADD_AI:
                 game.getRoom().addAi();
+                game.updateRoomScreen();
                 break;
             case START:
                 game.loadGameScreen();
@@ -271,8 +278,8 @@ public class NetController {
     }
 
     public void refreshRoom() {
-        roomList.clear();
         Message m = new Message(REFRESH_ROOM);
+        roomList.clear();
         m.setToIp(getBroadCastIP());
         sendCMD(m);
     }
