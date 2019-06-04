@@ -168,7 +168,6 @@ public class NetController {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         try {
             ObjectOutputStream oos = new ObjectOutputStream(bos);
-            Gdx.app.log("zc", (obj instanceof Message)+"");
             oos.writeObject(obj);
             oos.flush();
             bytes = bos.toByteArray();
@@ -203,6 +202,7 @@ public class NetController {
         switch(msg.getMsg()){
             case REFRESH_ROOM:
                 if(game.hasRoom()){
+                    Gdx.app.log("zc", "hasRoom");
                     m = new Message(RE_REFRESH_ROOM);
                     m.setToIp(msg.getFromIp());
                     m.setRoom(game.getRoom());
@@ -284,18 +284,6 @@ public class NetController {
     }
 
     public void broadcastInRoom(Message m) {
-        // 查看bindGame
-        if (game == null) {
-            Gdx.app.log("game", "null");
-        } else if (game.getRoom() == null) {
-            Gdx.app.log("room","null");
-        } else if (game.getRoom().getPlayerManager() == null) {
-            Gdx.app.log("manager", "null");
-        } else if (game.getRoom().getPlayerManager().getAllPlayerList() == null) {
-            Gdx.app.log("list", "null");
-        }else{
-            Gdx.app.log("zc", "not null");
-        }
         for (Player p : game.getRoom().getPlayerManager().getAllPlayerList()) {
             m.setToIp(p.getIp());
             sendCMD(m);

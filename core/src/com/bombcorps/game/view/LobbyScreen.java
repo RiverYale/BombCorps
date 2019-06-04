@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -35,9 +36,6 @@ public class LobbyScreen extends AbstractGameScreen{
     private Image lsBackground; //大厅背景
     private Image roomListBackground;   //大厅列表背景
 
-//    private Stage perIfoStage;  //个人信息舞台
-//    private Stage roomListStage; //房间列表舞台
-
     private Label labelShowName;    //昵称
     private Label labelShowRate;    //胜率
     private Label labelShowWinAmount;   //胜场
@@ -64,6 +62,8 @@ public class LobbyScreen extends AbstractGameScreen{
    // private ArrayList<String> mode;
 
     private Stage stage;
+    private Stage stage2;
+    private SpriteBatch batch;
 
     private NetController netController;
 
@@ -73,7 +73,12 @@ public class LobbyScreen extends AbstractGameScreen{
         super(game);
         this.game = game;
         netController = game.getNetController();
+        netController.openReceiveMsgThread();
         roomList = new ArrayList<RoomSelect>();
+
+        batch = new SpriteBatch();
+        stage2 = new Stage();
+        Gdx.input.setInputProcessor(stage2);
     }
 
     @Override
@@ -87,6 +92,12 @@ public class LobbyScreen extends AbstractGameScreen{
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
+
+        batch.begin();
+        bulidRoomList();
+        drawRoomList();
+        batch.end();
+
     }
 
     @Override
@@ -135,31 +146,31 @@ public class LobbyScreen extends AbstractGameScreen{
 
         DataController dc = DataController.instance;
 
-        String showName = "Name:" +  dc.getName(); //+ 昵称
+        String showName = "昵称:" +  dc.getName(); //+ 昵称
         labelShowName = new Label(showName,style);
-        labelShowName.setFontScale(0.002f * width);
+        labelShowName.setFontScale(0.0018f * width);
         //labelShowName.debug();
 
-        String showRate = "Rate:" + dc.getPersonalData(DataController.WIN_NUM)+"/"+dc.getPersonalData(DataController.GAME_NUM);  //+ 胜率
+        String showRate = "胜率:" + dc.getPersonalData(DataController.WIN_NUM)+"/"+dc.getPersonalData(DataController.GAME_NUM);  //+ 胜率
         labelShowRate = new Label(showRate,style);
-        labelShowRate.setFontScale(0.002f * width);
+        labelShowRate.setFontScale(0.0018f * width);
 
-        String showWinAmount = "Win:" + dc.getPersonalData(DataController.WIN_NUM);  //+ 胜场
+        String showWinAmount = "胜场:" + dc.getPersonalData(DataController.WIN_NUM);  //+ 胜场
         labelShowWinAmount = new Label(showWinAmount,style);
-        labelShowWinAmount.setFontScale(0.002f * width);
+        labelShowWinAmount.setFontScale(0.0018f * width);
 
-        String showProperty = "Coins:" + dc.getPersonalData(DataController.MONEY); //+ 金币数
+        String showProperty = "金币:" + dc.getPersonalData(DataController.MONEY); //+ 金币数
         labelShowProperty = new Label(showProperty,style);
-        labelShowProperty.setFontScale(0.002f * width);
+        labelShowProperty.setFontScale(0.0018f * width);
         font.setColor(0,0,0,0);
         //个人信息布局
-        recordTable.add(labelShowName).left();
+        recordTable.add(labelShowName).left().height(70);
         recordTable.row();
-        recordTable.add(labelShowRate).left();
+        recordTable.add(labelShowRate).left().height(70);
         recordTable.row();
-        recordTable.add(labelShowWinAmount).left();
+        recordTable.add(labelShowWinAmount).left().height(70);
         recordTable.row();
-        recordTable.add(labelShowProperty).left();
+        recordTable.add(labelShowProperty).left().height(70);
         Stack stackRecord = new Stack();
         recordTable.setPosition(0.08f * width,0.15f * height);
         stackRecord.setSize(0.35f * width,0.75f * height);
@@ -233,8 +244,8 @@ public class LobbyScreen extends AbstractGameScreen{
         stage.addActor(roomListBackground);
         stage.addActor(recordTable);
 
-        bulidRoomList();
-        drawRoomList();
+        //bulidRoomList();
+        //drawRoomList();
         drawButton();
         stage.addActor(winBuildRoom);
         winBuildRoom.setVisible(false);
@@ -242,7 +253,7 @@ public class LobbyScreen extends AbstractGameScreen{
     //建造房间列表
     public void bulidRoomList(){
         //网端获取房间数numOfRoom
-        numOfRoom  = 0;
+        numOfRoom  = game.getNetController().getRoomList().size();
         roomList.clear();
         for(int i=0;i<numOfRoom;i++){
             if (!netController.getRoomList().get(i).isFull()){
@@ -267,6 +278,7 @@ public class LobbyScreen extends AbstractGameScreen{
 
     //显示房间列表
     public void drawRoomList(){
+        stage2.clear();
         float originX = width * 0.488f;
         float originY = height * 0.655f;
         float intervalY = height * 0.105f;
@@ -275,7 +287,8 @@ public class LobbyScreen extends AbstractGameScreen{
                 break;
             }
             roomList.get(i + numOfPage).setPosition(originX,originY - i * intervalY);
-            roomList.get(i + numOfPage).addToStage(stage);
+            roomList.get(i + numOfPage).addToStage(stage2);
+            roomList.get(i + numOfPage).addToBatch(batch);
         }
         for(int i = 0;i < 4;i++){
             if(roomList.size() == 0){
@@ -284,6 +297,7 @@ public class LobbyScreen extends AbstractGameScreen{
             if (roomList.get(i + numOfPage).isClick()){
                 game.loadinRoomScreen(originNum.get(i + numOfPage));
             }
+            roomList.get(i +numOfPage).update(Gdx.graphics.getDeltaTime());
         }
     }
 
@@ -325,7 +339,7 @@ public class LobbyScreen extends AbstractGameScreen{
         stage.addActor(btnPageUp);
         stage.addActor(btnPageDown);
         stage.addActor(btnBackToMenu);
-        stage.addActor(btnLobbyOptions);
+        //stage.addActor(btnLobbyOptions);
 
         setButtonClick();
     }
@@ -389,7 +403,8 @@ public class LobbyScreen extends AbstractGameScreen{
 
     //刷新房间
     public void refreshRoomList(){
-        rebulidStage();
+        netController.refreshRoom();
+        //rebulidStage();
     }
 
 
@@ -397,7 +412,7 @@ public class LobbyScreen extends AbstractGameScreen{
     private void roomListPageUp(){
         if(numOfPage > 0){
             numOfPage --;
-            rebulidStage();
+            //rebulidStage();
         }
     }
 
@@ -405,7 +420,7 @@ public class LobbyScreen extends AbstractGameScreen{
     private void roomListPageDown(){
         if(((numOfPage + 1) * 4 )< numOfRoom){
             numOfPage ++;
-            rebulidStage();
+            //rebulidStage();
         }
     }
 }

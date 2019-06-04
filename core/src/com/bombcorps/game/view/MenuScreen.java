@@ -321,7 +321,6 @@ public class MenuScreen extends AbstractGameScreen {
     }
     private void loadSettings(){
         DataController prefs = DataController.instance;
-        prefs.loadSettings();
         sldSound.setValue(prefs.getVolSound());
         sldMusic.setValue(prefs.getVolMusic());
         tfName.setText(prefs.getName());

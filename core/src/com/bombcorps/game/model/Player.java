@@ -25,12 +25,12 @@ public class Player implements Serializable {
     public Bomb bomb;
 
     private TEAM team;
-    private enum TEAM{
+    public enum TEAM{
         RED,BLUE
     }
 
     private STATE state;
-    private enum STATE{
+    public enum STATE{
         LOCAL, OTHERS
     }
 
@@ -38,6 +38,20 @@ public class Player implements Serializable {
         ready = false;
         this.ID = ID;
         heroType = Constants.NONE;
+    }
+
+    public Player(Message.MPlayer m) {
+        ID = m.ID;
+        IP = m.IP;
+        heroType = m.heroType;
+        level = m.level;
+        ready = m.ready;
+        team = m.team;
+        state = m.state;
+    }
+
+    public Message.MPlayer getMPlayer() {
+        return new Message.MPlayer(ID, IP, heroType, level, ready, team, state);
     }
 
     public void creatHero(SkillAndBuff skillAndBuff, Bomb bomb){

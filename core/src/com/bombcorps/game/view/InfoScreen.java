@@ -207,7 +207,6 @@ public class InfoScreen extends AbstractGameScreen implements InputProcessor{
         font.draw(batch, description[index], skillInfoBoard.getX()+15, skillInfoBoard.getY() + 200);
 
         //升级按钮
-
         font.getData().setScale(0.8f);
         int cost = DataController.instance.getUpLevelCost(index+1);
         if (cost > DataController.instance.getPersonalData(DataController.MONEY)) {
@@ -263,8 +262,7 @@ public class InfoScreen extends AbstractGameScreen implements InputProcessor{
         if (upgrade.getBoundingRectangle().contains(v.x, v.y)) {
             DataController.instance.upLevel(index + 1);
         } else if(back.getBoundingRectangle().contains(v.x, v.y)){
-            //TODO
-            Gdx.app.exit();
+            game.loadLobbyScreen();
         }
 
         return false;

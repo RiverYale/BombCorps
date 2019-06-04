@@ -14,6 +14,7 @@ import com.bombcorps.game.controller.CameraController;
 import com.bombcorps.game.controller.DataController;
 import com.bombcorps.game.controller.InputController;
 import com.bombcorps.game.controller.NetController;
+import com.bombcorps.game.model.Message;
 import com.bombcorps.game.model.Player;
 import com.bombcorps.game.view.DirectedGame;
 
@@ -25,7 +26,10 @@ public class BombCorps extends DirectedGame {
 		AssetsController.instance.loadTexture("lobbyscreen/lobbyscreen.txt");
 		AssetsController.instance.loadTexture("roomscreen/roomscreen.txt");
 		AssetsController.instance.loadTexture("infoscreen/infoscreen.txt");
+		AssetsController.instance.loadTexture("map/map.txt");
 		AssetsController.instance.loadTexture("hero/heroes.txt");
+		DataController.instance.loadSettings();
+		DataController.instance.loadPersonalData();
 		loadMenuScreen();
 //		DataController.instance.loadPersonalData();
 //		DataController.instance.loadSettings();

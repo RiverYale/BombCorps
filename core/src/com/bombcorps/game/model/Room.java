@@ -21,6 +21,25 @@ public class Room implements Serializable {
         this.LIMIT = limit;
     }
 
+    public Room(Message.MRoom m) {
+        ownerIp = m.ownerIp;
+        mapName = m.mapName;
+        LIMIT = m.LIMIT;
+        heroRegion = new TextureRegion[6];
+        heroRegion[0] = AssetsController.instance.getRegion("Sparda_stand");
+        heroRegion[1] = AssetsController.instance.getRegion("Protector_stand");
+        heroRegion[2] = AssetsController.instance.getRegion("Angel_stand");
+        heroRegion[3] = AssetsController.instance.getRegion("Sniper_stand");
+        heroRegion[4] = AssetsController.instance.getRegion("Wizard_stand");
+
+        playerManager = new PlayerManager();
+        playerManager.addPlayerList(m.playerList);
+    }
+
+    public Message.MRoom getMRoom() {
+        return new Message.MRoom(ownerIp, mapName, LIMIT, playerManager.getAllPlayerList());
+    }
+
     public void addPlayer(Player player){
         add(player.getIp(), player.getID());
     }
