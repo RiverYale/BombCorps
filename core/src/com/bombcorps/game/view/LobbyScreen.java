@@ -73,6 +73,7 @@ public class LobbyScreen extends AbstractGameScreen{
         super(game);
         this.game = game;
         netController = game.getNetController();
+        netController.openReceiveMsgThread();
         roomList = new ArrayList<RoomSelect>();
 
         batch = new SpriteBatch();
