@@ -3,6 +3,7 @@ package com.bombcorps.game.model;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.model.Constants;
@@ -24,16 +25,16 @@ public class Pillar {
     }
 
 
-    private Texture pillarMiddle;
-    private Texture pillarBase;
+    private TextureRegion pillarMiddle;
+    private TextureRegion pillarBase;
     private int length;
     public Pillar(){
         init();
     }
 
     private void init(){
-        pillarBase = AssetsController.instance.getRegion("pillarBase").getTexture();
-        pillarMiddle = AssetsController.instance.getRegion("pillarMiddle").getTexture();
+        pillarBase = AssetsController.instance.getRegion("pillarBase");
+        pillarMiddle = AssetsController.instance.getRegion("pillarMiddle");
         dimension = new Vector2(width/ Constants.VIEWPORT_WIDTH,height/Constants.VIEWPORT_HEIGHT);
         position = new Vector2(0,0);
         state = State.MIDDLE;

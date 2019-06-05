@@ -15,14 +15,14 @@ public class Rock {
     public Vector2 dimension;
     public Rectangle rectangle;
 
-    private Texture region;
+    private TextureRegion region;
     private int length;
     public Rock(){
         init();
     }
 
     private void init(){
-        region = AssetsController.instance.getRegion("rock").getTexture();
+        region = AssetsController.instance.getRegion("rock");
         dimension = new Vector2(width/Constants.VIEWPORT_WIDTH,height/Constants.VIEWPORT_HEIGHT);
         position = new Vector2(0,0);
         rectangle = new Rectangle(0,0,dimension.x,dimension.y);
