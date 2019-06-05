@@ -172,7 +172,7 @@ public class World {
     }
 
     public void render(SpriteBatch batch){
-        batch.draw(AssetsController.instance.getRegion("background"),0,0,Gdx.graphics.getWidth()/Constants.VIEWPORT_WIDTH*32,Gdx.graphics.getHeight()/Constants.VIEWPORT_HEIGHT*20);
+        batch.draw(AssetsController.instance.getRegion("gamebackground"),0,0,Gdx.graphics.getWidth()/Constants.VIEWPORT_WIDTH*32,Gdx.graphics.getHeight()/Constants.VIEWPORT_HEIGHT*20);
         for (Rock rock : rocks){
             rock.render(batch);
         }

@@ -22,9 +22,8 @@ public class WorldRenderer {
     }
 
     private void init(){
-        // batch = new SpriteBatch();
+        //batch = new SpriteBatch();
         camera = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-        worldController.getCameraController().applyTo(camera);
         camera.position.add(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2,0);
         camera.update();
     }
@@ -35,7 +34,7 @@ public class WorldRenderer {
 
 
     private void renderWorld(SpriteBatch batch){
-
+        worldController.getCameraController().applyTo(camera);
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         worldController.getWorld().render(batch);

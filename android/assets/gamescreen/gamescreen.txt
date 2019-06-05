@@ -80,7 +80,7 @@ winresult
   orig: 156, 68
   offset: 0, 0
   index: -1
-background
+gamebackground
   rotate: false
   xy: 2, 2
   size: 1059, 708
