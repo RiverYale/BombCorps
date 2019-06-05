@@ -104,6 +104,12 @@ public class NetController {
     }
 
     public void sendCMD(Message msg) {
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Gdx.app.log(getLocalHostIp()+" to", msg.getToIp());
         (new UdpSend(msg)).start();
     }
 
@@ -151,12 +157,10 @@ public class NetController {
                     System.arraycopy(data, 0, data2, 0, data2.length);
                     Message msg = (Message) toObject(data2);
                     ds.close();
-                    Gdx.app.log("zc", "get");
                     //若是自己则不解析
                     if(getLocalHostIp().equals(dp.getAddress().getHostAddress())){
                         continue;
                     }
-                    Gdx.app.log("zc", ""+ msg.getMsg());
                     // 解析消息
                     parse(msg);
                 } catch (Exception e) {}
@@ -205,7 +209,6 @@ public class NetController {
         switch(msg.getMsg()){
             case REFRESH_ROOM:
                 if(game.hasRoom()){
-                    Gdx.app.log("zc", "hasRoom");
                     m = new Message(RE_REFRESH_ROOM);
                     m.setToIp(msg.getFromIp());
                     m.setRoom(game.getRoom());
@@ -222,6 +225,7 @@ public class NetController {
                         if(!game.getRoom().isFull()){
                             m = new Message(ENTER_ROOM);
                             broadcastInRoom(m);
+                            game.getRoom().addPlayer(msg.getTargetPlayer());
                         }
                     }else{
                         game.getRoom().addPlayer(msg.getTargetPlayer());
@@ -238,6 +242,7 @@ public class NetController {
                 game.updateRoomScreen();
                 break;
             case UPDATE_PLAYER:
+                Gdx.app.log("zc", "update player");
                 game.getRoom().updatePlayer(msg.getTargetPlayer());
                 game.updateRoomScreen();
                 break;
@@ -281,6 +286,7 @@ public class NetController {
 
     public void refreshRoom() {
         roomList.clear();
+        game.updateLobbyScreen();
         Message m = new Message(REFRESH_ROOM);
         m.setToIp(getBroadCastIP());
         sendCMD(m);
@@ -291,11 +297,13 @@ public class NetController {
         m.setToIp(roomIp);
         m.setTargetPlayer(me);
         sendCMD(m);
-        //Gdx.app.log("someone","join in");
     }
 
     public void broadcastInRoom(Message m) {
         for (Player p : game.getRoom().getPlayerManager().getAllPlayerList()) {
+            if(p.getIp().equals(getLocalHostIp())){
+                continue;
+            }
             m.setToIp(p.getIp());
             sendCMD(m);
         }

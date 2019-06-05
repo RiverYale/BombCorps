@@ -78,6 +78,7 @@ public class RoomScreen extends AbstractGameScreen{
     private Player myplayer;
 
     private int readyNum = 0;
+    boolean b_error = false;
 
     private BitmapFont font = AssetsController.instance.font;
     private Label.LabelStyle stylePersonNum = new Label.LabelStyle(font, Color.WHITE);
@@ -165,9 +166,9 @@ public class RoomScreen extends AbstractGameScreen{
         batchAddMap();
         batchAddPersonNum();
         bulidTeam();
-        if(ownerQuit()){
+        if(b_error){
+            Gdx.app.log("zc", "owner quit");
             batchAddErrorMsg();
-            errorQuit();
         }
 
         batch.end();
@@ -564,6 +565,7 @@ public class RoomScreen extends AbstractGameScreen{
                 readyNum ++;
             }
         }
+        Gdx.app.log("zc", readyNum+"");
     }
 
     public void toCancel(){
@@ -590,7 +592,8 @@ public class RoomScreen extends AbstractGameScreen{
         btnMapright.setTouchable(Touchable.disabled);
         doorRed.setTouchable(Touchable.disabled);
         doorBlue.setTouchable(Touchable.disabled);
-        errorMsg.setVisible(true);
+        //errorMsg.setVisible(true);
+        b_error = true;
     }
 
     public boolean ownerQuit(){
