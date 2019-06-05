@@ -201,13 +201,13 @@ public class PlayerManager {
 
     }
 
-    public Array<Player> getPlayerListRed() {
-        return playerListRed;
-    }
+//    public Array<Player> getPlayerListRed() {
+//        return playerListRed;
+//    }
 
-    public Array<Player> getPlayerListBlue() {
-        return playerListBlue;
-    }
+//    public Array<Player> getPlayerListBlue() {
+//        return playerListBlue;
+//    }
 
     public SkillAndBuff getSkillAndBuff(){
         return skillAndBuff;

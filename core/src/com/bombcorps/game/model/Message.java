@@ -3,6 +3,7 @@ package com.bombcorps.game.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -156,6 +157,7 @@ public class Message implements Serializable{
             this.playerList = new ArrayList<MPlayer>();
             for (Player p : playerList) {
                 this.playerList.add(p.getMPlayer());
+                Gdx.app.log("level", ""+p.getLevel());
             }
         }
     }

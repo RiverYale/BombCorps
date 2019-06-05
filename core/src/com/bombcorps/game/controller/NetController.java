@@ -92,7 +92,7 @@ public class NetController {
                 }
 
             }
-        } catch (SocketException e) {
+        } catch (Exception e) {
             System.out.print("获取本地IP失败");
             e.printStackTrace();
         }
@@ -104,6 +104,12 @@ public class NetController {
     }
 
     public void sendCMD(Message msg) {
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Gdx.app.log(getLocalHostIp()+" to", msg.getToIp());
         (new UdpSend(msg)).start();
     }
 
@@ -146,14 +152,15 @@ public class NetController {
                     byte[] data = new byte[1024 * 32];
                     DatagramPacket dp = new DatagramPacket(data, data.length);
                     ds.receive(dp);
-                    if(InetAddress.getLocalHost().getHostAddress().equals(dp.getAddress().getHostAddress())){
-                        continue;
-                    }
                     byte[] data2 = new byte[dp.getLength()];
                     // 得到接收的数据
                     System.arraycopy(data, 0, data2, 0, data2.length);
                     Message msg = (Message) toObject(data2);
                     ds.close();
+                    //若是自己则不解析
+                    if(getLocalHostIp().equals(dp.getAddress().getHostAddress())){
+                        continue;
+                    }
                     // 解析消息
                     parse(msg);
                 } catch (Exception e) {}
@@ -202,7 +209,6 @@ public class NetController {
         switch(msg.getMsg()){
             case REFRESH_ROOM:
                 if(game.hasRoom()){
-                    Gdx.app.log("zc", "hasRoom");
                     m = new Message(RE_REFRESH_ROOM);
                     m.setToIp(msg.getFromIp());
                     m.setRoom(game.getRoom());
@@ -211,6 +217,7 @@ public class NetController {
                 break;
             case RE_REFRESH_ROOM:
                 roomList.add(msg.getRoom());
+                game.updateLobbyScreen();
                 break;
             case ENTER_ROOM:
                 if(game.inRoom()){
@@ -218,11 +225,13 @@ public class NetController {
                         if(!game.getRoom().isFull()){
                             m = new Message(ENTER_ROOM);
                             broadcastInRoom(m);
+                            game.getRoom().addPlayer(msg.getTargetPlayer());
                         }
                     }else{
                         game.getRoom().addPlayer(msg.getTargetPlayer());
                     }
                 }
+                game.updateRoomScreen();
                 break;
             case QUIT_ROOM:
                 if(game.getRoom().getOwnerIp().equals(msg.getFromIp())){
@@ -230,15 +239,20 @@ public class NetController {
                 }else{
                     game.getRoom().removePlayer(msg.getTargetPlayer());
                 }
+                game.updateRoomScreen();
                 break;
             case UPDATE_PLAYER:
+                Gdx.app.log("zc", "update player");
                 game.getRoom().updatePlayer(msg.getTargetPlayer());
+                game.updateRoomScreen();
                 break;
             case CHOOSE_MAP:
                 game.getRoom().setMapName(msg.getMap());
+                game.updateRoomScreen();
                 break;
             case ADD_AI:
                 game.getRoom().addAi();
+                game.updateRoomScreen();
                 break;
             case START:
                 game.loadGameScreen();
@@ -272,6 +286,7 @@ public class NetController {
 
     public void refreshRoom() {
         roomList.clear();
+        game.updateLobbyScreen();
         Message m = new Message(REFRESH_ROOM);
         m.setToIp(getBroadCastIP());
         sendCMD(m);
@@ -282,11 +297,13 @@ public class NetController {
         m.setToIp(roomIp);
         m.setTargetPlayer(me);
         sendCMD(m);
-        Gdx.app.log("someone","join in");
     }
 
     public void broadcastInRoom(Message m) {
         for (Player p : game.getRoom().getPlayerManager().getAllPlayerList()) {
+            if(p.getIp().equals(getLocalHostIp())){
+                continue;
+            }
             m.setToIp(p.getIp());
             sendCMD(m);
         }

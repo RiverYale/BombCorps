@@ -14,25 +14,25 @@ import com.bombcorps.game.model.Room;
 import com.bombcorps.game.model.World;
 
 public abstract class DirectedGame implements ApplicationListener {
-    private boolean init;
-    private AbstractGameScreen currScreen;
-    private AbstractGameScreen nextScreen;
-    private FrameBuffer currFbo;
-    private FrameBuffer nextFbo;
-    private SpriteBatch batch;
-    private float t;
-    private ScreenTransition screenTransition;
+    protected boolean init;
+    protected AbstractGameScreen currScreen;
+    protected AbstractGameScreen nextScreen;
+    protected FrameBuffer currFbo;
+    protected FrameBuffer nextFbo;
+    protected SpriteBatch batch;
+    protected float t;
+    protected ScreenTransition screenTransition;
 
-    private MenuScreen menuScreen;
-    private LobbyScreen lobbyScreen;
-    private RoomScreen roomScreen;
-    private GameScreen gameScreen;
-    private InfoScreen infoScreen;
-    private WorldController worldController;
-    private NetController netController = new NetController();
+    protected MenuScreen menuScreen;
+    protected LobbyScreen lobbyScreen;
+    protected RoomScreen roomScreen;
+    protected GameScreen gameScreen;
+    protected InfoScreen infoScreen;
+    protected WorldController worldController;
+    protected NetController netController = new NetController();
 
     public void setScreen(AbstractGameScreen screen) {
-        setScreen(screen, null);
+        setScreen(screen,null);
     }
 
     public void loadLobbyScreen(){
@@ -43,7 +43,8 @@ public abstract class DirectedGame implements ApplicationListener {
     }
 
     public void loadRoomScreen(Room room){
-        roomScreen = new RoomScreen(this,NetController.getLocalHostIp(),room.getLIMIT(),room);
+        this.getNetController().openReceiveMsgThread();
+        roomScreen = new RoomScreen(this,room.getOwnerIp(),room.getLIMIT(),room);
         netController.bindGame(this);
         setScreen(roomScreen);
         Constants.CurrentScreenFlag = Constants.RoomScreenFlag;
@@ -100,7 +101,7 @@ public abstract class DirectedGame implements ApplicationListener {
     }
 
     public void errorQuit(){
-//        roomScreen.errorQuit();
+        roomScreen.errorQuit();
     }
 
     public World getWorld(){
@@ -127,14 +128,19 @@ public abstract class DirectedGame implements ApplicationListener {
         return false;
     }
 
+    public void updateLobbyScreen() {
+        lobbyScreen.rebulidStage();
+    }
+
+    public void updateRoomScreen() {
+//        roomScreen.rebulidStage();
+    }
+
     public Room getRoom(){
         return roomScreen.getRoom();
     }
 
     public NetController getNetController(){
-        if (netController == null) {
-            Gdx.app.log("zc", "netNull");
-        }
         return netController;
     }
 

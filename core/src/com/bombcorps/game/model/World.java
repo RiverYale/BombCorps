@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.bombcorps.game.Pillar;
 import com.bombcorps.game.controller.AssetsController;
 
 import java.util.logging.Level;
@@ -144,13 +143,13 @@ public class World {
                 }
                 //英雄出生点
                 else if (BLOCK_TYPE.PLAYER_SPAWNPOINT.sameColor(currentPixel)) {
-                    if(levelTurnBlue <playerManager.getPlayerListBlue().size){
+                    if(levelTurnBlue <playerManager.getBluePlayerList().size){
                         Vector2 position = new Vector2(pixelX*width/Constants.VIEWPORT_WIDTH,baseHeight*height/Constants.VIEWPORT_HEIGHT );
-                        playerManager.getPlayerListBlue().get(levelTurnBlue).getMyHero().setPosition(position);
+                        playerManager.getBluePlayerList().get(levelTurnBlue).getMyHero().setPosition(position);
                         levelTurnBlue++;
                     }else if(levelTurnRed < playerManager.getRedPlayerList().size){
                         Vector2 position = new Vector2(pixelX*width/Constants.VIEWPORT_WIDTH,baseHeight*height/Constants.VIEWPORT_HEIGHT );
-                        playerManager.getPlayerListRed().get(levelTurnRed).getMyHero().setPosition(position);
+                        playerManager.getBluePlayerList().get(levelTurnRed).getMyHero().setPosition(position);
                         levelTurnRed++;
                     }
 
