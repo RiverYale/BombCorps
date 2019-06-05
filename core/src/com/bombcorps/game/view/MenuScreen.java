@@ -339,6 +339,7 @@ public class MenuScreen extends AbstractGameScreen {
         textButtonAbout.setVisible(true);
         textButtonSettings.setVisible(true);
         textButtonPlay.setVisible(true);
+        AudioController.instance.onSettingsUpdated();
     }
     private void onOptionsClicked(){
         loadSettings();
@@ -385,7 +386,7 @@ public class MenuScreen extends AbstractGameScreen {
         tbl.add(sldSound).width(sldSound.getWidth()*width/1280).padTop(20*width/1280);
         tbl.row();
         //添加music标签 音乐滑动控件
-        Label musicLbl = new Label("Music",new Label.LabelStyle(font,font.getColor()));
+        Label musicLbl = new Label("music",new Label.LabelStyle(font,font.getColor()));
         tbl.add(musicLbl).padTop(20*width/1280);
         musicLbl.setFontScale(1.3f*width/1280);
         sldMusic = new Slider(0.0f,1.0f,0.1f,false,sliderStyle);

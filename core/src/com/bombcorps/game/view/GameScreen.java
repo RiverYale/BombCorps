@@ -459,7 +459,10 @@ public class GameScreen extends AbstractGameScreen{
 
     public String myHeroType(){
         int i;
-        for(i=0;worldController.getPlayers().get(i).getState() != Constants.PLAYER.STATE_LOCAL&&i<worldController.getPlayers().size;i++){
+        for(i=0;i<worldController.getPlayers().size;i++){
+            if(worldController.getPlayers().get(i).getState() == Constants.PLAYER.STATE_LOCAL){
+                break;
+            }
 
         }
         i = worldController.getPlayers().get(i).getHeroType();
@@ -664,7 +667,7 @@ public class GameScreen extends AbstractGameScreen{
         tbl.add(sldSound).width(sldSound.getWidth()*width/1280);
         tbl.row();
         //添加music标签 音乐滑动控件
-        Label musicLbl = new Label("Music",new Label.LabelStyle(font,font.getColor()));
+        Label musicLbl = new Label("music",new Label.LabelStyle(font,font.getColor()));
         tbl.add(musicLbl);
         musicLbl.setFontScale(1.5f*width/1280);
         sldMusic = new Slider(0.0f,1.0f,0.1f,false,sliderStyle);
