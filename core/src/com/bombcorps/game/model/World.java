@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.bombcorps.game.controller.AssetsController;
@@ -104,7 +105,7 @@ public class World {
     private void init(String filename){
         //物品
         rocks = new Array<Rock>();
-        Pixmap pixmap = new Pixmap(Gdx.files.internal(filename));
+        Pixmap pixmap = new Pixmap(Gdx.files.internal("map/map"+filename+".png"));
         MapWidth = pixmap.getWidth()*width/Constants.VIEWPORT_WIDTH;
         bonusManager = new BonusManager((int)MapWidth);
         //从左上到右下扫描
