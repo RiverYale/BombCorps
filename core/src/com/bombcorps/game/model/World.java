@@ -105,6 +105,7 @@ public class World {
     private void init(String filename){
         //物品
         rocks = new Array<Rock>();
+        pillars = new Array<Pillar>();
         Pixmap pixmap = new Pixmap(Gdx.files.internal("map/map"+filename+".png"));
         MapWidth = pixmap.getWidth()*width/Constants.VIEWPORT_WIDTH;
         bonusManager = new BonusManager((int)MapWidth);
