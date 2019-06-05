@@ -23,6 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.controller.DataController;
 import com.bombcorps.game.controller.WorldController;
@@ -93,6 +94,7 @@ public class GameScreen extends AbstractGameScreen{
         this.worldController = worldController;
         worldRenderer = new WorldRenderer(worldController);
         batch = new SpriteBatch();
+        stage = new Stage();
     }
 
     @Override
