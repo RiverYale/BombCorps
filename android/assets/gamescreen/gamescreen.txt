@@ -1,4 +1,5 @@
-gamescreen.png
+gameScreen.png
+size: 1785, 1015
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
@@ -141,4 +142,18 @@ sliderkuai
   size: 12, 18
   orig: 12, 18
   offset: 0, 0
+  index: -1
+pillarBase
+  rotate: false
+  xy: 1753, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+pillarMiddle
+  rotate: false
+  xy: 1753, 32
+  size: 24, 32
+  orig: 32, 32
+  offset: 4, 0
   index: -1
