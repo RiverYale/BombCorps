@@ -57,7 +57,7 @@ public class DataController {
         for(int i=0;i<personalDataKey.length;i++){
             personalDataVal[i] = prefs.getInteger(personalDataKey[i], 0);
         }
-        personalDataVal[0] = 300;
+        personalDataVal[0] = 3000;
     }
 
     public int getPersonalData(int type){
@@ -65,6 +65,9 @@ public class DataController {
     }
 
     public int getUpLevelCost(int type) {
+        if(personalDataVal[type]>=Constants.HERO_MAX_LEVEL){
+            return -1;
+        }
         return upLevelCost[personalDataVal[type]];
     }
 

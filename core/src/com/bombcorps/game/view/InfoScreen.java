@@ -209,13 +209,19 @@ public class InfoScreen extends AbstractGameScreen implements InputProcessor{
         //升级按钮
         font.getData().setScale(0.8f);
         int cost = DataController.instance.getUpLevelCost(index+1);
-        if (cost > DataController.instance.getPersonalData(DataController.MONEY)) {
+        if(cost == -1){
             font.setColor(Color.GRAY);
-        } else {
-            font.setColor(255/255f, 246/255f, 143/255f, 1);
+            font.draw(batch, "升级", upgrade.getX()+25, upgrade.getY()+20);
+            font.setColor(Color.BLACK);
+        }else{
+            if (cost > DataController.instance.getPersonalData(DataController.MONEY)) {
+                font.setColor(Color.GRAY);
+            } else {
+                font.setColor(255/255f, 246/255f, 143/255f, 1);
+            }
+            font.draw(batch, "升级("+cost+")", upgrade.getX()+5, upgrade.getY()+20);
+            font.setColor(Color.BLACK);
         }
-        font.draw(batch, "升级("+cost+")", upgrade.getX()+5, upgrade.getY()+20);
-        font.setColor(Color.BLACK);
 
         //属性字
         char s[] = "☆☆☆☆☆".toCharArray();
