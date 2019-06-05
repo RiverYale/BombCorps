@@ -99,7 +99,6 @@ public class LobbyScreen extends AbstractGameScreen{
             }
             //Gdx.app.log("i numOfPage",i+" "+numOfPage);
             if (roomList.get(i + numOfPage*4).isClick()){
-                Gdx.app.log("Room","click");
                 game.loadRoomScreen(game.getNetController().getRoomList().get(i + numOfPage));
             }
             roomList.get(i +numOfPage*4).update();
@@ -170,13 +169,13 @@ public class LobbyScreen extends AbstractGameScreen{
         labelShowProperty.setFontScale(0.0018f * width);
         font.setColor(0,0,0,0);
         //个人信息布局
-        recordTable.add(labelShowName).left().height(70);
+        recordTable.add(labelShowName).left().height(0.14f*height);
         recordTable.row();
-        recordTable.add(labelShowWinAmount).left().height(70);
+        recordTable.add(labelShowWinAmount).left().height(0.14f*height);
         recordTable.row();
-        recordTable.add(labelShowRate).left().height(70);
+        recordTable.add(labelShowRate).left().height(0.14f*height);
         recordTable.row();
-        recordTable.add(labelShowProperty).left().height(70);
+        recordTable.add(labelShowProperty).left().height(0.14f*height);
         Stack stackRecord = new Stack();
         recordTable.setPosition(0.08f * width,0.15f * height);
         stackRecord.setSize(0.35f * width,0.75f * height);
@@ -423,7 +422,7 @@ public class LobbyScreen extends AbstractGameScreen{
     private void roomListPageUp(){
         if(numOfPage > 0){
             numOfPage --;
-            //rebulidStage();
+            rebulidStage();
         }
     }
 
@@ -431,7 +430,7 @@ public class LobbyScreen extends AbstractGameScreen{
     private void roomListPageDown(){
         if(((numOfPage + 1) * 4 )< numOfRoom){
             numOfPage ++;
-            //rebulidStage();
+            rebulidStage();
         }
     }
 }

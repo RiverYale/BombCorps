@@ -43,7 +43,8 @@ public abstract class DirectedGame implements ApplicationListener {
     }
 
     public void loadRoomScreen(Room room){
-        roomScreen = new RoomScreen(this,NetController.getLocalHostIp(),room.getLIMIT(),room);
+        this.getNetController().openReceiveMsgThread();
+        roomScreen = new RoomScreen(this,room.getOwnerIp(),room.getLIMIT(),room);
         netController.bindGame(this);
         setScreen(roomScreen);
         Constants.CurrentScreenFlag = Constants.RoomScreenFlag;

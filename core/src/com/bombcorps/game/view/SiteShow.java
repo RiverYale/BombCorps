@@ -32,9 +32,7 @@ public class SiteShow {
     private float height = Gdx.graphics.getHeight();
 
     SiteShow(int heroSelect,String playerId,int level){
-        this.heroSelect = heroSelect;
         table = new Table();
-        //table.setSize(100,100);
         stack = new Stack();
         stack.setSize(0.111f * width,0.16f * height);
 
@@ -83,20 +81,19 @@ public class SiteShow {
     }
 
     public void setPosition(float x,float y){
-        //Gdx.app.log("heroselect",heroSelect+"");
-        hero[0].setSize((heroWidth[0]/900)*width,(heroHeight[0]/500)*height);
-        hero[0].setPosition(x - hero[0].getWidth() / 2,y + 0.04f * height);
-        //hero[heroSelect].debug();
+       // Gdx.app.log("heroselect",""+heroSelect);
+        hero[heroSelect].setSize((heroWidth[heroSelect]/900)*width,(heroHeight[heroSelect]/500)*height);
+        hero[heroSelect].setPosition(x - hero[heroSelect].getWidth() / 2,y + 0.04f * height);
         stack.setPosition(x - stack.getWidth() / 2,y - 0.12f * height);
     }
 
     public void addToStage(Stage stage){
-        stage.addActor(hero[heroSelect]);
+        stage.addActor(hero[0]);
         stage.addActor(stack);
     }
 
     public void addToBatch(SpriteBatch batch){
-        hero[0].draw(batch,1);
+        hero[heroSelect].draw(batch,1);
         stack.draw(batch,1);
     }
 }
