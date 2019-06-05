@@ -44,7 +44,7 @@ public class WorldController {
         net.bindWorldController(this);
         curPlayer = world.getFirstPlayer();
         cameraController.setTarget(curPlayer);
-//        gameBegin();
+        game.getRoom().getPlayerManager().gameBegin();
 //        AudioController.instance.play(AssetsController.instance.getMusic("")); //TODO
     }
 

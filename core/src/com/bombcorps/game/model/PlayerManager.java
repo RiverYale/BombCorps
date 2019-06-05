@@ -65,7 +65,6 @@ public class PlayerManager {
 
     public void gameBegin(){
         bomb = new Bomb();
-//        buff = new Buff();
         skillAndBuff = new SkillAndBuff(playerListBlue, playerListRed);
 
         for(Player i : playerListRed)
