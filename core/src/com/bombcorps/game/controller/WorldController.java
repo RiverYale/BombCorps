@@ -37,6 +37,7 @@ public class WorldController {
         this.world = game.getWorld();
         cameraController = new CameraController();
         input = new InputController(this);
+        init();
     }
 
     public void init() {
