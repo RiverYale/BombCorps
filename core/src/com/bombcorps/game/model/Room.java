@@ -74,7 +74,6 @@ public class Room implements Serializable {
     public void updatePlayer(Player player){
         for(int i = 0 ; i < playerManager.getRedPlayerList().size ; i++){
             if(player.getIp().equals(playerManager.getRedPlayerList().get(i).getIp())){
-                Gdx.app.log("red", "activated!");
 //                playerManager.getRedPlayerList().set(i,player);
 
                 playerManager.getRedPlayerList().get(i).setHeroType(player.getHeroType());
@@ -95,7 +94,6 @@ public class Room implements Serializable {
         for(int i = 0 ; i < playerManager.getBluePlayerList().size ; i++){
             if(player.getIp().equals(playerManager.getBluePlayerList().get(i).getIp())){
 //                playerManager.getBluePlayerList().set(i,player);
-                Gdx.app.log("blue", "activated!");
                 playerManager.getBluePlayerList().get(i).setHeroType(player.getHeroType());
                 playerManager.getBluePlayerList().get(i).setState(player.getState());
                 playerManager.getBluePlayerList().get(i).setTeam(player.getTeam());
@@ -132,9 +130,7 @@ public class Room implements Serializable {
                     if(playerManager.getBluePlayerList().size < LIMIT){
                         playerManager.getBluePlayerList().add(playerManager.getRedPlayerList().get(i));
                         playerManager.getRedPlayerList().get(i).setTeam(Constants.PLAYER.BLUE_TEAM);
-                        Gdx.app.log("Team",playerManager.getBluePlayerList().get(i).getTeam()+"");
                         playerManager.getRedPlayerList().removeIndex(i);
-                        Gdx.app.log("Team2",playerManager.getBluePlayerList().get(0).getTeam()+"");
                     }
 
                 }
@@ -145,9 +141,7 @@ public class Room implements Serializable {
                     if(playerManager.getRedPlayerList().size < LIMIT){
                         playerManager.getRedPlayerList().add(playerManager.getBluePlayerList().get(i));
                         playerManager.getBluePlayerList().get(i).setTeam(Constants.PLAYER.RED_TEAM);
-                        Gdx.app.log("Team",playerManager.getBluePlayerList().get(i).getTeam()+"");
                         playerManager.getBluePlayerList().removeIndex(i);
-                        Gdx.app.log("Team2",playerManager.getRedPlayerList().get(i).getTeam()+"");
                     }
                 }
             }

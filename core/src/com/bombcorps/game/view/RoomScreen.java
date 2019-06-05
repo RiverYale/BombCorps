@@ -100,15 +100,10 @@ public class RoomScreen extends AbstractGameScreen{
         myplayer = new Player(dc.getName());
         myplayer.setIp(NetController.getLocalHostIp());
 
-        //myplayer.setHeroType(Constants.SPARDA);
-        Gdx.app.log("Room IP",room.getOwnerIp());
-        Gdx.app.log("My IP",""+ NetController.getLocalHostIp());
+
         room.addPlayer(myplayer);
 
-        Gdx.app.log("",room.getOwnerIp());
-        Gdx.app.log("",myplayer.getIp());
 
-        Gdx.app.log("Numer",""+ room.getPlayerManager().getAllPlayerList().size);
         for(int i = 0;i < room.getPlayerManager().getAllPlayerList().size;i ++){
             if(NetController.getLocalHostIp().equals(room.getPlayerManager().getAllPlayerList().get(i).getIp())){
                 myplayer = room.getPlayerManager().getAllPlayerList().get(i);
@@ -116,8 +111,6 @@ public class RoomScreen extends AbstractGameScreen{
             }
         }
 
-        Gdx.app.log("",room.getOwnerIp());
-        Gdx.app.log("",myplayer.getIp());
         if(!NetController.getLocalHostIp().equals(this.ip)){
             //Gdx.app.log("I am in","this room");
             game.getNetController().enterRoom(this.ip,myplayer);
@@ -573,8 +566,6 @@ public class RoomScreen extends AbstractGameScreen{
             room.switchTeam(myplayer);
             game.getNetController().updatePlayer(myplayer);
         }
-        Gdx.app.log("RedNum",room.getPlayerManager().getRedPlayerList().size+" ");
-        Gdx.app.log("BlueNum",room.getPlayerManager().getBluePlayerList().size+" ");
     }
 
     public void toBlueTeam(){
@@ -582,8 +573,6 @@ public class RoomScreen extends AbstractGameScreen{
             room.switchTeam(myplayer);
             game.getNetController().updatePlayer(myplayer);
         }
-        Gdx.app.log("RedNum",room.getPlayerManager().getRedPlayerList().size+" ");
-        Gdx.app.log("BlueNum",room.getPlayerManager().getBluePlayerList().size+" ");
     }
 
     public void toReady(){

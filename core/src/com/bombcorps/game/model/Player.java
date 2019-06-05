@@ -37,7 +37,7 @@ public class Player implements Serializable {
     public Player(String ID){
         ready = false;
         this.ID = ID;
-        heroType = Constants.NONE;
+        heroType = Constants.SPARDA;
     }
 
     public Player(Message.MPlayer m) {
