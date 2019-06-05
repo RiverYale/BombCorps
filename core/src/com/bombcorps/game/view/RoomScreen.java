@@ -99,6 +99,7 @@ public class RoomScreen extends AbstractGameScreen{
         room.setMapName("0");
         myplayer = new Player(dc.getName());
         myplayer.setIp(NetController.getLocalHostIp());
+
         //myplayer.setHeroType(Constants.SPARDA);
         Gdx.app.log("Room IP",room.getOwnerIp());
         Gdx.app.log("My IP",""+ NetController.getLocalHostIp());
@@ -396,12 +397,9 @@ public class RoomScreen extends AbstractGameScreen{
     }
 
     public void batchAddHero(){
-        //Gdx.app.log("",hero[heroSelect].getWidth()+ " "+ hero[heroSelect].getHeight());
-        //Gdx.app.log("",hero[heroSelect].getMinWidth()+ " " + hero[heroSelect].getMinHeight());
         hero[heroSelect].setSize((heroWidth[heroSelect]/900)*width,(heroHeight[heroSelect]/500)*height);
         hero[heroSelect].setPosition(selectBackground.getX() + selectBackground.getWidth()/2 - hero[heroSelect].getWidth()/2,
                 btnHeroLeft.getY());
-        //stage.addActor(hero[heroSelect]);
         hero[heroSelect].draw(batch,1);
     }
 

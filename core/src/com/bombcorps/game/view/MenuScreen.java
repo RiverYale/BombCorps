@@ -54,18 +54,9 @@ public class MenuScreen extends AbstractGameScreen {
     public void render(float deltaTime) {
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-//        if (debugEnabled) {
-////            debugRebuildStage -= deltaTime;
-////            if (debugRebuildStage <= 0) {
-////                debugRebuildStage = DEBUG_REBUILD_INTERVAL;
-////                rebuildStage();
-////            }
-////        }
 
-        //Table.drawDebug(stage);
         stage.act();
         stage.draw();
-
     }
     @Override public void resize(int width,int height){
         stage.getViewport().update(width,height);
