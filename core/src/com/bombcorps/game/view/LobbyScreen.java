@@ -100,6 +100,7 @@ public class LobbyScreen extends AbstractGameScreen{
             //Gdx.app.log("i numOfPage",i+" "+numOfPage);
             if (roomList.get(i + numOfPage*4).isClick()){
                 game.loadRoomScreen(game.getNetController().getRoomList().get(i + numOfPage));
+                Gdx.app.log("",""+ game.getNetController().getRoomList().get(0).getPlayerManager().getRedPlayerList().get(0).getLevel());
             }
             roomList.get(i +numOfPage*4).update();
         }
@@ -156,11 +157,11 @@ public class LobbyScreen extends AbstractGameScreen{
         labelShowName.setFontScale(0.0018f * width);
         //labelShowName.debug();
 
-        String showRate = "胜率:" + dc.getPersonalData(DataController.WIN_NUM)+"/"+dc.getPersonalData(DataController.GAME_NUM);  //+ 胜率
+        String showRate = "胜率:" + dc.getWinRate();  //+ 胜率
         labelShowRate = new Label(showRate,style);
         labelShowRate.setFontScale(0.0018f * width);
 
-        String showWinAmount = "胜场:" + dc.getPersonalData(DataController.WIN_NUM);  //+ 胜场
+        String showWinAmount = "胜场:" + dc.getPersonalData(DataController.WIN_NUM)+"/"+dc.getPersonalData(DataController.GAME_NUM);  //+ 胜场
         labelShowWinAmount = new Label(showWinAmount,style);
         labelShowWinAmount.setFontScale(0.0018f * width);
 

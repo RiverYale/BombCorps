@@ -50,9 +50,10 @@ public class RoomSelect {
         //smallMap = new Image();
         switch (mapNum){
             case 0:
-                //smallMap = new Image(new Texture(Gdx.files.internal("lobbyscreen/map0.png")));
-                smallMap = new Image(AssetsController.instance.getRegion("map0"));
+                smallMap = new Image(AssetsController.instance.getRegion("scalemap0"));
                 break;
+            case 1:
+                smallMap = new Image(AssetsController.instance.getRegion("scalemap1"));
         }
         smallMap.setSize(0.035f * width, 0.035f * width);
 

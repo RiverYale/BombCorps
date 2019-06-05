@@ -42,14 +42,17 @@ public class Room implements Serializable {
     }
 
     public void addPlayer(Player player){
-        add(player.getIp(), player.getID());
+        add(player.getIp(), player.getID(), player.getLevel());
     }
 
-    private void add(String IP, String ID){        //优先加入红色
+    private void add(String IP, String ID, int level){        //优先加入红色
         if(playerManager.getRedPlayerList().size < LIMIT){
             playerManager.addPlayer(IP, Constants.PLAYER.RED_TEAM, ID);
+            playerManager.getRedPlayerList().get(playerManager.getRedPlayerList().size - 1).setLevel(level);
+
         }else if(playerManager.getBluePlayerList().size < LIMIT){
             playerManager.addPlayer(IP, Constants.PLAYER.BLUE_TEAM, ID);
+            playerManager.getBluePlayerList().get(playerManager.getBluePlayerList().size - 1).setLevel(level);
         }
     }
 

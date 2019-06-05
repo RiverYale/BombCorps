@@ -112,6 +112,8 @@ public class RoomScreen extends AbstractGameScreen{
             }
         }
 
+        myplayer.setLevel(dc.getPersonalData(DataController.SPARDAR));
+        Gdx.app.log("Level",""+myplayer.getLevel());
         if(!NetController.getLocalHostIp().equals(this.ip)){
             //Gdx.app.log("I am in","this room");
             game.getNetController().enterRoom(this.ip,myplayer);
@@ -127,8 +129,9 @@ public class RoomScreen extends AbstractGameScreen{
         level[Constants.PROTECTOR] = DataController.PROTECTOR;
         level[Constants.ANGEL] = DataController.ANGEL;
 
-        myplayer.setHeroType(Constants.SPARDA);
-        myplayer.setLevel(dc.getPersonalData(DataController.SPARDAR));
+        //myplayer.setHeroType(Constants.SPARDA);
+
+        //Gdx.app.log("Level",""+dc.getPersonalData(DataController.SPARDAR));
 
         hero = new Image[5];
         hero[Constants.ANGEL] = new Image(AssetsController.instance.getRegion("Angel_stand"));
@@ -392,8 +395,10 @@ public class RoomScreen extends AbstractGameScreen{
         mapSelect = new Image();
         switch(mapNum){
             case 0:
-                mapSelect = new Image(new Texture("map/map00.png"));
+                mapSelect = new Image(AssetsController.instance.getRegion("scalemap0"));
                 break;
+            case 1:
+                mapSelect = new Image(AssetsController.instance.getRegion("scalemap1"));
         }
         mapSelect.setSize(0.23f * width,0.3f * height);
         mapSelect.setPosition(selectBackground.getX() + selectBackground.getWidth()/2 - mapSelect.getWidth()/2,
@@ -526,7 +531,7 @@ public class RoomScreen extends AbstractGameScreen{
     }
 
     public void turnRightMap(){
-        if(mapNum < 0){
+        if(mapNum < 1){
             mapNum ++;
             room.setMapName("" + mapNum);
             game.getNetController().chooseMap("" + mapNum);
