@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.model.Constants;
+import com.bombcorps.game.view.AbstractGameScreen;
 
 
 public class Pillar {
@@ -30,8 +32,8 @@ public class Pillar {
     }
 
     private void init(){
-        pillarBase = new Texture(Gdx.files.internal("maps/pillarBase.png"));
-        pillarMiddle = new Texture(Gdx.files.internal("maps/pillarMiddle.png"));
+        pillarBase = AssetsController.instance.getRegion("pillarBase").getTexture();
+        pillarMiddle = AssetsController.instance.getRegion("pillarMiddle").getTexture();
         dimension = new Vector2(width/ Constants.VIEWPORT_WIDTH,height/Constants.VIEWPORT_HEIGHT);
         position = new Vector2(0,0);
         state = State.MIDDLE;
