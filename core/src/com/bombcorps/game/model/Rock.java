@@ -22,7 +22,7 @@ public class Rock {
     }
 
     private void init(){
-        region = AssetsController.instance.getRegion("rock");
+        region = new TextureRegion(AssetsController.instance.getRegion("rock"));
         dimension = new Vector2(width/Constants.VIEWPORT_WIDTH,height/Constants.VIEWPORT_HEIGHT);
         position = new Vector2(0,0);
         rectangle = new Rectangle(0,0,dimension.x,dimension.y);

@@ -34,10 +34,11 @@ public class WorldController {
         this.game = game;
         this.camera = camera;
         this.net = net;
+        game.getRoom().getPlayerManager().gameBegin();
         this.world = game.getWorld();
         cameraController = new CameraController();
         input = new InputController(this);
-        game.getRoom().getPlayerManager().gameBegin();
+
 
     }
 

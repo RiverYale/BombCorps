@@ -323,7 +323,7 @@ public class GameScreen extends AbstractGameScreen{
         BitmapFont font = AssetsController.instance.font;
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.BLACK);
         //+my hero's head appear
-        imgMyHeroHead = new Image(AssetsController.instance.getRegion(myHeroType()+"0"));
+        imgMyHeroHead = new Image(AssetsController.instance.getRegion(myHeroType()+"_move0"));
         imgMyHeroHead.setPosition(0,0);
         imgMyHeroHead.setScale(width/15/imgMyHeroHead.getWidth());
         layer.addActor(imgMyHeroHead);
@@ -335,10 +335,9 @@ public class GameScreen extends AbstractGameScreen{
                 return true;
             }
         });
-        Player p =new Player(myHeroType());
-        labelMyHeroBasicInfo = new Label("HP" +p.getMyHero().getHealth()+" AK:"+p.getMyHero().getAttack()+
-        "\nED:"+p.getMyHero().getEndurance()+" AM:"+p.getMyHero().getArmor()+
-         "\nRP:"+p.getMyHero().getRagePower()+" CP:"+p.getMyHero().getCriticalProbability(),labelStyle);
+        labelMyHeroBasicInfo = new Label("HP" +myPlayer().getMyHero().getHealth()+" AK:"+myPlayer().getMyHero().getAttack()+
+        "\nED:"+myPlayer().getMyHero().getEndurance()+" AM:"+myPlayer().getMyHero().getArmor()+
+         "\nRP:"+myPlayer().getMyHero().getRagePower()+" CP:"+myPlayer().getMyHero().getCriticalProbability(),labelStyle);
         labelMyHeroBasicInfo.setFontScale(width/15/labelMyHeroBasicInfo.getPrefWidth()*2);
         labelMyHeroBasicInfo.setPosition(width/15,0);
         layer.addActor(labelMyHeroBasicInfo);
@@ -350,7 +349,7 @@ public class GameScreen extends AbstractGameScreen{
         labelOtherHeroBasicInfo.setVisible(false);
         layer.addActor(labelOtherHeroBasicInfo);
 
-        imgOtherHeroHead = new Image(AssetsController.instance.getRegion("Angel0"));
+        imgOtherHeroHead = new Image(AssetsController.instance.getRegion("Angel_move0"));
         imgOtherHeroHead.setScale(width/15/imgOtherHeroHead.getWidth());
         imgOtherHeroHead.setPosition(width/15*12,0);
         imgOtherHeroHead.setVisible(false);
@@ -458,21 +457,17 @@ public class GameScreen extends AbstractGameScreen{
     }
 
     public String myHeroType(){
-        int i;
-        for(i=0;worldController.getPlayers().get(i).getState() != Constants.PLAYER.STATE_LOCAL&&i<worldController.getPlayers().size;i++){
-
-        }
-        i = worldController.getPlayers().get(i).getHeroType();
-        if(i==0){
+        int heroType =  myHeroTypeI();
+        if(heroType==0){
             return "Sparda";
         }
-        else if(i==1){
+        else if(heroType==1){
             return "Protector";
         }
-        else if(i==2){
+        else if(heroType==2){
             return  "Angel";
         }
-        else if(i==3){
+        else if(heroType==3){
             return "Sniper";
         }
         else {
@@ -480,13 +475,21 @@ public class GameScreen extends AbstractGameScreen{
         }
     }
 
-    public int myHeroTypeI(){
-        int i;
-        for(i=0;worldController.getPlayers().get(i).getState() != Constants.PLAYER.STATE_LOCAL&&i<worldController.getPlayers().size;i++){
 
+
+    public Player myPlayer(){
+        int i;
+        for(i=0;i<worldController.getPlayers().size;i++) {
+            if (worldController.getPlayers().get(i).getState() == Constants.PLAYER.STATE_LOCAL) {
+                return worldController.getPlayers().get(i);
+
+            }
         }
-        i = worldController.getPlayers().get(i).getHeroType();
-        return i;
+        return worldController.getPlayers().get(0);
+    }
+
+    public int myHeroTypeI(){
+        return myPlayer().getHeroType();
     }
 
 
@@ -514,7 +517,7 @@ public class GameScreen extends AbstractGameScreen{
         labelOtherHeroBasicInfo.setPosition(width/15*13,-labelOtherHeroBasicInfo.getHeight()/5);
 
 
-        imgOtherHeroHead = new Image(AssetsController.instance.getRegion(i+"0"));
+        imgOtherHeroHead = new Image(AssetsController.instance.getRegion(i+"_move0"));
         imgOtherHeroHead.setScale(width/15/imgOtherHeroHead.getWidth());
         imgOtherHeroHead.setPosition(width/15*12,0);
         imgOtherHeroHead.addListener(new InputListener(){

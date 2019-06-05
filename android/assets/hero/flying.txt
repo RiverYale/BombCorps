@@ -1,0 +1,40 @@
+flying.png
+size: 239, 153
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+heroAppear0
+  rotate: false
+  xy: 32, 1
+  size: 54, 53
+  orig: 54, 53
+  offset: 0, 0
+  index: -1
+heroAppear1
+  rotate: false
+  xy: 123, 69
+  size: 115, 83
+  orig: 115, 83
+  offset: 0, 0
+  index: -1
+heroAppear2
+  rotate: false
+  xy: 1, 69
+  size: 120, 76
+  orig: 120, 76
+  offset: 0, 0
+  index: -1
+heroAppear3
+  rotate: false
+  xy: 88, 1
+  size: 132, 66
+  orig: 132, 66
+  offset: 0, 0
+  index: -1
+heroFly
+  rotate: false
+  xy: 1, 1
+  size: 29, 27
+  orig: 29, 27
+  offset: 0, 0
+  index: -1
