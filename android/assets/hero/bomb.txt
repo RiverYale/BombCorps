@@ -1,0 +1,278 @@
+bomb.png
+size: 481, 123
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+AngelBomb0
+  rotate: false
+  xy: 260, 76
+  size: 15, 15
+  orig: 15, 15
+  offset: 0, 0
+  index: -1
+AngelBomb1
+  rotate: false
+  xy: 242, 95
+  size: 16, 15
+  orig: 16, 15
+  offset: 0, 0
+  index: -1
+AngelBomb2
+  rotate: false
+  xy: 56, 112
+  size: 13, 10
+  orig: 13, 10
+  offset: 0, 0
+  index: -1
+AngelBoom0
+  rotate: false
+  xy: 294, 69
+  size: 54, 53
+  orig: 54, 53
+  offset: 0, 0
+  index: -1
+AngelBoom1
+  rotate: false
+  xy: 1, 1
+  size: 115, 83
+  orig: 115, 83
+  offset: 0, 0
+  index: -1
+AngelBoom2
+  rotate: false
+  xy: 118, 1
+  size: 120, 76
+  orig: 120, 76
+  offset: 0, 0
+  index: -1
+AngelBoom3
+  rotate: false
+  xy: 294, 1
+  size: 132, 66
+  orig: 132, 66
+  offset: 0, 0
+  index: -1
+AngelHeal0
+  rotate: false
+  xy: 56, 86
+  size: 38, 24
+  orig: 38, 24
+  offset: 0, 0
+  index: -1
+AngelHeal1
+  rotate: false
+  xy: 1, 86
+  size: 53, 29
+  orig: 53, 29
+  offset: 0, 0
+  index: -1
+AngelHeal2
+  rotate: false
+  xy: 120, 79
+  size: 62, 40
+  orig: 62, 40
+  offset: 0, 0
+  index: -1
+AngelHeal3
+  rotate: false
+  xy: 386, 69
+  size: 64, 48
+  orig: 64, 48
+  offset: 0, 0
+  index: -1
+ProtectorBomb0
+  rotate: false
+  xy: 260, 76
+  size: 15, 15
+  orig: 15, 15
+  offset: 0, 0
+  index: -1
+ProtectorBomb1
+  rotate: false
+  xy: 260, 93
+  size: 15, 15
+  orig: 15, 15
+  offset: 0, 0
+  index: -1
+ProtectorBoom0
+  rotate: false
+  xy: 294, 69
+  size: 54, 53
+  orig: 54, 53
+  offset: 0, 0
+  index: -1
+ProtectorBoom1
+  rotate: false
+  xy: 1, 1
+  size: 115, 83
+  orig: 115, 83
+  offset: 0, 0
+  index: -1
+ProtectorBoom2
+  rotate: false
+  xy: 118, 1
+  size: 120, 76
+  orig: 120, 76
+  offset: 0, 0
+  index: -1
+ProtectorBoom3
+  rotate: false
+  xy: 294, 1
+  size: 132, 66
+  orig: 132, 66
+  offset: 0, 0
+  index: -1
+SniperAntiArmor0
+  rotate: false
+  xy: 350, 69
+  size: 34, 50
+  orig: 34, 50
+  offset: 0, 0
+  index: -1
+SniperAntiArmor1
+  rotate: false
+  xy: 428, 1
+  size: 52, 62
+  orig: 53, 64
+  offset: 0, 2
+  index: -1
+SniperAntiArmor2
+  rotate: false
+  xy: 240, 1
+  size: 52, 73
+  orig: 52, 73
+  offset: 0, 0
+  index: -1
+SniperAntiArmor03
+  rotate: false
+  xy: 184, 79
+  size: 56, 39
+  orig: 56, 39
+  offset: 0, 0
+  index: -1
+SniperBomb0
+  rotate: false
+  xy: 260, 76
+  size: 15, 15
+  orig: 15, 15
+  offset: 0, 0
+  index: -1
+SniperBomb1
+  rotate: false
+  xy: 242, 76
+  size: 16, 17
+  orig: 16, 17
+  offset: 0, 0
+  index: -1
+SniperBoom0
+  rotate: false
+  xy: 294, 69
+  size: 54, 53
+  orig: 54, 53
+  offset: 0, 0
+  index: -1
+SniperBoom1
+  rotate: false
+  xy: 1, 1
+  size: 115, 83
+  orig: 115, 83
+  offset: 0, 0
+  index: -1
+SniperBoom2
+  rotate: false
+  xy: 118, 1
+  size: 120, 76
+  orig: 120, 76
+  offset: 0, 0
+  index: -1
+SniperBoom3
+  rotate: false
+  xy: 294, 1
+  size: 132, 66
+  orig: 132, 66
+  offset: 0, 0
+  index: -1
+SpardaBomb0
+  rotate: false
+  xy: 260, 76
+  size: 15, 15
+  orig: 15, 15
+  offset: 0, 0
+  index: -1
+SpardaBomb1
+  rotate: false
+  xy: 277, 76
+  size: 15, 15
+  orig: 15, 15
+  offset: 0, 0
+  index: -1
+SpardaBoom0
+  rotate: false
+  xy: 294, 69
+  size: 54, 53
+  orig: 54, 53
+  offset: 0, 0
+  index: -1
+SpardaBoom1
+  rotate: false
+  xy: 1, 1
+  size: 115, 83
+  orig: 115, 83
+  offset: 0, 0
+  index: -1
+SpardaBoom2
+  rotate: false
+  xy: 118, 1
+  size: 120, 76
+  orig: 120, 76
+  offset: 0, 0
+  index: -1
+SpardaBoom3
+  rotate: false
+  xy: 294, 1
+  size: 132, 66
+  orig: 132, 66
+  offset: 0, 0
+  index: -1
+WizardBomb0
+  rotate: false
+  xy: 260, 76
+  size: 15, 15
+  orig: 15, 15
+  offset: 0, 0
+  index: -1
+WizardBomb1
+  rotate: false
+  xy: 96, 86
+  size: 22, 20
+  orig: 22, 20
+  offset: 0, 0
+  index: -1
+WizardBoom0
+  rotate: false
+  xy: 294, 69
+  size: 54, 53
+  orig: 54, 53
+  offset: 0, 0
+  index: -1
+WizardBoom1
+  rotate: false
+  xy: 1, 1
+  size: 115, 83
+  orig: 115, 83
+  offset: 0, 0
+  index: -1
+WizardBoom2
+  rotate: false
+  xy: 118, 1
+  size: 120, 76
+  orig: 120, 76
+  offset: 0, 0
+  index: -1
+WizardBoom3
+  rotate: false
+  xy: 294, 1
+  size: 132, 66
+  orig: 132, 66
+  offset: 0, 0
+  index: -1
