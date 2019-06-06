@@ -94,9 +94,6 @@ public class GameScreen extends AbstractGameScreen {
         super(game);
         this.worldController = worldController;
         worldRenderer = new WorldRenderer(worldController);
-
-        test = new Image();
-        Gdx.app.log(TAG,"new test");
         batch2 = new SpriteBatch();
     }
 
@@ -119,7 +116,7 @@ public class GameScreen extends AbstractGameScreen {
         stage.act();
         stage.draw();
 
-        if(worldController.isGameOver()==0){
+        if(worldController.isGameOver()!= 0){
             GameOver();
         }
     }
@@ -225,11 +222,58 @@ public class GameScreen extends AbstractGameScreen {
     public Table buildSkillLayer(){
         Table layer = new Table();
         float scale;
+
+        //+MovementLayer
+        imgMove = new Image(AssetsController.instance.getRegion("move"));
+        scale=width/15/imgMove.getWidth();
+        imgMove.setScale(scale);
+        imgMove.setPosition(width/2-imgMove.getWidth()*scale*3.5f,0);
+        layer.addActor(imgMove);
+        imgMove.addListener(new InputListener(){
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                //点击移动
+                worldController.onOperationClicked(0);
+                return true;
+            }
+        });
+
+        //+EjectionLayer
+        imgEjection = new Image(AssetsController.instance.getRegion("ejection"));
+        imgEjection.setScale(scale);
+        imgEjection.setPosition(imgMove.getX()+imgMove.getWidth()*scale,0);
+        layer.addActor(imgEjection);
+        imgEjection.addListener(new InputListener(){
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                //点击弹射
+                worldController.onOperationClicked(1);
+                return true;
+            }
+        });
+
+        //+AttrackLayer
+        imgAttrack = new Image(AssetsController.instance.getRegion("attrack"));
+        imgAttrack.setScale(scale);
+        imgAttrack.setPosition(imgEjection.getX()+imgEjection.getWidth()*scale,0);
+        layer.addActor(imgAttrack);
+        imgAttrack.addListener(new InputListener(){
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                //点击发射炸弹
+                worldController.onOperationClicked(2);
+                return true;
+            }
+        });
+
         //+SkillOneLayer
         imgSkillOne = new Image(AssetsController.instance.getRegion("SkillOne"));
-        scale=width/15/imgSkillOne.getWidth();
         imgSkillOne.setScale(scale);
-        imgSkillOne.setPosition(width/2-imgSkillOne.getWidth()*scale*3.5f,0);
+        imgSkillOne.setPosition(imgAttrack.getX()+imgAttrack.getWidth()*scale,0);
+
         layer.addActor(imgSkillOne);
         imgSkillOne.addListener(new InputListener(){
 
@@ -271,55 +315,12 @@ public class GameScreen extends AbstractGameScreen {
             }
         });
 
-        //+MovementLayer
-        imgMove = new Image(AssetsController.instance.getRegion("move"));
-        imgMove.setScale(scale);
-        imgMove.setPosition(imgSkillThree.getX()+imgSkillThree.getWidth()*scale,0);
-        layer.addActor(imgMove);
-        imgMove.addListener(new InputListener(){
 
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                //点击移动
-                worldController.onOperationClicked(0);
-                return true;
-            }
-        });
-
-        //+AttrackLayer
-        imgAttrack = new Image(AssetsController.instance.getRegion("attrack"));
-        imgAttrack.setScale(scale);
-        imgAttrack.setPosition(imgMove.getX()+imgMove.getWidth()*scale,0);
-        layer.addActor(imgAttrack);
-        imgAttrack.addListener(new InputListener(){
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                //点击发射炸弹
-                worldController.onOperationClicked(2);
-                return true;
-            }
-        });
-
-        //+EjectionLayer
-        imgEjection = new Image(AssetsController.instance.getRegion("ejection"));
-        imgEjection.setScale(scale);
-        imgEjection.setPosition(imgAttrack.getX()+imgAttrack.getWidth()*scale,0);
-        layer.addActor(imgEjection);
-        imgEjection.addListener(new InputListener(){
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                //点击弹射
-                worldController.onOperationClicked(1);
-                return true;
-            }
-        });
         //+TurnEndLayer
         imgTurnEnd = new Image(AssetsController.instance.getRegion("button_quit"));
         imgTurnEnd.setSize(43,35);
         imgTurnEnd.setScale(scale);
-        imgTurnEnd.setPosition(imgEjection.getX()+imgEjection.getWidth()*scale,0);
+        imgTurnEnd.setPosition(imgSkillThree.getX()+imgSkillThree.getWidth()*scale,0);
         layer.addActor(imgTurnEnd);
         imgTurnEnd.addListener(new InputListener(){
 
@@ -566,18 +567,18 @@ public class GameScreen extends AbstractGameScreen {
         winResults = new Window("",windowStyle);
         winResults.setSize(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
         winResults.setPosition((Gdx.graphics.getWidth()-winResults.getWidth())/2,(Gdx.graphics.getHeight()-winResults.getHeight())/2);
-
-
+        virtory = new Image(AssetsController.instance.getRegion("vitory"));
+        failed = new Image(AssetsController.instance.getRegion("failed"));
 
         if(worldController.isGameOver()==1){
-            virtory = new Image(AssetsController.instance.getRegion("vitory"));
+
             virtory.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
             virtory.setPosition((winResults.getWidth()-virtory.getWidth())/2,(winResults.getHeight()-virtory.getHeight())/1.25f);
             winResults.addActor(virtory);
         }else if(worldController.isGameOver()==2){
-            failed = new Image(AssetsController.instance.getRegion("failed"));
+
             failed.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
-            failed.setPosition((winResults.getWidth()-virtory.getWidth())/2,(winResults.getHeight()-virtory.getHeight())/1.25f);
+            failed.setPosition((winResults.getWidth()-failed.getWidth())/2,(winResults.getHeight()-failed.getHeight())/1.25f);
             winResults.addActor(failed);
         }
 
