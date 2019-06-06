@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.input.GestureDetector;
+import com.bombcorps.game.controller.InputController;
 import com.bombcorps.game.controller.NetController;
 import com.bombcorps.game.controller.WorldController;
 import com.bombcorps.game.model.Constants;
@@ -30,6 +32,7 @@ public abstract class DirectedGame implements ApplicationListener {
     protected InfoScreen infoScreen;
     protected WorldController worldController;
     protected NetController netController = new NetController();
+    protected OrthographicCamera camera;
 
     public void setScreen(AbstractGameScreen screen) {
         setScreen(screen,null);
@@ -59,12 +62,12 @@ public abstract class DirectedGame implements ApplicationListener {
 //    }
 
     public void loadGameScreen(){
-        OrthographicCamera orthographicCamera =new OrthographicCamera();
-        orthographicCamera.viewportHeight =10f;
-        orthographicCamera.viewportWidth = 18f;
+        camera = new OrthographicCamera();
+        camera.viewportHeight =10f;
+        camera.viewportWidth = 18f;
         //netController = new NetController();
 
-        worldController = new WorldController(this,orthographicCamera,netController);
+        worldController = new WorldController(this,camera,netController);
         Gdx.app.log("DirectedGame","new worldController ");
         Gdx.input.setInputProcessor(worldController.getInputProcessor());
 
