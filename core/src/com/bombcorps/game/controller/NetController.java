@@ -276,7 +276,7 @@ public class NetController {
                 break;
             case QUIT_GAME:
                 if(world.getWorldIp().equals(msg.getFromIp())){
-                    world.errorStop();
+
                 }else{
                     world.playerQuit(msg);
                 }
