@@ -42,9 +42,9 @@ public class AssetsController  implements Disposable, AssetErrorListener {
     }
 
     public TextureAtlas.AtlasRegion getRegion(String regionName) {
-        if (textureMap.get(regionName) == null) {
-            Gdx.app.log("zc", regionName);
-        }
+//        if (textureMap.get(regionName) == null) {
+//            Gdx.app.log("zc", regionName);
+//        }
         return textureMap.get(regionName);
     }
 

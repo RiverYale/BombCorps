@@ -26,14 +26,13 @@ public class SkillAndBuff {
         this.playerListRed = playerListred;
         redBuffs = new Array<Buff>();
         blueBuffs = new Array<Buff>();
-
         for(int i = 0 ; i < playerListRed.size ; i++){
             redBuffs.add(new Buff(playerListred.get(i)));
         }
         for(int i = 0 ; i < playerlistblue.size ; i++){
             blueBuffs.add(new Buff(playerlistblue.get(i)));
         }
-
+        initSkillEveryChange();
     }
 
     public void updateBuffEveryRound(){         //每回合调用
@@ -378,7 +377,7 @@ public class SkillAndBuff {
 
         public void useSkill_1(int team, String IP){
             Player player;
-            int index = -1;
+            int index;
             if(team == Constants.PLAYER.RED_TEAM){
                 index = getindex(playerListRed, IP);
                 player = playerListRed.get(index);
@@ -753,7 +752,7 @@ public class SkillAndBuff {
     private int getindex(Array<Player> playerList, String IP){
         int index = -1;
         for(int i = 0 ; i < playerList.size ; i++){
-            if(playerList.get(i).equals(IP)){
+            if(playerList.get(i).getIp().equals(IP)){
                 index = i;
             }
         }

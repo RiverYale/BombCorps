@@ -1,5 +1,6 @@
 package com.bombcorps.game.model;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -38,6 +39,7 @@ public class Player implements Serializable {
         ready = false;
         this.ID = ID;
         heroType = Constants.SPARDA;
+        tap = new Vector2(0, 0);
     }
 
     public Player(Message.MPlayer m) {
@@ -48,6 +50,7 @@ public class Player implements Serializable {
         ready = m.ready;
         team = m.team;
         state = m.state;
+        tap = new Vector2(0, 0);
     }
 
     public Message.MPlayer getMPlayer() {
@@ -239,10 +242,12 @@ public class Player implements Serializable {
             case Constants.SPARDA:
                 switch (op){
                     case 3:
-                        if(team == TEAM.RED)
+                        if(team == TEAM.RED){
                             skillAndBuff.spardaSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
-                        else
+                        }
+                        else{
                             skillAndBuff.spardaSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
+                        }
                         break;
                     case 4:
                         if(team == TEAM.RED)
