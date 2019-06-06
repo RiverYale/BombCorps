@@ -39,7 +39,6 @@ public class WorldController {
         cameraController = new CameraController();
         input = new InputController(this);
 
-
     }
 
     public void init() {

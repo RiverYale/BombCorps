@@ -242,14 +242,14 @@ public class BaseHero{
     }
 
     protected void renderHero(SpriteBatch batch){
-        Gdx.app.log("qin","Hero x="+getPosition().x+" y="+getPosition().y);
         switch(state){
             case FALLING:
             case GROUNDED:
-                batch.draw(staticRegion.getTexture(), position.x, position.y, origin.x, origin.y,
-                        dimension.x, dimension.y, scale.x, scale.y, 0, staticRegion.getRegionX(),
-                        staticRegion.getRegionY(), staticRegion.getRegionWidth(),staticRegion.getRegionHeight(),
-                        !headright, false);
+//                batch.draw(staticRegion.getTexture(), position.x, position.y, origin.x, origin.y,
+//                        dimension.x, dimension.y, scale.x, scale.y, 0, staticRegion.getRegionX(),
+//                        staticRegion.getRegionY(), staticRegion.getRegionWidth(),staticRegion.getRegionHeight(),
+//                        !headright, false);
+                batch.draw(staticRegion,position.x,position.y,dimension.x,dimension.y);
                 break;
             case DEAD:
                 batch.draw(deadRegion.getTexture(), position.x, position.y, origin.x, origin.y,

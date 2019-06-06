@@ -35,6 +35,7 @@ public class WorldRenderer {
 
 
     private void renderWorld(SpriteBatch batch){
+
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         worldController.getWorld().render(batch);

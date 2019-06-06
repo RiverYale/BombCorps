@@ -15,8 +15,7 @@ public class World {
     public static final String TAG = Level.class.getName();
     private final float width = Gdx.graphics.getWidth();
     private final float height = Gdx.graphics.getHeight();
-    private int levelTurnBlue =0;
-    private int levelTurnRed = 0;
+    private int levelTurn = 0;
     private int Turn=0;
 
     public Array<Player> getPlayers() {
@@ -91,6 +90,8 @@ public class World {
     //地图宽度
     private float MapWidth;
 
+    private Vector2 dimension;
+
     private String hostIP;
 
     private int limit;
@@ -104,6 +105,7 @@ public class World {
 
     private void init(String filename){
         //物品
+        dimension = new Vector2(width/32,height/20);
         rocks = new Array<Rock>();
         pillars = new Array<Pillar>();
         Pixmap pixmap = new Pixmap(Gdx.files.internal("map/map"+filename+".png"));
@@ -146,16 +148,11 @@ public class World {
                 }
                 //英雄出生点
                 else if (BLOCK_TYPE.PLAYER_SPAWNPOINT.sameColor(currentPixel)) {
-                    if(levelTurnBlue <playerManager.getBluePlayerList().size){
-                        Vector2 position = new Vector2(100,100 );
-                        playerManager.getBluePlayerList().get(levelTurnBlue).getMyHero().setPosition(position);
-                        levelTurnBlue++;
-                    }else if(levelTurnRed < playerManager.getRedPlayerList().size){
-                        Vector2 position = new Vector2(50,300 );
-                        playerManager.getBluePlayerList().get(levelTurnRed).getMyHero().setPosition(position);
-                        levelTurnRed++;
+                    if(levelTurn <playerManager.getAllPlayerList().size){
+                        Vector2 position = new Vector2(pixelX*dimension.x,baseHeight*dimension.y );
+                        playerManager.getAllPlayerList().get(levelTurn).getMyHero().setPosition(position);
+                        levelTurn++;
                     }
-
                 }
                 //未知错误
                 else {
@@ -174,16 +171,12 @@ public class World {
 
     public void render(SpriteBatch batch){
        batch.draw(AssetsController.instance.getRegion("gamebackground"),0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-       Gdx.app.log("qin","rock render");
-
        for (Rock rock : rocks){
            rock.render(batch);
        }
-       Gdx.app.log("qin","pillars render");
        for(Pillar pillar : pillars){
            pillar.render(batch);
        }
-       Gdx.app.log("qin","hero render");
         playerManager.render(batch);
         bonusManager.render(batch);
     }

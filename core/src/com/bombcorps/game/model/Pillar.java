@@ -55,9 +55,9 @@ public class Pillar {
 
     public void render(SpriteBatch batch){
         if(state == State.MIDDLE){
-            batch.draw(pillarMiddle,position.x,position.y);
+            batch.draw(pillarMiddle,position.x+4*dimension.x/32,position.y,dimension.x*24/32,dimension.y);
         }else if(state == State.BASE){
-            batch.draw(pillarBase,position.x,position.y);
+            batch.draw(pillarBase,position.x,position.y,dimension.x,dimension.y);
         }
     }
 

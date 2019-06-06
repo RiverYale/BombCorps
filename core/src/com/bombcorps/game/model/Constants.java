@@ -1,5 +1,6 @@
 package com.bombcorps.game.model;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
 public class Constants {
@@ -99,7 +100,7 @@ public class Constants {
     /*
     人物状态
      */
-    public static final Vector2 HERO_DIMENSION = new Vector2(10f,10f);
+    public static final Vector2 HERO_DIMENSION = new Vector2(Gdx.graphics.getWidth()/32f,Gdx.graphics.getHeight()/20f);
 
     public static final int NONE = -1;
     public static final int SPARDA = 0;
