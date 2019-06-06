@@ -242,7 +242,7 @@ public class BaseHero{
     }
 
     protected void renderHero(SpriteBatch batch){
-
+        Gdx.app.log("qin","Hero x="+getPosition().x+" y="+getPosition().y);
         switch(state){
             case FALLING:
             case GROUNDED:

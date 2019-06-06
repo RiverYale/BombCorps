@@ -98,8 +98,8 @@ public class GameScreen extends AbstractGameScreen{
         Gdx.gl.glClearColor(0x64/255.0f,0x95/255.0f,0xed/255.0f,0xff/255.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         worldRenderer.render(batch2);
-        stage.act();
-        stage.draw();
+       // stage.act();
+        //stage.draw();
 
         if(worldController.isGameOver()==0){
             GameOver();

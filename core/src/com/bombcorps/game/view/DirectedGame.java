@@ -60,8 +60,8 @@ public abstract class DirectedGame implements ApplicationListener {
 
     public void loadGameScreen(){
         OrthographicCamera orthographicCamera =new OrthographicCamera();
-        orthographicCamera.viewportHeight =10;
-        orthographicCamera.viewportWidth = 18;
+        orthographicCamera.viewportHeight =10f;
+        orthographicCamera.viewportWidth = 18f;
         //netController = new NetController();
 
         worldController = new WorldController(this,orthographicCamera,netController);
