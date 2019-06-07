@@ -20,6 +20,7 @@ public class Player implements Serializable {
 
     private Vector2 tap;
 
+    private boolean current;
     private boolean ready;
 
     public SkillAndBuff skillAndBuff;
@@ -78,26 +79,6 @@ public class Player implements Serializable {
                 myHero = new Wizard(level);
                 break;
         }
-
-//        switch(level){
-//            case 0:
-//                myHero.setLevel(Constants.LEVEL_0);
-//                break;
-//            case 1:
-//                myHero.setLevel(Constants.LEVEL_1);
-//                break;
-//            case 2:
-//                myHero.setLevel(Constants.LEVEL_2);
-//                break;
-//            case 3:
-//                myHero.setLevel(Constants.LEVEL_3);
-//                break;
-//            case 4:
-//                myHero.setLevel(Constants.LEVEL_4);
-//                break;
-//            case 5:
-//                myHero.setLevel(Constants.LEVEL_5);
-//        }
 
     }
 
@@ -446,4 +427,11 @@ public class Player implements Serializable {
         myHero.setState(input);
     }
 
+    public boolean isCurrent() {
+        return current;
+    }
+
+    public void setCurrent(boolean current) {
+        this.current = current;
+    }
 }
