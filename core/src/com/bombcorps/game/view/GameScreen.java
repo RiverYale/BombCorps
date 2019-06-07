@@ -150,7 +150,7 @@ public class GameScreen extends AbstractGameScreen{
         camera.update();
 
         cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT);
-        cameraGUI.position.set(Constants.VIEWPORT_GUI_WIDTH/2,Constants.VIEWPORT_GUI_HEIGHT,0);
+        cameraGUI.position.set(Constants.VIEWPORT_GUI_WIDTH/2,Constants.VIEWPORT_GUI_HEIGHT/2,0);
         //cameraGUI.setToOrtho(true);
         cameraGUI.update();
 
@@ -218,7 +218,7 @@ public class GameScreen extends AbstractGameScreen{
         stack.add(layerOtherHeroInfoWindow);
         stack.add(layerErrorQuitWindow);
         stage.addActor(layerOptionsWindow);
-        layerOptionsWindow.setPosition((Gdx.graphics.getWidth()-winOptions.getWidth())/2,(Gdx.graphics.getHeight()-winOptions.getHeight())/2);
+        layerOptionsWindow.setPosition((width-winOptions.getWidth())/2,(height-winOptions.getHeight())/2);
     }
 
     public void renderWorld(SpriteBatch batch){
@@ -511,8 +511,8 @@ public class GameScreen extends AbstractGameScreen{
         TextureRegionDrawable winResultsDrawable = new TextureRegionDrawable(AssetsController.instance.getRegion("winresult"));
         Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),winResultsDrawable);
         winResults = new Window("",windowStyle);
-        winResults.setSize(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
-        winResults.setPosition((Gdx.graphics.getWidth()-winResults.getWidth())/2,(Gdx.graphics.getHeight()-winResults.getHeight())/2);
+        winResults.setSize(width/2,height/2);
+        winResults.setPosition((width-winResults.getWidth())/2,(height-winResults.getHeight())/2);
         virtory = new Image(AssetsController.instance.getRegion("vitory"));
         failed = new Image(AssetsController.instance.getRegion("failed"));
 
