@@ -129,7 +129,7 @@ public abstract class DirectedGame implements ApplicationListener {
     }
 
     public void updateLobbyScreen() {
-        lobbyScreen.rebulidStage();
+        //lobbyScreen.rebulidStage();
     }
 
     public void updateRoomScreen() {
