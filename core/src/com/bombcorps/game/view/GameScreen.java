@@ -4,10 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -32,18 +35,12 @@ import com.bombcorps.game.model.Player;
 /*
 图片路径均非真正设置
  */
-public class GameScreen extends AbstractGameScreen {
-    private static final String TAG = GameScreen.class.getName();
+public class GameScreen extends AbstractGameScreen implements InputProcessor{
+    private final String TAG = GameScreen.class.getName();
     private final float width = Gdx.graphics.getWidth();
     private final float height = Gdx.graphics.getHeight();
-    private WorldController worldController;
-    private WorldRenderer worldRenderer;
-    private Stage stage;
-    private SpriteBatch batch2;
-    private boolean paused;
-    BitmapFont font = AssetsController.instance.font;
-    Image test;
-
+    private boolean paused = false;
+    private BitmapFont font;
     private String[] description = {
             "被动技能：具备吸血30%能力\n" +
                     "技能一：消耗100血量+50精力，提高攻击力\n" +
@@ -90,85 +87,120 @@ public class GameScreen extends AbstractGameScreen {
 
     };
 
-    public GameScreen(DirectedGame game, WorldController worldController){
-        super(game);
-        this.worldController = worldController;
-        worldRenderer = new WorldRenderer(worldController);
-        batch2 = new SpriteBatch();
-    }
+    private OrthographicCamera camera;
+    private OrthographicCamera cameraGUI;
+    private SpriteBatch batch;
+    private Stage stage;
+    private WorldController worldController;
 
-
-
-    @Override
-    public void show() {
-        stage = new Stage();
-        Gdx.app.log(TAG,"new stage0");
-        rebuildStage();
-        Gdx.app.log(TAG,"new stage1");
-        Gdx.input.setInputProcessor(stage);
-    }
-
-    @Override
-    public void render(float deltaTime) {
-        Gdx.gl.glClearColor(0x64/255.0f,0x95/255.0f,0xed/255.0f,0xff/255.0f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        worldRenderer.render(batch2);
-        stage.act();
-        stage.draw();
-
-        if(worldController.isGameOver()!= 0){
-            GameOver();
-        }
-    }
-
-    public InputProcessor getInputProcessor(){
-
-        return stage;
-    }
-
-
-
-
-    //英雄详细信息弹窗
-    private int heroInfoType;
-    private Image imgMyHeroHead;
-    private Image imgOtherHeroHead;
-    private Label labelMyHeroBasicInfo;
-    private Label labelOtherHeroBasicInfo;
-    private Window winHeroInfo;
-    private Window winOtherHeroInfo;
-    private Image btnwinHInfoQuit;
-    private Image btnwinOHInfoQuit;
-    //游戏异常退出弹窗
-    private Window winErrorQuit;
-    private Image btnWinErrorQuit;
-    //
-    private Image imgSkillOne;
-    private Image imgSkillTwo;
-    private Image imgSkillThree;
-    private Image imgMove;
-    private Image imgAttrack;
-    private Image imgEjection;
-    private Image imgTurnEnd;
-    //
-    private Image btnQuit;
-    private Image btnSettings;
-    private Image virtory;
-    private Image failed;
-
+    //退出和设置按钮
+    private Sprite btnQuit;
+    private Sprite btnSettings;
+    //技能图标
+    private Sprite imgMove;
+    private Sprite imgEjection;
+    private Sprite imgAttrack;
+    private Sprite imgSkillOne;
+    private Sprite imgSkillTwo;
+    private Sprite imgSkillThree;
+    private Sprite imgTurnEnd;
+    //英雄头像与基础信息
+    private Sprite imgMyHeroHead;
+    private Sprite imgOtherHeroHead;
+    //设置窗口
     private Window winOptions;
-    private Window winResults;
     private Slider sldSound;
     private Slider sldMusic;
     private TextButton btnWinOptSave;
     private TextButton btnWinOptCancel;
+    //英雄技能详细信息窗口
+    private Window winHeroInfo;
+    private Window winOtherHeroInfo;
+    private Image btnwinHInfoQuit;
+    private Image btnwinOHInfoQuit;
+    //结果窗口
+    private Window winResults;
+    private Image virtory;
+    private Image failed;
+    //异常退出窗口
+    //游戏异常退出弹窗
+    private Window winErrorQuit;
+    private Image btnWinErrorQuit;
 
+    public GameScreen(DirectedGame game, WorldController worldController){
+        super(game);
+        this.worldController = worldController;
+        camera = worldController.getCamera();
+        init();
+    }
+
+    private void init(){
+        batch = new SpriteBatch();
+
+        font = AssetsController.instance.font;
+
+        camera.viewportWidth = Gdx.graphics.getWidth();
+        camera.viewportHeight = Gdx.graphics.getHeight();
+        camera.position.x = Gdx.graphics.getWidth()/2;
+        camera.position.y = Gdx.graphics.getHeight()/2;
+        camera.update();
+
+        cameraGUI = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        cameraGUI.position.set(0,0,0);
+        //cameraGUI.setToOrtho(true);
+        cameraGUI.update();
+
+        float scale;
+        //退出按钮
+        btnQuit = new Sprite(AssetsController.instance.getRegion("mapleft"));
+        btnQuit.setSize(0.045f * width,0.07f * height);
+        btnQuit.setPosition(0,0.91f * height);
+        //设置按钮
+        btnSettings = new Sprite(AssetsController.instance.getRegion("button_setting"));
+        btnSettings.setSize(0.045f * width,0.07f * height);
+        btnSettings.setPosition(width-btnSettings.getWidth(),0.91f * height);
+        //移动按钮
+        imgMove = new Sprite(AssetsController.instance.getRegion("move")) ;
+        scale=width/15/imgMove.getWidth();
+        imgMove.setScale(scale);
+        imgMove.setPosition(width/2-imgMove.getWidth()*scale*3.5f,0);
+        //弹射按钮
+        imgEjection = new Sprite(AssetsController.instance.getRegion("ejection")) ;
+        imgEjection.setScale(scale);
+        imgEjection.setPosition(imgMove.getX()+imgMove.getWidth()*scale,0);
+        //发射炮弹按钮
+        imgAttrack = new Sprite(AssetsController.instance.getRegion("attrack"));
+        imgAttrack.setScale(scale);
+        imgAttrack.setPosition(imgEjection.getX()+imgEjection.getWidth()*scale,0);
+        //一技能按钮
+        imgSkillOne = new Sprite(AssetsController.instance.getRegion("SkillOne"));
+        imgSkillOne.setScale(scale);
+        imgSkillOne.setPosition(imgAttrack.getX()+imgAttrack.getWidth()*scale,0);
+        //二技能按钮
+        imgSkillTwo = new Sprite(AssetsController.instance.getRegion("SkillTwo"));
+        imgSkillTwo.setScale(scale);
+        imgSkillTwo.setPosition(imgSkillOne.getX()+imgSkillOne.getWidth()*scale,0);
+        //三技能按钮
+        imgSkillThree = new Sprite(AssetsController.instance.getRegion("SkillThree"));
+        imgSkillThree.setScale(scale);
+        imgSkillThree.setPosition(imgSkillTwo.getX()+imgSkillTwo.getWidth()*scale,0);
+        //回合结束按钮
+        imgTurnEnd = new Sprite(AssetsController.instance.getRegion("button_quit"));
+        imgTurnEnd.setSize(43,35);
+        imgTurnEnd.setScale(scale);
+        imgTurnEnd.setPosition(imgSkillThree.getX()+imgSkillThree.getWidth()*scale,0);
+        //本人英雄头像
+        imgMyHeroHead = new Sprite(AssetsController.instance.getRegion(myHeroType()+"_move0"));
+        imgMyHeroHead.setScale(width/15/imgMyHeroHead.getWidth());
+        imgMyHeroHead.setPosition(0,0);
+        //他人英雄头像
+        imgOtherHeroHead = new Sprite(AssetsController.instance.getRegion(myHeroType()+"_move0"));
+        imgOtherHeroHead.setScale(width/15/imgOtherHeroHead.getWidth());
+        imgOtherHeroHead.setPosition(width/15*12,0);
+    }
 
     public void rebuildStage(){
         //build all layers
-        Table layerBottom = buildBottonLayer();
-        Table layerSkill = buildSkillLayer();
-        Table layerHeroBasicInfo = buildHeroBasicInfoLayer();
         Table layerHeroInfoWindow = buildHeroInfoWindowLayer();
         Table layerOtherHeroInfoWindow = buildOtherHeroInfoWindowLayer();
         Table layerErrorQuitWindow = buildErrorQuitWindowLayer();
@@ -178,9 +210,6 @@ public class GameScreen extends AbstractGameScreen {
         Stack stack = new Stack();
         stack.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         stage.addActor(stack);
-        stack.add(layerBottom);
-        stack.add(layerSkill);
-        stack.add(layerHeroBasicInfo);
         stack.add(layerHeroInfoWindow);
         stack.add(layerOtherHeroInfoWindow);
         stack.add(layerErrorQuitWindow);
@@ -188,477 +217,54 @@ public class GameScreen extends AbstractGameScreen {
         layerOptionsWindow.setPosition((Gdx.graphics.getWidth()-winOptions.getWidth())/2,(Gdx.graphics.getHeight()-winOptions.getHeight())/2);
     }
 
-    public Table buildBottonLayer(){
-        Table layer = new Table();
-        //+ quit botton
-        btnQuit = new Image(AssetsController.instance.getRegion("mapleft"));
-        btnQuit.setSize(0.045f * width,0.07f * height);
-        btnQuit.setPosition(0,0.91f * height);
-        layer.addActor(btnQuit);
-        btnQuit.addListener(new InputListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                onQuitClicked();
-                return true;
-            }
-        });
-        btnSettings = new Image(AssetsController.instance.getRegion("button_setting"));
-        btnSettings.setSize(0.045f * width,0.07f * height);
-        btnSettings.setPosition(width-btnSettings.getWidth(),0.91f * height);
-        layer.addActor(btnSettings);
-        btnSettings.addListener(new InputListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                //点击设置
-                onWinOptionsClicked();
-                return true;
-            }
-        });
-        return layer;
+    private void renderWorld(SpriteBatch batch){
+        worldController.getCameraController().applyTo(camera);
+        batch.setProjectionMatrix(camera.combined);
+        worldController.getWorld().render(batch);
+    }
+
+    private void renderGUI(SpriteBatch batch){
+        batch.setProjectionMatrix(cameraGUI.combined);
+        batchBotton(batch);
+        batchSkill(batch);
+        batchHeroInfo(batch);
+        batchOtherHeroInfo(batch);
+    }
+
+    private void batchBotton(SpriteBatch batch){
+        btnQuit.draw(batch);
+        btnSettings.draw(batch);
+    }
+
+    private void batchSkill(SpriteBatch batch){
+        imgMove.draw(batch);
+        imgEjection.draw(batch);
+        imgAttrack.draw(batch);
+        imgSkillOne.draw(batch);
+        imgSkillTwo.draw(batch);
+        imgSkillThree.draw(batch);
+        imgTurnEnd.draw(batch);
+    }
+
+    private void batchHeroInfo(SpriteBatch batch){
+        imgMyHeroHead.draw(batch);
+        font.getData().setScale(1.0f);
+        font.draw(batch,"HP" +myPlayer().getMyHero().getHealth()+" AK:"+myPlayer().getMyHero().getAttack()+
+                "\nED:"+myPlayer().getMyHero().getEndurance()+" AM:"+myPlayer().getMyHero().getArmor()+
+                "\nRP:"+myPlayer().getMyHero().getRagePower()+" CP:"+myPlayer().getMyHero().getCriticalProbability(),width/15,0);
+    }
+
+    private void batchOtherHeroInfo(SpriteBatch batch){
+        imgMyHeroHead.draw(batch);
+        font.getData().setScale(1.0f);
+        font.draw(batch,"HP" +myPlayer().getMyHero().getHealth()+" AK:"+myPlayer().getMyHero().getAttack()+
+                "\nED:"+myPlayer().getMyHero().getEndurance()+" AM:"+myPlayer().getMyHero().getArmor()+
+                "\nRP:"+myPlayer().getMyHero().getRagePower()+" CP:"+myPlayer().getMyHero().getCriticalProbability(),13*width/15,0);
     }
 
 
 
-    public Table buildSkillLayer(){
-        Table layer = new Table();
-        float scale;
-
-        //+MovementLayer
-        imgMove = new Image(AssetsController.instance.getRegion("move"));
-        scale=width/15/imgMove.getWidth();
-        imgMove.setScale(scale);
-        imgMove.setPosition(width/2-imgMove.getWidth()*scale*3.5f,0);
-        layer.addActor(imgMove);
-        imgMove.addListener(new InputListener(){
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                //点击移动
-                worldController.onOperationClicked(0);
-                return true;
-            }
-        });
-
-        //+EjectionLayer
-        imgEjection = new Image(AssetsController.instance.getRegion("ejection"));
-        imgEjection.setScale(scale);
-        imgEjection.setPosition(imgMove.getX()+imgMove.getWidth()*scale,0);
-        layer.addActor(imgEjection);
-        imgEjection.addListener(new InputListener(){
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                //点击弹射
-                worldController.onOperationClicked(1);
-                return true;
-            }
-        });
-
-        //+AttrackLayer
-        imgAttrack = new Image(AssetsController.instance.getRegion("attrack"));
-        imgAttrack.setScale(scale);
-        imgAttrack.setPosition(imgEjection.getX()+imgEjection.getWidth()*scale,0);
-        layer.addActor(imgAttrack);
-        imgAttrack.addListener(new InputListener(){
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                //点击发射炸弹
-                worldController.onOperationClicked(2);
-                return true;
-            }
-        });
-
-        //+SkillOneLayer
-        imgSkillOne = new Image(AssetsController.instance.getRegion("SkillOne"));
-        imgSkillOne.setScale(scale);
-        imgSkillOne.setPosition(imgAttrack.getX()+imgAttrack.getWidth()*scale,0);
-
-        layer.addActor(imgSkillOne);
-        imgSkillOne.addListener(new InputListener(){
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                //点击技能一
-                worldController.onOperationClicked(3);
-                return true;
-            }
-        });
-
-        //+SkillTwoLayer
-        imgSkillTwo = new Image(AssetsController.instance.getRegion("SkillTwo"));
-        imgSkillTwo.setScale(scale);
-        imgSkillTwo.setPosition(imgSkillOne.getX()+imgSkillOne.getWidth()*scale,0);
-        layer.addActor(imgSkillTwo);
-        imgSkillTwo.addListener(new InputListener(){
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                //点击技能二
-                worldController.onOperationClicked(4);
-                return true;
-            }
-        });
-
-        //+SkillThreeLayer
-        imgSkillThree = new Image(AssetsController.instance.getRegion("SkillThree"));
-        imgSkillThree.setScale(scale);
-        imgSkillThree.setPosition(imgSkillTwo.getX()+imgSkillTwo.getWidth()*scale,0);
-        layer.addActor(imgSkillThree);
-        imgSkillThree.addListener(new InputListener(){
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                //点击技能三
-                worldController.onOperationClicked(5);
-                return true;
-            }
-        });
-
-
-        //+TurnEndLayer
-        imgTurnEnd = new Image(AssetsController.instance.getRegion("button_quit"));
-        imgTurnEnd.setSize(43,35);
-        imgTurnEnd.setScale(scale);
-        imgTurnEnd.setPosition(imgSkillThree.getX()+imgSkillThree.getWidth()*scale,0);
-        layer.addActor(imgTurnEnd);
-        imgTurnEnd.addListener(new InputListener(){
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                //点击回合结束
-                worldController.onOperationClicked(0);
-                return true;
-            }
-        });
-
-
-
-
-        return layer;
-    }
-
-    public Table buildHeroBasicInfoLayer(){
-
-        Table layer =new Table();
-        Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.BLACK);
-        //+my hero's head appear
-        imgMyHeroHead = new Image(AssetsController.instance.getRegion(myHeroType()+"_move0"));
-        imgMyHeroHead.setPosition(0,0);
-        imgMyHeroHead.setScale(width/15/imgMyHeroHead.getWidth());
-        layer.addActor(imgMyHeroHead);
-        imgMyHeroHead.addListener(new InputListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                //点击自己英雄头像显示详细信息
-                onHeroHeadClicked();
-                return true;
-            }
-        });
-        labelMyHeroBasicInfo = new Label("HP" +myPlayer().getMyHero().getHealth()+" AK:"+myPlayer().getMyHero().getAttack()+
-        "\nED:"+myPlayer().getMyHero().getEndurance()+" AM:"+myPlayer().getMyHero().getArmor()+
-         "\nRP:"+myPlayer().getMyHero().getRagePower()+" CP:"+myPlayer().getMyHero().getCriticalProbability(),labelStyle);
-        labelMyHeroBasicInfo.setFontScale(width/15/labelMyHeroBasicInfo.getPrefWidth()*2);
-        labelMyHeroBasicInfo.setPosition(width/15,0);
-        layer.addActor(labelMyHeroBasicInfo);
-
-
-        labelOtherHeroBasicInfo = new Label("HP:1000 AK:90\nED:100 AM:100\nPR:50 CP:20% ",labelStyle);
-        labelOtherHeroBasicInfo.setFontScale(width/15/labelOtherHeroBasicInfo.getPrefWidth()*2);
-        labelOtherHeroBasicInfo.setPosition(width-labelOtherHeroBasicInfo.getPrefWidth(),-labelOtherHeroBasicInfo.getHeight()/5);
-        labelOtherHeroBasicInfo.setVisible(false);
-        layer.addActor(labelOtherHeroBasicInfo);
-
-        imgOtherHeroHead = new Image(AssetsController.instance.getRegion("Angel_move0"));
-        imgOtherHeroHead.setScale(width/15/imgOtherHeroHead.getWidth());
-        imgOtherHeroHead.setPosition(width/15*12,0);
-        imgOtherHeroHead.setVisible(false);
-        layer.addActor(imgOtherHeroHead);
-        imgOtherHeroHead.addListener(new InputListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                //点击他人英雄头像显示详细信息
-                onOtherHeroHeadClicked();
-                return true;
-            }
-        });
-
-        return layer;
-    }
-
-    public Table buildHeroInfoWindowLayer(){
-        Table layer = new Table();
-        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(AssetsController.instance.getRegion("textfieldbackground")));
-        winHeroInfo = new Window("",windowStyle);
-        //winOptions.setColor(1,1,1,1f);
-        winHeroInfo.setVisible(false);
-        Label.LabelStyle labelStyle = new Label.LabelStyle(font,Color.BLACK);
-        Label label = new Label(description[myHeroTypeI()],labelStyle);
-        winHeroInfo.addActor(label);
-        //winOptions.pack();
-        winHeroInfo.setSize(label.getPrefWidth()*1.2f,label.getPrefHeight()*1.2f);
-        label.setPosition(label.getPrefWidth()*0.1f,label.getPrefHeight()*0.1f);
-        winHeroInfo.setPosition(0,imgMyHeroHead.getHeight()*width/15/imgMyHeroHead.getWidth());
-        layer.addActor(winHeroInfo);
-        return layer;
-    }
-
-
-    public Table buildOtherHeroInfoWindowLayer(){
-        Table layer = new Table();
-        int heroInfoType;
-        heroInfoType = this.heroInfoType;
-        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(AssetsController.instance.getRegion("textfieldbackground")));
-        winOtherHeroInfo = new Window("",windowStyle);
-        winOtherHeroInfo.setSize(height/2,height/2);
-        //winOptions.setColor(1,1,1,1f);
-        //winOtherHeroInfo.addActor(buildWinOHInfoQuitBotton());
-        winOtherHeroInfo.setVisible(false);
-        //winOptions.pack();
-        winOtherHeroInfo.setPosition(width-winOtherHeroInfo.getWidth(),imgMyHeroHead.getHeight());
-        layer.addActor(winOtherHeroInfo);
-        return layer;
-    }
-
-
-    public Table buildErrorQuitWindowBotton(){
-        Table layer = new Table();
-        btnWinErrorQuit = new Image(AssetsController.instance.getRegion("confirm"));
-        btnWinErrorQuit.setPosition(winErrorQuit.getWidth()/2-btnWinErrorQuit.getWidth()/2,winErrorQuit.getHeight()/3-btnWinErrorQuit.getHeight()/2);
-        layer.addActor(btnWinErrorQuit);
-        btnWinErrorQuit.addListener(new InputListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                //点击确认
-                onErrorQuitBottonClicked();
-                return true;
-            }
-        });
-        return layer;
-    }
-
-    public Table buildErrorQuitWindowLayer(){
-        Table tbl = new Table();
-        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(AssetsController.instance.getRegion("winresult")));
-        winErrorQuit = new Window("",windowStyle);
-        Label.LabelStyle labelStyle = new Label.LabelStyle(font,Color.BLACK);
-        Label label = new Label("Because Manager is quitted, game error stop.",labelStyle);
-        winErrorQuit.setSize(width/2,height/2);
-        winErrorQuit.setPosition(width/4,height/4);
-        label.setPosition(winErrorQuit.getWidth()/2-label.getPrefWidth()/2,2*winErrorQuit.getHeight()/3-label.getPrefHeight()/2);
-        //winOptions.setColor(1,1,1,1f);
-        winErrorQuit.addActor(buildErrorQuitWindowBotton());
-        winErrorQuit.addActor(label);
-        winErrorQuit.setVisible(false);
-        tbl.addActor(winErrorQuit);
-        //winOptions.pack();
-        return tbl;
-    }
-
-    public void onOtherHeroHeadClicked() {
-        if(winOtherHeroInfo.isVisible()){
-            winOtherHeroInfo.setVisible(false);
-        }else{
-            winOtherHeroInfo.setVisible(true);
-        }
-    }
-
-    public void onHeroHeadClicked() {
-        if(winHeroInfo.isVisible()){
-            winHeroInfo.setVisible(false);
-        }else{
-            winHeroInfo.setVisible(true);
-        }
-    }
-
-    public String myHeroType(){
-        int heroType =  myHeroTypeI();
-        if(heroType==0){
-            return "Sparda";
-        }
-        else if(heroType==1){
-            return "Protector";
-        }
-        else if(heroType==2){
-            return  "Angel";
-        }
-        else if(heroType==3){
-            return "Sniper";
-        }
-        else {
-            return "Wizard";
-        }
-    }
-
-
-
-    public Player myPlayer(){
-        int i;
-        for(i=0;i<worldController.getPlayers().size;i++) {
-            if (worldController.getPlayers().get(i).getState() == Constants.PLAYER.STATE_LOCAL) {
-                return worldController.getPlayers().get(i);
-            }
-        }
-        return worldController.getPlayers().get(0);
-    }
-
-    public int myHeroTypeI(){
-        Gdx.app.log(TAG,"myPlayerHeroType="+myPlayer().getHeroType());
-        return myPlayer().getHeroType();
-
-    }
-
-
-    public void onHeroClicked(Player p){
-        final int heroType;
-        heroType = p.getHeroType();
-        String i;
-        if(heroType == 0){
-            i = "Sparda";
-        }else if(heroType == 1){
-            i = "Protector";
-        }else if(heroType == 2){
-            i = "Angel";
-        }else if(heroType == 3){
-            i = "Sniper";
-        }else{
-            i = "Wizard";
-        }
-        Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.BLACK);
-        labelOtherHeroBasicInfo = new Label("HP:"+p.getMyHero().getHealth()+" AK:"+p.getMyHero().getAttack()+
-                "\nED:"+p.getMyHero().getEndurance()+" AM:"+p.getMyHero().getArmor()+
-                "\nRP:"+p.getMyHero().getRagePower()+" CP:"+p.getMyHero().getCriticalProbability(),labelStyle);
-        labelOtherHeroBasicInfo.setFontScale(width/15/labelOtherHeroBasicInfo.getPrefWidth()*2);
-        labelOtherHeroBasicInfo.setPosition(width/15*13,-labelOtherHeroBasicInfo.getHeight()/5);
-
-
-        imgOtherHeroHead = new Image(AssetsController.instance.getRegion(i+"_move0"));
-        imgOtherHeroHead.setScale(width/15/imgOtherHeroHead.getWidth());
-        imgOtherHeroHead.setPosition(width/15*12,0);
-        imgOtherHeroHead.addListener(new InputListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                //点击他人英雄头像显示详细信息
-                onOtherHeroHeadClicked();
-                return true;
-            }
-        });
-        Label label = new Label(description[heroType],labelStyle);
-        label.setFontScaleX(18*winOtherHeroInfo.getWidth()/label.getPrefWidth()/20);
-        label.setFontScaleY(8*winOtherHeroInfo.getHeight()/label.getPrefHeight()/9);
-        label.setPosition(winOtherHeroInfo.getWidth()/2-label.getPrefWidth()/2,0);
-        winOtherHeroInfo.addActor(label);
-        imgOtherHeroHead.setVisible(true);
-        labelOtherHeroBasicInfo.setVisible(true);
-    }
-
-    public void onManagerQuitClicked() {
-        //game.loadScreen
-    }
-
-    public void onQuitClicked() {
-        game.loadMenuScreen();
-    }
-
-    public void GameOver(){
-        //游戏结算的弹窗
-        TextureRegionDrawable winResultsDrawable = new TextureRegionDrawable(AssetsController.instance.getRegion("winresult"));
-        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),winResultsDrawable);
-        winResults = new Window("",windowStyle);
-        winResults.setSize(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
-        winResults.setPosition((Gdx.graphics.getWidth()-winResults.getWidth())/2,(Gdx.graphics.getHeight()-winResults.getHeight())/2);
-        virtory = new Image(AssetsController.instance.getRegion("vitory"));
-        failed = new Image(AssetsController.instance.getRegion("failed"));
-
-        if(worldController.isGameOver()==1){
-
-            virtory.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
-            virtory.setPosition((winResults.getWidth()-virtory.getWidth())/2,(winResults.getHeight()-virtory.getHeight())/1.25f);
-            winResults.addActor(virtory);
-        }else if(worldController.isGameOver()==2){
-
-            failed.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
-            failed.setPosition((winResults.getWidth()-failed.getWidth())/2,(winResults.getHeight()-failed.getHeight())/1.25f);
-            winResults.addActor(failed);
-        }
-
-
-
-        Label goldReceiveLabel = new Label("获得1000金币",new Label.LabelStyle(font,Color.BLACK));
-        winResults.addActor(goldReceiveLabel);
-        goldReceiveLabel.setSize(winResults.getWidth(),winResults.getHeight()/2);
-        goldReceiveLabel.setAlignment(Align.center);
-        goldReceiveLabel.setPosition(0,winResults.getHeight()/5);
-        Image confirm = new Image(AssetsController.instance.getRegion("confirm"));
-        confirm.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
-        confirm.setPosition((winResults.getWidth()-virtory.getWidth())/2,50);
-        winResults.addActor(confirm);
-        confirm.addListener(new InputListener(){
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                //game.loadRoomScreen();
-                winResults.setVisible(false);
-                return true;
-
-            }
-        });
-
-
-    }
-
-    public void playQuit(String ID){
-        Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.BLACK);
-        Label label = new Label(ID+" has already quitted the game ,nmsl",labelStyle);
-        label.setPosition(0,height/2-label.getPrefHeight()/2);
-        stage.addActor(label);
-
-    }
-
-    public void onErrorQuitBottonClicked() {
-        winErrorQuit.setVisible(false);
-        game.loadLobbyScreen();
-    }
-
-    private void onWinOptionsClicked() {
-        winOptions.setVisible(true);
-        loadSettings();
-    }
-
-    private void loadSettings(){
-        DataController prefs = DataController.instance;
-        sldSound.setValue(prefs.getVolSound());
-        sldMusic.setValue(prefs.getVolMusic());
-
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        //stage.getViewport().update(width,height);
-    }
-
-
-
-    @Override
-    public void hide() {
-        //batch2.dispose();
-        //worldController.dispose();
-    }
-
-    @Override
-    public void pause() {
-        paused = true;
-    }
-
-    public void resume(){
-        super.resume();
-        paused = false;
-    }
-
-    public void errorStop(){
-        winErrorQuit.setVisible(true);
-    }
-
+    //设置窗口
     private Table buildOptionsWindowLayer(){
 
 //        BitmapFont font =new BitmapFont(Gdx.files.internal("menuscreen/winOptions.fnt"), Gdx.files.internal("menuscreen/winOptions.png"),false)
@@ -676,6 +282,7 @@ public class GameScreen extends AbstractGameScreen {
 
 
     }
+
     private Table buildOptWinAudioSettings(){
         Table tbl = new Table();
         //添加标题audio
@@ -755,9 +362,12 @@ public class GameScreen extends AbstractGameScreen {
         saveSettings();
         onCancelClicked();
     }
+
     public void onCancelClicked(){
         winOptions.setVisible(false);
+        Gdx.input.setInputProcessor(worldController.getInputProcessor());
     }
+
     public void saveSettings(){
         DataController prefs = DataController.instance;
         prefs.setVolSound(sldSound.getValue());
@@ -766,4 +376,396 @@ public class GameScreen extends AbstractGameScreen {
         winOptions.setVisible(false);
     }
 
+
+
+
+    //自己英雄技能窗口
+    public Table buildHeroInfoWindowLayer(){
+        Table layer = new Table();
+        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(AssetsController.instance.getRegion("textfieldbackground")));
+        winHeroInfo = new Window("",windowStyle);
+        //winOptions.setColor(1,1,1,1f);
+        winHeroInfo.setVisible(false);
+        Label.LabelStyle labelStyle = new Label.LabelStyle(font,Color.BLACK);
+        Label label = new Label(description[myHeroTypeI()],labelStyle);
+        winHeroInfo.addActor(label);
+        winHeroInfo.addActor(buildWinHInfoQuitBotton());
+        //winOptions.pack();
+        winHeroInfo.setSize(label.getPrefWidth()*1.2f,label.getPrefHeight()*1.2f);
+        label.setPosition(label.getPrefWidth()*0.1f,label.getPrefHeight()*0.1f);
+        winHeroInfo.setPosition(0,imgMyHeroHead.getHeight()*width/15/imgMyHeroHead.getWidth());
+        layer.addActor(winHeroInfo);
+        return layer;
+    }
+
+    private Table buildWinHInfoQuitBotton(){
+        Table tbl = new Table();
+        btnwinHInfoQuit = new Image(AssetsController.instance.getRegion("button_quit"));
+        btnwinHInfoQuit.setPosition(winHeroInfo.getWidth()-btnwinHInfoQuit.getWidth(),winHeroInfo.getHeight()-btnwinHInfoQuit.getHeight());
+        btnwinHInfoQuit.debug();
+        tbl.addActor(btnwinHInfoQuit);
+        btnwinHInfoQuit.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                //点击他人英雄头像显示详细信息
+                onWinHInfoQuitBottonClicked();
+                return true;
+            }
+        });
+
+
+
+        return tbl;
+    }
+
+    private void onWinHInfoQuitBottonClicked() {
+        winHeroInfo.setVisible(false);
+        Gdx.input.setInputProcessor(worldController.getInputProcessor());
+    }
+
+
+
+
+    //他人英雄技能窗口
+    public Table buildOtherHeroInfoWindowLayer(){
+        Table layer = new Table();
+        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(AssetsController.instance.getRegion("textfieldbackground")));
+        winOtherHeroInfo = new Window("",windowStyle);
+        winOtherHeroInfo.setSize(height/2,height/2);
+        //winOptions.setColor(1,1,1,1f);
+        //winOtherHeroInfo.addActor(buildWinOHInfoQuitBotton());
+        winOtherHeroInfo.setVisible(false);
+        winOtherHeroInfo.addActor(buildWinOHInfoQuitBotton());
+        //winOptions.pack();
+        winOtherHeroInfo.setPosition(width-winOtherHeroInfo.getWidth(),imgMyHeroHead.getHeight()*width/15/imgMyHeroHead.getWidth());
+        layer.addActor(winOtherHeroInfo);
+        return layer;
+    }
+
+    private Table buildWinOHInfoQuitBotton(){
+        Table tbl = new Table();
+        btnwinOHInfoQuit = new Image(AssetsController.instance.getRegion("button_quit"));
+        btnwinOHInfoQuit.setPosition(winOtherHeroInfo.getWidth()-btnwinOHInfoQuit.getWidth(),winOtherHeroInfo.getHeight()-btnwinOHInfoQuit.getHeight());
+        btnwinOHInfoQuit.debug();
+        tbl.addActor(btnwinOHInfoQuit);
+        btnwinOHInfoQuit.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                //点击他人英雄头像显示详细信息
+                onWinOHInfoQuitBottonClicked();
+                return true;
+            }
+        });
+
+
+
+        return tbl;
+    }
+
+    private void onWinOHInfoQuitBottonClicked() {
+        winOtherHeroInfo.setVisible(false);
+        Gdx.input.setInputProcessor(worldController.getInputProcessor());
+    }
+
+
+    public void onHeroClicked(Player p){
+        final int heroType;
+        heroType = p.getHeroType();
+        String i;
+        if(heroType == 0){
+            i = "Sparda";
+        }else if(heroType == 1){
+            i = "Protector";
+        }else if(heroType == 2){
+            i = "Angel";
+        }else if(heroType == 3){
+            i = "Sniper";
+        }else{
+            i = "Wizard";
+        }
+        imgOtherHeroHead = new Sprite(AssetsController.instance.getRegion(i+"_move0"));
+        imgOtherHeroHead.setScale(width/15/imgOtherHeroHead.getWidth());
+        imgOtherHeroHead.setPosition(width/15*12,0);
+
+        font.getData().setScale(1.0f);
+        font.draw(batch,"HP" +myPlayer().getMyHero().getHealth()+" AK:"+myPlayer().getMyHero().getAttack()+
+                "\nED:"+myPlayer().getMyHero().getEndurance()+" AM:"+myPlayer().getMyHero().getArmor()+
+                "\nRP:"+myPlayer().getMyHero().getRagePower()+" CP:"+myPlayer().getMyHero().getCriticalProbability(),13*width/15,0);
+
+        Label.LabelStyle labelStyle = new Label.LabelStyle(font,font.getColor());
+        Label label = new Label(description[heroType],labelStyle);
+        winOtherHeroInfo.addActor(label);
+        winHeroInfo.setSize(label.getPrefWidth()*1.2f,label.getPrefHeight()*1.2f);
+        label.setPosition(label.getPrefWidth()*0.1f,label.getPrefHeight()*0.1f);
+        winOtherHeroInfo.setVisible(false);
+    }
+
+
+    //结果窗口
+    public void GameOver(){
+        //游戏结算的弹窗
+        TextureRegionDrawable winResultsDrawable = new TextureRegionDrawable(AssetsController.instance.getRegion("winresult"));
+        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),winResultsDrawable);
+        winResults = new Window("",windowStyle);
+        winResults.setSize(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
+        winResults.setPosition((Gdx.graphics.getWidth()-winResults.getWidth())/2,(Gdx.graphics.getHeight()-winResults.getHeight())/2);
+        virtory = new Image(AssetsController.instance.getRegion("vitory"));
+        failed = new Image(AssetsController.instance.getRegion("failed"));
+
+        if(worldController.isGameOver()==1){
+
+            virtory.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
+            virtory.setPosition((winResults.getWidth()-virtory.getWidth())/2,(winResults.getHeight()-virtory.getHeight())/1.25f);
+            winResults.addActor(virtory);
+        }else if(worldController.isGameOver()==2){
+
+            failed.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
+            failed.setPosition((winResults.getWidth()-failed.getWidth())/2,(winResults.getHeight()-failed.getHeight())/1.25f);
+            winResults.addActor(failed);
+        }
+
+
+
+        Label goldReceiveLabel = new Label("获得1000金币",new Label.LabelStyle(font, Color.BLACK));
+        winResults.addActor(goldReceiveLabel);
+        goldReceiveLabel.setSize(winResults.getWidth(),winResults.getHeight()/2);
+        goldReceiveLabel.setAlignment(Align.center);
+        goldReceiveLabel.setPosition(0,winResults.getHeight()/5);
+        Image confirm = new Image(AssetsController.instance.getRegion("confirm"));
+        confirm.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
+        confirm.setPosition((winResults.getWidth()-virtory.getWidth())/2,50);
+        winResults.addActor(confirm);
+        confirm.addListener(new InputListener(){
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                //game.loadRoomScreen();
+                winResults.setVisible(false);
+                return true;
+
+            }
+        });
+
+
+    }
+
+
+    //意外退出窗口
+    public Table buildErrorQuitWindowLayer(){
+        Table tbl = new Table();
+        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(AssetsController.instance.getRegion("winresult")));
+        winErrorQuit = new Window("",windowStyle);
+        Label.LabelStyle labelStyle = new Label.LabelStyle(font,Color.BLACK);
+        Label label = new Label("Because Manager is quitted, game error stop.",labelStyle);
+        winErrorQuit.setSize(width/2,height/2);
+        winErrorQuit.setPosition(width/4,height/4);
+        label.setPosition(winErrorQuit.getWidth()/2-label.getPrefWidth()/2,2*winErrorQuit.getHeight()/3-label.getPrefHeight()/2);
+        //winOptions.setColor(1,1,1,1f);
+        winErrorQuit.addActor(buildErrorQuitWindowBotton());
+        winErrorQuit.addActor(label);
+        winErrorQuit.setVisible(false);
+        tbl.addActor(winErrorQuit);
+        //winOptions.pack();
+        return tbl;
+    }
+
+    public Table buildErrorQuitWindowBotton(){
+        Table layer = new Table();
+        btnWinErrorQuit = new Image(AssetsController.instance.getRegion("confirm"));
+        btnWinErrorQuit.setPosition(winErrorQuit.getWidth()/2-btnWinErrorQuit.getWidth()/2,winErrorQuit.getHeight()/3-btnWinErrorQuit.getHeight()/2);
+        layer.addActor(btnWinErrorQuit);
+        btnWinErrorQuit.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                //点击确认
+                onErrorQuitBottonClicked();
+                return true;
+            }
+        });
+        return layer;
+    }
+
+    public void onErrorQuitBottonClicked() {
+        winErrorQuit.setVisible(false);
+        game.loadLobbyScreen();
+    }
+
+
+    //自己英雄信息
+    public Player myPlayer(){
+        int i;
+        for(i=0;i<worldController.getPlayers().size;i++) {
+            if (worldController.getPlayers().get(i).getState() == Constants.PLAYER.STATE_LOCAL) {
+                return worldController.getPlayers().get(i);
+            }
+        }
+        return worldController.getPlayers().get(0);
+    }
+
+    public String myHeroType(){
+        int heroType =  myHeroTypeI();
+        if(heroType==0){
+            return "Sparda";
+        }
+        else if(heroType==1){
+            return "Protector";
+        }
+        else if(heroType==2){
+            return  "Angel";
+        }
+        else if(heroType==3){
+            return "Sniper";
+        }
+        else {
+            return "Wizard";
+        }
+    }
+
+    public int myHeroTypeI() {
+        Gdx.app.log(TAG, "myPlayerHeroType=" + myPlayer().getHeroType());
+        return myPlayer().getHeroType();
+
+    }
+
+
+
+
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        Vector3 v = new Vector3(screenX, screenY, 0);
+        camera.unproject(v);
+        if(btnQuit.getBoundingRectangle().contains(v.x,v.y)){
+            game.loadMenuScreen();
+        }else if(btnSettings.getBoundingRectangle().contains(v.x,v.y)){
+            Gdx.input.setInputProcessor(stage);
+            winOptions.setVisible(true);
+        }else if(imgMove.getBoundingRectangle().contains(v.x,v.y)){
+            worldController.onOperationClicked(0);
+        }else if(imgEjection.getBoundingRectangle().contains(v.x,v.y)){
+            worldController.onOperationClicked(1);
+        }else if(imgAttrack.getBoundingRectangle().contains(v.x,v.y)){
+            worldController.onOperationClicked(2);
+        }else if(imgSkillOne.getBoundingRectangle().contains(v.x,v.y)){
+            worldController.onOperationClicked(3);
+        }else if(imgSkillTwo.getBoundingRectangle().contains(v.x,v.y)){
+            worldController.onOperationClicked(4);
+        }else if(imgSkillThree.getBoundingRectangle().contains(v.x,v.y)){
+            worldController.onOperationClicked(5);
+        }else if(imgTurnEnd.getBoundingRectangle().contains(v.x,v.y)){
+            worldController.onOperationClicked(6);
+        }else if(imgMyHeroHead.getBoundingRectangle().contains(v.x,v.y)){
+            Gdx.input.setInputProcessor(stage);
+            winHeroInfo.setVisible(true);
+        }else if(imgOtherHeroHead.getBoundingRectangle().contains(v.x,v.y)){
+            Gdx.input.setInputProcessor(stage);
+            winOtherHeroInfo.setVisible(true);
+        }else{
+            return false;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        //stage.getViewport().update(width,height);
+    }
+
+    public void playQuit(String ID){
+        Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.BLACK);
+        Label label = new Label(ID+" has already quitted the game ,nmsl",labelStyle);
+        label.setPosition(0,height/2-label.getPrefHeight()/2);
+        stage.addActor(label);
+
+    }
+
+    @Override
+    public void hide() {
+        //batch2.dispose();
+        //worldController.dispose();
+    }
+
+    @Override
+    public void pause() {
+        paused = true;
+    }
+
+    public void resume(){
+        super.resume();
+        paused = false;
+    }
+
+    public void errorStop(){
+        Gdx.input.setInputProcessor(stage);
+        winErrorQuit.setVisible(true);
+    }
+
+
+
+
+    @Override
+    public void show() {
+        stage = new Stage();
+        Gdx.app.log(TAG,"new stage0");
+        rebuildStage();
+        Gdx.app.log(TAG,"new stage1");
+        Gdx.input.setInputProcessor(stage);
+    }
+
+    @Override
+    public void render(float deltaTime) {
+        Gdx.gl.glClearColor(0x64/255.0f,0x95/255.0f,0xed/255.0f,0xff/255.0f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.begin();
+        renderWorld(batch);
+        renderGUI(batch);
+        batch.end();
+        stage.act();
+        stage.draw();
+
+        if(worldController.isGameOver()!= 0){
+            GameOver();
+        }
+    }
+
+    public InputProcessor getInputProcessor(){
+        return worldController.getInputProcessor();
+    }
 }
