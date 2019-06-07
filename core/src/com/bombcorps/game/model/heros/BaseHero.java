@@ -214,7 +214,7 @@ public class BaseHero{
                 break;
             case FALLING:
                 updateY(deltaTime);
-                updateX(deltaTime);
+//                updateX(deltaTime);
                 Gdx.app.log("state", "falling");
                 break;
             case MOVING:
