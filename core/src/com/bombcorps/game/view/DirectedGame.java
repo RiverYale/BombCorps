@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.input.GestureDetector;
+import com.bombcorps.game.controller.AssetsController;
+import com.bombcorps.game.controller.AudioController;
 import com.bombcorps.game.controller.InputController;
 import com.bombcorps.game.controller.NetController;
 import com.bombcorps.game.controller.WorldController;
@@ -39,6 +41,7 @@ public abstract class DirectedGame implements ApplicationListener {
     }
 
     public void loadLobbyScreen(){
+        AudioController.instance.play(AssetsController.instance.bgm2);
         lobbyScreen = new LobbyScreen(this);
         netController.bindGame(this);
         setScreen(lobbyScreen);
@@ -84,6 +87,7 @@ public abstract class DirectedGame implements ApplicationListener {
     }
 
     public void loadMenuScreen(){
+        AudioController.instance.play(AssetsController.instance.bgm1);
         menuScreen= new MenuScreen(this);
         setScreen(menuScreen);
         Constants.CurrentScreenFlag =Constants.MenuScreenFlag;

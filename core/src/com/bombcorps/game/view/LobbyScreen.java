@@ -21,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.bombcorps.game.controller.AssetsController;
+import com.bombcorps.game.controller.AudioController;
 import com.bombcorps.game.controller.DataController;
 import com.bombcorps.game.controller.NetController;
 import com.bombcorps.game.model.Player;
@@ -211,6 +212,7 @@ public class LobbyScreen extends AbstractGameScreen{
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 winBuildRoom.setVisible(false);
+                AudioController.instance.play(AssetsController.instance.btnClicked);
                 return true;
             }
         });
@@ -219,6 +221,7 @@ public class LobbyScreen extends AbstractGameScreen{
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 Room room = new Room(NetController.getLocalHostIp(),1);
+                AudioController.instance.play(AssetsController.instance.btnClicked);
                 game.loadRoomScreen(room);
                 //game.getNetController().enterRoom(NetController.getLocalHostIp(),myplayer);
                 return true;
@@ -229,6 +232,7 @@ public class LobbyScreen extends AbstractGameScreen{
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 Room room = new Room(NetController.getLocalHostIp(),2);
+                AudioController.instance.play(AssetsController.instance.btnClicked);
                 game.loadRoomScreen(room);
                 //game.getNetController().enterRoom(NetController.getLocalHostIp(),myplayer);
                 return true;
@@ -239,6 +243,7 @@ public class LobbyScreen extends AbstractGameScreen{
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 Room room = new Room(NetController.getLocalHostIp(),4);
+                AudioController.instance.play(AssetsController.instance.btnClicked);
                 game.loadRoomScreen(room);
                 //game.getNetController().enterRoom(NetController.getLocalHostIp(),myplayer);
                 return true;
@@ -361,6 +366,7 @@ public class LobbyScreen extends AbstractGameScreen{
         btnBuildRoom.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                AudioController.instance.play(AssetsController.instance.btnClicked);
                 winBuildRoom.setVisible(true);
             }
         });
@@ -369,6 +375,7 @@ public class LobbyScreen extends AbstractGameScreen{
            @Override
            public void clicked(InputEvent event, float x,float y){
                //刷新房间列表
+               AudioController.instance.play(AssetsController.instance.btnClicked);
                refreshRoomList();
            }
         });
@@ -377,6 +384,7 @@ public class LobbyScreen extends AbstractGameScreen{
             @Override
             public void clicked(InputEvent event, float x,float y){
                 //进入个人信息界面
+                AudioController.instance.play(AssetsController.instance.btnClicked);
                 game.loadInfoScreen();
             }
         });
@@ -385,6 +393,7 @@ public class LobbyScreen extends AbstractGameScreen{
             @Override
             public void clicked(InputEvent event, float x,float y){
                 //上翻列表
+                AudioController.instance.play(AssetsController.instance.btnClicked);
                 roomListPageUp();
             }
         });
@@ -393,6 +402,7 @@ public class LobbyScreen extends AbstractGameScreen{
             @Override
             public void clicked(InputEvent event, float x,float y){
                 //下翻列表
+                AudioController.instance.play(AssetsController.instance.btnClicked);
                 roomListPageDown();
             }
         });
@@ -401,6 +411,7 @@ public class LobbyScreen extends AbstractGameScreen{
             @Override
             public void clicked(InputEvent event, float x,float y){
                 //回到主界面
+                AudioController.instance.play(AssetsController.instance.btnClicked);
                 game.loadMenuScreen();
             }
         });

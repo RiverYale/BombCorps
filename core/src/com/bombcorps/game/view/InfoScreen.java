@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.bombcorps.game.controller.AssetsController;
+import com.bombcorps.game.controller.AudioController;
 import com.bombcorps.game.controller.DataController;
 
 public class InfoScreen extends AbstractGameScreen implements InputProcessor{
@@ -262,12 +263,15 @@ public class InfoScreen extends AbstractGameScreen implements InputProcessor{
             heroBoard.setY(60f+viewHeight*0.15f*i);
             if (heroBoard.getBoundingRectangle().contains(v.x, v.y)) {
                 index = 4-i;
+                AudioController.instance.play(AssetsController.instance.btnClicked);
                 break;
             }
         }
         if (upgrade.getBoundingRectangle().contains(v.x, v.y)) {
             DataController.instance.upLevel(index + 1);
+            AudioController.instance.play(AssetsController.instance.levelup);
         } else if(back.getBoundingRectangle().contains(v.x, v.y)){
+            AudioController.instance.play(AssetsController.instance.btnClicked);
             game.loadLobbyScreen();
         }
 
