@@ -277,7 +277,7 @@ public class NetController {
                 break;
             case QUIT_GAME:
                 if(world.getWorldIp().equals(msg.getFromIp())){
-
+                    world.errorStop();
                 }else{
                     world.playerQuit(msg);
                 }
@@ -357,7 +357,7 @@ public class NetController {
     }
 
     public void quitGame(Player me) {
-        Message m = new Message(QUIT_ROOM);
+        Message m = new Message(QUIT_GAME);
         m.setTargetPlayer(me);
         broadcastInRoom(m);
     }

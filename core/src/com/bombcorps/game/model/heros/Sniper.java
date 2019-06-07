@@ -34,7 +34,7 @@ public class Sniper extends BaseHero {
         this.setMaxHealth(Constants.Sniper.HEALTH * getLevel());
         this.setHealth(Constants.Sniper.HEALTH * getLevel());
         this.setEndurance(200f);
-        this.setRagePower(100f);
+        this.setRagePower(0);
 
         this.setAttack(Constants.Sniper.ATTACK * getLevel());
         this.setCriticalProbability(Constants.Sniper.START_CRITICALPROBABILITY);

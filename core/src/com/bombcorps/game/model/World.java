@@ -48,7 +48,11 @@ public class World {
     }
 
     public Bonus spawnBonus() {
-        return bonusManager.getBonusList().pop();
+        return bonusManager.getBonusList().get(bonusManager.getBonusList().size-1);
+    }
+
+    public Bonus getFallingBonus() {
+        return bonusManager.getBonusList().get(bonusManager.getBonusList().size-1);
     }
 
     public Player getFirstPlayer() {
@@ -93,6 +97,7 @@ public class World {
     private String hostIP;
 
     private int limit;
+
 
     public  World(Room room){
         hostIP = room.getOwnerIp();

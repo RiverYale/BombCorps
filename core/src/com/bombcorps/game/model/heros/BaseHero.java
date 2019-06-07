@@ -167,7 +167,7 @@ public class BaseHero{
         destination = 0;
         health = 0;
         endurance = Constants.MAX_ENDURENCE;
-        powerRage = Constants.MAX_RAGEPOWER;
+        powerRage = 0;
         attack = 0;
         criticalProbability = 0;
         armor = 0;
@@ -202,11 +202,11 @@ public class BaseHero{
 
     protected void updatePosition(float deltaTime){
         switch(state){
-            case ATTACK:
-            case DEAD:
+//            case ATTACK:
+//            case DEAD:
             case GROUNDED:
                 velocity.y = 0;
-                state = STATE.FALLING;
+//                state = STATE.FALLING;
                 break;
             case FALLING:
                 updateY(deltaTime);

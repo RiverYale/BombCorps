@@ -33,7 +33,7 @@ public class Protector extends BaseHero {
         this.setMaxHealth(Constants.Protector.HEALTH * getLevel());
         this.setHealth(Constants.Protector.HEALTH * getLevel());
         this.setEndurance(200f);
-        this.setRagePower(100f);
+        this.setRagePower(0);
 
         this.setAttack(Constants.Protector.ATTACK * getLevel());
         this.setCriticalProbability(Constants.Protector.START_CRITICALPROBABILITY);
