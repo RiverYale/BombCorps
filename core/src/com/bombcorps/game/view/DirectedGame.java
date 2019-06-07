@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.bombcorps.game.controller.AssetsController;
-import com.bombcorps.game.controller.AudioController;
+import com.badlogic.gdx.input.GestureDetector;
+import com.bombcorps.game.controller.InputController;
 import com.bombcorps.game.controller.NetController;
 import com.bombcorps.game.controller.WorldController;
 import com.bombcorps.game.model.Constants;
@@ -32,14 +32,13 @@ public abstract class DirectedGame implements ApplicationListener {
     protected InfoScreen infoScreen;
     protected WorldController worldController;
     protected NetController netController = new NetController();
+    protected OrthographicCamera camera;
 
     public void setScreen(AbstractGameScreen screen) {
         setScreen(screen,null);
     }
 
     public void loadLobbyScreen(){
-        AudioController.instance.play(AssetsController.instance.bgm2);
-
         lobbyScreen = new LobbyScreen(this);
         netController.bindGame(this);
         setScreen(lobbyScreen);
@@ -47,7 +46,6 @@ public abstract class DirectedGame implements ApplicationListener {
     }
 
     public void loadRoomScreen(Room room){
-        this.getNetController().openReceiveMsgThread();
         roomScreen = new RoomScreen(this,room.getOwnerIp(),room.getLIMIT(),room);
         netController.bindGame(this);
         setScreen(roomScreen);
@@ -63,17 +61,19 @@ public abstract class DirectedGame implements ApplicationListener {
 //    }
 
     public void loadGameScreen(){
-        OrthographicCamera orthographicCamera =new OrthographicCamera();
-        orthographicCamera.viewportHeight =10;
-        orthographicCamera.viewportWidth = 18;
+        camera = new OrthographicCamera();
+        camera.viewportHeight =10f;
+        camera.viewportWidth = 18f;
         //netController = new NetController();
 
-        worldController = new WorldController(this,orthographicCamera,netController);
-
-        Gdx.input.setInputProcessor(worldController.getInputProcessor());
+        worldController = new WorldController(this,camera,netController);
+        Gdx.app.log("DirectedGame","new worldController ");
 
         gameScreen = new GameScreen(this,worldController);
+        Gdx.app.log("DirectedGame","new gameScreen");
         setScreen(gameScreen);
+
+        Gdx.input.setInputProcessor(worldController.getInputProcessor());
         Constants.CurrentScreenFlag = Constants.GameScreenFlag;
     }
 
@@ -84,7 +84,6 @@ public abstract class DirectedGame implements ApplicationListener {
     }
 
     public void loadMenuScreen(){
-        AudioController.instance.play(AssetsController.instance.bgm1);
         menuScreen= new MenuScreen(this);
         setScreen(menuScreen);
         Constants.CurrentScreenFlag =Constants.MenuScreenFlag;
@@ -162,7 +161,9 @@ public abstract class DirectedGame implements ApplicationListener {
         }
         // 启动一个新的切换
         nextScreen = screen;
+        Gdx.app.log("qin","next screen");
         nextScreen.show(); // 激活下一个屏幕
+        Gdx.app.log("qin","show() is used.");
         nextScreen.resize(w, h);
         nextScreen.render(0); // 让下一个屏幕更新一次
         if (currScreen != null)

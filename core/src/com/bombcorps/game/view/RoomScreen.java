@@ -189,6 +189,7 @@ public class RoomScreen extends AbstractGameScreen{
 
     @Override
     public void hide() {
+        batch.dispose();
         stage.dispose();
     }
 

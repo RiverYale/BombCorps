@@ -1,159 +1,159 @@
-gameScreen.png
-size: 1785, 1015
+gamescreen.png
+size: 1718, 766
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-SkillThree
+attrack
   rotate: false
-  xy: 449, 979
+  xy: 1669, 599
   size: 43, 35
   orig: 43, 35
+  offset: 0, 0
+  index: -1
+gamebackground
+  rotate: false
+  xy: 1, 1
+  size: 1024, 640
+  orig: 1024, 640
   offset: 0, 0
   index: -1
 button_quit
   rotate: false
-  xy: 314, 979
+  xy: 1667, 636
   size: 43, 35
   orig: 43, 35
-  offset: 0, 0
-  index: -1
-ejection
-  rotate: false
-  xy: 224, 979
-  size: 43, 35
-  orig: 43, 35
-  offset: 0, 0
-  index: -1
-sliderbackground
-  rotate: false
-  xy: 16, 997
-  size: 161, 7
-  orig: 161, 7
-  offset: 0, 0
-  index: -1
-move
-  rotate: false
-  xy: 179, 979
-  size: 43, 35
-  orig: 43, 35
-  offset: 0, 0
-  index: -1
-attrack
-  rotate: false
-  xy: 359, 979
-  size: 43, 35
-  orig: 43, 35
-  offset: 0, 0
-  index: -1
-rock
-  rotate: false
-  xy: 132, 797
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-vitory
-  rotate: false
-  xy: 1063, 2
-  size: 690, 398
-  orig: 690, 418
-  offset: 0, 10
-  index: -1
-failed
-  rotate: false
-  xy: 1063, 402
-  size: 482, 362
-  orig: 482, 362
-  offset: 0, 0
-  index: -1
-SkillTwo
-  rotate: false
-  xy: 404, 979
-  size: 43, 35
-  orig: 43, 35
-  offset: 0, 0
-  index: -1
-winresult
-  rotate: false
-  xy: 2, 927
-  size: 156, 68
-  orig: 156, 68
-  offset: 0, 0
-  index: -1
-background
-  rotate: false
-  xy: 2, 2
-  size: 1059, 708
-  orig: 1059, 708
-  offset: 0, 0
-  index: -1
-window
-  rotate: false
-  xy: 2, 712
-  size: 128, 128
-  orig: 128, 128
   offset: 0, 0
   index: -1
 button_setting
   rotate: false
-  xy: 269, 979
+  xy: 1641, 673
   size: 43, 35
   orig: 43, 35
-  offset: 0, 0
-  index: -1
-textfieldbackground
-  rotate: false
-  xy: 160, 927
-  size: 300, 50
-  orig: 300, 50
-  offset: 0, 0
-  index: -1
-quit
-  rotate: false
-  xy: 166, 797
-  size: 30, 30
-  orig: 30, 30
-  offset: 0, 0
-  index: -1
-savecancelbutton
-  rotate: false
-  xy: 132, 712
-  size: 157, 46
-  orig: 157, 46
   offset: 0, 0
   index: -1
 confirm
   rotate: false
-  xy: 2, 842
-  size: 185, 83
+  xy: 1511, 403
+  size: 187, 83
   orig: 187, 83
-  offset: 1, 0
+  offset: 0, 0
   index: -1
-SkillOne
+ejection
   rotate: false
-  xy: 132, 760
+  xy: 1641, 710
   size: 43, 35
   orig: 43, 35
   offset: 0, 0
   index: -1
-sliderkuai
+failed
   rotate: false
-  xy: 2, 997
-  size: 12, 18
-  orig: 12, 18
+  xy: 1027, 403
+  size: 482, 362
+  orig: 482, 362
+  offset: 0, 0
+  index: -1
+move
+  rotate: false
+  xy: 1, 695
+  size: 43, 35
+  orig: 43, 35
   offset: 0, 0
   index: -1
 pillarBase
   rotate: false
-  xy: 1753, 0
+  xy: 1, 732
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 pillarMiddle
   rotate: false
-  xy: 1753, 32
+  xy: 1641, 615
   size: 24, 32
   orig: 32, 32
   offset: 4, 0
+  index: -1
+quit
+  rotate: false
+  xy: 1686, 673
+  size: 30, 30
+  orig: 30, 30
+  offset: 0, 0
+  index: -1
+rock
+  rotate: false
+  xy: 35, 732
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+savecancelbutton
+  rotate: false
+  xy: 1511, 497
+  size: 157, 46
+  orig: 157, 46
+  offset: 0, 0
+  index: -1
+SkillOne
+  rotate: false
+  xy: 1674, 488
+  size: 43, 35
+  orig: 43, 35
+  offset: 0, 0
+  index: -1
+SkillThree
+  rotate: false
+  xy: 1670, 525
+  size: 43, 35
+  orig: 43, 35
+  offset: 0, 0
+  index: -1
+SkillTwo
+  rotate: false
+  xy: 1669, 562
+  size: 43, 35
+  orig: 43, 35
+  offset: 0, 0
+  index: -1
+sliderbackground
+  rotate: false
+  xy: 1511, 488
+  size: 161, 7
+  orig: 161, 7
+  offset: 0, 0
+  index: -1
+sliderkuai
+  rotate: false
+  xy: 1700, 403
+  size: 12, 18
+  orig: 12, 18
+  offset: 0, 0
+  index: -1
+textfieldbackground
+  rotate: false
+  xy: 1, 643
+  size: 300, 50
+  orig: 300, 50
+  offset: 0, 0
+  index: -1
+vitory
+  rotate: false
+  xy: 1027, 1
+  size: 690, 400
+  orig: 690, 418
+  offset: 0, 9
+  index: -1
+window
+  rotate: false
+  xy: 1511, 636
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+winresult
+  rotate: false
+  xy: 1511, 545
+  size: 156, 68
+  orig: 156, 68
+  offset: 0, 0
   index: -1

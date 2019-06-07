@@ -286,7 +286,7 @@ public class InfoScreen extends AbstractGameScreen implements InputProcessor{
 
     @Override
     public void hide() {
-
+        batch.dispose();
     }
 
     @Override

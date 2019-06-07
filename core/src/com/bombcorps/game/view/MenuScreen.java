@@ -69,7 +69,6 @@ public class MenuScreen extends AbstractGameScreen {
     @Override public void hide(){
         stage.dispose();
         //skinBombCorps.dispose();
-
     }
     @Override public void pause(){}
     private float width = Gdx.graphics.getWidth();

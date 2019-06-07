@@ -1,6 +1,7 @@
 package com.bombcorps.game.controller;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
@@ -38,8 +39,7 @@ public class WorldController {
         this.world = game.getWorld();
         cameraController = new CameraController();
         input = new InputController(this);
-
-
+        init();
     }
 
     public void init() {
