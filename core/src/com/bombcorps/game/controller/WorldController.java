@@ -226,23 +226,22 @@ public class WorldController {
         Rectangle r2;
         for(Rock r : world.rocks) {
             r2 = r.getRect();
+            r1.setPosition(r1.getX(), r1.getY()-0.05f);
             if (r1.overlaps(r2)) {
-                Gdx.app.log("asd","asdasd");
-                onCollisionsPlayerWithRock(r);
                 b_falling = false;
+            }
+            r1.setPosition(r1.getX(), r1.getY()+0.05f);
+            if (r1.overlaps(r2)) {
+                onCollisionsPlayerWithRock(r);
             }
         }
         for (Pillar p : world.pillars) {
             r2 = p.getRect();
             if (r1.overlaps(r2)) {
-
                 onCollisionsPlayerWithPillar(p);
-                b_falling = false;
             }
         }
-        Gdx.app.log("zc", ""+b_falling);
         if (b_falling) {
-
             curPlayer.setHeroState(Constants.STATE_FALLING);
         }
         for (Bonus b : world.bonusManager.getBonusList()) {
