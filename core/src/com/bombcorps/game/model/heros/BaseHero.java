@@ -167,7 +167,7 @@ public class BaseHero{
         destination = 0;
         health = 0;
         endurance = Constants.MAX_ENDURENCE;
-        powerRage = Constants.MAX_RAGEPOWER;
+        powerRage = 0;
         attack = 0;
         criticalProbability = 0;
         armor = 0;

@@ -33,7 +33,7 @@ public class Wizard extends BaseHero {
         this.setMaxHealth(Constants.Wizard.HEALTH * getLevel());
         this.setHealth(Constants.Wizard.HEALTH * getLevel());
         this.setEndurance(200f);
-        this.setRagePower(100f);
+        this.setRagePower(0);
 
         this.setAttack(Constants.Wizard.ATTACK * getLevel());
         this.setCriticalProbability(Constants.Wizard.START_CRITICALPROBABILITY);
