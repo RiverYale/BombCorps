@@ -227,6 +227,7 @@ public class WorldController {
         for(Rock r : world.rocks) {
             r2 = r.getRect();
             if (r1.overlaps(r2)) {
+                Gdx.app.log("asd","asdasd");
                 onCollisionsPlayerWithRock(r);
                 b_falling = false;
             }
@@ -234,11 +235,14 @@ public class WorldController {
         for (Pillar p : world.pillars) {
             r2 = p.getRect();
             if (r1.overlaps(r2)) {
+
                 onCollisionsPlayerWithPillar(p);
                 b_falling = false;
             }
         }
+        Gdx.app.log("zc", ""+b_falling);
         if (b_falling) {
+
             curPlayer.setHeroState(Constants.STATE_FALLING);
         }
         for (Bonus b : world.bonusManager.getBonusList()) {
