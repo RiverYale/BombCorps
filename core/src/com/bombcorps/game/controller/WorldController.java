@@ -258,11 +258,13 @@ public class WorldController {
         }
 
         Bonus fallingOne = world.getFallingBonus();
-        r1 = fallingOne.getRect();
-        for (Rock r : world.rocks) {
-            r2 = r.getRect();
-            if (r1.overlaps(r2)) {
-                onCollisionsBonusWithRock(fallingOne, r);
+        if(fallingOne != null){
+            r1 = fallingOne.getRect();
+            for (Rock r : world.rocks) {
+                r2 = r.getRect();
+                if (r1.overlaps(r2)) {
+                    onCollisionsBonusWithRock(fallingOne, r);
+                }
             }
         }
     }
