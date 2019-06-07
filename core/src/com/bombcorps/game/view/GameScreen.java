@@ -47,6 +47,7 @@ public class GameScreen extends AbstractGameScreen{
     private Player otherPlayer;
     private String quitPlayer;
     private boolean isquit;
+    private boolean isPlayed ;
     private BitmapFont font;
     private float scale;
     public String[] description = {
@@ -139,7 +140,6 @@ public class GameScreen extends AbstractGameScreen{
     public Window winErrorQuit;
     public Image btnWinErrorQuit;
 
-
     public GameScreen(DirectedGame game, WorldController worldController){
         super(game);
         this.worldController = worldController;
@@ -154,7 +154,7 @@ public class GameScreen extends AbstractGameScreen{
         font = AssetsController.instance.font;
 
         isClickedHero = false;
-
+        isPlayed =false;
         isquit = false;
 
         worldController.getCameraController().setPosition(Constants.VIEWPORT_WIDTH/2,Constants.VIEWPORT_HEIGHT/2);
@@ -553,7 +553,8 @@ public class GameScreen extends AbstractGameScreen{
 
     //结果窗口
     public void GameOver(){
-        //游戏结算的弹窗
+        //
+
         TextureRegionDrawable winResultsDrawable = new TextureRegionDrawable(AssetsController.instance.getRegion("winresult"));
         Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),winResultsDrawable);
         winResults = new Window("",windowStyle);
@@ -567,13 +568,20 @@ public class GameScreen extends AbstractGameScreen{
             virtory.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
             virtory.setPosition((winResults.getWidth()-virtory.getWidth())/2,(winResults.getHeight()-virtory.getHeight())/1.25f);
             winResults.addActor(virtory);
-            AudioController.instance.play(AssetsController.instance.win);
+            if(!isPlayed){
+                AudioController.instance.play(AssetsController.instance.win);
+                isPlayed = true;
+            }
+
         }else if(worldController.isGameOver()==2){
 
             failed.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
             failed.setPosition((winResults.getWidth()-failed.getWidth())/2,(winResults.getHeight()-failed.getHeight())/1.25f);
             winResults.addActor(failed);
-            AudioController.instance.play(AssetsController.instance.lose);
+            if(!isPlayed){
+                AudioController.instance.play(AssetsController.instance.lose);
+                isPlayed = true;
+            }
         }
 
 
