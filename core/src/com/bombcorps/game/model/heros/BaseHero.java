@@ -202,11 +202,11 @@ public class BaseHero{
 
     protected void updatePosition(float deltaTime){
         switch(state){
-            case ATTACK:
-            case DEAD:
+//            case ATTACK:
+//            case DEAD:
             case GROUNDED:
                 velocity.y = 0;
-                state = STATE.FALLING;
+//                state = STATE.FALLING;
                 break;
             case FALLING:
                 updateY(deltaTime);
