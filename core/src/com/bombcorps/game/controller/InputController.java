@@ -49,38 +49,38 @@ public class InputController implements GestureDetector.GestureListener {
         Vector3 v = new Vector3(x, y, 0);
         gameScreen.cameraGUI.unproject(v);
         if(gameScreen.btnQuit.getBoundingRectangle().contains(v.x,v.y)){
-            gameScreen.loadMenuScreen();
+            gameScreen.getGame().getNetController().quitGame(gameScreen.myPlayer());
             return false;
         }else if(gameScreen.btnSettings.getBoundingRectangle().contains(v.x,v.y)){
             Gdx.input.setInputProcessor(gameScreen.stage);
             gameScreen.winOptions.setVisible(true);
             return false;
-        }else if(gameScreen.imgMove.getBoundingRectangle().contains(v.x,v.y)){
+        }else if(gameScreen.imgMove.getBoundingRectangle().contains(v.x,v.y)&&gameScreen.myPlayer().equals(gameScreen.worldController.getCurPlayer())){
             controller.onOperationClicked(0);
             return false;
-        }else if(gameScreen.imgEjection.getBoundingRectangle().contains(v.x,v.y)){
+        }else if(gameScreen.imgEjection.getBoundingRectangle().contains(v.x,v.y)&&gameScreen.myPlayer().equals(gameScreen.worldController.getCurPlayer())){
             controller.onOperationClicked(1);
             return false;
-        }else if(gameScreen.imgAttrack.getBoundingRectangle().contains(v.x,v.y)){
+        }else if(gameScreen.imgAttrack.getBoundingRectangle().contains(v.x,v.y)&&gameScreen.myPlayer().equals(gameScreen.worldController.getCurPlayer())){
             controller.onOperationClicked(2);
             return false;
-        }else if(gameScreen.imgSkillOne.getBoundingRectangle().contains(v.x,v.y)){
+        }else if(gameScreen.imgSkillOne.getBoundingRectangle().contains(v.x,v.y)&&gameScreen.myPlayer().equals(gameScreen.worldController.getCurPlayer())){
             controller.onOperationClicked(3);
             return false;
-        }else if(gameScreen.imgSkillTwo.getBoundingRectangle().contains(v.x,v.y)){
+        }else if(gameScreen.imgSkillTwo.getBoundingRectangle().contains(v.x,v.y)&&gameScreen.myPlayer().equals(gameScreen.worldController.getCurPlayer())){
             controller.onOperationClicked(4);
             return false;
-        }else if(gameScreen.imgSkillThree.getBoundingRectangle().contains(v.x,v.y)){
+        }else if(gameScreen.imgSkillThree.getBoundingRectangle().contains(v.x,v.y)&&gameScreen.myPlayer().equals(gameScreen.worldController.getCurPlayer())){
             controller.onOperationClicked(5);
             return false;
-        }else if(gameScreen.imgTurnEnd.getBoundingRectangle().contains(v.x,v.y)){
+        }else if(gameScreen.imgTurnEnd.getBoundingRectangle().contains(v.x,v.y)&&gameScreen.myPlayer().equals(gameScreen.worldController.getCurPlayer())){
             controller.onOperationClicked(6);
             return false;
         }else if(gameScreen.imgMyHeroHead.getBoundingRectangle().contains(v.x,v.y)){
             Gdx.input.setInputProcessor(gameScreen.stage);
             gameScreen.winHeroInfo.setVisible(true);
             return false;
-        }else if(gameScreen.imgOtherHeroHead.getBoundingRectangle().contains(v.x,v.y)){
+        }else if(gameScreen.imgOtherHeroHead.getBoundingRectangle().contains(v.x,v.y)&&gameScreen.isClickedHero()){
             Gdx.input.setInputProcessor(gameScreen.stage);
             gameScreen.winOtherHeroInfo.setVisible(true);
             return false;

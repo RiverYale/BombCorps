@@ -34,7 +34,7 @@ public class Sparda extends BaseHero {
         this.setMaxHealth(Constants.Sparda.HEALTH * getLevel());
         this.setHealth(Constants.Sparda.HEALTH * getLevel());
         this.setEndurance(200f);
-        this.setRagePower(100f);
+        this.setRagePower(0);
 
         this.setAttack(Constants.Sparda.ATTACK * getLevel());
         this.setCriticalProbability(Constants.Sparda.START_CRITICALPROBABILITY);

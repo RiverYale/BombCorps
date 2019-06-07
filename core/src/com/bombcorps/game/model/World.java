@@ -94,6 +94,7 @@ public class World {
 
     private int limit;
 
+
     public  World(Room room){
         hostIP = room.getOwnerIp();
         limit = room.getLIMIT();

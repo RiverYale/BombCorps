@@ -21,12 +21,21 @@ public class AssetsController  implements Disposable, AssetErrorListener {
     private HashMap<String, Sound> soundMap;
     private HashMap<String, Music> musicMap;
     public BitmapFont font;
+    public Music bgm1;
+    public Music bgm2;
+    public Sound btnClicked;
+    public Sound levelup;
 
     private AssetsController() {
         this.assetManager = new AssetManager();
         assetManager.setErrorListener(this);
         textureMap = new HashMap<String, TextureAtlas.AtlasRegion>();
         font = new BitmapFont(Gdx.files.internal("font/font.fnt"), false);
+        assetManager.load("music/bgm.mp3",Music.class);
+        bgm1 = Gdx.audio.newMusic(Gdx.files.internal("music/bgm.mp3"));
+        bgm2 = Gdx.audio.newMusic(Gdx.files.internal("music/bgm2.mp3"));
+        btnClicked = Gdx.audio.newSound(Gdx.files.internal("sound/btnclicked.mp3"));
+        levelup =Gdx.audio.newSound(Gdx.files.internal("sound/levelup.mp3"));
     }
 
     public void loadTexture(String fileName) {

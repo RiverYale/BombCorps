@@ -155,7 +155,7 @@ public class MenuScreen extends AbstractGameScreen {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.exit();
+                Gdx.app.exit();AudioController.instance.play(AssetsController.instance.btnClicked);
                 return true;
             }
         });
@@ -166,7 +166,7 @@ public class MenuScreen extends AbstractGameScreen {
         textButtonQuit.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.exit();
+                Gdx.app.exit();AudioController.instance.play(AssetsController.instance.btnClicked);
                 return true;
             }
         });
@@ -183,7 +183,7 @@ public class MenuScreen extends AbstractGameScreen {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                onPlayClicked();
+                onPlayClicked();AudioController.instance.play(AssetsController.instance.btnClicked);
                 return true;
             }
         });
@@ -194,7 +194,7 @@ public class MenuScreen extends AbstractGameScreen {
         textButtonPlay.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                onPlayClicked();
+                onPlayClicked();AudioController.instance.play(AssetsController.instance.btnClicked);
                 return true;
             }
         });
@@ -208,7 +208,7 @@ public class MenuScreen extends AbstractGameScreen {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                onOptionsClicked();
+                onOptionsClicked();AudioController.instance.play(AssetsController.instance.btnClicked);
                 return true;
             }
         });
@@ -220,7 +220,7 @@ public class MenuScreen extends AbstractGameScreen {
         textButtonSettings.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                onOptionsClicked();
+                onOptionsClicked();AudioController.instance.play(AssetsController.instance.btnClicked);
                 return true;
             }
         });
@@ -234,7 +234,7 @@ public class MenuScreen extends AbstractGameScreen {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                onAboutClicked();
+                onAboutClicked();AudioController.instance.play(AssetsController.instance.btnClicked);
                 return true;
             }
         });
@@ -245,7 +245,7 @@ public class MenuScreen extends AbstractGameScreen {
         textButtonAbout.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                onAboutClicked();
+                onAboutClicked();AudioController.instance.play(AssetsController.instance.btnClicked);
                 return true;
             }
         });
@@ -293,7 +293,7 @@ public class MenuScreen extends AbstractGameScreen {
                 textButtonQuit.setVisible(true);
                 textButtonAbout.setVisible(true);
                 textButtonSettings.setVisible(true);
-                textButtonPlay.setVisible(true);
+                textButtonPlay.setVisible(true);AudioController.instance.play(AssetsController.instance.btnClicked);
                 return true;
             }
         });
@@ -338,6 +338,7 @@ public class MenuScreen extends AbstractGameScreen {
         textButtonAbout.setVisible(true);
         textButtonSettings.setVisible(true);
         textButtonPlay.setVisible(true);
+        AudioController.instance.onSettingsUpdated();
     }
     private void onOptionsClicked(){
         loadSettings();
@@ -384,7 +385,7 @@ public class MenuScreen extends AbstractGameScreen {
         tbl.add(sldSound).width(sldSound.getWidth()*width/1280).padTop(20*width/1280);
         tbl.row();
         //添加music标签 音乐滑动控件
-        Label musicLbl = new Label("Music",new Label.LabelStyle(font,font.getColor()));
+        Label musicLbl = new Label("music",new Label.LabelStyle(font,font.getColor()));
         tbl.add(musicLbl).padTop(20*width/1280);
         musicLbl.setFontScale(1.3f*width/1280);
         sldMusic = new Slider(0.0f,1.0f,0.1f,false,sliderStyle);
@@ -436,6 +437,7 @@ public class MenuScreen extends AbstractGameScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 onSaveClicked();
+                AudioController.instance.play(AssetsController.instance.btnClicked);
             }
         });
         // 添加cancel按钮并且 初始化事件处理器
@@ -445,6 +447,7 @@ public class MenuScreen extends AbstractGameScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 onCancelClicked();
+                AudioController.instance.play(AssetsController.instance.btnClicked);
             }
         });
         return tbl;
