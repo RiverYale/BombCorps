@@ -202,7 +202,7 @@ public class WorldController {
     public int isGameOver() {  //0 未结束   1 红赢   2 蓝赢   3 平
         boolean red = false, blue = false;
         for (Player p : world.getPlayers()) {
-            if(p.getTeam() == 0){
+            if(p.getTeam() == 1){
                 red = true;
             }else{
                 blue = true;

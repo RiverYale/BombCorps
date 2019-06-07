@@ -460,12 +460,13 @@ public class GameScreen extends AbstractGameScreen{
         Label.LabelStyle labelStyle = new Label.LabelStyle(font,Color.BLACK);
         Label label = new Label(description[myHeroTypeI()],labelStyle);
         label.setFontScale(1.0f);
+        label.setSize(500,200);
         label.debug();
         winHeroInfo.addActor(label);
         //winOptions.pack();
-        winHeroInfo.setSize(label.getWidth()*1.2f,label.getHeight()*1.0f);
-        label.setPosition(label.getWidth()*0.1f,0);
-        winHeroInfo.setPosition(0,width/9);
+        winHeroInfo.setSize(label.getWidth()*1.2f,label.getHeight()*1.2f);
+        label.setPosition(label.getWidth()*0.1f,label.getHeight()*0.1f);
+        winHeroInfo.setPosition(0,width/9+50);
         btnwinHInfoQuit = new Image(AssetsController.instance.getRegion("button_quit"));
         btnwinHInfoQuit.setScale(1.5f);
         btnwinHInfoQuit.setPosition(winHeroInfo.getWidth()-btnwinHInfoQuit.getWidth()*1.5f,winHeroInfo.getHeight()-btnwinHInfoQuit.getHeight()*1.5f);
@@ -618,7 +619,7 @@ public class GameScreen extends AbstractGameScreen{
         winErrorQuit = new Window("",windowStyle);
         Label.LabelStyle labelStyle = new Label.LabelStyle(font,Color.BLACK);
         Label label = new Label("Because Manager is quitted,\n game error stop.",labelStyle);
-        label.setFontScale(2.0f);
+        label.setFontScale(1.0f);
         winErrorQuit.setSize(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
         winErrorQuit.setPosition(Gdx.graphics.getWidth()/4,Gdx.graphics.getHeight()/4);
         label.setPosition(winErrorQuit.getWidth()/2-label.getPrefWidth()/2,2*winErrorQuit.getHeight()/3-label.getPrefHeight()/2);
