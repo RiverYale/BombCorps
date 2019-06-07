@@ -79,7 +79,8 @@ public class RoomScreen extends AbstractGameScreen{
     private Player myplayer;
 
     private int readyNum = 0;
-    boolean b_error = false;
+    private boolean b_error = false;
+    public static boolean b_loadGame = false;
 
     private BitmapFont font = AssetsController.instance.font;
     private Label.LabelStyle stylePersonNum = new Label.LabelStyle(font, Color.WHITE);
@@ -173,6 +174,9 @@ public class RoomScreen extends AbstractGameScreen{
         if(b_error){
             Gdx.app.log("zc", "owner quit");
             batchAddErrorMsg();
+        }
+        if (b_loadGame) {
+            game.loadGameScreen();
         }
 
         batch.end();

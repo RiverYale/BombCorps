@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -27,6 +28,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.controller.DataController;
+import com.bombcorps.game.controller.InputController;
 import com.bombcorps.game.controller.WorldController;
 import com.bombcorps.game.model.Constants;
 import com.bombcorps.game.model.Player;
@@ -35,13 +37,13 @@ import com.bombcorps.game.model.Player;
 /*
 图片路径均非真正设置
  */
-public class GameScreen extends AbstractGameScreen implements InputProcessor{
-    private final String TAG = GameScreen.class.getName();
-    private final float width = Gdx.graphics.getWidth();
-    private final float height = Gdx.graphics.getHeight();
-    private boolean paused = false;
-    private BitmapFont font;
-    private String[] description = {
+public class GameScreen extends AbstractGameScreen{
+    public final String TAG = GameScreen.class.getName();
+    public final float width = Gdx.graphics.getWidth();
+    public final float height = Gdx.graphics.getHeight();
+    public boolean paused = false;
+    public BitmapFont font;
+    public String[] description = {
             "被动技能：具备吸血30%能力\n" +
                     "技能一：消耗100血量+50精力，提高攻击力\n" +
                     "技能二：消耗80精力+30怒气，下次攻击\n" +
@@ -87,54 +89,56 @@ public class GameScreen extends AbstractGameScreen implements InputProcessor{
 
     };
 
-    private OrthographicCamera camera;
-    private OrthographicCamera cameraGUI;
-    private SpriteBatch batch;
-    private Stage stage;
-    private WorldController worldController;
+    public OrthographicCamera camera;
+    public OrthographicCamera cameraGUI;
+    public SpriteBatch batch;
+    public Stage stage;
+    public WorldController worldController;
+    public InputController inputController;
 
     //退出和设置按钮
-    private Sprite btnQuit;
-    private Sprite btnSettings;
+    public Sprite btnQuit;
+    public Sprite btnSettings;
     //技能图标
-    private Sprite imgMove;
-    private Sprite imgEjection;
-    private Sprite imgAttrack;
-    private Sprite imgSkillOne;
-    private Sprite imgSkillTwo;
-    private Sprite imgSkillThree;
-    private Sprite imgTurnEnd;
+    public Sprite imgMove;
+    public Sprite imgEjection;
+    public Sprite imgAttrack;
+    public Sprite imgSkillOne;
+    public Sprite imgSkillTwo;
+    public Sprite imgSkillThree;
+    public Sprite imgTurnEnd;
     //英雄头像与基础信息
-    private Sprite imgMyHeroHead;
-    private Sprite imgOtherHeroHead;
+    public Sprite imgMyHeroHead;
+    public Sprite imgOtherHeroHead;
     //设置窗口
-    private Window winOptions;
-    private Slider sldSound;
-    private Slider sldMusic;
-    private TextButton btnWinOptSave;
-    private TextButton btnWinOptCancel;
+    public Window winOptions;
+    public Slider sldSound;
+    public Slider sldMusic;
+    public TextButton btnWinOptSave;
+    public TextButton btnWinOptCancel;
     //英雄技能详细信息窗口
-    private Window winHeroInfo;
-    private Window winOtherHeroInfo;
-    private Image btnwinHInfoQuit;
-    private Image btnwinOHInfoQuit;
+    public Window winHeroInfo;
+    public Window winOtherHeroInfo;
+    public Image btnwinHInfoQuit;
+    public Image btnwinOHInfoQuit;
     //结果窗口
-    private Window winResults;
-    private Image virtory;
-    private Image failed;
+    public Window winResults;
+    public Image virtory;
+    public Image failed;
     //异常退出窗口
     //游戏异常退出弹窗
-    private Window winErrorQuit;
-    private Image btnWinErrorQuit;
+    public Window winErrorQuit;
+    public Image btnWinErrorQuit;
 
     public GameScreen(DirectedGame game, WorldController worldController){
         super(game);
         this.worldController = worldController;
+        inputController = new InputController(this, worldController);
         camera = worldController.getCamera();
         init();
     }
 
-    private void init(){
+    public void init(){
         batch = new SpriteBatch();
 
         font = AssetsController.instance.font;
@@ -146,7 +150,7 @@ public class GameScreen extends AbstractGameScreen implements InputProcessor{
         camera.update();
 
         cameraGUI = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-        cameraGUI.position.set(0,0,0);
+        cameraGUI.position.set(Gdx.graphics.getWidth()/2-10,Gdx.graphics.getHeight()/2-10,0);
         //cameraGUI.setToOrtho(true);
         cameraGUI.update();
 
@@ -217,13 +221,13 @@ public class GameScreen extends AbstractGameScreen implements InputProcessor{
         layerOptionsWindow.setPosition((Gdx.graphics.getWidth()-winOptions.getWidth())/2,(Gdx.graphics.getHeight()-winOptions.getHeight())/2);
     }
 
-    private void renderWorld(SpriteBatch batch){
+    public void renderWorld(SpriteBatch batch){
         worldController.getCameraController().applyTo(camera);
         batch.setProjectionMatrix(camera.combined);
         worldController.getWorld().render(batch);
     }
 
-    private void renderGUI(SpriteBatch batch){
+    public void renderGUI(SpriteBatch batch){
         batch.setProjectionMatrix(cameraGUI.combined);
         batchBotton(batch);
         batchSkill(batch);
@@ -231,12 +235,12 @@ public class GameScreen extends AbstractGameScreen implements InputProcessor{
         batchOtherHeroInfo(batch);
     }
 
-    private void batchBotton(SpriteBatch batch){
+    public void batchBotton(SpriteBatch batch){
         btnQuit.draw(batch);
         btnSettings.draw(batch);
     }
 
-    private void batchSkill(SpriteBatch batch){
+    public void batchSkill(SpriteBatch batch){
         imgMove.draw(batch);
         imgEjection.draw(batch);
         imgAttrack.draw(batch);
@@ -246,7 +250,7 @@ public class GameScreen extends AbstractGameScreen implements InputProcessor{
         imgTurnEnd.draw(batch);
     }
 
-    private void batchHeroInfo(SpriteBatch batch){
+    public void batchHeroInfo(SpriteBatch batch){
         imgMyHeroHead.draw(batch);
         font.getData().setScale(1.0f);
         font.draw(batch,"HP" +myPlayer().getMyHero().getHealth()+" AK:"+myPlayer().getMyHero().getAttack()+
@@ -254,7 +258,7 @@ public class GameScreen extends AbstractGameScreen implements InputProcessor{
                 "\nRP:"+myPlayer().getMyHero().getRagePower()+" CP:"+myPlayer().getMyHero().getCriticalProbability(),width/15,0);
     }
 
-    private void batchOtherHeroInfo(SpriteBatch batch){
+    public void batchOtherHeroInfo(SpriteBatch batch){
         imgMyHeroHead.draw(batch);
         font.getData().setScale(1.0f);
         font.draw(batch,"HP" +myPlayer().getMyHero().getHealth()+" AK:"+myPlayer().getMyHero().getAttack()+
@@ -265,7 +269,7 @@ public class GameScreen extends AbstractGameScreen implements InputProcessor{
 
 
     //设置窗口
-    private Table buildOptionsWindowLayer(){
+    public Table buildOptionsWindowLayer(){
 
 //        BitmapFont font =new BitmapFont(Gdx.files.internal("menuscreen/winOptions.fnt"), Gdx.files.internal("menuscreen/winOptions.png"),false)
 //        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(new Texture(Gdx.files.internal("menuscreen/window.png"))));
@@ -283,7 +287,7 @@ public class GameScreen extends AbstractGameScreen implements InputProcessor{
 
     }
 
-    private Table buildOptWinAudioSettings(){
+    public Table buildOptWinAudioSettings(){
         Table tbl = new Table();
         //添加标题audio
         tbl.pad(0,10,0,10);
@@ -323,7 +327,7 @@ public class GameScreen extends AbstractGameScreen implements InputProcessor{
         return tbl;
     }
 
-    private Table buildOptWinButtons(){
+    public Table buildOptWinButtons(){
         Table tbl = new Table();
 
         //添加分割线
@@ -358,14 +362,14 @@ public class GameScreen extends AbstractGameScreen implements InputProcessor{
 
     }
 
-    private void onSaveClicked() {
+    public void onSaveClicked() {
         saveSettings();
         onCancelClicked();
     }
 
     public void onCancelClicked(){
         winOptions.setVisible(false);
-        Gdx.input.setInputProcessor(worldController.getInputProcessor());
+        Gdx.input.setInputProcessor(getInputProcessor());
     }
 
     public void saveSettings(){
@@ -398,7 +402,7 @@ public class GameScreen extends AbstractGameScreen implements InputProcessor{
         return layer;
     }
 
-    private Table buildWinHInfoQuitBotton(){
+    public Table buildWinHInfoQuitBotton(){
         Table tbl = new Table();
         btnwinHInfoQuit = new Image(AssetsController.instance.getRegion("button_quit"));
         btnwinHInfoQuit.setPosition(winHeroInfo.getWidth()-btnwinHInfoQuit.getWidth(),winHeroInfo.getHeight()-btnwinHInfoQuit.getHeight());
@@ -418,9 +422,9 @@ public class GameScreen extends AbstractGameScreen implements InputProcessor{
         return tbl;
     }
 
-    private void onWinHInfoQuitBottonClicked() {
+    public void onWinHInfoQuitBottonClicked() {
         winHeroInfo.setVisible(false);
-        Gdx.input.setInputProcessor(worldController.getInputProcessor());
+        Gdx.input.setInputProcessor(getInputProcessor());
     }
 
 
@@ -442,7 +446,7 @@ public class GameScreen extends AbstractGameScreen implements InputProcessor{
         return layer;
     }
 
-    private Table buildWinOHInfoQuitBotton(){
+    public Table buildWinOHInfoQuitBotton(){
         Table tbl = new Table();
         btnwinOHInfoQuit = new Image(AssetsController.instance.getRegion("button_quit"));
         btnwinOHInfoQuit.setPosition(winOtherHeroInfo.getWidth()-btnwinOHInfoQuit.getWidth(),winOtherHeroInfo.getHeight()-btnwinOHInfoQuit.getHeight());
@@ -462,9 +466,9 @@ public class GameScreen extends AbstractGameScreen implements InputProcessor{
         return tbl;
     }
 
-    private void onWinOHInfoQuitBottonClicked() {
+    public void onWinOHInfoQuitBottonClicked() {
         winOtherHeroInfo.setVisible(false);
-        Gdx.input.setInputProcessor(worldController.getInputProcessor());
+        Gdx.input.setInputProcessor(getInputProcessor());
     }
 
 
@@ -627,82 +631,6 @@ public class GameScreen extends AbstractGameScreen implements InputProcessor{
 
     }
 
-
-
-
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Vector3 v = new Vector3(screenX, screenY, 0);
-        camera.unproject(v);
-        if(btnQuit.getBoundingRectangle().contains(v.x,v.y)){
-            game.loadMenuScreen();
-        }else if(btnSettings.getBoundingRectangle().contains(v.x,v.y)){
-            Gdx.input.setInputProcessor(stage);
-            winOptions.setVisible(true);
-        }else if(imgMove.getBoundingRectangle().contains(v.x,v.y)){
-            worldController.onOperationClicked(0);
-        }else if(imgEjection.getBoundingRectangle().contains(v.x,v.y)){
-            worldController.onOperationClicked(1);
-        }else if(imgAttrack.getBoundingRectangle().contains(v.x,v.y)){
-            worldController.onOperationClicked(2);
-        }else if(imgSkillOne.getBoundingRectangle().contains(v.x,v.y)){
-            worldController.onOperationClicked(3);
-        }else if(imgSkillTwo.getBoundingRectangle().contains(v.x,v.y)){
-            worldController.onOperationClicked(4);
-        }else if(imgSkillThree.getBoundingRectangle().contains(v.x,v.y)){
-            worldController.onOperationClicked(5);
-        }else if(imgTurnEnd.getBoundingRectangle().contains(v.x,v.y)){
-            worldController.onOperationClicked(6);
-        }else if(imgMyHeroHead.getBoundingRectangle().contains(v.x,v.y)){
-            Gdx.input.setInputProcessor(stage);
-            winHeroInfo.setVisible(true);
-        }else if(imgOtherHeroHead.getBoundingRectangle().contains(v.x,v.y)){
-            Gdx.input.setInputProcessor(stage);
-            winOtherHeroInfo.setVisible(true);
-        }else{
-            return false;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean keyDown(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
-    }
-
     @Override
     public void resize(int width, int height) {
         //stage.getViewport().update(width,height);
@@ -737,7 +665,9 @@ public class GameScreen extends AbstractGameScreen implements InputProcessor{
         winErrorQuit.setVisible(true);
     }
 
-
+    public void loadMenuScreen() {
+        game.loadMenuScreen();
+    }
 
 
     @Override
@@ -755,6 +685,7 @@ public class GameScreen extends AbstractGameScreen implements InputProcessor{
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         renderWorld(batch);
+        worldController.testCollisions();
         renderGUI(batch);
         batch.end();
         stage.act();
@@ -765,7 +696,7 @@ public class GameScreen extends AbstractGameScreen implements InputProcessor{
         }
     }
 
-    public InputProcessor getInputProcessor(){
-        return worldController.getInputProcessor();
+    public InputProcessor getInputProcessor() {
+        return new GestureDetector(inputController);
     }
 }

@@ -75,8 +75,6 @@ public abstract class DirectedGame implements ApplicationListener {
         gameScreen = new GameScreen(this,worldController);
         Gdx.app.log("DirectedGame","new gameScreen");
         setScreen(gameScreen);
-
-        Gdx.input.setInputProcessor(worldController.getInputProcessor());
         Constants.CurrentScreenFlag = Constants.GameScreenFlag;
     }
 

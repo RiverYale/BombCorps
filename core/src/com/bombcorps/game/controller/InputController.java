@@ -10,36 +10,36 @@ import com.badlogic.gdx.math.Vector3;
 import com.bombcorps.game.model.Constants;
 import com.bombcorps.game.model.Message;
 import com.bombcorps.game.model.Player;
+import com.bombcorps.game.view.GameScreen;
 
 public class InputController implements GestureDetector.GestureListener {
+    private GameScreen gameScreen;
     private WorldController controller;
     private CameraController cameraController;
     private OrthographicCamera camera;
-    private NetController net;
     private float tempZoom, tempInitDis;
     private boolean hasAim;
 
-    public InputController(WorldController controller) {
+    public InputController(GameScreen gameScreen, WorldController controller) {
+        this.gameScreen = gameScreen;
         this.controller = controller;
         this.cameraController = controller.getCameraController();
         this.camera = controller.getCamera();
-        this.net = controller.getNetController();
     }
 
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
-        Gdx.app.log("zc", "x="+x+"  y="+y);
-        net.sendCMD(new Message(10));
-
         Vector3 v = new Vector3(x, y, 0);
         camera.unproject(v);
-
-        //TODO 确定是否按到了炸弹
-        Rectangle r = controller.getCurPlayer().getBomb().getRect();
-        if(r.contains(v.x, v.y)){
-            hasAim = true;
-        }else{
-            hasAim = false;
+        Gdx.app.log("zc", "x="+v.x+"  y="+v.y);
+        //确定是否按到了炸弹
+        if(controller.getOperations()==1 || controller.getOperations()==2){
+            Rectangle r = controller.getCurPlayer().getBomb().getRect();
+            if(r.contains(v.x, v.y)){
+                hasAim = true;
+            }else{
+                hasAim = false;
+            }
         }
         return false;
     }
@@ -47,6 +47,45 @@ public class InputController implements GestureDetector.GestureListener {
     @Override
     public boolean tap(float x, float y, int count, int button) {
         Vector3 v = new Vector3(x, y, 0);
+        gameScreen.cameraGUI.unproject(v);
+        if(gameScreen.btnQuit.getBoundingRectangle().contains(v.x,v.y)){
+            gameScreen.loadMenuScreen();
+            return false;
+        }else if(gameScreen.btnSettings.getBoundingRectangle().contains(v.x,v.y)){
+            Gdx.input.setInputProcessor(gameScreen.stage);
+            gameScreen.winOptions.setVisible(true);
+            return false;
+        }else if(gameScreen.imgMove.getBoundingRectangle().contains(v.x,v.y)){
+            controller.onOperationClicked(0);
+            return false;
+        }else if(gameScreen.imgEjection.getBoundingRectangle().contains(v.x,v.y)){
+            controller.onOperationClicked(1);
+            return false;
+        }else if(gameScreen.imgAttrack.getBoundingRectangle().contains(v.x,v.y)){
+            controller.onOperationClicked(2);
+            return false;
+        }else if(gameScreen.imgSkillOne.getBoundingRectangle().contains(v.x,v.y)){
+            controller.onOperationClicked(3);
+            return false;
+        }else if(gameScreen.imgSkillTwo.getBoundingRectangle().contains(v.x,v.y)){
+            controller.onOperationClicked(4);
+            return false;
+        }else if(gameScreen.imgSkillThree.getBoundingRectangle().contains(v.x,v.y)){
+            controller.onOperationClicked(5);
+            return false;
+        }else if(gameScreen.imgTurnEnd.getBoundingRectangle().contains(v.x,v.y)){
+            controller.onOperationClicked(6);
+            return false;
+        }else if(gameScreen.imgMyHeroHead.getBoundingRectangle().contains(v.x,v.y)){
+            Gdx.input.setInputProcessor(gameScreen.stage);
+            gameScreen.winHeroInfo.setVisible(true);
+            return false;
+        }else if(gameScreen.imgOtherHeroHead.getBoundingRectangle().contains(v.x,v.y)){
+            Gdx.input.setInputProcessor(gameScreen.stage);
+            gameScreen.winOtherHeroInfo.setVisible(true);
+            return false;
+        }
+
         camera.unproject(v);
         int op = controller.getOperations();
         if(op == -1) {
