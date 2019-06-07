@@ -39,8 +39,8 @@ import com.bombcorps.game.model.Player;
  */
 public class GameScreen extends AbstractGameScreen{
     public final String TAG = GameScreen.class.getName();
-    public final float width = Gdx.graphics.getWidth();
-    public final float height = Gdx.graphics.getHeight();
+    public final float width = Constants.VIEWPORT_GUI_WIDTH;
+    public final float height = Constants.VIEWPORT_GUI_HEIGHT;
     public boolean paused = false;
     public BitmapFont font;
     public String[] description = {
@@ -143,14 +143,14 @@ public class GameScreen extends AbstractGameScreen{
 
         font = AssetsController.instance.font;
 
-        camera.viewportWidth = Gdx.graphics.getWidth();
-        camera.viewportHeight = Gdx.graphics.getHeight();
-        camera.position.x = Gdx.graphics.getWidth()/2;
-        camera.position.y = Gdx.graphics.getHeight()/2;
+        camera.viewportWidth = Constants.VIEWPORT_WIDTH;
+        camera.viewportHeight = Constants.VIEWPORT_HEIGHT;
+        camera.position.x = Constants.VIEWPORT_WIDTH/2;
+        camera.position.y = Constants.VIEWPORT_HEIGHT/2;
         camera.update();
 
-        cameraGUI = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-        cameraGUI.position.set(Gdx.graphics.getWidth()/2-10,Gdx.graphics.getHeight()/2-10,0);
+        cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT);
+        cameraGUI.position.set(Constants.VIEWPORT_GUI_WIDTH/2,Constants.VIEWPORT_GUI_HEIGHT,0);
         //cameraGUI.setToOrtho(true);
         cameraGUI.update();
 

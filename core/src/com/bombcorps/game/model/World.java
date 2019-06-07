@@ -13,8 +13,6 @@ import java.util.logging.Level;
 
 public class World {
     public static final String TAG = Level.class.getName();
-    private final float width = Gdx.graphics.getWidth();
-    private final float height = Gdx.graphics.getHeight();
     private int levelTurn = 0;
     private int Turn=0;
 
@@ -105,11 +103,11 @@ public class World {
 
     private void init(String filename){
         //物品
-        dimension = new Vector2(width/32,height/20);
+        dimension = new Vector2(1.0f,1.0f);
         rocks = new Array<Rock>();
         pillars = new Array<Pillar>();
         Pixmap pixmap = new Pixmap(Gdx.files.internal("map/map"+filename+".png"));
-        MapWidth = pixmap.getWidth()*width/Constants.VIEWPORT_WIDTH;
+        MapWidth = 32;
         bonusManager = new BonusManager((int)MapWidth);
         //从左上到右下扫描
         for(int pixelY = 0; pixelY < pixmap.getHeight();pixelY++)
@@ -170,7 +168,7 @@ public class World {
     }
 
     public void render(SpriteBatch batch){
-       batch.draw(AssetsController.instance.getRegion("gamebackground"),0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+       batch.draw(AssetsController.instance.getRegion("gamebackground"),0,0,32,20);
        for (Rock rock : rocks){
            rock.render(batch);
        }
