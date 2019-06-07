@@ -95,10 +95,10 @@ public abstract class DirectedGame implements ApplicationListener {
         gameScreen.onHeroClicked(p);
     }
 
-    public void playerQuit(String Ip){
+    public void playerQuit(String ID){
         //调用GameScreen里面的playequit
 
-        gameScreen.playQuit(Ip);
+        gameScreen.playQuit(ID);
     }
 
     public void errorStop(){
