@@ -358,8 +358,7 @@ public class GameScreen extends AbstractGameScreen{
 
 //        BitmapFont font =new BitmapFont(Gdx.files.internal("menuscreen/winOptions.fnt"),Gdx.files.internal("menuscreen/winOptions.png"),false);
         Label audioLbl = new Label("Audio",new Label.LabelStyle(font,Color.BLACK));
-        audioLbl.setFontScale(1.3f*width/1280f);
-        audioLbl.debug();
+        audioLbl.setFontScale(3*1.3f*width/1280f);
         tbl.add(audioLbl).colspan(3);
         tbl.row();
         tbl.columnDefaults(0).padRight(10);
@@ -367,9 +366,8 @@ public class GameScreen extends AbstractGameScreen{
         //添加sound标签 声音滑动控件
 
         Label soundLbl = new Label("Sound",new Label.LabelStyle(font,Color.BLACK));
-        soundLbl.setFontScale(1.3f*width/1280f);
+        soundLbl.setFontScale(3*1.3f*width/1280f);
         tbl.add(soundLbl).padTop(20*width/1280);
-        soundLbl.debug();
 //        Texture sliderBac=new Texture("menuscreen/sliderbackground.png");
         TextureRegion sliderBac = AssetsController.instance.getRegion("sliderbackground");
         Image image = new Image(sliderBac);
@@ -379,14 +377,14 @@ public class GameScreen extends AbstractGameScreen{
                 new TextureRegionDrawable(AssetsController.instance.getRegion("sliderkuai")));
 
         sldSound = new Slider(0.0f,1.0f,0.1f,false,sliderStyle);
-        tbl.add(sldSound).width(sldSound.getWidth()*width/1280).padTop(20*width/1280);
+        tbl.add(sldSound).width(3*sldSound.getWidth()*width/1280).padTop(20*width/1280);
         tbl.row();
         //添加music标签 音乐滑动控件
         Label musicLbl = new Label("Music",new Label.LabelStyle(font,Color.BLACK));
         tbl.add(musicLbl).padTop(20*width/1280);
-        musicLbl.setFontScale(1.3f*width/1280);
+        musicLbl.setFontScale(3*1.3f*width/1280);
         sldMusic = new Slider(0.0f,1.0f,0.1f,false,sliderStyle);
-        tbl.add(sldMusic).width(sldMusic.getWidth()*width/1280).padTop(20*width/1280);
+        tbl.add(sldMusic).width(3*sldMusic.getWidth()*width/1280).padTop(20*width/1280);
         tbl.row();
         return tbl;
     }
@@ -397,7 +395,7 @@ public class GameScreen extends AbstractGameScreen{
         //添加分割线
         Texture texture = new Texture(Gdx.files.internal("menuscreen/savecancelbutton.png"));
         //TextureRegion texture = AssetsController.instance.getRegion("savecancelbutton");
-        font.getData().setScale(width/1280);
+        font.getData().setScale(2*width/1280);
         //添加save按钮并且 初始化事件处理器
         TextureRegionDrawable textureRegionDrawable = new TextureRegionDrawable(texture);
 
@@ -406,20 +404,24 @@ public class GameScreen extends AbstractGameScreen{
 
 
         btnWinOptSave = new TextButton("Save",textButtonStyle);
-        tbl.add(btnWinOptSave).width(btnWinOptSave.getWidth()*width/1280f).height(btnWinOptSave.getHeight()*width/1280).padLeft(20*width/1280).padTop(20*width/1280);
-        btnWinOptSave.addListener(new ChangeListener() {
+        tbl.add(btnWinOptSave).width(3*btnWinOptSave.getWidth()*width/1280f).height(3*btnWinOptSave.getHeight()*width/1280).padLeft(20*width/1280).padTop(20*width/1280);
+        btnWinOptSave.addListener(new InputListener(){
+
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 onSaveClicked();
+                return false;
             }
         });
         // 添加cancel按钮并且 初始化事件处理器
         btnWinOptCancel = new TextButton("Cancel", textButtonStyle);
-        tbl.add(btnWinOptCancel).width(btnWinOptSave.getWidth()*width/1280f).height(btnWinOptSave.getHeight()*width/1280).padLeft(20*width/1280).padTop(20*width/1280);
-        btnWinOptCancel.addListener(new ChangeListener() {
+        tbl.add(btnWinOptCancel).width(3*btnWinOptSave.getWidth()*width/1280f).height(3*btnWinOptSave.getHeight()*width/1280).padLeft(20*width/1280).padTop(20*width/1280);
+        btnWinOptCancel.addListener(new InputListener(){
+
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 onCancelClicked();
+                return false;
             }
         });
         return tbl;
