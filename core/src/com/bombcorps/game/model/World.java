@@ -48,11 +48,17 @@ public class World {
     }
 
     public Bonus spawnBonus() {
-        return bonusManager.getBonusList().get(bonusManager.getBonusList().size-1);
+        if(bonusManager.getBonusList().size > 0)
+            return bonusManager.getBonusList().get(bonusManager.getBonusList().size - 1);
+
+        return null;
     }
 
     public Bonus getFallingBonus() {
-        return bonusManager.getBonusList().get(bonusManager.getBonusList().size-1);
+        if(bonusManager.getBonusList().size > 0)
+            return bonusManager.getBonusList().get(bonusManager.getBonusList().size - 1);
+
+        return null;
     }
 
     public Player getFirstPlayer() {
