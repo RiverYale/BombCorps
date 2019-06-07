@@ -177,7 +177,7 @@ public class BaseHero{
         dimension = Constants.HERO_DIMENSION;
         origin = new Vector2(dimension.x / 2, dimension.y / 2);
         scale = new Vector2(1,1);
-        velocity = new Vector2();
+        velocity = new Vector2(Constants.VELOCITY_X, 0);
         acceleration = new Vector2(0,Constants.ACCELERATION);
         rec = new Rectangle(0,0,dimension.x,dimension.y);
 
