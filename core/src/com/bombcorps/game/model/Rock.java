@@ -9,8 +9,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.bombcorps.game.controller.AssetsController;
 
 public class Rock {
-    public final float width = Gdx.graphics.getWidth();
-    public final float height = Gdx.graphics.getHeight();
     public Vector2 position;
     public Vector2 dimension;
     public Rectangle rectangle;
@@ -23,7 +21,7 @@ public class Rock {
 
     private void init(){
         region = new TextureRegion(AssetsController.instance.getRegion("rock"));
-        dimension = new Vector2(width/32,height/20);
+        dimension = new Vector2(1.0f,1.0f);
         position = new Vector2(0,0);
         rectangle = new Rectangle(0,0,dimension.x,dimension.y);
         setLength(1);

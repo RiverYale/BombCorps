@@ -12,8 +12,6 @@ import com.bombcorps.game.view.AbstractGameScreen;
 
 
 public class Pillar {
-    public final float width = Gdx.graphics.getWidth();
-    public final float height = Gdx.graphics.getHeight();
     private Vector2 position;
     public Vector2 dimension;
     private Rectangle rectangle;
@@ -37,7 +35,7 @@ public class Pillar {
     private void init(){
         pillarBase = AssetsController.instance.getRegion("pillarBase");
         pillarMiddle = AssetsController.instance.getRegion("pillarMiddle");
-        dimension = new Vector2(width/32,height/20);
+        dimension = new Vector2(1.0f,1.0f);
         rectangle = new Rectangle(0,0,dimension.x,dimension.y);
         position = new Vector2(0,0);
 
