@@ -13,10 +13,7 @@ import java.util.logging.Level;
 
 public class World {
     public static final String TAG = Level.class.getName();
-    private final float width = Gdx.graphics.getWidth();
-    private final float height = Gdx.graphics.getHeight();
-    private int levelTurnBlue =0;
-    private int levelTurnRed = 0;
+    private int levelTurn = 0;
     private int Turn=0;
 
     public Array<Player> getPlayers() {
@@ -51,7 +48,17 @@ public class World {
     }
 
     public Bonus spawnBonus() {
-        return bonusManager.getBonusList().pop();
+        if(bonusManager.getBonusList().size > 0)
+            return bonusManager.getBonusList().get(bonusManager.getBonusList().size - 1);
+
+        return null;
+    }
+
+    public Bonus getFallingBonus() {
+        if(bonusManager.getBonusList().size > 0)
+            return bonusManager.getBonusList().get(bonusManager.getBonusList().size - 1);
+
+        return null;
     }
 
     public Player getFirstPlayer() {
@@ -91,9 +98,12 @@ public class World {
     //地图宽度
     private float MapWidth;
 
+    private Vector2 dimension;
+
     private String hostIP;
 
     private int limit;
+
 
     public  World(Room room){
         hostIP = room.getOwnerIp();
@@ -104,9 +114,11 @@ public class World {
 
     private void init(String filename){
         //物品
+        dimension = new Vector2(1.0f,1.0f);
         rocks = new Array<Rock>();
+        pillars = new Array<Pillar>();
         Pixmap pixmap = new Pixmap(Gdx.files.internal("map/map"+filename+".png"));
-        MapWidth = pixmap.getWidth()*width/Constants.VIEWPORT_WIDTH;
+        MapWidth = 32;
         bonusManager = new BonusManager((int)MapWidth);
         //从左上到右下扫描
         for(int pixelY = 0; pixelY < pixmap.getHeight();pixelY++)
@@ -127,7 +139,8 @@ public class World {
                 //柱子
                 else if(BLOCK_TYPE.PILLAR.sameColor(currentPixel)){
                     Pillar pillar = new Pillar();
-                    Vector2 position = new Vector2(pixelX*pillar.getDimension().x, (baseHeight)*pillar.getDimension().y);
+                    Vector2 position = new Vector2(pixelX*pillar.dimension.x, baseHeight*pillar.dimension.y);
+                    pillar.setPosition(position);
                     pillar.setPosition(position);
                     if(baseHeight == 0){
                         pillar.setState(Pillar.State.BASE);
@@ -144,16 +157,11 @@ public class World {
                 }
                 //英雄出生点
                 else if (BLOCK_TYPE.PLAYER_SPAWNPOINT.sameColor(currentPixel)) {
-                    if(levelTurnBlue <playerManager.getBluePlayerList().size){
-                        Vector2 position = new Vector2(pixelX*width/Constants.VIEWPORT_WIDTH,baseHeight*height/Constants.VIEWPORT_HEIGHT );
-                        playerManager.getBluePlayerList().get(levelTurnBlue).getMyHero().setPosition(position);
-                        levelTurnBlue++;
-                    }else if(levelTurnRed < playerManager.getRedPlayerList().size){
-                        Vector2 position = new Vector2(pixelX*width/Constants.VIEWPORT_WIDTH,baseHeight*height/Constants.VIEWPORT_HEIGHT );
-                        playerManager.getBluePlayerList().get(levelTurnRed).getMyHero().setPosition(position);
-                        levelTurnRed++;
+                    if(levelTurn <playerManager.getAllPlayerList().size){
+                        Vector2 position = new Vector2(pixelX*dimension.x,baseHeight*dimension.y );
+                        playerManager.getAllPlayerList().get(levelTurn).getMyHero().setPosition(position);
+                        levelTurn++;
                     }
-
                 }
                 //未知错误
                 else {
@@ -167,17 +175,17 @@ public class World {
                 }
             }
         pixmap.dispose();
-        Gdx.app.debug(TAG,"World"+filename+"loaded");
+        Gdx.app.log(TAG,"World"+filename+"loaded");
     }
 
     public void render(SpriteBatch batch){
-        batch.draw(AssetsController.instance.getRegion("background"),0,0,Gdx.graphics.getWidth()/Constants.VIEWPORT_WIDTH*32,Gdx.graphics.getHeight()/Constants.VIEWPORT_HEIGHT*20);
-        for (Rock rock : rocks){
-            rock.render(batch);
-        }
-        for(Pillar pillar : pillars){
-            pillar.render(batch);
-        }
+       batch.draw(AssetsController.instance.getRegion("gamebackground"),0,0,32,20);
+       for (Rock rock : rocks){
+           rock.render(batch);
+       }
+       for(Pillar pillar : pillars){
+           pillar.render(batch);
+       }
         playerManager.render(batch);
         bonusManager.render(batch);
     }

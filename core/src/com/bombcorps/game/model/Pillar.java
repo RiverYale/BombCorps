@@ -3,6 +3,8 @@ package com.bombcorps.game.model;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.model.Constants;
@@ -10,10 +12,9 @@ import com.bombcorps.game.view.AbstractGameScreen;
 
 
 public class Pillar {
-    public final float width = Gdx.graphics.getWidth();
-    public final float height = Gdx.graphics.getHeight();
     private Vector2 position;
-    private Vector2 dimension;
+    public Vector2 dimension;
+    private Rectangle rectangle;
     private Vector2 origin;
     private Vector2 scale;
     private float rotation;
@@ -24,18 +25,20 @@ public class Pillar {
     }
 
 
-    private Texture pillarMiddle;
-    private Texture pillarBase;
+    private TextureRegion pillarMiddle;
+    private TextureRegion pillarBase;
     private int length;
     public Pillar(){
         init();
     }
 
     private void init(){
-        pillarBase = AssetsController.instance.getRegion("pillarBase").getTexture();
-        pillarMiddle = AssetsController.instance.getRegion("pillarMiddle").getTexture();
-        dimension = new Vector2(width/ Constants.VIEWPORT_WIDTH,height/Constants.VIEWPORT_HEIGHT);
+        pillarBase = AssetsController.instance.getRegion("pillarBase");
+        pillarMiddle = AssetsController.instance.getRegion("pillarMiddle");
+        dimension = new Vector2(1.0f,1.0f);
+        rectangle = new Rectangle(0,0,dimension.x,dimension.y);
         position = new Vector2(0,0);
+
         state = State.MIDDLE;
         setLength(1);
     }
@@ -50,14 +53,14 @@ public class Pillar {
 
     public void render(SpriteBatch batch){
         if(state == State.MIDDLE){
-            batch.draw(pillarMiddle,position.x,position.y);
+            batch.draw(pillarMiddle,position.x+4*dimension.x/32,position.y,dimension.x*24/32,dimension.y);
         }else if(state == State.BASE){
-            batch.draw(pillarBase,position.x,position.y);
+            batch.draw(pillarBase,position.x,position.y,dimension.x,dimension.y);
         }
     }
 
-    public void setDimension(Vector2 dimension) {
-        this.dimension = dimension;
+    public Rectangle getRect() {
+        return rectangle;
     }
 
     public void setState(State state) {
@@ -72,7 +75,4 @@ public class Pillar {
         return position;
     }
 
-    public Vector2 getDimension() {
-        return dimension;
-    }
 }

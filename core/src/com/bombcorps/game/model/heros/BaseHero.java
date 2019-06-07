@@ -167,7 +167,7 @@ public class BaseHero{
         destination = 0;
         health = 0;
         endurance = Constants.MAX_ENDURENCE;
-        powerRage = Constants.MAX_RAGEPOWER;
+        powerRage = 0;
         attack = 0;
         criticalProbability = 0;
         armor = 0;
@@ -175,9 +175,9 @@ public class BaseHero{
 
         position = new Vector2();
         dimension = Constants.HERO_DIMENSION;
-        origin = new Vector2();
-        scale = new Vector2();
-        velocity = new Vector2();
+        origin = new Vector2(dimension.x / 2, dimension.y / 2);
+        scale = new Vector2(1,1);
+        velocity = new Vector2(Constants.VELOCITY_X, 0);
         acceleration = new Vector2(0,Constants.ACCELERATION);
         rec = new Rectangle(0,0,dimension.x,dimension.y);
 
@@ -202,11 +202,11 @@ public class BaseHero{
 
     protected void updatePosition(float deltaTime){
         switch(state){
-            case ATTACK:
-            case DEAD:
+//            case ATTACK:
+//            case DEAD:
             case GROUNDED:
                 velocity.y = 0;
-                state = STATE.FALLING;
+//                state = STATE.FALLING;
                 break;
             case FALLING:
                 updateY(deltaTime);
@@ -242,7 +242,6 @@ public class BaseHero{
     }
 
     protected void renderHero(SpriteBatch batch){
-
         switch(state){
             case FALLING:
             case GROUNDED:

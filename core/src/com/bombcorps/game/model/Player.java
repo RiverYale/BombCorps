@@ -1,5 +1,6 @@
 package com.bombcorps.game.model;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -19,6 +20,7 @@ public class Player implements Serializable {
 
     private Vector2 tap;
 
+    private boolean current;
     private boolean ready;
 
     public SkillAndBuff skillAndBuff;
@@ -38,6 +40,7 @@ public class Player implements Serializable {
         ready = false;
         this.ID = ID;
         heroType = Constants.SPARDA;
+        tap = new Vector2(0, 0);
     }
 
     public Player(Message.MPlayer m) {
@@ -48,6 +51,7 @@ public class Player implements Serializable {
         ready = m.ready;
         team = m.team;
         state = m.state;
+        tap = new Vector2(0, 0);
     }
 
     public Message.MPlayer getMPlayer() {
@@ -75,26 +79,6 @@ public class Player implements Serializable {
                 myHero = new Wizard(level);
                 break;
         }
-
-//        switch(level){
-//            case 0:
-//                myHero.setLevel(Constants.LEVEL_0);
-//                break;
-//            case 1:
-//                myHero.setLevel(Constants.LEVEL_1);
-//                break;
-//            case 2:
-//                myHero.setLevel(Constants.LEVEL_2);
-//                break;
-//            case 3:
-//                myHero.setLevel(Constants.LEVEL_3);
-//                break;
-//            case 4:
-//                myHero.setLevel(Constants.LEVEL_4);
-//                break;
-//            case 5:
-//                myHero.setLevel(Constants.LEVEL_5);
-//        }
 
     }
 
@@ -239,10 +223,12 @@ public class Player implements Serializable {
             case Constants.SPARDA:
                 switch (op){
                     case 3:
-                        if(team == TEAM.RED)
+                        if(team == TEAM.RED){
                             skillAndBuff.spardaSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
-                        else
+                        }
+                        else{
                             skillAndBuff.spardaSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
+                        }
                         break;
                     case 4:
                         if(team == TEAM.RED)
@@ -441,4 +427,11 @@ public class Player implements Serializable {
         myHero.setState(input);
     }
 
+    public boolean isCurrent() {
+        return current;
+    }
+
+    public void setCurrent(boolean current) {
+        this.current = current;
+    }
 }

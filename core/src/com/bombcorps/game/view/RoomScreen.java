@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.bombcorps.game.controller.AssetsController;
+import com.bombcorps.game.controller.AudioController;
 import com.bombcorps.game.controller.DataController;
 import com.bombcorps.game.controller.NetController;
 import com.bombcorps.game.model.Constants;
@@ -78,7 +79,8 @@ public class RoomScreen extends AbstractGameScreen{
     private Player myplayer;
 
     private int readyNum = 0;
-    boolean b_error = false;
+    private boolean b_error = false;
+    public static boolean b_loadGame = false;
 
     private BitmapFont font = AssetsController.instance.font;
     private Label.LabelStyle stylePersonNum = new Label.LabelStyle(font, Color.WHITE);
@@ -173,6 +175,9 @@ public class RoomScreen extends AbstractGameScreen{
             Gdx.app.log("zc", "owner quit");
             batchAddErrorMsg();
         }
+        if (b_loadGame) {
+            game.loadGameScreen();
+        }
 
         batch.end();
     }
@@ -189,6 +194,7 @@ public class RoomScreen extends AbstractGameScreen{
 
     @Override
     public void hide() {
+        batch.dispose();
         stage.dispose();
     }
 
@@ -450,12 +456,14 @@ public class RoomScreen extends AbstractGameScreen{
             @Override
             public void clicked(InputEvent event, float x, float y){
                 turnLeftHero();
+                AudioController.instance.play(AssetsController.instance.btnClicked);
             }
         });
         btnHeroRight.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
                 turnRightHero();
+                AudioController.instance.play(AssetsController.instance.btnClicked);
             }
         });
         //地图左右选择
@@ -463,12 +471,14 @@ public class RoomScreen extends AbstractGameScreen{
             @Override
             public void clicked(InputEvent event, float x, float y){
                 turnLeftMap();
+                AudioController.instance.play(AssetsController.instance.btnClicked);
             }
         });
         btnMapright.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
                 turnRightMap();
+                AudioController.instance.play(AssetsController.instance.btnClicked);
             }
         });
         //换边
@@ -476,30 +486,35 @@ public class RoomScreen extends AbstractGameScreen{
             @Override
             public void clicked(InputEvent event, float x, float y){
                 toRedTeam();
+                AudioController.instance.play(AssetsController.instance.btnClicked);
             }
         });
         doorBlue.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
                 toBlueTeam();
+                AudioController.instance.play(AssetsController.instance.btnClicked);
             }
         });
         btnReady.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
                 toReady();
+                AudioController.instance.play(AssetsController.instance.btnClicked);
             }
         });
         btnCancel.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
                 toCancel();
+                AudioController.instance.play(AssetsController.instance.btnClicked);
             }
         });
         backToLobby.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
                 toLobby();
+                AudioController.instance.play(AssetsController.instance.btnClicked);
             }
         });
     }

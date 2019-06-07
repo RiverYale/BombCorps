@@ -1,6 +1,7 @@
 package com.bombcorps.game.controller;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.bombcorps.game.model.Pillar;
 import com.bombcorps.game.model.bombs.Bomb;
 import com.bombcorps.game.model.Bonus;
 import com.bombcorps.game.model.Constants;
@@ -20,7 +22,6 @@ import com.bombcorps.game.view.DirectedGame;
 public class WorldController {
     private DirectedGame game;
     private OrthographicCamera camera;
-    private InputController input;
     private CameraController cameraController;
 
     private NetController net;
@@ -34,9 +35,10 @@ public class WorldController {
         this.game = game;
         this.camera = camera;
         this.net = net;
+        game.getRoom().getPlayerManager().gameBegin();
         this.world = game.getWorld();
         cameraController = new CameraController();
-        input = new InputController(this);
+        init();
     }
 
     public void init() {
@@ -44,12 +46,7 @@ public class WorldController {
         net.bindWorldController(this);
         curPlayer = world.getFirstPlayer();
         cameraController.setTarget(curPlayer);
-//        gameBegin();
 //        AudioController.instance.play(AssetsController.instance.getMusic("")); //TODO
-    }
-
-    public InputProcessor getInputProcessor() {
-        return new GestureDetector(input);
     }
 
     public OrthographicCamera getCamera() {
@@ -194,7 +191,7 @@ public class WorldController {
 
     public void playerQuit(Message msg) {
         Player p = msg.getTargetPlayer();
-        game.playerQuit(p.getIp());
+        game.playerQuit(p.getID());
         world.removePlayer(p);
     }
 
@@ -223,14 +220,26 @@ public class WorldController {
     }
 
     public void testCollisions() {
-        //TODO Bonus碰Rock? Bomb碰Player?
+        //TODO Bonus碰Rock
+        boolean b_falling = true;
         Rectangle r1 = curPlayer.getRect();
         Rectangle r2;
         for(Rock r : world.rocks) {
             r2 = r.getRect();
             if (r1.overlaps(r2)) {
                 onCollisionsPlayerWithRock(r);
+                b_falling = false;
             }
+        }
+        for (Pillar p : world.pillars) {
+            r2 = p.getRect();
+            if (r1.overlaps(r2)) {
+                onCollisionsPlayerWithPillar(p);
+                b_falling = false;
+            }
+        }
+        if (b_falling) {
+            curPlayer.setHeroState(Constants.STATE_FALLING);
         }
         for (Bonus b : world.bonusManager.getBonusList()) {
             r2 = b.getRect();
@@ -244,6 +253,17 @@ public class WorldController {
                 r2 = r.getRect();
                 if (r1.overlaps(r2)) {
                     onCollisionsBombWithRock(curPlayer.getBomb());
+                }
+            }
+        }
+
+        Bonus fallingOne = world.getFallingBonus();
+        if(fallingOne != null){
+            r1 = fallingOne.getRect();
+            for (Rock r : world.rocks) {
+                r2 = r.getRect();
+                if (r1.overlaps(r2)) {
+                    onCollisionsBonusWithRock(fallingOne, r);
                 }
             }
         }
@@ -277,12 +297,44 @@ public class WorldController {
         }
     }
 
+    private void onCollisionsPlayerWithPillar(Pillar r) {
+        float heightDifference = Math.abs(curPlayer.getPosition().y - (r.getPosition().y + r.getRect().getHeight()));
+        if (heightDifference > 0.25f) { //TODO
+            boolean hitLeftEdge = curPlayer.getPosition().x > (r.getPosition().x + r.getRect().getWidth() / 2.0f);
+            if (hitLeftEdge) {
+                curPlayer.setX(r.getPosition().x + r.getRect().getWidth());
+            } else {
+                curPlayer.setX(r.getPosition().x - r.getRect().getWidth());
+            }
+            return;
+        }
+        switch (curPlayer.getHeroState()) {
+            case Constants.STATE_GROUNDED:
+                break;
+            case Constants.STATE_MOVING:
+                if (heightDifference > 0.25f) { //TODO
+                    curPlayer.setHeroState(Constants.STATE_GROUNDED);
+                } else {
+                    curPlayer.setY(r.getPosition().y + r.getRect().getHeight());
+                }
+                break;
+            case Constants.STATE_FALLING:
+                curPlayer.setY(r.getPosition().y + r.getRect().getHeight());
+                curPlayer.setHeroState(Constants.STATE_GROUNDED);
+                break;
+        }
+    }
+
     private void onCollisionsPlayerWithBonus(Bonus b) {
         b.attachTo(curPlayer);
     }
 
     private void onCollisionsBombWithRock(Bomb b) {
         world.getPlayerManager().explode(curPlayer);
+    }
+
+    private void onCollisionsBonusWithRock(Bonus b, Rock rock) {
+        b.setState(Constants.BONUS.GROUNDED);
     }
 
 }

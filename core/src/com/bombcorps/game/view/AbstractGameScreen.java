@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.bombcorps.game.controller.AssetsController;
+import com.bombcorps.game.controller.WorldController;
 
 public abstract class AbstractGameScreen implements Screen {
     protected DirectedGame game;
@@ -31,6 +32,7 @@ public abstract class AbstractGameScreen implements Screen {
 
     public void dispose() {
         AssetsController.instance.dispose();
+
     }
 }
 

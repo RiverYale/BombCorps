@@ -1,5 +1,6 @@
 package com.bombcorps.game.model;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
 public class Constants {
@@ -53,7 +54,7 @@ public class Constants {
         public static final int ACTIVATED = 2;
         public static final int GROUNDED = 3;
 
-        public static final Vector2 DIMENSION = new Vector2(5f,5f);
+        public static final Vector2 DIMENSION = new Vector2(0.5f,0.5f);
 
         public static final double BONUS_CHANCE = 0.4f;
 
@@ -68,7 +69,7 @@ public class Constants {
         public static final int STATE_WAIT = 3;
 
         public static final float BOOM_DURETION = 0.2f;
-        public static final Vector2 BOOM_DIMENSION = new Vector2(5f,5f);
+        public static final Vector2 BOOM_DIMENSION = new Vector2(0.5f,0.5f);
         public static final Vector2 BOOM_SCALE = new Vector2(1f,1f);
 
         public static final Vector2 DIMENSION = new Vector2(5f,5f);
@@ -91,7 +92,7 @@ public class Constants {
         public static final int WIZARDAURA1 = 5;
         public static final int WAIT = -1;
 
-        public static final Vector2 DIMENSION = new Vector2(5f,5f);
+        public static final Vector2 DIMENSION = new Vector2(0.5f,0.5f);
         public static final Vector2 SCALE = new Vector2(1f,1f);
         public static final Vector2 ORIGIN = new Vector2(DIMENSION.x / 2, DIMENSION.y / 2);
     }
@@ -99,7 +100,7 @@ public class Constants {
     /*
     人物状态
      */
-    public static final Vector2 HERO_DIMENSION = new Vector2(10f,10f);
+    public static final Vector2 HERO_DIMENSION = new Vector2(1.0f,1.0f);
 
     public static final int NONE = -1;
     public static final int SPARDA = 0;
@@ -128,9 +129,9 @@ public class Constants {
     public static final float CRITICALPROBABILITY_DAMAGE_RATE = 2f;
 
     // GUI Width
-    public static final float VIEWPORT_GUI_WIDTH = 800.0f;
+    public static final float VIEWPORT_GUI_WIDTH = 720.0f;
     // GUI Height
-    public static final float VIEWPORT_GUI_HEIGHT = 480.0f;
+    public static final float VIEWPORT_GUI_HEIGHT = 400.0f;
     //
     public static final float VIEWPORT_WIDTH = 18.0f;
 

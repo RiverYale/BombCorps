@@ -9,21 +9,19 @@ import com.badlogic.gdx.math.Vector2;
 import com.bombcorps.game.controller.AssetsController;
 
 public class Rock {
-    public final float width = Gdx.graphics.getWidth();
-    public final float height = Gdx.graphics.getHeight();
     public Vector2 position;
     public Vector2 dimension;
     public Rectangle rectangle;
 
-    private Texture region;
+    private TextureRegion region;
     private int length;
     public Rock(){
         init();
     }
 
     private void init(){
-        region = AssetsController.instance.getRegion("rock").getTexture();
-        dimension = new Vector2(width/Constants.VIEWPORT_WIDTH,height/Constants.VIEWPORT_HEIGHT);
+        region = new TextureRegion(AssetsController.instance.getRegion("rock"));
+        dimension = new Vector2(1.0f,1.0f);
         position = new Vector2(0,0);
         rectangle = new Rectangle(0,0,dimension.x,dimension.y);
         setLength(1);

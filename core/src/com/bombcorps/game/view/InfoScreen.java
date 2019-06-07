@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.bombcorps.game.controller.AssetsController;
+import com.bombcorps.game.controller.AudioController;
 import com.bombcorps.game.controller.DataController;
 
 public class InfoScreen extends AbstractGameScreen implements InputProcessor{
@@ -209,13 +210,19 @@ public class InfoScreen extends AbstractGameScreen implements InputProcessor{
         //升级按钮
         font.getData().setScale(0.8f);
         int cost = DataController.instance.getUpLevelCost(index+1);
-        if (cost > DataController.instance.getPersonalData(DataController.MONEY)) {
+        if(cost == -1){
             font.setColor(Color.GRAY);
-        } else {
-            font.setColor(255/255f, 246/255f, 143/255f, 1);
+            font.draw(batch, "升级", upgrade.getX()+25, upgrade.getY()+20);
+            font.setColor(Color.BLACK);
+        }else{
+            if (cost > DataController.instance.getPersonalData(DataController.MONEY)) {
+                font.setColor(Color.GRAY);
+            } else {
+                font.setColor(255/255f, 246/255f, 143/255f, 1);
+            }
+            font.draw(batch, "升级("+cost+")", upgrade.getX()+5, upgrade.getY()+20);
+            font.setColor(Color.BLACK);
         }
-        font.draw(batch, "升级("+cost+")", upgrade.getX()+5, upgrade.getY()+20);
-        font.setColor(Color.BLACK);
 
         //属性字
         char s[] = "☆☆☆☆☆".toCharArray();
@@ -256,12 +263,15 @@ public class InfoScreen extends AbstractGameScreen implements InputProcessor{
             heroBoard.setY(60f+viewHeight*0.15f*i);
             if (heroBoard.getBoundingRectangle().contains(v.x, v.y)) {
                 index = 4-i;
+                AudioController.instance.play(AssetsController.instance.btnClicked);
                 break;
             }
         }
         if (upgrade.getBoundingRectangle().contains(v.x, v.y)) {
             DataController.instance.upLevel(index + 1);
+            AudioController.instance.play(AssetsController.instance.levelup);
         } else if(back.getBoundingRectangle().contains(v.x, v.y)){
+            AudioController.instance.play(AssetsController.instance.btnClicked);
             game.loadLobbyScreen();
         }
 
@@ -280,7 +290,7 @@ public class InfoScreen extends AbstractGameScreen implements InputProcessor{
 
     @Override
     public void hide() {
-
+        batch.dispose();
     }
 
     @Override
