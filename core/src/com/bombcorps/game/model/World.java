@@ -51,6 +51,10 @@ public class World {
         return bonusManager.getBonusList().get(bonusManager.getBonusList().size-1);
     }
 
+    public Bonus getFallingBonus() {
+        return bonusManager.getBonusList().get(bonusManager.getBonusList().size-1);
+    }
+
     public Player getFirstPlayer() {
         Turn++;
         return playerManager.getAllPlayerList().first();
