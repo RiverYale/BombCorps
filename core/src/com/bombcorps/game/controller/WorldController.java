@@ -190,7 +190,7 @@ public class WorldController {
 
     public void playerQuit(Message msg) {
         Player p = msg.getTargetPlayer();
-        game.playerQuit(p.getIp());
+        game.playerQuit(p.getID());
         world.removePlayer(p);
     }
 
