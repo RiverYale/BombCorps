@@ -26,6 +26,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.controller.AudioController;
 import com.bombcorps.game.controller.DataController;
@@ -342,8 +345,8 @@ public class GameScreen extends AbstractGameScreen{
         winOptions.setColor(1,1,1,1f);
         winOptions.setVisible(false);
         winOptions.pack();
-        winOptions.setSize(width/2,height/2);
-        winOptions.setPosition((width-winOptions.getWidth())/2,(height-winOptions.getHeight())/2);
+        winOptions.setSize(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
+        winOptions.setPosition(Gdx.graphics.getWidth()/4,Gdx.graphics.getWidth()/4);
         layer.addActor(winOptions);
         return layer;
     }
@@ -354,19 +357,17 @@ public class GameScreen extends AbstractGameScreen{
         tbl.pad(0,10,0,10);
 
 //        BitmapFont font =new BitmapFont(Gdx.files.internal("menuscreen/winOptions.fnt"),Gdx.files.internal("menuscreen/winOptions.png"),false);
-        Label audioLbl = new Label("Audio",new Label.LabelStyle(font,font.getColor()));
-        audioLbl.setFontScale(1.3f*width/1280f);
-        audioLbl.debug();
+        Label audioLbl = new Label("Audio",new Label.LabelStyle(font,Color.BLACK));
+        audioLbl.setFontScale(3*1.3f*width/1280f);
         tbl.add(audioLbl).colspan(3);
         tbl.row();
         tbl.columnDefaults(0).padRight(10);
         tbl.columnDefaults(1).padRight(10);
         //添加sound标签 声音滑动控件
 
-        Label soundLbl = new Label("Sound",new Label.LabelStyle(font,font.getColor()));
-        soundLbl.setFontScale(1.3f*width/1280f);
+        Label soundLbl = new Label("Sound",new Label.LabelStyle(font,Color.BLACK));
+        soundLbl.setFontScale(3*1.3f*width/1280f);
         tbl.add(soundLbl).padTop(20*width/1280);
-        soundLbl.debug();
 //        Texture sliderBac=new Texture("menuscreen/sliderbackground.png");
         TextureRegion sliderBac = AssetsController.instance.getRegion("sliderbackground");
         Image image = new Image(sliderBac);
@@ -376,14 +377,14 @@ public class GameScreen extends AbstractGameScreen{
                 new TextureRegionDrawable(AssetsController.instance.getRegion("sliderkuai")));
 
         sldSound = new Slider(0.0f,1.0f,0.1f,false,sliderStyle);
-        tbl.add(sldSound).width(sldSound.getWidth()*width/1280).padTop(20*width/1280);
+        tbl.add(sldSound).width(3*sldSound.getWidth()*width/1280).padTop(20*width/1280);
         tbl.row();
         //添加music标签 音乐滑动控件
-        Label musicLbl = new Label("Music",new Label.LabelStyle(font,font.getColor()));
+        Label musicLbl = new Label("Music",new Label.LabelStyle(font,Color.BLACK));
         tbl.add(musicLbl).padTop(20*width/1280);
-        musicLbl.setFontScale(1.3f*width/1280);
+        musicLbl.setFontScale(3*1.3f*width/1280);
         sldMusic = new Slider(0.0f,1.0f,0.1f,false,sliderStyle);
-        tbl.add(sldMusic).width(sldMusic.getWidth()*width/1280).padTop(20*width/1280);
+        tbl.add(sldMusic).width(3*sldMusic.getWidth()*width/1280).padTop(20*width/1280);
         tbl.row();
         return tbl;
     }
@@ -394,7 +395,7 @@ public class GameScreen extends AbstractGameScreen{
         //添加分割线
         Texture texture = new Texture(Gdx.files.internal("menuscreen/savecancelbutton.png"));
         //TextureRegion texture = AssetsController.instance.getRegion("savecancelbutton");
-        font.getData().setScale(width/1280);
+        font.getData().setScale(2*width/1280);
         //添加save按钮并且 初始化事件处理器
         TextureRegionDrawable textureRegionDrawable = new TextureRegionDrawable(texture);
 
@@ -403,20 +404,24 @@ public class GameScreen extends AbstractGameScreen{
 
 
         btnWinOptSave = new TextButton("Save",textButtonStyle);
-        tbl.add(btnWinOptSave).width(btnWinOptSave.getWidth()*width/1280f).height(btnWinOptSave.getHeight()*width/1280).padLeft(20*width/1280).padTop(20*width/1280);
-        btnWinOptSave.addListener(new ChangeListener() {
+        tbl.add(btnWinOptSave).width(3*btnWinOptSave.getWidth()*width/1280f).height(3*btnWinOptSave.getHeight()*width/1280).padLeft(20*width/1280).padTop(20*width/1280);
+        btnWinOptSave.addListener(new InputListener(){
+
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 onSaveClicked();
+                return false;
             }
         });
         // 添加cancel按钮并且 初始化事件处理器
         btnWinOptCancel = new TextButton("Cancel", textButtonStyle);
-        tbl.add(btnWinOptCancel).width(btnWinOptSave.getWidth()*width/1280f).height(btnWinOptSave.getHeight()*width/1280).padLeft(20*width/1280).padTop(20*width/1280);
-        btnWinOptCancel.addListener(new ChangeListener() {
+        tbl.add(btnWinOptCancel).width(3*btnWinOptSave.getWidth()*width/1280f).height(3*btnWinOptSave.getHeight()*width/1280).padLeft(20*width/1280).padTop(20*width/1280);
+        btnWinOptCancel.addListener(new InputListener(){
+
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 onCancelClicked();
+                return false;
             }
         });
         return tbl;
@@ -562,27 +567,30 @@ public class GameScreen extends AbstractGameScreen{
         virtory = new Image(AssetsController.instance.getRegion("vitory"));
         failed = new Image(AssetsController.instance.getRegion("failed"));
 
-        if(worldController.isGameOver()==1){
+        if(worldController.isGameOver()==1&&myPlayer().getTeam() == Constants.PLAYER.RED_TEAM){
 
             virtory.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
             virtory.setPosition((winResults.getWidth()-virtory.getWidth())/2,(winResults.getHeight()-virtory.getHeight())/1.25f);
             winResults.addActor(virtory);
             AudioController.instance.play(AssetsController.instance.win);
-        }else if(worldController.isGameOver()==2){
+            Label goldReceiveLabel = new Label("获得100金币",new Label.LabelStyle(font, Color.BLACK));
+            winResults.addActor(goldReceiveLabel);
+            goldReceiveLabel.setSize(winResults.getWidth(),winResults.getHeight()/2);
+            goldReceiveLabel.setAlignment(Align.center);
+            goldReceiveLabel.setPosition(0,winResults.getHeight()/5);
+        }else if(worldController.isGameOver()==2&&myPlayer().getTeam() == Constants.PLAYER.BLUE_TEAM){
 
             failed.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
             failed.setPosition((winResults.getWidth()-failed.getWidth())/2,(winResults.getHeight()-failed.getHeight())/1.25f);
             winResults.addActor(failed);
             AudioController.instance.play(AssetsController.instance.lose);
+            Label goldReceiveLabel = new Label("获得50金币",new Label.LabelStyle(font, Color.BLACK));
+            winResults.addActor(goldReceiveLabel);
+            goldReceiveLabel.setSize(winResults.getWidth(),winResults.getHeight()/2);
+            goldReceiveLabel.setAlignment(Align.center);
+            goldReceiveLabel.setPosition(0,winResults.getHeight()/5);
         }
 
-
-
-        Label goldReceiveLabel = new Label("获得1000金币",new Label.LabelStyle(font, Color.BLACK));
-        winResults.addActor(goldReceiveLabel);
-        goldReceiveLabel.setSize(winResults.getWidth(),winResults.getHeight()/2);
-        goldReceiveLabel.setAlignment(Align.center);
-        goldReceiveLabel.setPosition(0,winResults.getHeight()/5);
         Image confirm = new Image(AssetsController.instance.getRegion("confirm"));
         confirm.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
         confirm.setPosition((winResults.getWidth()-virtory.getWidth())/2,50);
@@ -609,9 +617,10 @@ public class GameScreen extends AbstractGameScreen{
         Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(AssetsController.instance.getRegion("winresult")));
         winErrorQuit = new Window("",windowStyle);
         Label.LabelStyle labelStyle = new Label.LabelStyle(font,Color.BLACK);
-        Label label = new Label("Because Manager is quitted, game error stop.",labelStyle);
-        winErrorQuit.setSize(width/2,height/2);
-        winErrorQuit.setPosition(width/4,height/4);
+        Label label = new Label("Because Manager is quitted,\n game error stop.",labelStyle);
+        label.setFontScale(2.0f);
+        winErrorQuit.setSize(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
+        winErrorQuit.setPosition(Gdx.graphics.getWidth()/4,Gdx.graphics.getHeight()/4);
         label.setPosition(winErrorQuit.getWidth()/2-label.getPrefWidth()/2,2*winErrorQuit.getHeight()/3-label.getPrefHeight()/2);
         //winOptions.setColor(1,1,1,1f);
         winErrorQuit.addActor(buildErrorQuitWindowBotton());
@@ -626,7 +635,7 @@ public class GameScreen extends AbstractGameScreen{
         Table layer = new Table();
         btnWinErrorQuit = new Image(AssetsController.instance.getRegion("confirm"));
         btnWinErrorQuit.setScale(0.6f);
-        btnWinErrorQuit.setPosition(winErrorQuit.getWidth()/2-btnWinErrorQuit.getWidth()*0.6f/2,winErrorQuit.getHeight()*0.6f/3-btnWinErrorQuit.getHeight()/2);
+        btnWinErrorQuit.setPosition(winErrorQuit.getWidth()/2-btnWinErrorQuit.getWidth()*0.6f/2,winErrorQuit.getHeight()/3-btnWinErrorQuit.getHeight()*0.6f/2);
         layer.addActor(btnWinErrorQuit);
         btnWinErrorQuit.addListener(new InputListener(){
             @Override
@@ -683,7 +692,7 @@ public class GameScreen extends AbstractGameScreen{
 
     @Override
     public void resize(int width, int height) {
-        //stage.getViewport().update(width,height);
+        stage.getViewport().update(width,height);
     }
 
     public void playQuit(String ID){
@@ -722,7 +731,7 @@ public class GameScreen extends AbstractGameScreen{
 
     @Override
     public void show() {
-        stage = new Stage();
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
         rebuildStage();
         Gdx.input.setInputProcessor(stage);
     }

@@ -40,6 +40,7 @@ public class AssetsController  implements Disposable, AssetErrorListener {
         levelup =Gdx.audio.newSound(Gdx.files.internal("sound/levelup.mp3"));
         lose = Gdx.audio.newSound(Gdx.files.internal("sound/lose.mp3"));
         win = Gdx.audio.newSound(Gdx.files.internal("sound/win.mp3"));
+
     }
 
     public void loadTexture(String fileName) {
