@@ -27,6 +27,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.bombcorps.game.controller.AssetsController;
+import com.bombcorps.game.controller.AudioController;
 import com.bombcorps.game.controller.DataController;
 import com.bombcorps.game.controller.InputController;
 import com.bombcorps.game.controller.WorldController;
@@ -566,11 +567,13 @@ public class GameScreen extends AbstractGameScreen{
             virtory.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
             virtory.setPosition((winResults.getWidth()-virtory.getWidth())/2,(winResults.getHeight()-virtory.getHeight())/1.25f);
             winResults.addActor(virtory);
+            AudioController.instance.play(AssetsController.instance.win);
         }else if(worldController.isGameOver()==2){
 
             failed.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
             failed.setPosition((winResults.getWidth()-failed.getWidth())/2,(winResults.getHeight()-failed.getHeight())/1.25f);
             winResults.addActor(failed);
+            AudioController.instance.play(AssetsController.instance.lose);
         }
 
 
@@ -590,6 +593,7 @@ public class GameScreen extends AbstractGameScreen{
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 //game.loadRoomScreen();
                 winResults.setVisible(false);
+                AudioController.instance.play(AssetsController.instance.btnClicked);
                 return true;
 
             }
