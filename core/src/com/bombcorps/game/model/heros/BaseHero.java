@@ -175,8 +175,8 @@ public class BaseHero{
 
         position = new Vector2();
         dimension = Constants.HERO_DIMENSION;
-        origin = new Vector2();
-        scale = new Vector2();
+        origin = new Vector2(dimension.x / 2, dimension.y / 2);
+        scale = new Vector2(1,1);
         velocity = new Vector2();
         acceleration = new Vector2(0,Constants.ACCELERATION);
         rec = new Rectangle(0,0,dimension.x,dimension.y);
@@ -245,11 +245,10 @@ public class BaseHero{
         switch(state){
             case FALLING:
             case GROUNDED:
-//                batch.draw(staticRegion.getTexture(), position.x, position.y, origin.x, origin.y,
-//                        dimension.x, dimension.y, scale.x, scale.y, 0, staticRegion.getRegionX(),
-//                        staticRegion.getRegionY(), staticRegion.getRegionWidth(),staticRegion.getRegionHeight(),
-//                        !headright, false);
-                batch.draw(staticRegion,position.x,position.y,dimension.x,dimension.y);
+                batch.draw(staticRegion.getTexture(), position.x, position.y, origin.x, origin.y,
+                        dimension.x, dimension.y, scale.x, scale.y, 0, staticRegion.getRegionX(),
+                        staticRegion.getRegionY(), staticRegion.getRegionWidth(),staticRegion.getRegionHeight(),
+                        !headright, false);
                 break;
             case DEAD:
                 batch.draw(deadRegion.getTexture(), position.x, position.y, origin.x, origin.y,
