@@ -40,7 +40,9 @@ public class Message implements Serializable{
     }
 
     public void setBonus(Bonus bonus) {
-        this.bonus = bonus.getMBonus();
+        if (bonus != null) {
+            this.bonus = bonus.getMBonus();
+        }
     }
 
     public void setRoom(Room room) {

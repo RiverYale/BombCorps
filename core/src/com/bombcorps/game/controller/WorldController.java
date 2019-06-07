@@ -21,7 +21,6 @@ import com.bombcorps.game.view.DirectedGame;
 public class WorldController {
     private DirectedGame game;
     private OrthographicCamera camera;
-    private InputController input;
     private CameraController cameraController;
 
     private NetController net;
@@ -38,7 +37,6 @@ public class WorldController {
         game.getRoom().getPlayerManager().gameBegin();
         this.world = game.getWorld();
         cameraController = new CameraController();
-        input = new InputController(this);
         init();
     }
 
@@ -48,10 +46,6 @@ public class WorldController {
         curPlayer = world.getFirstPlayer();
         cameraController.setTarget(curPlayer);
 //        AudioController.instance.play(AssetsController.instance.getMusic("")); //TODO
-    }
-
-    public InputProcessor getInputProcessor() {
-        return new GestureDetector(input);
     }
 
     public OrthographicCamera getCamera() {
@@ -232,6 +226,7 @@ public class WorldController {
             r2 = r.getRect();
             if (r1.overlaps(r2)) {
                 onCollisionsPlayerWithRock(r);
+                Gdx.app.log("zc", "player rock");
             }
         }
         for (Bonus b : world.bonusManager.getBonusList()) {
