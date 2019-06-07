@@ -223,6 +223,7 @@ public class LobbyScreen extends AbstractGameScreen{
                 Room room = new Room(NetController.getLocalHostIp(),1);
                 AudioController.instance.play(AssetsController.instance.btnClicked);
                 game.loadRoomScreen(room);
+                Gdx.app.log("qin","load  roomScreen");
                 //game.getNetController().enterRoom(NetController.getLocalHostIp(),myplayer);
                 return true;
             }

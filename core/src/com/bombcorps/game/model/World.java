@@ -48,7 +48,7 @@ public class World {
     }
 
     public Bonus spawnBonus() {
-        return bonusManager.getBonusList().pop();
+        return bonusManager.getBonusList().get(bonusManager.getBonusList().size-1);
     }
 
     public Player getFirstPlayer() {

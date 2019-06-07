@@ -621,7 +621,8 @@ public class GameScreen extends AbstractGameScreen{
     public Table buildErrorQuitWindowBotton(){
         Table layer = new Table();
         btnWinErrorQuit = new Image(AssetsController.instance.getRegion("confirm"));
-        btnWinErrorQuit.setPosition(winErrorQuit.getWidth()/2-btnWinErrorQuit.getWidth()/2,winErrorQuit.getHeight()/3-btnWinErrorQuit.getHeight()/2);
+        btnWinErrorQuit.setScale(0.6f);
+        btnWinErrorQuit.setPosition(winErrorQuit.getWidth()/2-btnWinErrorQuit.getWidth()*0.6f/2,winErrorQuit.getHeight()*0.6f/3-btnWinErrorQuit.getHeight()/2);
         layer.addActor(btnWinErrorQuit);
         btnWinErrorQuit.addListener(new InputListener(){
             @Override
@@ -688,8 +689,11 @@ public class GameScreen extends AbstractGameScreen{
 
     @Override
     public void hide() {
-        //batch2.dispose();
-        //worldController.dispose();
+        batch.dispose();
+        stage.dispose();
+        camera = null;
+        cameraGUI = null;
+
     }
 
     @Override
