@@ -8,6 +8,8 @@ import com.bombcorps.game.model.Message;
 import com.bombcorps.game.model.Player;
 import com.bombcorps.game.model.Room;
 import com.bombcorps.game.view.DirectedGame;
+import com.bombcorps.game.view.GameScreen;
+import com.bombcorps.game.view.RoomScreen;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -242,7 +244,6 @@ public class NetController {
                 game.updateRoomScreen();
                 break;
             case UPDATE_PLAYER:
-                Gdx.app.log("zc", "update player");
                 game.getRoom().updatePlayer(msg.getTargetPlayer());
                 game.updateRoomScreen();
                 break;
@@ -255,7 +256,7 @@ public class NetController {
                 game.updateRoomScreen();
                 break;
             case START:
-                game.loadGameScreen();
+                RoomScreen.b_loadGame = true;
                 break;
             case ROUND_START:
                 world.startNextRound(msg.getBonus());
