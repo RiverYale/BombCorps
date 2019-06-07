@@ -50,8 +50,6 @@ public class InputController implements GestureDetector.GestureListener {
         gameScreen.cameraGUI.unproject(v);
         if(gameScreen.btnQuit.getBoundingRectangle().contains(v.x,v.y)){
             gameScreen.getGame().getNetController().quitGame(gameScreen.myPlayer());
-            //if(gameScreen.myPlayer().getIp().equals(gameScreen.))
-            gameScreen.loadMenuScreen();
             return false;
         }else if(gameScreen.btnSettings.getBoundingRectangle().contains(v.x,v.y)){
             Gdx.input.setInputProcessor(gameScreen.stage);

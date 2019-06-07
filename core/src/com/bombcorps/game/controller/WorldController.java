@@ -226,7 +226,6 @@ public class WorldController {
             r2 = r.getRect();
             if (r1.overlaps(r2)) {
                 onCollisionsPlayerWithRock(r);
-                Gdx.app.log("zc", "player rock");
             }
         }
         for (Bonus b : world.bonusManager.getBonusList()) {
@@ -261,6 +260,7 @@ public class WorldController {
             case Constants.STATE_GROUNDED:
                 break;
             case Constants.STATE_MOVING:
+                Gdx.app.log("zc", "moving");
                 if (heightDifference > 0.25f) { //TODO
                     curPlayer.setHeroState(Constants.STATE_GROUNDED);
                 } else {
@@ -268,6 +268,7 @@ public class WorldController {
                 }
                 break;
             case Constants.STATE_FALLING:
+                Gdx.app.log("zc", "falling");
                 curPlayer.setY(r.getPosition().y + r.getRect().getHeight());
                 curPlayer.setHeroState(Constants.STATE_GROUNDED);
                 break;
