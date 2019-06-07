@@ -46,7 +46,6 @@ public abstract class DirectedGame implements ApplicationListener {
     }
 
     public void loadRoomScreen(Room room){
-        this.getNetController().openReceiveMsgThread();
         roomScreen = new RoomScreen(this,room.getOwnerIp(),room.getLIMIT(),room);
         netController.bindGame(this);
         setScreen(roomScreen);
@@ -69,11 +68,12 @@ public abstract class DirectedGame implements ApplicationListener {
 
         worldController = new WorldController(this,camera,netController);
         Gdx.app.log("DirectedGame","new worldController ");
-        Gdx.input.setInputProcessor(worldController.getInputProcessor());
 
         gameScreen = new GameScreen(this,worldController);
         Gdx.app.log("DirectedGame","new gameScreen");
         setScreen(gameScreen);
+
+        Gdx.input.setInputProcessor(worldController.getInputProcessor());
         Constants.CurrentScreenFlag = Constants.GameScreenFlag;
     }
 
