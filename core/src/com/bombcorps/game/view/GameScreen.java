@@ -50,6 +50,7 @@ public class GameScreen extends AbstractGameScreen{
     private Player otherPlayer;
     private String quitPlayer;
     private boolean isquit;
+    private boolean isPlayed;
     private BitmapFont font;
     private float scale;
     public String[] description = {
@@ -159,7 +160,7 @@ public class GameScreen extends AbstractGameScreen{
         isClickedHero = false;
 
         isquit = false;
-
+        isPlayed = false;
         worldController.getCameraController().setPosition(Constants.VIEWPORT_WIDTH/2,Constants.VIEWPORT_HEIGHT/2);
         worldController.getCameraController().setTarget(worldController.getCurPlayer());
 
@@ -286,7 +287,7 @@ public class GameScreen extends AbstractGameScreen{
         bar.setX(imgMyHeroHead.getX()+43*scale);
         for(int i=2;i>=0;i--) {
             bar.setColor(Color.GRAY);
-            bar.setSize(width/15*1.5f,bar.getHeight());
+            bar.setRegionWidth((int) (width/15*1.5f));
             bar.setY(i*15+1);
             bar.draw(batch);
 
@@ -296,7 +297,6 @@ public class GameScreen extends AbstractGameScreen{
                 bar.setSize(width/15*1.5f*myPlayer().getMyHero().getHealth()/myPlayer().getMyHero().getMaxHealth(), bar.getHeight());
             }else if(i == 1){
                 bar.setSize(width/15*1.5f*myPlayer().getMyHero().getEndurance()/Constants.MAX_ENDURENCE,bar.getHeight());
-
             }else if(i==0){
                 bar.setSize(width/15*1.5f*myPlayer().getMyHero().getRagePower()/Constants.MAX_RAGEPOWER,bar.getHeight());
             }
@@ -309,6 +309,7 @@ public class GameScreen extends AbstractGameScreen{
         bar.setX(imgOtherHeroHead.getX()+43*scale);
         for(int i=2;i>=0;i--) {
             bar.setColor(Color.GRAY);
+            bar.setSize(width/15*1.5f,bar.getHeight());
             bar.setY(i*15+1);
             bar.draw(batch);
 
@@ -569,8 +570,7 @@ public class GameScreen extends AbstractGameScreen{
         virtory = new Image(AssetsController.instance.getRegion("vitory"));
         failed = new Image(AssetsController.instance.getRegion("failed"));
 
-        if(worldController.isGameOver()==1&&myPlayer().getTeam() == Constants.PLAYER.RED_TEAM){
-
+        if((worldController.isGameOver()==1&&myPlayer().getTeam() == Constants.PLAYER.RED_TEAM)||(worldController.isGameOver()==2&&myPlayer().getTeam() == Constants.PLAYER.BLUE_TEAM)){
             virtory.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
             virtory.setPosition((winResults.getWidth()-virtory.getWidth())/2,(winResults.getHeight()-virtory.getHeight())/1.25f);
             winResults.addActor(virtory);
@@ -580,17 +580,24 @@ public class GameScreen extends AbstractGameScreen{
             goldReceiveLabel.setSize(winResults.getWidth(),winResults.getHeight()/2);
             goldReceiveLabel.setAlignment(Align.center);
             goldReceiveLabel.setPosition(0,winResults.getHeight()/5);
-        }else if(worldController.isGameOver()==2&&myPlayer().getTeam() == Constants.PLAYER.BLUE_TEAM){
+            if(!isPlayed){
+                AudioController.instance.play(AssetsController.instance.win);
+                isPlayed =true;
+            }
+        }else{
 
             failed.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
             failed.setPosition((winResults.getWidth()-failed.getWidth())/2,(winResults.getHeight()-failed.getHeight())/1.25f);
             winResults.addActor(failed);
-            AudioController.instance.play(AssetsController.instance.lose);
             Label goldReceiveLabel = new Label("获得50金币",new Label.LabelStyle(font, Color.BLACK));
             winResults.addActor(goldReceiveLabel);
             goldReceiveLabel.setSize(winResults.getWidth(),winResults.getHeight()/2);
             goldReceiveLabel.setAlignment(Align.center);
             goldReceiveLabel.setPosition(0,winResults.getHeight()/5);
+            if(!isPlayed){
+                AudioController.instance.play(AssetsController.instance.lose);
+                isPlayed = true;
+            }
         }
 
         Image confirm = new Image(AssetsController.instance.getRegion("confirm"));
