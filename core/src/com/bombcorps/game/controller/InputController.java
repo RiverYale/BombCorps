@@ -79,15 +79,12 @@ public class InputController implements GestureDetector.GestureListener {
             controller.onOperationClicked(2);
             return false;
         }else if(gameScreen.imgSkillOne.getBoundingRectangle().contains(v.x,v.y)&&gameScreen.myPlayer().equals(gameScreen.worldController.getCurPlayer())){
-            AudioController.instance.play(AssetsController.instance.btnClicked);
             controller.onOperationClicked(3);
             return false;
         }else if(gameScreen.imgSkillTwo.getBoundingRectangle().contains(v.x,v.y)&&gameScreen.myPlayer().equals(gameScreen.worldController.getCurPlayer())){
-            AudioController.instance.play(AssetsController.instance.btnClicked);
             controller.onOperationClicked(4);
             return false;
         }else if(gameScreen.imgSkillThree.getBoundingRectangle().contains(v.x,v.y)&&gameScreen.myPlayer().equals(gameScreen.worldController.getCurPlayer())){
-            AudioController.instance.play(AssetsController.instance.btnClicked);
             controller.onOperationClicked(5);
             return false;
         }else if(gameScreen.imgTurnEnd.getBoundingRectangle().contains(v.x,v.y)&&gameScreen.myPlayer().equals(gameScreen.worldController.getCurPlayer())){
