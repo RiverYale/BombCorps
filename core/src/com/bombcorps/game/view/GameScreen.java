@@ -615,7 +615,8 @@ public class GameScreen extends AbstractGameScreen{
         winResults.setVisible(true);
         virtory = new Image(AssetsController.instance.getRegion("vitory"));
         failed = new Image(AssetsController.instance.getRegion("failed"));
-
+        Image confirm = new Image(AssetsController.instance.getRegion("confirm"));
+        confirm.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
         if((worldController.isGameOver()==1&&myPlayer.getTeam() == Constants.PLAYER.RED_TEAM)||(worldController.isGameOver()==2&&myPlayer.getTeam() == Constants.PLAYER.BLUE_TEAM)){
             virtory.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
             virtory.setPosition((winResults.getWidth()-virtory.getWidth())/2,(winResults.getHeight()-virtory.getHeight())/1.25f);
@@ -626,9 +627,10 @@ public class GameScreen extends AbstractGameScreen{
             goldReceiveLabel.setSize(winResults.getWidth(),winResults.getHeight()/2);
             goldReceiveLabel.setAlignment(Align.center);
             goldReceiveLabel.setPosition(0,winResults.getHeight()/5);
+            confirm.setPosition((winResults.getWidth()-virtory.getWidth())/2,50);
             if(!isPlayed){
-                AudioController.instance.play(AssetsController.instance.win);
                 isPlayed =true;
+                AudioController.instance.play(AssetsController.instance.win);
             }
         }else{
 
@@ -640,15 +642,16 @@ public class GameScreen extends AbstractGameScreen{
             goldReceiveLabel.setSize(winResults.getWidth(),winResults.getHeight()/2);
             goldReceiveLabel.setAlignment(Align.center);
             goldReceiveLabel.setPosition(0,winResults.getHeight()/5);
+            confirm.setPosition((winResults.getWidth()-failed.getWidth())/2,50);
             if(!isPlayed){
-                AudioController.instance.play(AssetsController.instance.lose);
                 isPlayed = true;
+                AudioController.instance.play(AssetsController.instance.lose);
+
             }
         }
 
-        Image confirm = new Image(AssetsController.instance.getRegion("confirm"));
-        confirm.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
-        confirm.setPosition((winResults.getWidth()-virtory.getWidth())/2,50);
+
+
         winResults.addActor(confirm);
         confirm.addListener(new InputListener(){
 
