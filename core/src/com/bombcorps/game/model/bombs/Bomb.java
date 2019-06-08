@@ -34,6 +34,8 @@ public class Bomb {
     private Vector2 acceleration;
     private float rotation;
     private Rectangle rec;
+    private Rectangle tapRec;
+
     private Animation boomAnimation;
     private TextureRegion boomKeyFrame;
     private int stateTime;
@@ -67,6 +69,7 @@ public class Bomb {
         rotation = 0;
 
         rec = new Rectangle(0,0,dimension.x,dimension.y);
+        tapRec = new Rectangle(0,0,dimension.x * 2, dimension.y * 2);
     }
 
     public void update(float deltaTime){
@@ -579,6 +582,13 @@ public class Bomb {
 
     public void setHeroType(int heroType) {
         this.heroType = heroType;
+    }
+
+    public Rectangle getTapRec(){
+        tapRec.x = position.x;
+        tapRec.y = position.y;
+
+        return tapRec;
     }
 
     public Rectangle getRect() {

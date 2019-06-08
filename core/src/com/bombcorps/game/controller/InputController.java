@@ -118,7 +118,6 @@ public class InputController implements GestureDetector.GestureListener {
             Vector3 v = new Vector3(x, y, 0);
             camera.unproject(v);
             controller.getCurPlayer().setTap(new Vector2(v.x, v.y));
-            controller.resetOperations();
         }else{
             deltaX = -deltaX/Gdx.graphics.getWidth()*(camera.viewportWidth*camera.zoom);
             deltaY = deltaY/Gdx.graphics.getHeight()*(camera.viewportHeight*camera.zoom);
@@ -134,6 +133,7 @@ public class InputController implements GestureDetector.GestureListener {
         int op = controller.getOperations();
         if(op == 1 || op == 2){
             controller.getCurPlayer().shoot();
+            controller.resetOperations();
         }
         return false;
     }
