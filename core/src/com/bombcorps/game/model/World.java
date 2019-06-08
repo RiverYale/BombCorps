@@ -176,6 +176,7 @@ public class World {
                     pillar.setPosition(position);
                     if(baseHeight == 0){
                         pillar.setState(Pillar.State.BASE);
+                        pillar.getRect().setPosition(pillar.getPosition());
                         pillars.add(pillar);
                         break;
                     }
@@ -185,6 +186,7 @@ public class World {
                     }else {
                         pillar.setState(Pillar.State.MIDDLE);
                     }
+                    pillar.getRect().setPosition(pillar.getPosition());
                     pillars.add(pillar);
                 }
                 //英雄出生点
