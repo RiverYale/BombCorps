@@ -448,6 +448,7 @@ public class GameScreen extends AbstractGameScreen{
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                AudioController.instance.play(AssetsController.instance.btnClicked);
                 onSaveClicked();
                 return false;
             }
@@ -460,6 +461,7 @@ public class GameScreen extends AbstractGameScreen{
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 onCancelClicked();
+                AudioController.instance.play(AssetsController.instance.btnClicked);
                 return false;
             }
         });
@@ -703,6 +705,7 @@ public class GameScreen extends AbstractGameScreen{
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 //点击确认
+                AudioController.instance.play(AssetsController.instance.btnClicked);
                 onErrorQuitBottonClicked();
                 return true;
             }
@@ -799,6 +802,9 @@ public class GameScreen extends AbstractGameScreen{
 
     public Player myPlayer(){
         return myPlayer;
+    }
+    public String getMyHeroType(){
+        return myHeroType;
     }
 
     public DirectedGame getGame(){
