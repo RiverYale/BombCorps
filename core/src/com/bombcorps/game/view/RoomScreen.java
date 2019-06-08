@@ -29,8 +29,8 @@ public class RoomScreen extends AbstractGameScreen implements InputProcessor{
     private Player myplayer;
     private int mode;
     private String ip;
-    DataController dc = DataController.instance;
-    String localHostIp;
+    private DataController dc = DataController.instance;
+    private String localHostIp;
 
     private SpriteBatch batch;
     private OrthographicCamera camera;
