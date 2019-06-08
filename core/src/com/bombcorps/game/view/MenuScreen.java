@@ -167,6 +167,7 @@ public class MenuScreen extends AbstractGameScreen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.exit();AudioController.instance.play(AssetsController.instance.btnClicked);
+                AssetsController.instance.dispose();
                 return true;
             }
         });
