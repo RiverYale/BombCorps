@@ -1,5 +1,6 @@
 package com.bombcorps.game.controller;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -51,13 +52,13 @@ public class CameraController {
     public void update(float deltaTime) {
         if(target != null){
             if(target instanceof Player){
-                if(((Player) target).getPosition().epsilonEquals(position)){
+                if(((Player) target).getRect().contains(position.x+0.5f, position.y+0.5f)){
                     setTarget(null);
                 }else{
                     position.lerp(((Player) target).getPosition(), Constants.FOLLOW_SPEED * deltaTime);
                 }
             }else if(target instanceof Bomb){
-                if(((Bomb) target).getPosition().epsilonEquals(position)){
+                if(((Bomb) target).getState() != Constants.BOMB.STATE_FLY){
                     setTarget(null);
                 }else{
                     position.lerp(((Bomb) target).getPosition(), Constants.FOLLOW_SPEED * deltaTime);
