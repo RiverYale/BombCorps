@@ -607,6 +607,7 @@ public class GameScreen extends AbstractGameScreen{
     //结果窗口
     public void GameOver(){
         //游戏结算的弹窗
+        DataController prefs = DataController.instance;
         TextureRegionDrawable winResultsDrawable = new TextureRegionDrawable(AssetsController.instance.getRegion("winresult"));
         Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),winResultsDrawable);
         winResults = new Window("",windowStyle);
@@ -615,20 +616,23 @@ public class GameScreen extends AbstractGameScreen{
         winResults.setVisible(true);
         virtory = new Image(AssetsController.instance.getRegion("vitory"));
         failed = new Image(AssetsController.instance.getRegion("failed"));
-
+        Image confirm = new Image(AssetsController.instance.getRegion("confirm"));
+        confirm.setSize(winResults.getWidth()/4,winResults.getHeight()/4);
         if((worldController.isGameOver()==1&&myPlayer.getTeam() == Constants.PLAYER.RED_TEAM)||(worldController.isGameOver()==2&&myPlayer.getTeam() == Constants.PLAYER.BLUE_TEAM)){
             virtory.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
             virtory.setPosition((winResults.getWidth()-virtory.getWidth())/2,(winResults.getHeight()-virtory.getHeight())/1.25f);
             winResults.addActor(virtory);
-            AudioController.instance.play(AssetsController.instance.win);
             Label goldReceiveLabel = new Label("获得100金币",new Label.LabelStyle(font, Color.BLACK));
             winResults.addActor(goldReceiveLabel);
             goldReceiveLabel.setSize(winResults.getWidth(),winResults.getHeight()/2);
             goldReceiveLabel.setAlignment(Align.center);
             goldReceiveLabel.setPosition(0,winResults.getHeight()/5);
+
             if(!isPlayed){
-                AudioController.instance.play(AssetsController.instance.win);
+                AudioController.instance.stopMusic();
                 isPlayed =true;
+                prefs.addMoney(100);
+                AudioController.instance.play(AssetsController.instance.win);
             }
         }else{
 
@@ -641,14 +645,16 @@ public class GameScreen extends AbstractGameScreen{
             goldReceiveLabel.setAlignment(Align.center);
             goldReceiveLabel.setPosition(0,winResults.getHeight()/5);
             if(!isPlayed){
-                AudioController.instance.play(AssetsController.instance.lose);
+                AudioController.instance.stopMusic();
                 isPlayed = true;
+                prefs.addMoney(50);
+                AudioController.instance.play(AssetsController.instance.lose);
+
             }
         }
 
-        Image confirm = new Image(AssetsController.instance.getRegion("confirm"));
-        confirm.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
-        confirm.setPosition((winResults.getWidth()-virtory.getWidth())/2,50);
+
+        confirm.setPosition((winResults.getWidth()-confirm.getWidth())/2,50);
         winResults.addActor(confirm);
         confirm.addListener(new InputListener(){
 
