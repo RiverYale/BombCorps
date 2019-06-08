@@ -50,6 +50,7 @@ public class GameScreen extends AbstractGameScreen{
     private boolean isquit;
     private boolean isPlayed;
     private boolean isClickedHero;
+    private boolean isStage;
 
     private Player otherPlayer;
     private String quitPlayer;
@@ -164,6 +165,7 @@ public class GameScreen extends AbstractGameScreen{
         isClickedHero = false;
         isquit = false;
         isPlayed = false;
+        isStage = false;
 
         worldController.getCameraController().setPosition(Constants.VIEWPORT_WIDTH/2,Constants.VIEWPORT_HEIGHT/2);
         worldController.getCameraController().setTarget(worldController.getCurPlayer());
@@ -444,6 +446,7 @@ public class GameScreen extends AbstractGameScreen{
 
     public void onCancelClicked(){
         winOptions.setVisible(false);
+        isStage = false;
         Gdx.input.setInputProcessor(getInputProcessor());
     }
 
@@ -493,6 +496,7 @@ public class GameScreen extends AbstractGameScreen{
 
     public void onWinHInfoQuitBottonClicked() {
         winHeroInfo.setVisible(false);
+        isStage = false;
         Gdx.input.setInputProcessor(getInputProcessor());
     }
 
@@ -530,6 +534,7 @@ public class GameScreen extends AbstractGameScreen{
 
     public void onWinOHInfoQuitBottonClicked() {
         winOtherHeroInfo.setVisible(false);
+        isStage = false;
         Gdx.input.setInputProcessor(getInputProcessor());
     }
 
@@ -743,6 +748,7 @@ public class GameScreen extends AbstractGameScreen{
     }
 
     public void errorStop(){
+        isStage = true;
         Gdx.input.setInputProcessor(stage);
         winErrorQuit.setVisible(true);
     }
@@ -761,7 +767,7 @@ public class GameScreen extends AbstractGameScreen{
 
     @Override
     public void render(float deltaTime) {
-        Gdx.gl.glClearColor(0x64/255.0f,0x95/255.0f,0xed/255.0f,0xff/255.0f);
+        Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         renderWorld(batch);
@@ -770,10 +776,13 @@ public class GameScreen extends AbstractGameScreen{
         worldController.testCollisions();
         renderGUI(batch);
         batch.end();
-        stage.act();
-        stage.draw();;
+        if(isStage){
+            stage.act();
+            stage.draw();
+        }
         if(worldController.isGameOver()!= 0){
             Gdx.input.setInputProcessor(stage);
+            isStage = true;
             GameOver();
         }
     }
@@ -785,6 +794,11 @@ public class GameScreen extends AbstractGameScreen{
     public boolean isClickedHero() {
         return isClickedHero;
     }
+
+    public void setStageTrue(){
+        isStage = true;
+    }
+
 
     public DirectedGame getGame(){
         return game;
