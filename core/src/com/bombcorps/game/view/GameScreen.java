@@ -770,7 +770,6 @@ public class GameScreen extends AbstractGameScreen{
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         renderWorld(batch);
-        Gdx.app.log("zc", "a frame");
         worldController.getWorld().getPlayerManager().update(deltaTime);
         worldController.testCollisions();
         renderGUI(batch);

@@ -19,40 +19,40 @@ public class Message implements Serializable{
     private String mapName;
     private MPlayer targetPlayer;
     private MBonus bonus;
-        private MRoom room;
+    private MRoom room;
 
-        private int op;
-        private float targetX;
-        private float tapX;
-        private float tapY;
+    private int op;
+    private float targetX;
+    private float tapX;
+    private float tapY;
 
     public Message(int msg){
-            this.msg = msg;
-            this.fromIp = NetController.getLocalHostIp();
-        }
+        this.msg = msg;
+        this.fromIp = NetController.getLocalHostIp();
+    }
 
-        public Room getRoom() {
-            return new Room(room);
-        }
+    public Room getRoom() {
+        return new Room(room);
+    }
 
-        public Bonus getBonus() {
-            Gdx.app.log("qin","getBouns1");
-            Bonus bonuss = new Bonus(bonus);
-            Gdx.app.log("qin","getBonus2");
-            return bonuss;
+    public Bonus getBonus() {
+        if (bonus == null) {
+            return null;
         }
+        return new Bonus(bonus);
+    }
 
-        public void setBonus(Bonus bonus) {
-            if (bonus != null) {
-                this.bonus = bonus.getMBonus();
-            }
+    public void setBonus(Bonus bonus) {
+        if (bonus != null) {
+            this.bonus = bonus.getMBonus();
         }
+    }
 
-        public void setRoom(Room room) {
-            this.room = room.getMRoom();
-        }
+    public void setRoom(Room room) {
+        this.room = room.getMRoom();
+    }
 
-        public void setOp(int op, float targetX, float tapX, float tapY){
+    public void setOp(int op, float targetX, float tapX, float tapY){
         this.op = op;
         this.targetX = targetX;
         this.tapX = tapX;
