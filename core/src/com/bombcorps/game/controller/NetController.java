@@ -165,7 +165,9 @@ public class NetController {
                     }
                     // 解析消息
                     parse(msg);
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
         }
