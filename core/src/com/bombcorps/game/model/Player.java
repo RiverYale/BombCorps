@@ -4,9 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.bombcorps.game.controller.AssetsController;
-import com.bombcorps.game.controller.AudioController;
-import com.bombcorps.game.controller.CameraController;
 import com.bombcorps.game.controller.NetController;
 import com.bombcorps.game.model.bombs.Bomb;
 import com.bombcorps.game.model.heros.*;
@@ -89,6 +86,10 @@ public class Player implements Serializable {
         /*
         每一回合结束都要把英雄的精力值，怒气值调正初始化
          */
+        Gdx.app.log("initPlayer","initPlayerEveryRound");
+
+        myHero.setAttackTimes(1);
+
         boolean isweaked = false;
         if(team == TEAM.RED){
             for(int i = 0 ; i < skillAndBuff.playerListRed.size ; i++){
@@ -159,7 +160,27 @@ public class Player implements Serializable {
 
     public void shoot(CameraController controller){
         controller.setTarget(bomb);
+        switch (heroType){
+            case Constants.PROTECTOR:
+                AudioController.instance.play(AssetsController.instance.protectorshoot);
+                break;
+            case Constants.ANGEL:
+                AudioController.instance.play(AssetsController.instance.angelshoot);
+                break;
+            case Constants.SNIPER:
+                AudioController.instance.play(AssetsController.instance.snipershoot);
+                break;
+            case Constants.SPARDA:
+                AudioController.instance.play(AssetsController.instance.spardashoot);
+                break;
+            case Constants.WIZARD:
+                AudioController.instance.play(AssetsController.instance.angelshoot);
+                break;
+
+        }
+
         bomb.setFromPlayer(this);
+
         bomb.setState(Constants.BOMB.STATE_FLY);
         myHero.setState(Constants.STATE_ATTACK);
     }
@@ -186,6 +207,9 @@ public class Player implements Serializable {
                 if(!skillAndBuff.canJump)   //已经非过一次
                     return false;
 
+                if(myHero.getAttackTimes() == 0)
+                    return false;
+
                 if(team == TEAM.RED)
                     skillAndBuff.jump(Constants.PLAYER.RED_TEAM, IP);
                 else
@@ -193,6 +217,7 @@ public class Player implements Serializable {
 
                 return true;
             case 2:
+                Gdx.app.log("set Ready", "" + myHero.getAttackTimes());
                 if(myHero.getAttackTimes() == 0)
                     return false;
 

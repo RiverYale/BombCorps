@@ -117,14 +117,23 @@ public class WorldController {
                 operations = 0;
                 break;
             case 1:
-                operations = 1;
-                //TODO curPlayer放个球
-                getCurPlayer().getBomb().setState(Constants.BOMB.STATE_READY);
+                if(curPlayer.useSkill(1)) {
+                    operations = 1;
+                    //TODO curPlayer放个球
+                    getCurPlayer().getBomb().setState(Constants.BOMB.STATE_READY);
+
+                }
                 break;
             case 2:
-                operations = 2;
-                //TODO curPlayer放个炸弹
-                getCurPlayer().getBomb().setState(Constants.BOMB.STATE_READY);
+                if(curPlayer.useSkill(2)) {
+                    operations = 2;
+                    //TODO curPlayer放个炸弹
+                    getCurPlayer().getBomb().setState(Constants.BOMB.STATE_READY);
+
+//                    getCurPlayer().setTap(new Vector2(getCurPlayer().getPosition().x - 5, getCurPlayer().getPosition().y - 5));
+//                    getCurPlayer().getBomb().setState(Constants.BOMB.STATE_FLY);
+//                    getCurPlayer().shoot();
+                }
                 break;
             case 3:
             case 4:
@@ -182,18 +191,16 @@ public class WorldController {
             case 1:
                 //TODO curPlayer扔球
                 if(curPlayer.useSkill(op)) {
+                    curPlayer.getBomb().setHeroType(5);
                     curPlayer.setTap(new Vector2(tapX, tapY));
                     curPlayer.shoot(cameraController);
                 }
                 break;
             case 2:
                 //TODO curPlayer扔炸弹
-                if(curPlayer.useSkill(op)) {
-//                    curPlayer
                     curPlayer.setTap(new Vector2(tapX, tapY));
                     curPlayer.shoot(cameraController);
 
-                }
                 break;
             case 3:
             case 4:
@@ -268,6 +275,7 @@ public class WorldController {
             for(Rock r : world.rocks) {
                 r2 = r.getRect();
                 if (r1.overlaps(r2)) {
+                    Gdx.app.log("zc", "collision");
                     onCollisionsBombWithRock(curPlayer.getBomb());
                 }
             }

@@ -75,7 +75,7 @@ public class Constants {
         public static final Vector2 DIMENSION = new Vector2(0.5f,0.5f);
 
         public static final float ROTATE_SPEED = 120f;
-        public static final float ACCELERATION = -8f;
+        public static final float ACCELERATION = -5f;
         public static final Vector2 BOMBSCALE = new Vector2(1f,1f);
         public static final float ROUTESCALE = 1f;
     }
