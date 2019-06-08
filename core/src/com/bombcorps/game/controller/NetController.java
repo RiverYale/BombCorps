@@ -111,7 +111,7 @@ public class NetController {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-//        Gdx.app.log(getLocalHostIp()+" to", msg.getToIp());
+        Gdx.app.log(getLocalHostIp()+" to", msg.getToIp());
         (new UdpSend(msg)).start();
     }
 

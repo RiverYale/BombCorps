@@ -13,7 +13,8 @@ import java.util.logging.Level;
 
 public class World {
     public static final String TAG = Level.class.getName();
-    private int levelTurn = 0;
+    private int levelTurnBlue = 0;
+    private int levelTurnRed = 0;
     private int team = Constants.PLAYER.RED_TEAM;
     private Player nextRedPlayer;
     private Player nextBluePlayer;
@@ -121,14 +122,14 @@ public class World {
     public Array<Rock> rocks;
     //柱子
     public Array<Pillar> pillars;
+    //标志
+    public Array<Signal> signals;
     //英雄
     private PlayerManager playerManager;
     //
     public BonusManager bonusManager;
     //地图宽度
     private float MapWidth;
-
-    private Vector2 dimension;
 
     private String hostIP;
 
@@ -146,9 +147,9 @@ public class World {
         nextRedPlayer = playerManager.getRedPlayerList().first();
         nextBluePlayer = playerManager.getBluePlayerList().first();
         //物品
-        dimension = new Vector2(1.0f,1.0f);
         rocks = new Array<Rock>();
         pillars = new Array<Pillar>();
+        signals = new Array<Signal>();
         Pixmap pixmap = new Pixmap(Gdx.files.internal("map/map"+filename+".png"));
         MapWidth = 32;
         bonusManager = new BonusManager((int)MapWidth);
@@ -191,11 +192,19 @@ public class World {
                 }
                 //英雄出生点
                 else if (BLOCK_TYPE.PLAYER_SPAWNPOINT.sameColor(currentPixel)) {
-                    if(levelTurn <playerManager.getAllPlayerList().size){
-                        Vector2 position = new Vector2(pixelX*dimension.x,baseHeight*dimension.y );
-                        playerManager.getAllPlayerList().get(levelTurn).getMyHero().setPosition(position);
-                        levelTurn++;
+                    Vector2 position = new Vector2(pixelX,baseHeight);
+                    Signal signal = new Signal();
+                    signal.setPosition(position.x+0.4f,position.y+1.05f);
+                    if(levelTurnRed <playerManager.getRedPlayerList().size){
+                        signal.setTeam(Constants.PLAYER.RED_TEAM);
+                        playerManager.getRedPlayerList().get(levelTurnRed).getMyHero().setPosition(position);
+                        levelTurnRed++;
+                    }else if(levelTurnBlue<playerManager.getBluePlayerList().size){
+                        signal.setTeam(Constants.PLAYER.BLUE_TEAM);
+                        playerManager.getBluePlayerList().get(levelTurnBlue).getMyHero().setPosition(position);
+                        levelTurnBlue++;
                     }
+                    signals.add(signal);
                 }
                 //未知错误
                 else {
@@ -213,16 +222,19 @@ public class World {
     }
 
     public void render(SpriteBatch batch){
-       batch.draw(AssetsController.instance.getRegion("gamebackground"),0,0,32,20);
+       batch.draw(AssetsController.instance.getRegion("gamebackground"),-16,0,64,20);
        for (Rock rock : rocks){
            rock.render(batch);
        }
        for(Pillar pillar : pillars){
            pillar.render(batch);
        }
+        bonusManager.render(batch);
         playerManager.render(batch);
         playerManager.getBomb().render(batch);
-        bonusManager.render(batch);
+        for(Signal signal : signals){
+            signal.renderTeamSignal(batch);
+        }
     }
 
     public float getMapWidth() {

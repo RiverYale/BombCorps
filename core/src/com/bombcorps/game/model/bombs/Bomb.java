@@ -74,14 +74,6 @@ public class Bomb {
     }
 
     public void update(float deltaTime){
-        if(state == STATE.WAIT){
-            Gdx.app.log("bombState","wait");
-        }else if(state == STATE.READY){
-            Gdx.app.log("bombState", "ready");
-        }else{
-            Gdx.app.log("bombState","fly");
-        }
-
         switch (state){
             case FLY:
                 updateRotation(deltaTime);

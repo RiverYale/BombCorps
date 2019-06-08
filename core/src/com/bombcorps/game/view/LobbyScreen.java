@@ -307,7 +307,8 @@ public class LobbyScreen extends AbstractGameScreen implements InputProcessor{
 
     @Override
     public void hide() {
-
+        batch.dispose();
+        camera = null;
     }
 
     @Override
