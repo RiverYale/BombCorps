@@ -87,6 +87,7 @@ public class InputController implements GestureDetector.GestureListener {
             return false;
         }
 
+        v = new Vector3(x, y, 0);
         camera.unproject(v);
         Gdx.app.log("qin","x="+v.x+" y="+v.y);
         int op = controller.getOperations();
