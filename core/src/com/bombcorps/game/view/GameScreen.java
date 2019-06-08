@@ -35,6 +35,7 @@ import com.bombcorps.game.controller.DataController;
 import com.bombcorps.game.controller.InputController;
 import com.bombcorps.game.controller.WorldController;
 import com.bombcorps.game.model.Constants;
+import com.bombcorps.game.model.CurPlayerSignal;
 import com.bombcorps.game.model.Player;
 
 
@@ -46,11 +47,14 @@ public class GameScreen extends AbstractGameScreen{
     public final float width = Constants.VIEWPORT_GUI_WIDTH;
     public final float height = Constants.VIEWPORT_GUI_HEIGHT;
     private boolean paused = false;
-    private boolean isClickedHero;
-    private Player otherPlayer;
-    private String quitPlayer;
     private boolean isquit;
     private boolean isPlayed;
+    private boolean isClickedHero;
+
+    private Player otherPlayer;
+    private String quitPlayer;
+    private CurPlayerSignal curPlayerSignal;
+
     private BitmapFont font;
     private float scale;
     public String[] description = {
@@ -158,13 +162,14 @@ public class GameScreen extends AbstractGameScreen{
         font = AssetsController.instance.font;
 
         isClickedHero = false;
-
         isquit = false;
         isPlayed = false;
+
         worldController.getCameraController().setPosition(Constants.VIEWPORT_WIDTH/2,Constants.VIEWPORT_HEIGHT/2);
         worldController.getCameraController().setTarget(worldController.getCurPlayer());
-
         camera.update();
+
+        curPlayerSignal = new CurPlayerSignal();
 
         cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT);
         cameraGUI.position.set(Constants.VIEWPORT_GUI_WIDTH/2,Constants.VIEWPORT_GUI_HEIGHT/2,0);
@@ -250,6 +255,8 @@ public class GameScreen extends AbstractGameScreen{
         worldController.getCameraController().applyTo(camera);
         batch.setProjectionMatrix(camera.combined);
         worldController.getWorld().render(batch);
+        curPlayerSignal.setPosition(worldController.getCurPlayer().getPosition().x+0.4f,worldController.getCurPlayer().getPosition().y+1.05f);
+        curPlayerSignal.render(batch);
     }
 
     public void renderGUI(SpriteBatch batch){
@@ -287,7 +294,7 @@ public class GameScreen extends AbstractGameScreen{
         bar.setX(imgMyHeroHead.getX()+43*scale);
         for(int i=2;i>=0;i--) {
             bar.setColor(Color.GRAY);
-            bar.setRegionWidth((int) (width/15*1.5f));
+            bar.setSize(width/15*1.5f,bar.getHeight());
             bar.setY(i*15+1);
             bar.draw(batch);
 
@@ -529,6 +536,7 @@ public class GameScreen extends AbstractGameScreen{
 
 
     public void onHeroClicked(Player p){
+        Gdx.app.log("qin","hero clicked is used in GameScreen");
         otherPlayer = p;
         isClickedHero = true;
         final int heroType;
@@ -546,15 +554,19 @@ public class GameScreen extends AbstractGameScreen{
             i = "Wizard";
         }
         imgOtherHeroHead = new Sprite(AssetsController.instance.getRegion(i+"_move0"));
-
+        imgOtherHeroHead.setSize(43,43);
+        imgOtherHeroHead.setScale(scale);
+        imgOtherHeroHead.setPosition(width/15*12,0);
         //font.getData().setScale(1.0f);
 
         Label.LabelStyle labelStyle = new Label.LabelStyle(font,font.getColor());
         Label label = new Label(description[heroType],labelStyle);
         label.setFontScale(1.0f);
+        label.setSize(500,200);
         winOtherHeroInfo.addActor(label);
-        winHeroInfo.setSize(label.getPrefWidth()*1.2f,label.getPrefHeight()*1.0f);
-        label.setPosition(label.getPrefWidth()*0.1f,0);
+        winOtherHeroInfo.setSize(label.getWidth()*1.2f,label.getHeight()*1.2f);
+        label.setPosition(label.getWidth()*0.1f,label.getHeight()*0.1f);
+        winOtherHeroInfo.setPosition(width-600,width/9+50);
         winOtherHeroInfo.setVisible(false);
     }
 

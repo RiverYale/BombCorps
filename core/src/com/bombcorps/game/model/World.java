@@ -14,7 +14,9 @@ import java.util.logging.Level;
 public class World {
     public static final String TAG = Level.class.getName();
     private int levelTurn = 0;
-    private int Turn=0;
+    private int team = Constants.PLAYER.RED_TEAM;
+    private Player nextRedPlayer;
+    private Player nextBluePlayer;
 
     public Array<Player> getPlayers() {
         return playerManager.getAllPlayerList();
@@ -31,6 +33,7 @@ public class World {
                 break;
             }
         }
+
         playerManager.deletePlayerAtIndex(pIndex,p.getTeam());
     }
 
@@ -40,11 +43,30 @@ public class World {
     }
 
     public Player getNextPlayer() {
-        Turn++;
-        if(Turn>=playerManager.getAllPlayerList().size){
-            Turn -= playerManager.getAllPlayerList().size;
+        Player player;
+        if(team == Constants.PLAYER.RED_TEAM){
+            team = Constants.PLAYER.BLUE_TEAM;
+            player = nextRedPlayer;
+            int ir;
+            for(ir = 0; ir< playerManager.getRedPlayerList().size; ir++){
+                if(nextRedPlayer.equals(playerManager.getRedPlayerList().get(ir))){
+                    nextRedPlayer = playerManager.getRedPlayerList().get((ir+1)%playerManager.getRedPlayerList().size);
+                    break;
+                }
+            }
         }
-        return playerManager.getAllPlayerList().get(Turn);
+        else{
+            team = Constants.PLAYER.RED_TEAM;
+            player = nextBluePlayer;
+            int ir;
+            for(ir = 0; ir< playerManager.getBluePlayerList().size; ir++){
+                if(nextBluePlayer.equals(playerManager.getBluePlayerList().get(ir))){
+                    nextBluePlayer = playerManager.getBluePlayerList().get((ir+1)%playerManager.getBluePlayerList().size);
+                    break;
+                }
+            }
+        }
+        return player;
     }
 
     public Bonus spawnBonus() {
@@ -62,8 +84,16 @@ public class World {
     }
 
     public Player getFirstPlayer() {
-        Turn++;
-        return playerManager.getAllPlayerList().first();
+        team = Constants.PLAYER.BLUE_TEAM;
+        Player p = nextRedPlayer;
+        int ir;
+        for(ir = 0; ir< playerManager.getRedPlayerList().size; ir++){
+            if(nextRedPlayer.equals(playerManager.getRedPlayerList().get(ir))){
+                nextRedPlayer = playerManager.getRedPlayerList().get((ir+1)%playerManager.getRedPlayerList().size);
+                break;
+            }
+        }
+        return p;
     }
 
     public enum BLOCK_TYPE{
@@ -113,6 +143,8 @@ public class World {
     }
 
     private void init(String filename){
+        nextRedPlayer = playerManager.getRedPlayerList().first();
+        nextBluePlayer = playerManager.getBluePlayerList().first();
         //物品
         dimension = new Vector2(1.0f,1.0f);
         rocks = new Array<Rock>();

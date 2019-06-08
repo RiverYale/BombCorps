@@ -201,26 +201,26 @@ public class BaseHero{
     }
 
     protected void updatePosition(float deltaTime){
-        Gdx.app.log("zc", "updateStart");
-        Gdx.app.log("position", "x = "+ position.x + "y = "+ position.y);
-        Gdx.app.log("destination", " " + destination);
+//        Gdx.app.log("zc", "updateStart");
+//        Gdx.app.log("position", "x = "+ position.x + "y = "+ position.y);
+//        Gdx.app.log("destination", " " + destination);
         switch(state){
 //            case ATTACK:
 //            case DEAD:
             case GROUNDED:
                 velocity.y = 0;
-                Gdx.app.log("state", "grounded");
+//                Gdx.app.log("state", "grounded");
 //                state = STATE.FALLING;
                 break;
             case FALLING:
                 updateY(deltaTime);
 //                updateX(deltaTime);
-                Gdx.app.log("state", "falling");
+//                Gdx.app.log("state", "falling");
                 break;
             case MOVING:
                 if(endurance > 0 && Math.abs(position.x - destination) > 0.5f){
                     endurance -= Constants.MOVE_ENDURANCE_COST;
-                    Gdx.app.log("state", "moving");
+//                    Gdx.app.log("state", "moving");
                     updateX(deltaTime);
 
                     if(endurance < 0)
@@ -256,7 +256,7 @@ public class BaseHero{
                         dimension.x, dimension.y, scale.x, scale.y, 0, staticRegion.getRegionX(),
                         staticRegion.getRegionY(), staticRegion.getRegionWidth(),staticRegion.getRegionHeight(),
                         !headright, false);
-                Gdx.app.log("flipX", " "+ staticRegion.isFlipX());
+                //Gdx.app.log("flipX", " "+ staticRegion.isFlipX());
                 break;
             case DEAD:
                 batch.draw(deadRegion.getTexture(), position.x, position.y, origin.x, origin.y,

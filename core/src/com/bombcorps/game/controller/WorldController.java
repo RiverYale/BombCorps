@@ -79,6 +79,12 @@ public class WorldController {
 
     public Player hasPlayer(float x, float y) {
         for(Player p : world.getPlayers()){
+            Vector2 position =new Vector2();
+            Vector2 dimension = new Vector2();
+            p.getRect().getPosition(position);
+            p.getRect().getSize(dimension);
+            Gdx.app.log("qin","position.x = "+position.x+" position.y = "+position.y+
+                    " dimension.x = "+dimension.x+" dimension.y = "+dimension.y);
             if(p.getRect().contains(x, y)){
                 return p;
             }
@@ -96,6 +102,7 @@ public class WorldController {
     }
 
     public void onHeroClicked(Player p) {
+        Gdx.app.log("qin","hero clicked is used in WorldController");
         game.onHeroClicked(p);
     }
 
@@ -145,6 +152,7 @@ public class WorldController {
             world.addBonus(b);
         }
         curPlayer = world.getNextPlayer();
+        Gdx.app.log("qin","next player is "+curPlayer.getID());
         perRound++;
         while (curPlayer.getMyHero().getState() == Constants.STATE_DEAD){
             curPlayer = world.getNextPlayer();
@@ -202,7 +210,7 @@ public class WorldController {
     public int isGameOver() {  //0 未结束   1 红赢   2 蓝赢   3 平
         boolean red = false, blue = false;
         for (Player p : world.getPlayers()) {
-            if(p.getTeam() == 1){
+            if(p.getTeam() == Constants.PLAYER.RED_TEAM){
                 red = true;
             }else{
                 blue = true;

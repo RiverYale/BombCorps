@@ -88,10 +88,12 @@ public class InputController implements GestureDetector.GestureListener {
         }
 
         camera.unproject(v);
+        Gdx.app.log("qin","x="+v.x+" y="+v.y);
         int op = controller.getOperations();
         if(op == -1) {
             Player p = controller.hasPlayer(v.x, v.y);
             if (p != null) {
+                Gdx.app.log("qin","hero clicked is used in InputController");
                 cameraController.setTarget(p);
                  controller.onHeroClicked(p);
             }
