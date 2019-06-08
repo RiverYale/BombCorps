@@ -231,7 +231,6 @@ public class WorldController {
     }
 
     public void testCollisions() {
-        //TODO Bonus碰Rock
         boolean b_falling = true;
         Rectangle r1 = curPlayer.getRect();
         Rectangle r2;
@@ -292,13 +291,12 @@ public class WorldController {
             } else {
                 curPlayer.setX(r.getPosition().x - r.getRect().getWidth());
             }
-            return;
         }
         switch (curPlayer.getHeroState()) {
             case Constants.STATE_GROUNDED:
                 break;
             case Constants.STATE_MOVING:
-                if (heightDifference > 0.25f) { //TODO
+                if (heightDifference > 0.25f) {
                     curPlayer.setHeroState(Constants.STATE_GROUNDED);
                 } else {
                     curPlayer.setY(r.getPosition().y + r.getRect().getHeight());
@@ -320,13 +318,12 @@ public class WorldController {
             } else {
                 curPlayer.setX(r.getPosition().x - r.getRect().getWidth());
             }
-            return;
         }
         switch (curPlayer.getHeroState()) {
             case Constants.STATE_GROUNDED:
                 break;
             case Constants.STATE_MOVING:
-                if (heightDifference > 0.25f) { //TODO
+                if (heightDifference > 0.25f) {
                     curPlayer.setHeroState(Constants.STATE_GROUNDED);
                 } else {
                     curPlayer.setY(r.getPosition().y + r.getRect().getHeight());
