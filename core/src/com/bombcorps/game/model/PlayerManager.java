@@ -23,6 +23,22 @@ public class PlayerManager {
         playerListBlue = new Array<Player>();
     }
 
+
+    public void initEveryRound(){
+        skillAndBuff.updateBuffEveryRound();
+
+        for(Player i : playerListRed)
+            i.initHeroEveryRound();
+        for(Player i : playerListBlue)
+            i.initHeroEveryRound();
+    }
+
+    public void initEveryChange(){
+        bomb.initBombEveryChange();
+
+        skillAndBuff.initSkillEveryChange();
+    }
+
     public void addPlayer(String IP, int team, String ID){
         Player player = new Player(ID);
         player.setTeam(team);

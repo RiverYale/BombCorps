@@ -36,6 +36,9 @@ public class Message implements Serializable{
     }
 
     public Bonus getBonus() {
+        if (bonus == null) {
+            return null;
+        }
         return new Bonus(bonus);
     }
 

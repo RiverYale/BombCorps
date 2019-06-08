@@ -3,9 +3,30 @@ size: 1718, 766
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
+Angel1
+  rotate: false
+  xy: 1, 728
+  size: 53, 35
+  orig: 53, 35
+  offset: 0, 0
+  index: -1
+Angel2
+  rotate: false
+  xy: 56, 728
+  size: 53, 35
+  orig: 53, 35
+  offset: 0, 0
+  index: -1
+Angel3
+  rotate: false
+  xy: 111, 728
+  size: 53, 35
+  orig: 53, 35
+  offset: 0, 0
+  index: -1
 attrack
   rotate: false
-  xy: 1669, 599
+  xy: 693, 717
   size: 43, 35
   orig: 43, 35
   offset: 0, 0
@@ -19,28 +40,35 @@ gamebackground
   index: -1
 button_quit
   rotate: false
-  xy: 1667, 636
+  xy: 738, 717
   size: 43, 35
   orig: 43, 35
   offset: 0, 0
   index: -1
 button_setting
   rotate: false
-  xy: 1641, 673
+  xy: 748, 680
   size: 43, 35
   orig: 43, 35
   offset: 0, 0
   index: -1
 confirm
   rotate: false
-  xy: 1511, 403
+  xy: 1, 643
   size: 187, 83
   orig: 187, 83
   offset: 0, 0
   index: -1
+curPlayerSignal
+  rotate: false
+  xy: 190, 713
+  size: 34, 12
+  orig: 34, 12
+  offset: 0, 0
+  index: -1
 ejection
   rotate: false
-  xy: 1641, 710
+  xy: 782, 643
   size: 43, 35
   orig: 43, 35
   offset: 0, 0
@@ -54,84 +82,126 @@ failed
   index: -1
 move
   rotate: false
-  xy: 1, 695
+  xy: 783, 717
   size: 43, 35
   orig: 43, 35
   offset: 0, 0
   index: -1
 pillarBase
   rotate: false
-  xy: 1, 732
+  xy: 793, 680
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 pillarMiddle
   rotate: false
-  xy: 1641, 615
+  xy: 827, 677
   size: 24, 32
   orig: 32, 32
   offset: 4, 0
   index: -1
+Protector1
+  rotate: false
+  xy: 166, 728
+  size: 53, 35
+  orig: 53, 35
+  offset: 0, 0
+  index: -1
+Protector2
+  rotate: false
+  xy: 507, 643
+  size: 53, 35
+  orig: 53, 35
+  offset: 0, 0
+  index: -1
+Protector3
+  rotate: false
+  xy: 528, 712
+  size: 53, 35
+  orig: 53, 35
+  offset: 0, 0
+  index: -1
 quit
   rotate: false
-  xy: 1686, 673
+  xy: 525, 680
   size: 30, 30
   orig: 30, 30
   offset: 0, 0
   index: -1
 rock
   rotate: false
-  xy: 35, 732
+  xy: 827, 643
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 savecancelbutton
   rotate: false
-  xy: 1511, 497
+  xy: 348, 643
   size: 157, 46
   orig: 157, 46
   offset: 0, 0
   index: -1
-SkillOne
-  rotate: false
-  xy: 1674, 488
-  size: 43, 35
-  orig: 43, 35
-  offset: 0, 0
-  index: -1
-SkillThree
-  rotate: false
-  xy: 1670, 525
-  size: 43, 35
-  orig: 43, 35
-  offset: 0, 0
-  index: -1
-SkillTwo
-  rotate: false
-  xy: 1669, 562
-  size: 43, 35
-  orig: 43, 35
-  offset: 0, 0
-  index: -1
 sliderbackground
   rotate: false
-  xy: 1511, 488
+  xy: 362, 691
   size: 161, 7
   orig: 161, 7
   offset: 0, 0
   index: -1
 sliderkuai
   rotate: false
-  xy: 1700, 403
+  xy: 348, 691
   size: 12, 18
   orig: 12, 18
   offset: 0, 0
   index: -1
+Sniper1
+  rotate: false
+  xy: 562, 643
+  size: 53, 35
+  orig: 53, 35
+  offset: 0, 0
+  index: -1
+Sniper2
+  rotate: false
+  xy: 583, 680
+  size: 53, 35
+  orig: 53, 35
+  offset: 0, 0
+  index: -1
+Sniper3
+  rotate: false
+  xy: 617, 643
+  size: 53, 35
+  orig: 53, 35
+  offset: 0, 0
+  index: -1
+Sparda1
+  rotate: false
+  xy: 583, 717
+  size: 53, 35
+  orig: 53, 35
+  offset: 0, 0
+  index: -1
+Sparda2
+  rotate: false
+  xy: 638, 680
+  size: 53, 35
+  orig: 53, 35
+  offset: 0, 0
+  index: -1
+Sparda3
+  rotate: false
+  xy: 672, 643
+  size: 53, 35
+  orig: 53, 35
+  offset: 0, 0
+  index: -1
 textfieldbackground
   rotate: false
-  xy: 1, 643
+  xy: 226, 713
   size: 300, 50
   orig: 300, 50
   offset: 0, 0
@@ -145,15 +215,36 @@ vitory
   index: -1
 window
   rotate: false
-  xy: 1511, 636
+  xy: 1511, 403
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 winresult
   rotate: false
-  xy: 1511, 545
+  xy: 190, 643
   size: 156, 68
   orig: 156, 68
+  offset: 0, 0
+  index: -1
+Wizard1
+  rotate: false
+  xy: 638, 717
+  size: 53, 35
+  orig: 53, 35
+  offset: 0, 0
+  index: -1
+Wizard2
+  rotate: false
+  xy: 693, 680
+  size: 53, 35
+  orig: 53, 35
+  offset: 0, 0
+  index: -1
+Wizard3
+  rotate: false
+  xy: 727, 643
+  size: 53, 35
+  orig: 53, 35
   offset: 0, 0
   index: -1
