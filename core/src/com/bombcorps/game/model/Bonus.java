@@ -44,6 +44,8 @@ public class Bonus implements Serializable {
         state = m.state;
         bonusBox = AssetsController.instance.getRegion("BonusBox");
         parachute = AssetsController.instance.getRegion("Parachute");
+
+        rec = new Rectangle(0,0,dimension.x, dimension.y);
     }
 
     public Message.MBonus getMBonus() {

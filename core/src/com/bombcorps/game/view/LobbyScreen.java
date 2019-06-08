@@ -4,107 +4,292 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.math.Vector3;
 import com.bombcorps.game.controller.AssetsController;
-import com.bombcorps.game.controller.AudioController;
 import com.bombcorps.game.controller.DataController;
 import com.bombcorps.game.controller.NetController;
-import com.bombcorps.game.model.Player;
 import com.bombcorps.game.model.Room;
-
 import java.util.ArrayList;
 
+public class LobbyScreen extends AbstractGameScreen implements InputProcessor{
+    private float height = Gdx.graphics.getHeight();
+    private float width = Gdx.graphics.getWidth();
 
-public class LobbyScreen extends AbstractGameScreen{
-    private static final String TAG = LobbyScreen.class.getName();
-    private static final float height = Gdx.graphics.getHeight();
-    private static final float width = Gdx.graphics.getWidth();
+    private OrthographicCamera camera;
+    private SpriteBatch batch;
 
-    private Image lsBackground; //大厅背景
-    private Image roomListBackground;   //大厅列表背景
+    private TextureRegion lsBackground;  //大厅背景
+    private TextureRegion myInfoBackground;  //个人信息背景
+    private TextureRegion roomlistBackground;  //房间列表背景
 
-    private Label labelShowName;    //昵称
-    private Label labelShowRate;    //胜率
-    private Label labelShowWinAmount;   //胜场
-    private Label labelShowProperty;    //金币数量
+    private Sprite btnToMenu;   //返回主页按钮
+    private Sprite btnBuildRoom;    //创建房间按钮
+    private Sprite btnRefresh;     //刷新房间按钮
+    private Sprite btnToInfoScreen;     //个人信息按钮
+    private Sprite btnRoomlistUp;   //列表上翻按钮
+    private Sprite btnRoomlistDown; //列表下翻
 
-    private Image btnBuildRoom;     //创建房间按钮
-    private Image btnRefresh;       //刷新房间按钮
-    private Image btnPersonalIfo;   //个人信息按钮
-    private Image btnBackToMenu;       //回到主界面按钮
-    private Image btnLobbyOptions;  //大厅设置按钮
-    private Image btnPageUp;        //列表上翻
-    private Image btnPageDown;      //列表下翻
-    private Window winBuildRoom;
-    private Image oneOne;
-    private Image twoTwo;
-    private Image fourFour;
-    private Image cancel;
+    private Sprite btnOne;  //1v1
+    private Sprite btnTwo;   //2v2
+    private Sprite btnFour;  //4v4
+    private Sprite btnCancel; //创建房间取消
+    private Sprite winBuildRoom; //创建房间窗口
+    private boolean showWinBR = false;
 
-    private int numOfRoom;      //房间个数
-    private int numOfPage = 0;      //页数
-    private ArrayList<Integer> originNum = new ArrayList<Integer>();
+    private BitmapFont font; //字体
 
-    private ArrayList<RoomSelect> roomList; //房间列表
-   // private ArrayList<String> mode;
+    private int numOfPage = 0;
 
-    private Stage stage;
-    //private Stage stage2;
-    //private SpriteBatch batch;
-
-    private NetController netController;
-
-    private DirectedGame game;
+    DataController dc = DataController.instance;
+    NetController netController = game.getNetController();
 
     public LobbyScreen(DirectedGame game) {
         super(game);
-        this.game = game;
-        netController = game.getNetController();
-        roomList = new ArrayList<RoomSelect>();
-
-       // batch = new SpriteBatch();
-        //stage2 = new Stage();
-        //Gdx.input.setInputProcessor(stage2);
+        batch = new SpriteBatch();
+        camera = new OrthographicCamera(width, height);
+        camera.position.set(width/2, height/2, 0);
+        camera.update();
+        init();
     }
+
+    private void init(){
+        font = AssetsController.instance.font;
+        //大厅背景
+        lsBackground = new TextureRegion(AssetsController.instance.getRegion("lsbackground"));
+        //个人信息背景
+        myInfoBackground = new TextureRegion(AssetsController.instance.getRegion("recordbackground"));
+        //房间列表背景
+        roomlistBackground = new TextureRegion(AssetsController.instance.getRegion("roomlistbackground"));
+        //按钮布局
+        //创建房间按钮
+        btnBuildRoom = new Sprite(AssetsController.instance.getRegion("home"));
+        btnBuildRoom.setSize(0.1f * width,0.1f * height);
+        btnBuildRoom.setPosition(0.54f * width,0.04f * height);
+
+        //刷新房间列表按钮
+        btnRefresh = new Sprite(AssetsController.instance.getRegion("refresh"));
+        btnRefresh.setSize(0.1f * width,0.1f * height);
+        btnRefresh.setPosition(btnBuildRoom.getX() + 0.13f * width,0.04f * height);
+
+        //个人信息按钮
+        btnToInfoScreen = new Sprite(AssetsController.instance.getRegion("user"));
+        btnToInfoScreen.setSize(0.1f * width,0.1f * height);
+        btnToInfoScreen.setPosition(btnBuildRoom.getX() + 0.26f * width,0.04f *height);
+
+        //上一页按钮
+        btnRoomlistUp = new Sprite(AssetsController.instance.getRegion("pageup"));
+        btnRoomlistUp.setSize(0.0444f * width,0.06f * height);
+        btnRoomlistUp.setPosition(0.6222f * width,0.26f * height);
+
+        //下一页按钮
+        btnRoomlistDown = new Sprite(AssetsController.instance.getRegion("pagedown"));
+        btnRoomlistDown.setSize(0.0444f * width,0.06f * height);
+        btnRoomlistDown.setPosition(btnRoomlistUp.getX() + 0.15f * width,0.26f * height);
+
+        //返回主页按钮
+        btnToMenu = new Sprite(AssetsController.instance.getRegion("back"));
+        btnToMenu.setSize(0.045f * width,0.07f * height);
+        btnToMenu.setPosition(0.0222f * width,0.91f * height);
+
+        //创建房间弹窗
+        winBuildRoom = new Sprite(AssetsController.instance.getRegion("winresult"));
+        winBuildRoom.setSize(width/2,height/2);
+        winBuildRoom.setPosition(width/4,height/4);
+        float btnX = winBuildRoom.getX();
+        float btnY = winBuildRoom.getY();
+        btnOne = new Sprite(AssetsController.instance.getRegion("oneone"));
+        btnOne.setSize(winBuildRoom.getWidth()/4,winBuildRoom.getHeight()/4);
+        btnOne.setPosition(btnX+winBuildRoom.getWidth()/16,btnY+winBuildRoom.getHeight()/2);
+
+        btnTwo = new Sprite(AssetsController.instance.getRegion("twotwo"));
+        btnTwo.setSize(winBuildRoom.getWidth()/4,winBuildRoom.getHeight()/4);
+        btnTwo.setPosition(btnX+winBuildRoom.getWidth()*6/16,btnY+winBuildRoom.getHeight()/2);
+
+        btnFour = new Sprite(AssetsController.instance.getRegion("fourfour"));
+        btnFour.setSize(winBuildRoom.getWidth()/4,winBuildRoom.getHeight()/4);
+        btnFour.setPosition(btnX+winBuildRoom.getWidth()*11/16,btnY+winBuildRoom.getHeight()/2);
+
+        btnCancel = new Sprite(AssetsController.instance.getRegion("winbuildroomcancel"));
+        btnCancel.setSize(winBuildRoom.getWidth()/4,winBuildRoom.getHeight()/4);
+        btnCancel.setPosition(btnX+winBuildRoom.getWidth()*3/8,btnY+winBuildRoom.getHeight()/8);
+    }
+
 
     @Override
     public InputProcessor getInputProcessor() {
-        return stage;
+        return this;
     }
 
     @Override
     public void render(float deltaTime) {
-        Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.act();
-        stage.draw();
+
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        batch.draw(lsBackground,0,0,width,height);
+        batch.draw(myInfoBackground,0.08f * width,0.15f * height,0.35f*width,0.75f*height);
+        batch.draw(roomlistBackground,0.45f * width,0.16f * height,0.53f * width,0.688f * height);
+
+        drawMyInfo();
+        drawButton();
+        drawRoomList();
+        if(showWinBR){
+            drawBuildRoomWin();
+        }
+
+        batch.end();
+    }
+
+    public void drawMyInfo(){
+        font.getData().setScale(0.0024f*height);
+        font.setColor(Color.WHITE);
+        font.draw(batch,"昵称: " + dc.getName(),3/18f * width,0.7f * height);
+        font.draw(batch,"胜场: " + dc.getPersonalData(DataController.WIN_NUM)+"/"+dc.getPersonalData(DataController.GAME_NUM),3/18f * width,0.6f * height);
+        font.draw(batch,"胜率: " + dc.getWinRate(),3/18f * width,0.5f * height);
+        font.draw(batch,"金币: " + dc.getPersonalData(DataController.MONEY),3/18f * width,0.4f * height);
+    }
+
+    public void drawButton(){
+        btnBuildRoom.draw(batch);
+        btnRefresh.draw(batch);
+        btnToInfoScreen.draw(batch);
+
+        btnRoomlistUp.draw(batch);
+        btnRoomlistDown.draw(batch);
+
+        btnToMenu.draw(batch);
+    }
+
+
+    //房间选项背景
+    private Sprite roomItem[] = {new Sprite(AssetsController.instance.getRegion("roomshowbackground")),
+                                 new Sprite(AssetsController.instance.getRegion("roomshowbackground")),
+                                 new Sprite(AssetsController.instance.getRegion("roomshowbackground")),
+                                 new Sprite(AssetsController.instance.getRegion("roomshowbackground"))};
+
+    private Sprite smallMap[][] = {
+            {new Sprite(AssetsController.instance.getRegion("scalemap0")),new Sprite(AssetsController.instance.getRegion("scalemap1"))},
+            {new Sprite(AssetsController.instance.getRegion("scalemap0")),new Sprite(AssetsController.instance.getRegion("scalemap1"))},
+            {new Sprite(AssetsController.instance.getRegion("scalemap0")),new Sprite(AssetsController.instance.getRegion("scalemap1"))},
+            {new Sprite(AssetsController.instance.getRegion("scalemap0")),new Sprite(AssetsController.instance.getRegion("scalemap1"))},
+    };
+    private ArrayList<Integer> unfullRoom = new ArrayList<Integer>();
+    //private
+    public void drawRoomList() {
+        unfullRoom.clear();
+        font.getData().setScale(0.0024f*height);
+        float originX = width * 0.488f;
+        float originY = height * 0.655f;
+        float intervalY = height * 0.105f;
+        for (int i = 0; i < netController.getRoomList().size(); i++) {
+            if (!netController.getRoomList().get(i).isFull()) {
+                unfullRoom.add(i);
+            }
+        }
 
         for(int i = 0;i < 4;i++){
-            if(roomList.size() == 0 || (i + numOfPage*4 + 1) > roomList.size()){
+            if((i + numOfPage * 4 + 1) > unfullRoom.size()){
                 break;
             }
-            //Gdx.app.log("i numOfPage",i+" "+numOfPage);
-            if (roomList.get(i + numOfPage*4).isClick()){
-                game.loadRoomScreen(game.getNetController().getRoomList().get(i + numOfPage));
-                Gdx.app.log("",""+ game.getNetController().getRoomList().get(0).getPlayerManager().getRedPlayerList().get(0).getLevel());
+            roomItem[i].setSize(0.45f * width,0.1f * height);
+            roomItem[i].setPosition(originX,originY - i * intervalY);
+            roomItem[i].draw(batch);
+            float middle = roomItem[i].getY() + roomItem[i].getHeight()/2;
+            int roomNum = unfullRoom.get(i + numOfPage * 4);
+            smallMap[i][Integer.parseInt(netController.getRoomList().get(roomNum).getMapName())].setSize(0.035f * width, 0.035f * width);
+            smallMap[i][Integer.parseInt(netController.getRoomList().get(roomNum).getMapName())].setPosition(roomItem[i].getX()+ 0.027f * width,
+                    middle - smallMap[i][Integer.parseInt(netController.getRoomList().get(roomNum).getMapName())].getHeight()/2);
+            smallMap[i][Integer.parseInt(netController.getRoomList().get(roomNum).getMapName())].draw(batch);
+            font.draw(batch,
+                    netController.getRoomList().get(roomNum).getLIMIT() + "vs" + netController.getRoomList().get(roomNum).getLIMIT(),
+                    roomItem[i].getX() + 0.075f * width,middle + 0.02f*height);
+            String hostName = "";
+            for(int j=0;j<netController.getRoomList().get(roomNum).getPlayerManager().getAllPlayerList().size;j++){
+                if(netController.getRoomList().get(roomNum).getPlayerManager().getAllPlayerList().get(j).getIp().equals(netController.getRoomList().get(roomNum).getOwnerIp())){
+                    hostName = netController.getRoomList().get(roomNum).getPlayerManager().getAllPlayerList().get(j).getID();
+                    break;
+                }
             }
-            roomList.get(i +numOfPage*4).update();
+            font.draw(batch, hostName,roomItem[i].getX() + 0.2f * width,middle + 0.02f*height);
+            font.draw(batch,
+                    netController.getRoomList().get(roomNum).getPlayerManager().getAllPlayerList().size + "/" + netController.getRoomList().get(roomNum).getLIMIT()*2,
+                    roomItem[i].getX() + 0.33f * width,middle + 0.02f*height);
         }
+    }
+
+    public void drawBuildRoomWin(){
+        winBuildRoom.draw(batch);
+        btnOne.draw(batch);
+        btnTwo.draw(batch);
+        btnFour.draw(batch);
+        btnCancel.draw(batch);
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        Vector3 v = new Vector3(screenX, screenY, 0);
+        camera.unproject(v);
+
+        if(btnToMenu.getBoundingRectangle().contains(v.x,v.y)){
+            game.loadMenuScreen();
+        }
+
+        if(btnToInfoScreen.getBoundingRectangle().contains(v.x,v.y)){
+            game.loadInfoScreen();
+        }
+
+        if(btnRefresh.getBoundingRectangle().contains(v.x,v.y)){
+            netController.refreshRoom();
+        }
+
+        if(btnBuildRoom.getBoundingRectangle().contains(v.x,v.y)){
+            showWinBR = true;
+        }
+
+        if(btnCancel.getBoundingRectangle().contains(v.x,v.y)){
+            showWinBR = false;
+        }
+        //创建房间
+        if(btnOne.getBoundingRectangle().contains(v.x,v.y)){
+            Room room = new Room(NetController.getLocalHostIp(),1);
+            game.loadRoomScreen(room);
+        }
+        if(btnTwo.getBoundingRectangle().contains(v.x,v.y)){
+            Room room = new Room(NetController.getLocalHostIp(),2);
+            game.loadRoomScreen(room);
+        }
+        if(btnFour.getBoundingRectangle().contains(v.x,v.y)){
+            Room room = new Room(NetController.getLocalHostIp(),4);
+            game.loadRoomScreen(room);
+        }
+
+        for(int i = 0;i < 4;i ++){
+            if((i + numOfPage * 4 + 1) > netController.getRoomList().size()){
+                break;
+            }
+            if(roomItem[i].getBoundingRectangle().contains(v.x,v.y)){
+                game.loadRoomScreen(netController.getRoomList().get(unfullRoom.get(i + numOfPage * 4)));
+            }
+        }
+
+        if(btnRoomlistUp.getBoundingRectangle().contains(v.x,v.y)){
+            if(numOfPage > 0){
+                numOfPage --;
+            }
+        }
+
+        if(btnRoomlistDown.getBoundingRectangle().contains(v.x,v.y)){
+            if(((numOfPage + 1) * 4 ) < unfullRoom.size()){
+                numOfPage ++;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -114,14 +299,12 @@ public class LobbyScreen extends AbstractGameScreen{
 
     @Override
     public void show() {
-        stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
-        rebulidStage();
+
     }
 
     @Override
     public void hide() {
-        stage.dispose();
+
     }
 
     @Override
@@ -129,321 +312,38 @@ public class LobbyScreen extends AbstractGameScreen{
 
     }
 
-    public void rebulidStage(){
-        stage.clear();
-        Gdx.input.setInputProcessor(stage);
-        //大厅背景
-        lsBackground = new Image(AssetsController.instance.getRegion("lsbackground"));
-        lsBackground.setSize(width,height);
-        //房间列表背景
-        roomListBackground = new Image(AssetsController.instance.getRegion("roomlistbackground"));
-        roomListBackground.setSize(0.53f * width,0.688f * height);
-        roomListBackground.setPosition(0.45f * width,0.16f * height);
-        //label字体风格
-        BitmapFont font = AssetsController.instance.font;
-        //font.setColor(1,1,1,1);
-        Label.LabelStyle style = new Label.LabelStyle(font,Color.WHITE);
-
-        Table recordTable = new Table();
-        recordTable.clear();
-        //Drawable recordbackground = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("lobbyscreen/recordbackground.png"))));
-        Drawable recordbackground = new TextureRegionDrawable(new TextureRegion(AssetsController.instance.getRegion("recordbackground")));
-        recordTable.setSize(0.35f * width,0.75f * height);
-        recordTable.background(recordbackground);
-
-        DataController dc = DataController.instance;
-
-        String showName = "昵称:" +  dc.getName(); //+ 昵称
-        labelShowName = new Label(showName,style);
-        labelShowName.setFontScale(0.0018f * width);
-        //labelShowName.debug();
-
-        String showRate = "胜率:" + dc.getWinRate();  //+ 胜率
-        labelShowRate = new Label(showRate,style);
-        labelShowRate.setFontScale(0.0018f * width);
-
-        String showWinAmount = "胜场:" + dc.getPersonalData(DataController.WIN_NUM)+"/"+dc.getPersonalData(DataController.GAME_NUM);  //+ 胜场
-        labelShowWinAmount = new Label(showWinAmount,style);
-        labelShowWinAmount.setFontScale(0.0018f * width);
-
-        String showProperty = "金币:" + dc.getPersonalData(DataController.MONEY); //+ 金币数
-        labelShowProperty = new Label(showProperty,style);
-        labelShowProperty.setFontScale(0.0018f * width);
-        font.setColor(0,0,0,0);
-        //个人信息布局
-        recordTable.add(labelShowName).left().height(0.14f*height);
-        recordTable.row();
-        recordTable.add(labelShowWinAmount).left().height(0.14f*height);
-        recordTable.row();
-        recordTable.add(labelShowRate).left().height(0.14f*height);
-        recordTable.row();
-        recordTable.add(labelShowProperty).left().height(0.14f*height);
-        Stack stackRecord = new Stack();
-        recordTable.setPosition(0.08f * width,0.15f * height);
-        stackRecord.setSize(0.35f * width,0.75f * height);
-        stackRecord.addActor(recordTable);
-        //模式选择窗口
-        //TextureRegionDrawable winBuildRoomDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("menuscreen/winbuildroom.png"))));
-        TextureRegionDrawable winBuildRoomDrawable = new TextureRegionDrawable(AssetsController.instance.getRegion("winresult"));
-        Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),winBuildRoomDrawable);
-        winBuildRoom = new Window("",windowStyle);
-        winBuildRoom.setSize(width/2,height/2);
-        winBuildRoom.setPosition(width/4,height/4);
-        cancel = new Image(AssetsController.instance.getRegion("winbuildroomcancel"));
-
-//        Player myplayer = new Player(dc.getName());
-//        myplayer.setIp(NetController.getLocalHostIp());
-
-        oneOne = new Image(AssetsController.instance.getRegion("oneone"));
-
-        twoTwo = new Image(AssetsController.instance.getRegion("twotwo"));
-        fourFour = new Image(AssetsController.instance.getRegion("fourfour"));
-        oneOne.setSize(winBuildRoom.getWidth()/4,winBuildRoom.getHeight()/4);
-        twoTwo.setSize(winBuildRoom.getWidth()/4,winBuildRoom.getHeight()/4);
-        fourFour.setSize(winBuildRoom.getWidth()/4,winBuildRoom.getHeight()/4);
-        oneOne.setPosition(winBuildRoom.getWidth()/16,winBuildRoom.getHeight()/2);
-        twoTwo.setPosition(winBuildRoom.getWidth()*6/16,winBuildRoom.getHeight()/2);
-        fourFour.setPosition(winBuildRoom.getWidth()*11/16,winBuildRoom.getHeight()/2);
-        cancel.setSize(winBuildRoom.getWidth()/4,winBuildRoom.getHeight()/4);
-        cancel.setPosition(winBuildRoom.getWidth()*3/8,winBuildRoom.getHeight()/8);
-
-        cancel.addListener(new InputListener(){
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                winBuildRoom.setVisible(false);
-                AudioController.instance.play(AssetsController.instance.btnClicked);
-                return true;
-            }
-        });
-        oneOne.addListener(new InputListener(){
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Room room = new Room(NetController.getLocalHostIp(),1);
-                AudioController.instance.play(AssetsController.instance.btnClicked);
-                game.loadRoomScreen(room);
-                Gdx.app.log("qin","load  roomScreen");
-                //game.getNetController().enterRoom(NetController.getLocalHostIp(),myplayer);
-                return true;
-            }
-        });
-        twoTwo.addListener(new InputListener(){
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Room room = new Room(NetController.getLocalHostIp(),2);
-                AudioController.instance.play(AssetsController.instance.btnClicked);
-                game.loadRoomScreen(room);
-                //game.getNetController().enterRoom(NetController.getLocalHostIp(),myplayer);
-                return true;
-            }
-        });
-        fourFour.addListener(new InputListener(){
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Room room = new Room(NetController.getLocalHostIp(),4);
-                AudioController.instance.play(AssetsController.instance.btnClicked);
-                game.loadRoomScreen(room);
-                //game.getNetController().enterRoom(NetController.getLocalHostIp(),myplayer);
-                return true;
-            }
-        });
-
-        winBuildRoom.addActor(oneOne);
-        winBuildRoom.addActor(twoTwo);
-        winBuildRoom.addActor(fourFour);
-        winBuildRoom.addActor(cancel);
-        stage.addActor(lsBackground);
-        stage.addActor(roomListBackground);
-        stage.addActor(recordTable);
-
-        bulidRoomList();
-        drawRoomList();
-        drawButton();
-        stage.addActor(winBuildRoom);
-        winBuildRoom.setVisible(false);
-    }
-    //建造房间列表
-    public void bulidRoomList(){
-        //网端获取房间数numOfRoom
-        numOfRoom = 0;
-        numOfRoom  = game.getNetController().getRoomList().size();
-        Gdx.app.log("numofroom",""+numOfRoom);
-        roomList.clear();
-        for(int i=0;i<numOfRoom;i++){
-            if (!netController.getRoomList().get(i).isFull()){
-                int mapNum = Integer.parseInt(netController.getRoomList().get(i).getMapName());
-                String mode = netController.getRoomList().get(i).getLIMIT() + "vs" + netController.getRoomList().get(i).getLIMIT();
-                String hostName = "";  //
-                for(int j=0;j<netController.getRoomList().get(i).getPlayerManager().getAllPlayerList().size;j++){
-                    if(netController.getRoomList().get(i).getPlayerManager().getAllPlayerList().get(j).getIp().equals(netController.getRoomList().get(i).getOwnerIp())){
-                        hostName = netController.getRoomList().get(i).getPlayerManager().getAllPlayerList().get(j).getID();
-                        break;
-                    }
-                }
-                String personNum = netController.getRoomList().get(i).getPlayerManager().getAllPlayerList().size +
-                        "/" + netController.getRoomList().get(i).getLIMIT()*2;
-                roomList.add(new RoomSelect(mapNum,mode,hostName,personNum));
-                originNum.add(i);
-            }
-        }
-        numOfRoom = roomList.size();
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
     }
 
-    //显示房间列表
-    public void drawRoomList(){
-        //stage2.clear();
-        float originX = width * 0.488f;
-        float originY = height * 0.655f;
-        float intervalY = height * 0.105f;
-        for(int i = 0;i < 4;i ++) {
-            if ((i + numOfPage*4 + 1) > roomList.size()) {
-                break;
-            }
-            roomList.get(i + numOfPage*4).setPosition(originX,originY - i * intervalY);
-            roomList.get(i + numOfPage*4).addToStage(stage);
-            //roomList.get(i + numOfPage*4).addToBatch(batch);
-        }
-//        for(int i = 0;i < 4;i++){
-//            if(roomList.size() == 0 || (i + numOfPage*4 + 1) > roomList.size()){
-//                break;
-//            }
-//            Gdx.app.log("i numOfPage",i+" "+numOfPage);
-//            if (roomList.get(i + numOfPage*4).isClick()){
-//                Gdx.app.log("Room","click");
-//                game.loadRoomScreen(game.);
-//            }
-//            //roomList.get(i +numOfPage*4).update(Gdx.graphics.getDeltaTime());
-//        }
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
     }
 
-    //按键布局
-    public void drawButton(){
-        //创建房间按钮
-        btnBuildRoom = new Image(AssetsController.instance.getRegion("home"));
-        btnBuildRoom.setSize(0.1f * width,0.1f * height);
-        btnBuildRoom.setPosition(0.54f * width,0.04f * height);
-        //刷新房间列表按钮
-        btnRefresh = new Image(AssetsController.instance.getRegion("refresh"));
-        btnRefresh.setSize(0.1f * width,0.1f * height);
-        btnRefresh.setPosition(btnBuildRoom.getX() + 0.13f * width,0.04f * height);
-        //个人信息按钮
-        btnPersonalIfo = new Image(AssetsController.instance.getRegion("user"));
-        btnPersonalIfo.setSize(0.1f * width,0.1f * height);
-        btnPersonalIfo.setPosition(btnBuildRoom.getX() + 0.26f * width,0.04f *height);
-
-        //上一页按钮
-        btnPageUp = new Image(AssetsController.instance.getRegion("pageup"));
-        btnPageUp.setSize(0.0444f * width,0.06f * height);
-        btnPageUp.setPosition(0.6222f * width,0.26f * height);
-        //下一页按钮
-        btnPageDown = new Image(AssetsController.instance.getRegion("pagedown"));
-        btnPageDown.setSize(0.0444f * width,0.06f * height);
-        btnPageDown.setPosition(btnPageUp.getX() + 0.15f * width,0.26f * height);
-        //返回主页按钮
-        btnBackToMenu = new Image(AssetsController.instance.getRegion("back"));
-        btnBackToMenu.setSize(0.045f * width,0.07f * height);
-        btnBackToMenu.setPosition(0.0222f * width,0.91f * height);
-        //设置按钮
-        btnLobbyOptions = new Image(AssetsController.instance.getRegion("button_setting"));
-        btnLobbyOptions.setSize(0.045f * width,0.07f * height);
-        btnLobbyOptions.setPosition(0.91f * width,0.91f * height);
-
-        stage.addActor(btnBuildRoom);
-        stage.addActor(btnRefresh);
-        stage.addActor(btnPersonalIfo);
-        stage.addActor(btnPageUp);
-        stage.addActor(btnPageDown);
-        stage.addActor(btnBackToMenu);
-        //stage.addActor(btnLobbyOptions);
-
-        setButtonClick();
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
     }
 
-    //按键点击事件
-    public void setButtonClick(){
-        btnBuildRoom.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                AudioController.instance.play(AssetsController.instance.btnClicked);
-                winBuildRoom.setVisible(true);
-            }
-        });
-
-        btnRefresh.addListener(new ClickListener(){
-           @Override
-           public void clicked(InputEvent event, float x,float y){
-               //刷新房间列表
-               AudioController.instance.play(AssetsController.instance.btnClicked);
-               refreshRoomList();
-           }
-        });
-
-        btnPersonalIfo.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x,float y){
-                //进入个人信息界面
-                AudioController.instance.play(AssetsController.instance.btnClicked);
-                game.loadInfoScreen();
-            }
-        });
-
-        btnPageUp.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x,float y){
-                //上翻列表
-                AudioController.instance.play(AssetsController.instance.btnClicked);
-                roomListPageUp();
-            }
-        });
-
-        btnPageDown.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x,float y){
-                //下翻列表
-                AudioController.instance.play(AssetsController.instance.btnClicked);
-                roomListPageDown();
-            }
-        });
-
-        btnBackToMenu.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x,float y){
-                //回到主界面
-                AudioController.instance.play(AssetsController.instance.btnClicked);
-                game.loadMenuScreen();
-            }
-        });
-
-        btnLobbyOptions.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x,float y){
-                //弹出设置界面
-            }
-        });
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
     }
 
-    //刷新房间
-    public void refreshRoomList(){
-        netController.refreshRoom();
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
     }
 
-
-    //房间列表上翻
-    private void roomListPageUp(){
-        if(numOfPage > 0){
-            numOfPage --;
-            rebulidStage();
-        }
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
     }
 
-    //房间列表下翻
-    private void roomListPageDown(){
-        if(((numOfPage + 1) * 4 )< numOfRoom){
-            numOfPage ++;
-            rebulidStage();
-        }
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
     }
 }

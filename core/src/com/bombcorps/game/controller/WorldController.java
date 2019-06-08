@@ -202,7 +202,7 @@ public class WorldController {
     public int isGameOver() {  //0 未结束   1 红赢   2 蓝赢   3 平
         boolean red = false, blue = false;
         for (Player p : world.getPlayers()) {
-            if(p.getTeam() == 0){
+            if(p.getTeam() == 1){
                 red = true;
             }else{
                 blue = true;
@@ -226,16 +226,19 @@ public class WorldController {
         Rectangle r2;
         for(Rock r : world.rocks) {
             r2 = r.getRect();
+            r1.setPosition(r1.getX(), r1.getY()-0.05f);
+            if (r1.overlaps(r2)) {
+                b_falling = false;
+            }
+            r1.setPosition(r1.getX(), r1.getY()+0.05f);
             if (r1.overlaps(r2)) {
                 onCollisionsPlayerWithRock(r);
-                b_falling = false;
             }
         }
         for (Pillar p : world.pillars) {
             r2 = p.getRect();
             if (r1.overlaps(r2)) {
                 onCollisionsPlayerWithPillar(p);
-                b_falling = false;
             }
         }
         if (b_falling) {
@@ -258,11 +261,13 @@ public class WorldController {
         }
 
         Bonus fallingOne = world.getFallingBonus();
-        r1 = fallingOne.getRect();
-        for (Rock r : world.rocks) {
-            r2 = r.getRect();
-            if (r1.overlaps(r2)) {
-                onCollisionsBonusWithRock(fallingOne, r);
+        if(fallingOne != null){
+            r1 = fallingOne.getRect();
+            for (Rock r : world.rocks) {
+                r2 = r.getRect();
+                if (r1.overlaps(r2)) {
+                    onCollisionsBonusWithRock(fallingOne, r);
+                }
             }
         }
     }

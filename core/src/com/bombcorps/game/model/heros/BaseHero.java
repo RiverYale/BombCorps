@@ -201,19 +201,26 @@ public class BaseHero{
     }
 
     protected void updatePosition(float deltaTime){
+        Gdx.app.log("zc", "updateStart");
+        Gdx.app.log("position", "x = "+ position.x + "y = "+ position.y);
+        Gdx.app.log("destination", " " + destination);
         switch(state){
 //            case ATTACK:
 //            case DEAD:
             case GROUNDED:
                 velocity.y = 0;
+                Gdx.app.log("state", "grounded");
 //                state = STATE.FALLING;
                 break;
             case FALLING:
                 updateY(deltaTime);
+//                updateX(deltaTime);
+                Gdx.app.log("state", "falling");
                 break;
             case MOVING:
-                if(endurance > 0 && Math.abs(position.x - destination) > 1){
+                if(endurance > 0 && Math.abs(position.x - destination) > 0.5f){
                     endurance -= Constants.MOVE_ENDURANCE_COST;
+                    Gdx.app.log("state", "moving");
                     updateX(deltaTime);
 
                     if(endurance < 0)
@@ -243,12 +250,13 @@ public class BaseHero{
 
     protected void renderHero(SpriteBatch batch){
         switch(state){
-            case FALLING:
+
             case GROUNDED:
                 batch.draw(staticRegion.getTexture(), position.x, position.y, origin.x, origin.y,
                         dimension.x, dimension.y, scale.x, scale.y, 0, staticRegion.getRegionX(),
                         staticRegion.getRegionY(), staticRegion.getRegionWidth(),staticRegion.getRegionHeight(),
                         !headright, false);
+                Gdx.app.log("flipX", " "+ staticRegion.isFlipX());
                 break;
             case DEAD:
                 batch.draw(deadRegion.getTexture(), position.x, position.y, origin.x, origin.y,
@@ -256,20 +264,23 @@ public class BaseHero{
                         deadRegion.getRegionY(), deadRegion.getRegionWidth(),deadRegion.getRegionHeight(),
                         !headright, false);
                 break;
+            case FALLING:
             case MOVING:
                 moveKeyFrame = (TextureRegion) moveAnimation.getKeyFrame(stateTime);
                 stateTime += Gdx.graphics.getDeltaTime();
                 stateTime %= moveAnimation.getAnimationDuration();
 
-                batch.draw(moveKeyFrame, position.x, position.y, origin.x, origin.y, dimension.x, dimension.y,
-                        scale.x, scale.y, 0);
+                batch.draw(moveKeyFrame.getTexture(), position.x, position.y, origin.x, origin.y, dimension.x, dimension.y,
+                        scale.x, scale.y,0,moveKeyFrame.getRegionX(),moveKeyFrame.getRegionY(),moveKeyFrame.getRegionWidth(),
+                        moveKeyFrame.getRegionHeight(),!headright,false);
                 break;
             case ATTACK:
                 attackKeyFrame = (TextureRegion) attackAnimation.getKeyFrame(stateTime);
                 stateTime += Gdx.graphics.getDeltaTime();
 
-                batch.draw(attackKeyFrame, position.x, position.y, origin.x, origin.y, dimension.x, dimension.y,
-                        scale.x, scale.y, 0);
+                batch.draw(attackKeyFrame.getTexture(), position.x, position.y, origin.x, origin.y, dimension.x, dimension.y,
+                        scale.x, scale.y, 0, moveKeyFrame.getRegionX(), moveKeyFrame.getRegionY(), moveKeyFrame.getRegionWidth(),
+                        moveKeyFrame.getRegionHeight(),!headright, false);
 
                 if(stateTime > attackAnimation.getAnimationDuration()){
                     attackTimes--;
@@ -401,7 +412,7 @@ public class BaseHero{
     public void setState(int input){
         switch (input){
             case Constants.STATE_MOVING:
-                velocity.x = headright? Constants.VELOCITY_X : -Constants.VELOCITY_X;
+//                velocity.x = headright? Constants.VELOCITY_X : -Constants.VELOCITY_X;
                 state = STATE.MOVING;
                 break;
             case Constants.STATE_GROUNDED:
