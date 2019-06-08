@@ -537,7 +537,7 @@ public class SkillAndBuff {
         }
 
         public void useSkill_3(int team, String IP){
-            AssetsController.instance.protectorskill1 = Gdx.audio.newSound(Gdx.files.internal("sound/protectorskill3"));
+            AudioController.instance.play(AssetsController.instance.protectorskill3);
             Player player;
             int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
