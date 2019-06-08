@@ -43,7 +43,6 @@ public class InputController implements GestureDetector.GestureListener {
             Rectangle r = controller.getCurPlayer().getBomb().getTapRec();
             Gdx.app.log("zc", r.toString()+" "+ v.x+" "+v.y);
             if(r.contains(v.x, v.y)){
-//                Gdx.app.log("zc", "has aim");
                 hasAim = true;
             }else{
                 hasAim = false;
@@ -57,41 +56,52 @@ public class InputController implements GestureDetector.GestureListener {
         Vector3 v = new Vector3(x, y, 0);
         gameScreen.cameraGUI.unproject(v);
         if(gameScreen.btnQuit.getBoundingRectangle().contains(v.x,v.y)){
+            AudioController.instance.play(AssetsController.instance.btnClicked);
             gameScreen.getGame().getNetController().quitGame(gameScreen.myPlayer());
             gameScreen.getGame().loadLobbyScreen();
             return false;
         }else if(gameScreen.btnSettings.getBoundingRectangle().contains(v.x,v.y)){
+            AudioController.instance.play(AssetsController.instance.btnClicked);
             gameScreen.setStageTrue();
             Gdx.input.setInputProcessor(gameScreen.stage);
             gameScreen.winOptions.setVisible(true);
             return false;
         }else if(gameScreen.imgMove.getBoundingRectangle().contains(v.x,v.y)&&gameScreen.myPlayer().equals(gameScreen.worldController.getCurPlayer())){
+            AudioController.instance.play(AssetsController.instance.btnClicked);
             controller.onOperationClicked(0);
             return false;
         }else if(gameScreen.imgEjection.getBoundingRectangle().contains(v.x,v.y)&&gameScreen.myPlayer().equals(gameScreen.worldController.getCurPlayer())){
+            AudioController.instance.play(AssetsController.instance.btnClicked);
             controller.onOperationClicked(1);
             return false;
         }else if(gameScreen.imgAttrack.getBoundingRectangle().contains(v.x,v.y)&&gameScreen.myPlayer().equals(gameScreen.worldController.getCurPlayer())){
+            AudioController.instance.play(AssetsController.instance.btnClicked);
             controller.onOperationClicked(2);
             return false;
         }else if(gameScreen.imgSkillOne.getBoundingRectangle().contains(v.x,v.y)&&gameScreen.myPlayer().equals(gameScreen.worldController.getCurPlayer())){
+            AudioController.instance.play(AssetsController.instance.btnClicked);
             controller.onOperationClicked(3);
             return false;
         }else if(gameScreen.imgSkillTwo.getBoundingRectangle().contains(v.x,v.y)&&gameScreen.myPlayer().equals(gameScreen.worldController.getCurPlayer())){
+            AudioController.instance.play(AssetsController.instance.btnClicked);
             controller.onOperationClicked(4);
             return false;
         }else if(gameScreen.imgSkillThree.getBoundingRectangle().contains(v.x,v.y)&&gameScreen.myPlayer().equals(gameScreen.worldController.getCurPlayer())){
+            AudioController.instance.play(AssetsController.instance.btnClicked);
             controller.onOperationClicked(5);
             return false;
         }else if(gameScreen.imgTurnEnd.getBoundingRectangle().contains(v.x,v.y)&&gameScreen.myPlayer().equals(gameScreen.worldController.getCurPlayer())){
+            AudioController.instance.play(AssetsController.instance.btnClicked);
             controller.onOperationClicked(6);
             return false;
         }else if(gameScreen.imgMyHeroHead.getBoundingRectangle().contains(v.x,v.y)){
+            AudioController.instance.play(AssetsController.instance.btnClicked);
             gameScreen.setStageTrue();
             Gdx.input.setInputProcessor(gameScreen.stage);
             gameScreen.winHeroInfo.setVisible(true);
             return false;
         }else if(gameScreen.imgOtherHeroHead.getBoundingRectangle().contains(v.x,v.y)&&gameScreen.isClickedHero()){
+            AudioController.instance.play(AssetsController.instance.btnClicked);
             gameScreen.setStageTrue();
             Gdx.input.setInputProcessor(gameScreen.stage);
             gameScreen.winOtherHeroInfo.setVisible(true);
@@ -105,7 +115,7 @@ public class InputController implements GestureDetector.GestureListener {
             Player p = controller.hasPlayer(v.x, v.y);
             if (p != null) {
                 cameraController.setTarget(p);
-                 controller.onHeroClicked(p);
+                controller.onHeroClicked(p);
             }
         } else if (op == 0) {
             controller.getCurPlayer().setState(Constants.STATE_MOVING);
@@ -117,7 +127,7 @@ public class InputController implements GestureDetector.GestureListener {
 
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
-//        Gdx.app.log("zc", ""+hasAim);
+        controller.getCameraController().setTarget(null);
         if(hasAim){
             Vector3 v = new Vector3(x, y, 0);
             camera.unproject(v);
@@ -136,7 +146,7 @@ public class InputController implements GestureDetector.GestureListener {
     public boolean panStop(float x, float y, int pointer, int button) {
         int op = controller.getOperations();
         if(op == 1 || op == 2){
-            controller.getCurPlayer().shoot();
+            controller.getCurPlayer().shoot(controller.getCameraController());
             controller.resetOperations();
             hasAim = false;
         }

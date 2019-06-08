@@ -49,6 +49,11 @@ public class WorldController {
 //        AudioController.instance.play(AssetsController.instance.getMusic("")); //TODO
     }
 
+    public void update(float deltaTime){
+        testCollisions();
+        cameraController.update(deltaTime);
+    }
+
     public OrthographicCamera getCamera() {
         return camera;
     }
@@ -157,16 +162,11 @@ public class WorldController {
     }
 
     public void startNextRound(Bonus b) {
-        //TODO
-//        Gdx.app.log("ain","Change");
         world.getPlayerManager().initEveryChange();
-//        Gdx.app.log("qin","next player is ");
         if(b != null){
             world.addBonus(b);
         }
-
         curPlayer = world.getNextPlayer();
-
         perRound++;
         while (curPlayer.getMyHero().getState() == Constants.STATE_DEAD){
             curPlayer = world.getNextPlayer();
@@ -193,13 +193,13 @@ public class WorldController {
                 if(curPlayer.useSkill(op)) {
                     curPlayer.getBomb().setHeroType(5);
                     curPlayer.setTap(new Vector2(tapX, tapY));
-                    curPlayer.shoot();
+                    curPlayer.shoot(cameraController);
                 }
                 break;
             case 2:
                 //TODO curPlayer扔炸弹
                     curPlayer.setTap(new Vector2(tapX, tapY));
-                    curPlayer.shoot();
+                    curPlayer.shoot(cameraController);
 
                 break;
             case 3:

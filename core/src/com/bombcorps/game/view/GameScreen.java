@@ -11,8 +11,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -23,19 +21,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.controller.AudioController;
 import com.bombcorps.game.controller.DataController;
 import com.bombcorps.game.controller.InputController;
 import com.bombcorps.game.controller.WorldController;
 import com.bombcorps.game.model.Constants;
-import com.bombcorps.game.model.CurPlayerSignal;
+import com.bombcorps.game.model.Signal;
 import com.bombcorps.game.model.Player;
 
 
@@ -57,7 +52,7 @@ public class GameScreen extends AbstractGameScreen{
     private String myHeroType;
     private Player otherPlayer;
     private String quitPlayer;
-    private CurPlayerSignal curPlayerSignal;
+    private Signal curPlayerSignal;
 
 
     private BitmapFont font;
@@ -199,7 +194,7 @@ public class GameScreen extends AbstractGameScreen{
         worldController.getCameraController().setTarget(worldController.getCurPlayer());
         camera.update();
 
-        curPlayerSignal = new CurPlayerSignal();
+        curPlayerSignal = new Signal();
 
         cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT);
         cameraGUI.position.set(Constants.VIEWPORT_GUI_WIDTH/2,Constants.VIEWPORT_GUI_HEIGHT/2,0);
@@ -285,8 +280,8 @@ public class GameScreen extends AbstractGameScreen{
         worldController.getCameraController().applyTo(camera);
         batch.setProjectionMatrix(camera.combined);
         worldController.getWorld().render(batch);
-        curPlayerSignal.setPosition(worldController.getCurPlayer().getPosition().x+0.4f,worldController.getCurPlayer().getPosition().y+1.05f);
-        curPlayerSignal.render(batch);
+        curPlayerSignal.setPosition(worldController.getCurPlayer().getPosition().x+0.325f,worldController.getCurPlayer().getPosition().y+1.30f);
+        curPlayerSignal.renderCurPlayerSignal(batch);
     }
 
     public void renderGUI(SpriteBatch batch){
@@ -448,6 +443,7 @@ public class GameScreen extends AbstractGameScreen{
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                AudioController.instance.play(AssetsController.instance.btnClicked);
                 onSaveClicked();
                 return false;
             }
@@ -460,6 +456,7 @@ public class GameScreen extends AbstractGameScreen{
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 onCancelClicked();
+                AudioController.instance.play(AssetsController.instance.btnClicked);
                 return false;
             }
         });
@@ -607,6 +604,7 @@ public class GameScreen extends AbstractGameScreen{
     //结果窗口
     public void GameOver(){
         //游戏结算的弹窗
+        DataController prefs = DataController.instance;
         TextureRegionDrawable winResultsDrawable = new TextureRegionDrawable(AssetsController.instance.getRegion("winresult"));
         Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),winResultsDrawable);
         winResults = new Window("",windowStyle);
@@ -615,20 +613,23 @@ public class GameScreen extends AbstractGameScreen{
         winResults.setVisible(true);
         virtory = new Image(AssetsController.instance.getRegion("vitory"));
         failed = new Image(AssetsController.instance.getRegion("failed"));
-
+        Image confirm = new Image(AssetsController.instance.getRegion("confirm"));
+        confirm.setSize(winResults.getWidth()/4,winResults.getHeight()/4);
         if((worldController.isGameOver()==1&&myPlayer.getTeam() == Constants.PLAYER.RED_TEAM)||(worldController.isGameOver()==2&&myPlayer.getTeam() == Constants.PLAYER.BLUE_TEAM)){
             virtory.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
             virtory.setPosition((winResults.getWidth()-virtory.getWidth())/2,(winResults.getHeight()-virtory.getHeight())/1.25f);
             winResults.addActor(virtory);
-            AudioController.instance.play(AssetsController.instance.win);
             Label goldReceiveLabel = new Label("获得100金币",new Label.LabelStyle(font, Color.BLACK));
             winResults.addActor(goldReceiveLabel);
             goldReceiveLabel.setSize(winResults.getWidth(),winResults.getHeight()/2);
             goldReceiveLabel.setAlignment(Align.center);
             goldReceiveLabel.setPosition(0,winResults.getHeight()/5);
+
             if(!isPlayed){
-                AudioController.instance.play(AssetsController.instance.win);
+                AudioController.instance.stopMusic();
                 isPlayed =true;
+                prefs.addMoney(100);
+                AudioController.instance.play(AssetsController.instance.win);
             }
         }else{
 
@@ -641,14 +642,16 @@ public class GameScreen extends AbstractGameScreen{
             goldReceiveLabel.setAlignment(Align.center);
             goldReceiveLabel.setPosition(0,winResults.getHeight()/5);
             if(!isPlayed){
-                AudioController.instance.play(AssetsController.instance.lose);
+                AudioController.instance.stopMusic();
                 isPlayed = true;
+                prefs.addMoney(50);
+                AudioController.instance.play(AssetsController.instance.lose);
+
             }
         }
 
-        Image confirm = new Image(AssetsController.instance.getRegion("confirm"));
-        confirm.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
-        confirm.setPosition((winResults.getWidth()-virtory.getWidth())/2,50);
+
+        confirm.setPosition((winResults.getWidth()-confirm.getWidth())/2,50);
         winResults.addActor(confirm);
         confirm.addListener(new InputListener(){
 
@@ -673,10 +676,10 @@ public class GameScreen extends AbstractGameScreen{
         Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(AssetsController.instance.getRegion("winresult")));
         winErrorQuit = new Window("",windowStyle);
         Label.LabelStyle labelStyle = new Label.LabelStyle(font,Color.BLACK);
-        Label label = new Label("Because Manager is quitted,\n game error stop.",labelStyle);
-        label.setFontScale(1.0f);
-        winErrorQuit.setSize(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
-        winErrorQuit.setPosition(Gdx.graphics.getWidth()/4,Gdx.graphics.getHeight()/4);
+        Label label = new Label("房主退出,游戏意外结束.",labelStyle);
+        label.setFontScale(1.5f);
+        winErrorQuit.setSize(Gdx.graphics.getWidth()/2.3f,Gdx.graphics.getHeight()/2.3f);
+        winErrorQuit.setPosition(Gdx.graphics.getWidth()*(1-1/2.3f)/2,Gdx.graphics.getHeight()*(1-1/2.3f)/2);
         label.setPosition(winErrorQuit.getWidth()/2-label.getPrefWidth()/2,2*winErrorQuit.getHeight()/3-label.getPrefHeight()/2);
         //winOptions.setColor(1,1,1,1f);
         winErrorQuit.addActor(buildErrorQuitWindowBotton());
@@ -697,6 +700,7 @@ public class GameScreen extends AbstractGameScreen{
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 //点击确认
+                AudioController.instance.play(AssetsController.instance.btnClicked);
                 onErrorQuitBottonClicked();
                 return true;
             }
@@ -745,10 +749,6 @@ public class GameScreen extends AbstractGameScreen{
         winErrorQuit.setVisible(true);
     }
 
-    public void loadMenuScreen() {
-        game.loadMenuScreen();
-    }
-
 
     @Override
     public void show() {
@@ -765,7 +765,7 @@ public class GameScreen extends AbstractGameScreen{
         renderWorld(batch);
         worldController.getWorld().getPlayerManager().update(deltaTime);
         worldController.getWorld().getPlayerManager().getBomb().update(deltaTime);
-        worldController.testCollisions();
+        worldController.update(deltaTime);
         renderGUI(batch);
         batch.end();
         if(isStage){
@@ -793,6 +793,9 @@ public class GameScreen extends AbstractGameScreen{
 
     public Player myPlayer(){
         return myPlayer;
+    }
+    public String getMyHeroType(){
+        return myHeroType;
     }
 
     public DirectedGame getGame(){

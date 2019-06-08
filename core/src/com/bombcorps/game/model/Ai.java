@@ -46,7 +46,7 @@ public class Ai extends Player{
         velocityY /= enemyList.get(index).getMyHero().getPosition().x - getMyHero().getPosition().x;
 
         bomb.setVelocity(new Vector2(Constants.AI.BOMB_VELOCITY_X, velocityY));
-        this.shoot();
+//        this.shoot(bomb);
 
         return true;
     }

@@ -46,10 +46,13 @@ public class LobbyScreen extends AbstractGameScreen implements InputProcessor{
     private int numOfPage = 0;
 
     DataController dc = DataController.instance;
-    NetController netController = game.getNetController();
+    private DirectedGame game;
+    private NetController netController;
 
     public LobbyScreen(DirectedGame game) {
         super(game);
+        this.game = game;
+        netController = game.getNetController();
         batch = new SpriteBatch();
         camera = new OrthographicCamera(width, height);
         camera.position.set(width/2, height/2, 0);
@@ -304,7 +307,8 @@ public class LobbyScreen extends AbstractGameScreen implements InputProcessor{
 
     @Override
     public void hide() {
-
+        batch.dispose();
+        camera = null;
     }
 
     @Override

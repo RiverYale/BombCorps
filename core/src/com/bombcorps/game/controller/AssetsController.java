@@ -28,6 +28,38 @@ public class AssetsController  implements Disposable, AssetErrorListener {
     public Sound lose;
     public Sound win;
 
+    public Sound angelshoot;
+    public Sound spardashoot;
+    public Sound wizardshoot;
+    public Sound snipershoot;
+    public Sound protectorshoot;
+
+    public Sound protectorskill1;
+    public Sound protectorskill3;
+    public Sound spardaskill1;
+    public Sound spardaskill3;
+    public Sound angelskill3;
+    public Sound wizardskill1;
+    public Sound wizardskill3;
+    public Sound sniperskill1;
+    public Sound sniperskill3;
+
+    public Sound angelboom0;
+    public Sound angelboom1;
+
+    public Sound spardaboom0;
+
+    public Sound sniperboom0;
+    public Sound sniperboom1;
+
+    public Sound protectorboom0;
+    public Sound protectorboom1;
+
+    public Sound wizardboom0;
+    public Sound wizardboom1;
+
+    public Sound tp;
+
     private AssetsController() {
         this.assetManager = new AssetManager();
         assetManager.setErrorListener(this);
@@ -40,7 +72,32 @@ public class AssetsController  implements Disposable, AssetErrorListener {
         levelup =Gdx.audio.newSound(Gdx.files.internal("sound/levelup.mp3"));
         lose = Gdx.audio.newSound(Gdx.files.internal("sound/lose.mp3"));
         win = Gdx.audio.newSound(Gdx.files.internal("sound/win.mp3"));
+        angelshoot =Gdx.audio.newSound(Gdx.files.internal("sound/angelshoot.mp3"));
+        snipershoot =Gdx.audio.newSound(Gdx.files.internal("sound/snipershoot.mp3"));
+        spardashoot =Gdx.audio.newSound(Gdx.files.internal("sound/spardashoot.mp3"));
+        protectorshoot =Gdx.audio.newSound(Gdx.files.internal("sound/protectorshoot.mp3"));
 
+        spardaskill1 = Gdx.audio.newSound(Gdx.files.internal("sound/spardaskill1.mp3"));
+        spardaskill3 = Gdx.audio.newSound(Gdx.files.internal("sound/spardaskill3.mp3"));
+        angelskill3 =Gdx.audio.newSound(Gdx.files.internal("sound/angelskill3.mp3"));
+        protectorskill1 =Gdx.audio.newSound(Gdx.files.internal("sound/protectorskill1.mp3"));
+        protectorskill3 =Gdx.audio.newSound(Gdx.files.internal("sound/protectorskill3.mp3"));
+        wizardskill1 = Gdx.audio.newSound(Gdx.files.internal("sound/wizardskill1.mp3"));
+        wizardskill3 = Gdx.audio.newSound(Gdx.files.internal("sound/wizardskill3.mp3"));
+        sniperskill1 =Gdx.audio.newSound(Gdx.files.internal("sound/sniperskill1.mp3"));
+        sniperskill3 = Gdx.audio.newSound(Gdx.files.internal("sound/sniperskill3.mp3"));
+
+        angelboom0 =Gdx.audio.newSound(Gdx.files.internal("sound/angelboom0.mp3"));
+        angelboom1 =Gdx.audio.newSound(Gdx.files.internal("sound/angelboom1.mp3"));
+        spardaboom0 = Gdx.audio.newSound(Gdx.files.internal("sound/spardaboom0.mp3"));
+        sniperboom0 =Gdx.audio.newSound(Gdx.files.internal("sound/sniperboom0.mp3"));
+        sniperboom1 = Gdx.audio.newSound(Gdx.files.internal("sound/sniperboom1.mp3"));
+        protectorboom0 =Gdx.audio.newSound(Gdx.files.internal("sound/protectorboom0.mp3"));
+        protectorboom1 = Gdx.audio.newSound(Gdx.files.internal("sound/protectorboom1.mp3"));
+        wizardboom0 =Gdx.audio.newSound(Gdx.files.internal("sound/wizardboom0.mp3"));
+        wizardboom1 = Gdx.audio.newSound(Gdx.files.internal("sound/wizardboom1.mp3"));
+
+        tp =Gdx.audio.newSound(Gdx.files.internal("sound/tp.mp3"));
     }
 
     public void loadTexture(String fileName) {

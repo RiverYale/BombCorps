@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.bombcorps.game.controller.AssetsController;
+import com.bombcorps.game.controller.AudioController;
 import com.bombcorps.game.model.Constants;
 import com.bombcorps.game.model.Player;
 
@@ -239,9 +240,11 @@ public class Bomb {
                 case Constants.ANGEL:
                     switch (bombType) {
                         case 0:
+                            AudioController.instance.play(AssetsController.instance.angelboom0);
                             handlePlayerDamage(playersBeingHit,playerListRed, playerListBlue );
                             break;
                         case 1:
+                            AudioController.instance.play(AssetsController.instance.angelboom1);
                             for(Player i : playersBeingHit){
                                 i.getMyHero().setHealth(MathUtils.clamp(i.getMyHero().getHealth() +
                                                 Constants.Angel.SKILL_1_HEALTH_ADD
@@ -252,6 +255,7 @@ public class Bomb {
                             /*
                             TODO 虚弱
                              */
+                            AudioController.instance.play(AssetsController.instance.angelboom0);
                             for(Player i : playersBeingHit){
                                 i.getMyHero().getAura().get(2).setState(Constants.AURA.ANGELAURA);  //虚弱光环
                                 if(i.getTeam() == Constants.PLAYER.RED_TEAM){
@@ -287,7 +291,9 @@ public class Bomb {
                 case Constants.SPARDA:
                     switch (bombType){
                         case 0:
+                            AudioController.instance.play(AssetsController.instance.spardaboom0);
                         case 1:
+                            AudioController.instance.play(AssetsController.instance.spardaboom0);
                             fromPlayer.getMyHero().setHealth(MathUtils.clamp(fromPlayer.getMyHero().getHealth() +
                                             damageOutput(fromPlayer.getMyHero().getAttack()) * playersBeingHit.size *
                                                     Constants.Sparda.SKILL_0_HEALTH_PERCENTAGE_ADD,
@@ -298,8 +304,8 @@ public class Bomb {
                     break;
                 case Constants.SNIPER:
                     switch (bombType){
-                        case 0:
-                        case 1:
+                        case 0:AudioController.instance.play(AssetsController.instance.sniperboom0);
+                        case 1:AudioController.instance.play(AssetsController.instance.sniperboom1);
                             boolean skill3On = false;
                             if(fromPlayer.getTeam() == Constants.PLAYER.RED_TEAM){
                                 for(int i = 0 ; i < playerListRed.size ; i++){
@@ -334,12 +340,14 @@ public class Bomb {
                 case Constants.PROTECTOR:
                     switch(bombType){
                         case 0:
+                            AudioController.instance.play(AssetsController.instance.protectorboom0);
                             handlePlayerDamage(playersBeingHit,playerListRed, playerListBlue);
                             break;
                         case 1:
                             /*
                             TODO
                              */
+                            AudioController.instance.play(AssetsController.instance.protectorboom1);
                             for(Player i : playersBeingHit){
                                 i.getMyHero().setArmor(i.getMyHero().getArmor() + Constants.Protector.SKILL_2_ARMOR_ADD);
 
@@ -365,7 +373,7 @@ public class Bomb {
                     break;
                 case Constants.WIZARD:
                     switch (bombType){
-                        case 0:
+                        case 0:AudioController.instance.play(AssetsController.instance.wizardboom0);
                             for(Player i : playersBeingHit){
                                 i.getMyHero().getAura().get(4).setState(Constants.AURA.WIZARDAURA0);
 
@@ -396,6 +404,7 @@ public class Bomb {
                             /*
                             TODO 禁锢
                              */
+                            AudioController.instance.play(AssetsController.instance.wizardboom1);
                             for(Player i : playersBeingHit){
                                 i.getMyHero().getAura().get(5).setState(Constants.AURA.WIZARDAURA1);    //设置光环
 
@@ -423,6 +432,7 @@ public class Bomb {
                     Gdx.app.log("jump", "activated");
                     fromPlayer.getMyHero().setPosition(position);
                     break;
+                    AudioController.instance.play(AssetsController.instance.tp);
             }
 
     }

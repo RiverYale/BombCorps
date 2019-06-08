@@ -49,11 +49,9 @@ public abstract class DirectedGame implements ApplicationListener {
     }
 
     public void loadRoomScreen(Room room){
-
         roomScreen = new RoomScreen(this,room.getOwnerIp(),room.getLIMIT(),room);
         netController.bindGame(this);
         setScreen(roomScreen);
-        Gdx.app.log("Directed game","room is loading");
         Constants.CurrentScreenFlag = Constants.RoomScreenFlag;
     }
 
@@ -72,10 +70,8 @@ public abstract class DirectedGame implements ApplicationListener {
         //netController = new NetController();
 
         worldController = new WorldController(this,camera,netController);
-        Gdx.app.log("DirectedGame","new worldController ");
 
         gameScreen = new GameScreen(this,worldController);
-        Gdx.app.log("DirectedGame","new gameScreen");
         setScreen(gameScreen);
         Constants.CurrentScreenFlag = Constants.GameScreenFlag;
     }
@@ -165,9 +161,7 @@ public abstract class DirectedGame implements ApplicationListener {
         }
         // 启动一个新的切换
         nextScreen = screen;
-        Gdx.app.log("qin","next screen");
         nextScreen.show(); // 激活下一个屏幕
-        Gdx.app.log("qin","show() is used.");
         nextScreen.resize(w, h);
         nextScreen.render(0); // 让下一个屏幕更新一次
         if (currScreen != null)
