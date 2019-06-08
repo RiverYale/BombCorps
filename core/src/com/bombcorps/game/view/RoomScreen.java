@@ -335,6 +335,7 @@ public class RoomScreen extends AbstractGameScreen{
         stage.addActor(btnCancel);
     }
 
+    private String localHost = NetController.getLocalHostIp();
     public void batchAddButton(){
         //换边按钮(门)
         doorRed.draw(batch,1);
@@ -343,7 +344,7 @@ public class RoomScreen extends AbstractGameScreen{
         btnHeroLeft.draw(batch,1);
         btnHeroRight.draw(batch,1);
         //选择地图按钮
-        if(NetController.getLocalHostIp().equals(room.getOwnerIp())){
+        if(localHost.equals(room.getOwnerIp())){
             btnMapleft.draw(batch,1);
             btnMapright.draw(batch,1);
         }

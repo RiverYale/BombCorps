@@ -16,7 +16,7 @@ public class Constants {
     //DataController
     public static final int HERO_MAX_LEVEL = 5;
 
-    public static final float ACCELERATION = -50f;   //加速度
+    public static final float ACCELERATION = -30f;   //加速度
     public static final float VELOCITY_X = 5f;        //水平速度
 
 

@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombcorps.game.model.Constants;
-import com.bombcorps.game.model.Message;
 import com.bombcorps.game.model.Player;
 import com.bombcorps.game.view.GameScreen;
 
@@ -53,6 +52,7 @@ public class InputController implements GestureDetector.GestureListener {
             gameScreen.getGame().loadLobbyScreen();
             return false;
         }else if(gameScreen.btnSettings.getBoundingRectangle().contains(v.x,v.y)){
+            gameScreen.setStageTrue();
             Gdx.input.setInputProcessor(gameScreen.stage);
             gameScreen.winOptions.setVisible(true);
             return false;
@@ -78,10 +78,12 @@ public class InputController implements GestureDetector.GestureListener {
             controller.onOperationClicked(6);
             return false;
         }else if(gameScreen.imgMyHeroHead.getBoundingRectangle().contains(v.x,v.y)){
+            gameScreen.setStageTrue();
             Gdx.input.setInputProcessor(gameScreen.stage);
             gameScreen.winHeroInfo.setVisible(true);
             return false;
         }else if(gameScreen.imgOtherHeroHead.getBoundingRectangle().contains(v.x,v.y)&&gameScreen.isClickedHero()){
+            gameScreen.setStageTrue();
             Gdx.input.setInputProcessor(gameScreen.stage);
             gameScreen.winOtherHeroInfo.setVisible(true);
             return false;
@@ -89,12 +91,10 @@ public class InputController implements GestureDetector.GestureListener {
 
         v = new Vector3(x, y, 0);
         camera.unproject(v);
-        Gdx.app.log("qin","x="+v.x+" y="+v.y);
         int op = controller.getOperations();
         if(op == -1) {
             Player p = controller.hasPlayer(v.x, v.y);
             if (p != null) {
-                Gdx.app.log("qin","hero clicked is used in InputController");
                 cameraController.setTarget(p);
                  controller.onHeroClicked(p);
             }
