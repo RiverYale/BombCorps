@@ -79,6 +79,12 @@ public class WorldController {
 
     public Player hasPlayer(float x, float y) {
         for(Player p : world.getPlayers()){
+            Vector2 position =new Vector2();
+            Vector2 dimension = new Vector2();
+            p.getRect().getPosition(position);
+            p.getRect().getSize(dimension);
+//            Gdx.app.log("qin","position.x = "+position.x+" position.y = "+position.y+
+//                    " dimension.x = "+dimension.x+" dimension.y = "+dimension.y);
             if(p.getRect().contains(x, y)){
                 return p;
             }
@@ -96,6 +102,7 @@ public class WorldController {
     }
 
     public void onHeroClicked(Player p) {
+//        Gdx.app.log("qin","hero clicked is used in WorldController");
         game.onHeroClicked(p);
     }
 
@@ -107,10 +114,12 @@ public class WorldController {
             case 1:
                 operations = 1;
                 //TODO curPlayer放个球
+                getCurPlayer().getBomb().setState(Constants.BOMB.STATE_READY);
                 break;
             case 2:
                 operations = 2;
                 //TODO curPlayer放个炸弹
+                getCurPlayer().getBomb().setState(Constants.BOMB.STATE_READY);
                 break;
             case 3:
             case 4:
@@ -140,19 +149,22 @@ public class WorldController {
 
     public void startNextRound(Bonus b) {
         //TODO
-        world.getPlayerManager().getSkillAndBuff().initSkillEveryChange();
+//        Gdx.app.log("ain","Change");
+        world.getPlayerManager().initEveryChange();
+//        Gdx.app.log("qin","next player is ");
         if(b != null){
             world.addBonus(b);
         }
+
         curPlayer = world.getNextPlayer();
+
         perRound++;
         while (curPlayer.getMyHero().getState() == Constants.STATE_DEAD){
             curPlayer = world.getNextPlayer();
             perRound++;
         }
         if (perRound > world.getPlayers().size) {
-            curPlayer.initHeroEveryRound();
-            world.getPlayerManager().getSkillAndBuff().updateBuffEveryRound();
+            world.getPlayerManager().initEveryRound();
             perRound %= world.getPlayers().size;
         }
         cameraController.setTarget(curPlayer);
@@ -177,8 +189,10 @@ public class WorldController {
             case 2:
                 //TODO curPlayer扔炸弹
                 if(curPlayer.useSkill(op)) {
+//                    curPlayer
                     curPlayer.setTap(new Vector2(tapX, tapY));
                     curPlayer.shoot();
+
                 }
                 break;
             case 3:
@@ -202,7 +216,7 @@ public class WorldController {
     public int isGameOver() {  //0 未结束   1 红赢   2 蓝赢   3 平
         boolean red = false, blue = false;
         for (Player p : world.getPlayers()) {
-            if(p.getTeam() == 0){
+            if(p.getTeam() == Constants.PLAYER.RED_TEAM){
                 red = true;
             }else{
                 blue = true;
@@ -220,22 +234,24 @@ public class WorldController {
     }
 
     public void testCollisions() {
-        //TODO Bonus碰Rock
         boolean b_falling = true;
         Rectangle r1 = curPlayer.getRect();
         Rectangle r2;
         for(Rock r : world.rocks) {
             r2 = r.getRect();
+            r1.setPosition(r1.getX(), r1.getY()-0.05f);
+            if (r1.overlaps(r2)) {
+                b_falling = false;
+            }
+            r1.setPosition(r1.getX(), r1.getY()+0.05f);
             if (r1.overlaps(r2)) {
                 onCollisionsPlayerWithRock(r);
-                b_falling = false;
             }
         }
         for (Pillar p : world.pillars) {
             r2 = p.getRect();
             if (r1.overlaps(r2)) {
                 onCollisionsPlayerWithPillar(p);
-                b_falling = false;
             }
         }
         if (b_falling) {
@@ -278,13 +294,12 @@ public class WorldController {
             } else {
                 curPlayer.setX(r.getPosition().x - r.getRect().getWidth());
             }
-            return;
         }
         switch (curPlayer.getHeroState()) {
             case Constants.STATE_GROUNDED:
                 break;
             case Constants.STATE_MOVING:
-                if (heightDifference > 0.25f) { //TODO
+                if (heightDifference > 0.25f) {
                     curPlayer.setHeroState(Constants.STATE_GROUNDED);
                 } else {
                     curPlayer.setY(r.getPosition().y + r.getRect().getHeight());
@@ -306,13 +321,12 @@ public class WorldController {
             } else {
                 curPlayer.setX(r.getPosition().x - r.getRect().getWidth());
             }
-            return;
         }
         switch (curPlayer.getHeroState()) {
             case Constants.STATE_GROUNDED:
                 break;
             case Constants.STATE_MOVING:
-                if (heightDifference > 0.25f) { //TODO
+                if (heightDifference > 0.25f) {
                     curPlayer.setHeroState(Constants.STATE_GROUNDED);
                 } else {
                     curPlayer.setY(r.getPosition().y + r.getRect().getHeight());

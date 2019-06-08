@@ -26,12 +26,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.controller.AudioController;
 import com.bombcorps.game.controller.DataController;
 import com.bombcorps.game.controller.InputController;
 import com.bombcorps.game.controller.WorldController;
 import com.bombcorps.game.model.Constants;
+import com.bombcorps.game.model.CurPlayerSignal;
 import com.bombcorps.game.model.Player;
 
 
@@ -43,10 +47,19 @@ public class GameScreen extends AbstractGameScreen{
     public final float width = Constants.VIEWPORT_GUI_WIDTH;
     public final float height = Constants.VIEWPORT_GUI_HEIGHT;
     private boolean paused = false;
+    private boolean isquit;
+    private boolean isPlayed;
     private boolean isClickedHero;
+    private boolean isStage;
+
+    private Player myPlayer;
+    private int myHeroTypeI;
+    private String myHeroType;
     private Player otherPlayer;
     private String quitPlayer;
-    private boolean isquit;
+    private CurPlayerSignal curPlayerSignal;
+
+
     private BitmapFont font;
     private float scale;
     public String[] description = {
@@ -154,13 +167,39 @@ public class GameScreen extends AbstractGameScreen{
         font = AssetsController.instance.font;
 
         isClickedHero = false;
-
         isquit = false;
+        isPlayed = false;
+        isStage = false;
+
+        myPlayer = worldController.getPlayers().get(0);
+        int i;
+        for(i=0;i<worldController.getPlayers().size;i++) {
+            if (worldController.getPlayers().get(i).isMe()) {
+                myPlayer =  worldController.getPlayers().get(i);
+            }
+        }
+
+        myHeroTypeI = myPlayer.getHeroType();
+
+        myHeroType = "Sparda";
+        if(myHeroTypeI==0){
+            myHeroType = "Sparda";
+        } else if(myHeroTypeI==1){
+            myHeroType = "Protector";
+        } else if(myHeroTypeI==2){
+            myHeroType =  "Angel";
+        } else if(myHeroTypeI==3){
+            myHeroType = "Sniper";
+        } else {
+            myHeroType = "Wizard";
+        }
+
 
         worldController.getCameraController().setPosition(Constants.VIEWPORT_WIDTH/2,Constants.VIEWPORT_HEIGHT/2);
         worldController.getCameraController().setTarget(worldController.getCurPlayer());
-
         camera.update();
+
+        curPlayerSignal = new CurPlayerSignal();
 
         cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT);
         cameraGUI.position.set(Constants.VIEWPORT_GUI_WIDTH/2,Constants.VIEWPORT_GUI_HEIGHT/2,0);
@@ -171,11 +210,11 @@ public class GameScreen extends AbstractGameScreen{
         //退出按钮
         btnQuit = new Sprite(AssetsController.instance.getRegion("mapleft"));
         btnQuit.setSize(0.045f * width,0.07f * height);
-        btnQuit.setPosition(0,0.91f * height);
+        btnQuit.setPosition(0,0.93f*height);
         //设置按钮
         btnSettings = new Sprite(AssetsController.instance.getRegion("button_setting"));
         btnSettings.setSize(0.045f * width,0.07f * height);
-        btnSettings.setPosition(width-btnSettings.getWidth(),0.91f * height);
+        btnSettings.setPosition(width-btnSettings.getWidth(),0.93f * height);
         //移动按钮
         imgMove = new Sprite(AssetsController.instance.getRegion("move")) ;
         scale=width/15/imgMove.getWidth();
@@ -190,15 +229,15 @@ public class GameScreen extends AbstractGameScreen{
         imgAttrack.setScale(scale);
         imgAttrack.setPosition(imgEjection.getX()+imgEjection.getWidth()*scale,0);
         //一技能按钮
-        imgSkillOne = new Sprite(AssetsController.instance.getRegion("SkillOne"));
+        imgSkillOne = new Sprite(AssetsController.instance.getRegion(myHeroType+"1"));
         imgSkillOne.setScale(scale);
         imgSkillOne.setPosition(imgAttrack.getX()+imgAttrack.getWidth()*scale,0);
         //二技能按钮
-        imgSkillTwo = new Sprite(AssetsController.instance.getRegion("SkillTwo"));
+        imgSkillTwo = new Sprite(AssetsController.instance.getRegion(myHeroType+"2"));
         imgSkillTwo.setScale(scale);
         imgSkillTwo.setPosition(imgSkillOne.getX()+imgSkillOne.getWidth()*scale,0);
         //三技能按钮
-        imgSkillThree = new Sprite(AssetsController.instance.getRegion("SkillThree"));
+        imgSkillThree = new Sprite(AssetsController.instance.getRegion(myHeroType+"3"));
         imgSkillThree.setScale(scale);
         imgSkillThree.setPosition(imgSkillTwo.getX()+imgSkillTwo.getWidth()*scale,0);
         //回合结束按钮
@@ -207,14 +246,14 @@ public class GameScreen extends AbstractGameScreen{
         imgTurnEnd.setScale(scale);
         imgTurnEnd.setPosition(imgSkillThree.getX()+imgSkillThree.getWidth()*scale,0);
         //本人英雄头像
-        imgMyHeroHead = new Sprite(AssetsController.instance.getRegion(myHeroType()+"_move0"));
+        imgMyHeroHead = new Sprite(AssetsController.instance.getRegion(myHeroType+"_move0"));
         imgMyHeroHead.setSize(43,43);
         imgMyHeroHead.setScale(scale);
         imgMyHeroHead.setPosition(0,0);
 
 
         //他人英雄头像
-        imgOtherHeroHead = new Sprite(AssetsController.instance.getRegion(myHeroType()+"_move0"));
+        imgOtherHeroHead = new Sprite(AssetsController.instance.getRegion(myHeroType+"_move0"));
         imgOtherHeroHead.setSize(43,43);
         imgOtherHeroHead.setScale(scale);
         imgOtherHeroHead.setPosition(width/15*12,0);
@@ -246,12 +285,14 @@ public class GameScreen extends AbstractGameScreen{
         worldController.getCameraController().applyTo(camera);
         batch.setProjectionMatrix(camera.combined);
         worldController.getWorld().render(batch);
+        curPlayerSignal.setPosition(worldController.getCurPlayer().getPosition().x+0.4f,worldController.getCurPlayer().getPosition().y+1.05f);
+        curPlayerSignal.render(batch);
     }
 
     public void renderGUI(SpriteBatch batch){
         batch.setProjectionMatrix(cameraGUI.combined);
         batchBotton(batch);
-        if(myPlayer().equals(worldController.getCurPlayer())){
+        if(myPlayer.equals(worldController.getCurPlayer())){
             batchSkill(batch);
         }
         batchHeroInfo(batch);
@@ -283,18 +324,18 @@ public class GameScreen extends AbstractGameScreen{
         bar.setX(imgMyHeroHead.getX()+43*scale);
         for(int i=2;i>=0;i--) {
             bar.setColor(Color.GRAY);
+            bar.setSize(width/15*1.5f,bar.getHeight());
             bar.setY(i*15+1);
             bar.draw(batch);
 
             bar.setColor(c[i]);
             bar.setY(i*15+1);
             if(i == 2){
-                bar.setSize(width/15*1.5f*myPlayer().getMyHero().getHealth()/myPlayer().getMyHero().getMaxHealth(), bar.getHeight());
+                bar.setSize(width/15*1.5f*myPlayer.getMyHero().getHealth()/myPlayer.getMyHero().getMaxHealth(), bar.getHeight());
             }else if(i == 1){
-                bar.setSize(width/15*1.5f*myPlayer().getMyHero().getEndurance()/Constants.MAX_ENDURENCE,bar.getHeight());
-
-            }else {
-                bar.setSize(width/15*1.5f*myPlayer().getMyHero().getRagePower()/Constants.MAX_RAGEPOWER,bar.getHeight());
+                bar.setSize(width/15*1.5f*myPlayer.getMyHero().getEndurance()/Constants.MAX_ENDURENCE,bar.getHeight());
+            }else if(i==0){
+                bar.setSize(width/15*1.5f*myPlayer.getMyHero().getRagePower()/Constants.MAX_RAGEPOWER,bar.getHeight());
             }
             bar.draw(batch);
         }
@@ -305,6 +346,7 @@ public class GameScreen extends AbstractGameScreen{
         bar.setX(imgOtherHeroHead.getX()+43*scale);
         for(int i=2;i>=0;i--) {
             bar.setColor(Color.GRAY);
+            bar.setSize(width/15*1.5f,bar.getHeight());
             bar.setY(i*15+1);
             bar.draw(batch);
 
@@ -342,8 +384,8 @@ public class GameScreen extends AbstractGameScreen{
         winOptions.setColor(1,1,1,1f);
         winOptions.setVisible(false);
         winOptions.pack();
-        winOptions.setSize(width/2,height/2);
-        winOptions.setPosition((width-winOptions.getWidth())/2,(height-winOptions.getHeight())/2);
+        winOptions.setSize(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
+        winOptions.setPosition(Gdx.graphics.getWidth()/4,Gdx.graphics.getWidth()/4);
         layer.addActor(winOptions);
         return layer;
     }
@@ -354,19 +396,17 @@ public class GameScreen extends AbstractGameScreen{
         tbl.pad(0,10,0,10);
 
 //        BitmapFont font =new BitmapFont(Gdx.files.internal("menuscreen/winOptions.fnt"),Gdx.files.internal("menuscreen/winOptions.png"),false);
-        Label audioLbl = new Label("Audio",new Label.LabelStyle(font,font.getColor()));
-        audioLbl.setFontScale(1.3f*width/1280f);
-        audioLbl.debug();
+        Label audioLbl = new Label("Audio",new Label.LabelStyle(font,Color.BLACK));
+        audioLbl.setFontScale(3*1.3f*width/1280f);
         tbl.add(audioLbl).colspan(3);
         tbl.row();
         tbl.columnDefaults(0).padRight(10);
         tbl.columnDefaults(1).padRight(10);
         //添加sound标签 声音滑动控件
 
-        Label soundLbl = new Label("Sound",new Label.LabelStyle(font,font.getColor()));
-        soundLbl.setFontScale(1.3f*width/1280f);
+        Label soundLbl = new Label("Sound",new Label.LabelStyle(font,Color.BLACK));
+        soundLbl.setFontScale(3*1.3f*width/1280f);
         tbl.add(soundLbl).padTop(20*width/1280);
-        soundLbl.debug();
 //        Texture sliderBac=new Texture("menuscreen/sliderbackground.png");
         TextureRegion sliderBac = AssetsController.instance.getRegion("sliderbackground");
         Image image = new Image(sliderBac);
@@ -376,14 +416,14 @@ public class GameScreen extends AbstractGameScreen{
                 new TextureRegionDrawable(AssetsController.instance.getRegion("sliderkuai")));
 
         sldSound = new Slider(0.0f,1.0f,0.1f,false,sliderStyle);
-        tbl.add(sldSound).width(sldSound.getWidth()*width/1280).padTop(20*width/1280);
+        tbl.add(sldSound).width(3*sldSound.getWidth()*width/1280).padTop(20*width/1280);
         tbl.row();
         //添加music标签 音乐滑动控件
-        Label musicLbl = new Label("Music",new Label.LabelStyle(font,font.getColor()));
+        Label musicLbl = new Label("Music",new Label.LabelStyle(font,Color.BLACK));
         tbl.add(musicLbl).padTop(20*width/1280);
-        musicLbl.setFontScale(1.3f*width/1280);
+        musicLbl.setFontScale(3*1.3f*width/1280);
         sldMusic = new Slider(0.0f,1.0f,0.1f,false,sliderStyle);
-        tbl.add(sldMusic).width(sldMusic.getWidth()*width/1280).padTop(20*width/1280);
+        tbl.add(sldMusic).width(3*sldMusic.getWidth()*width/1280).padTop(20*width/1280);
         tbl.row();
         return tbl;
     }
@@ -394,7 +434,7 @@ public class GameScreen extends AbstractGameScreen{
         //添加分割线
         Texture texture = new Texture(Gdx.files.internal("menuscreen/savecancelbutton.png"));
         //TextureRegion texture = AssetsController.instance.getRegion("savecancelbutton");
-        font.getData().setScale(width/1280);
+        font.getData().setScale(2*width/1280);
         //添加save按钮并且 初始化事件处理器
         TextureRegionDrawable textureRegionDrawable = new TextureRegionDrawable(texture);
 
@@ -403,20 +443,24 @@ public class GameScreen extends AbstractGameScreen{
 
 
         btnWinOptSave = new TextButton("Save",textButtonStyle);
-        tbl.add(btnWinOptSave).width(btnWinOptSave.getWidth()*width/1280f).height(btnWinOptSave.getHeight()*width/1280).padLeft(20*width/1280).padTop(20*width/1280);
-        btnWinOptSave.addListener(new ChangeListener() {
+        tbl.add(btnWinOptSave).width(3*btnWinOptSave.getWidth()*width/1280f).height(3*btnWinOptSave.getHeight()*width/1280).padLeft(20*width/1280).padTop(20*width/1280);
+        btnWinOptSave.addListener(new InputListener(){
+
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 onSaveClicked();
+                return false;
             }
         });
         // 添加cancel按钮并且 初始化事件处理器
         btnWinOptCancel = new TextButton("Cancel", textButtonStyle);
-        tbl.add(btnWinOptCancel).width(btnWinOptSave.getWidth()*width/1280f).height(btnWinOptSave.getHeight()*width/1280).padLeft(20*width/1280).padTop(20*width/1280);
-        btnWinOptCancel.addListener(new ChangeListener() {
+        tbl.add(btnWinOptCancel).width(3*btnWinOptSave.getWidth()*width/1280f).height(3*btnWinOptSave.getHeight()*width/1280).padLeft(20*width/1280).padTop(20*width/1280);
+        btnWinOptCancel.addListener(new InputListener(){
+
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 onCancelClicked();
+                return false;
             }
         });
         return tbl;
@@ -430,6 +474,7 @@ public class GameScreen extends AbstractGameScreen{
 
     public void onCancelClicked(){
         winOptions.setVisible(false);
+        isStage = false;
         Gdx.input.setInputProcessor(getInputProcessor());
     }
 
@@ -452,15 +497,15 @@ public class GameScreen extends AbstractGameScreen{
         winHeroInfo = new Window("",windowStyle);
         //winOptions.setColor(1,1,1,1f);
         winHeroInfo.setVisible(false);
-        Label.LabelStyle labelStyle = new Label.LabelStyle(font,Color.BLACK);
-        Label label = new Label(description[myHeroTypeI()],labelStyle);
+        Label.LabelStyle labelStyle = new Label.LabelStyle(font,Color.WHITE);
+        Label label = new Label(description[myHeroTypeI],labelStyle);
         label.setFontScale(1.0f);
-        label.debug();
+        label.setSize(500,200);
         winHeroInfo.addActor(label);
         //winOptions.pack();
-        winHeroInfo.setSize(label.getWidth()*1.2f,label.getHeight()*1.0f);
-        label.setPosition(label.getWidth()*0.1f,0);
-        winHeroInfo.setPosition(0,width/9);
+        winHeroInfo.setSize(label.getWidth()*1.2f,label.getHeight()*1.2f);
+        label.setPosition(label.getWidth()*0.1f,label.getHeight()*0.1f);
+        winHeroInfo.setPosition(0,width/9+50);
         btnwinHInfoQuit = new Image(AssetsController.instance.getRegion("button_quit"));
         btnwinHInfoQuit.setScale(1.5f);
         btnwinHInfoQuit.setPosition(winHeroInfo.getWidth()-btnwinHInfoQuit.getWidth()*1.5f,winHeroInfo.getHeight()-btnwinHInfoQuit.getHeight()*1.5f);
@@ -479,6 +524,7 @@ public class GameScreen extends AbstractGameScreen{
 
     public void onWinHInfoQuitBottonClicked() {
         winHeroInfo.setVisible(false);
+        isStage = false;
         Gdx.input.setInputProcessor(getInputProcessor());
     }
 
@@ -498,7 +544,7 @@ public class GameScreen extends AbstractGameScreen{
         //winOptions.pack();
         winOtherHeroInfo.setPosition(width-winOtherHeroInfo.getWidth(),imgMyHeroHead.getHeight()*width/15/imgMyHeroHead.getWidth());
         btnwinOHInfoQuit = new Image(AssetsController.instance.getRegion("button_quit"));
-        btnwinHInfoQuit.setScale(1.5f);
+        btnwinOHInfoQuit.setScale(1.5f);
         btnwinOHInfoQuit.setPosition(winOtherHeroInfo.getWidth()-btnwinOHInfoQuit.getWidth()*1.5f,winOtherHeroInfo.getHeight()-btnwinOHInfoQuit.getHeight()*1.5f);
         btnwinOHInfoQuit.addListener(new InputListener(){
             @Override
@@ -516,11 +562,13 @@ public class GameScreen extends AbstractGameScreen{
 
     public void onWinOHInfoQuitBottonClicked() {
         winOtherHeroInfo.setVisible(false);
+        isStage = false;
         Gdx.input.setInputProcessor(getInputProcessor());
     }
 
 
     public void onHeroClicked(Player p){
+        Gdx.app.log("qin","hero clicked is used in GameScreen");
         otherPlayer = p;
         isClickedHero = true;
         final int heroType;
@@ -538,15 +586,20 @@ public class GameScreen extends AbstractGameScreen{
             i = "Wizard";
         }
         imgOtherHeroHead = new Sprite(AssetsController.instance.getRegion(i+"_move0"));
-
+        imgOtherHeroHead.setSize(43,43);
+        imgOtherHeroHead.setScale(scale);
+        imgOtherHeroHead.setPosition(width/15*12,0);
         //font.getData().setScale(1.0f);
 
         Label.LabelStyle labelStyle = new Label.LabelStyle(font,font.getColor());
         Label label = new Label(description[heroType],labelStyle);
         label.setFontScale(1.0f);
+        label.setSize(500,200);
         winOtherHeroInfo.addActor(label);
-        winHeroInfo.setSize(label.getPrefWidth()*1.2f,label.getPrefHeight()*1.0f);
-        label.setPosition(label.getPrefWidth()*0.1f,0);
+        winOtherHeroInfo.setSize(label.getWidth()*1.2f,label.getHeight()*1.2f);
+        label.setPosition(label.getWidth()*0.1f,label.getHeight()*0.1f);
+        winOtherHeroInfo.setPosition(Gdx.graphics.getWidth()-winOtherHeroInfo.getWidth(),width/9+50);
+        btnwinOHInfoQuit.setPosition(winOtherHeroInfo.getWidth()-btnwinOHInfoQuit.getWidth()*1.5f,winOtherHeroInfo.getHeight()-btnwinOHInfoQuit.getHeight()*1.5f);
         winOtherHeroInfo.setVisible(false);
     }
 
@@ -554,38 +607,54 @@ public class GameScreen extends AbstractGameScreen{
     //结果窗口
     public void GameOver(){
         //游戏结算的弹窗
+        DataController prefs = DataController.instance;
         TextureRegionDrawable winResultsDrawable = new TextureRegionDrawable(AssetsController.instance.getRegion("winresult"));
         Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),winResultsDrawable);
         winResults = new Window("",windowStyle);
-        winResults.setSize(width/2,height/2);
-        winResults.setPosition((width-winResults.getWidth())/2,(height-winResults.getHeight())/2);
+        winResults.setSize(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
+        winResults.setPosition(Gdx.graphics.getWidth()/4,Gdx.graphics.getHeight()/4);
+        winResults.setVisible(true);
         virtory = new Image(AssetsController.instance.getRegion("vitory"));
         failed = new Image(AssetsController.instance.getRegion("failed"));
-
-        if(worldController.isGameOver()==1){
-
+        Image confirm = new Image(AssetsController.instance.getRegion("confirm"));
+        confirm.setSize(winResults.getWidth()/4,winResults.getHeight()/4);
+        if((worldController.isGameOver()==1&&myPlayer.getTeam() == Constants.PLAYER.RED_TEAM)||(worldController.isGameOver()==2&&myPlayer.getTeam() == Constants.PLAYER.BLUE_TEAM)){
             virtory.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
             virtory.setPosition((winResults.getWidth()-virtory.getWidth())/2,(winResults.getHeight()-virtory.getHeight())/1.25f);
             winResults.addActor(virtory);
-            AudioController.instance.play(AssetsController.instance.win);
-        }else if(worldController.isGameOver()==2){
+            Label goldReceiveLabel = new Label("获得100金币",new Label.LabelStyle(font, Color.BLACK));
+            winResults.addActor(goldReceiveLabel);
+            goldReceiveLabel.setSize(winResults.getWidth(),winResults.getHeight()/2);
+            goldReceiveLabel.setAlignment(Align.center);
+            goldReceiveLabel.setPosition(0,winResults.getHeight()/5);
+
+            if(!isPlayed){
+                AudioController.instance.stopMusic();
+                isPlayed =true;
+                prefs.addMoney(100);
+                AudioController.instance.play(AssetsController.instance.win);
+            }
+        }else{
 
             failed.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
             failed.setPosition((winResults.getWidth()-failed.getWidth())/2,(winResults.getHeight()-failed.getHeight())/1.25f);
             winResults.addActor(failed);
-            AudioController.instance.play(AssetsController.instance.lose);
+            Label goldReceiveLabel = new Label("获得50金币",new Label.LabelStyle(font, Color.BLACK));
+            winResults.addActor(goldReceiveLabel);
+            goldReceiveLabel.setSize(winResults.getWidth(),winResults.getHeight()/2);
+            goldReceiveLabel.setAlignment(Align.center);
+            goldReceiveLabel.setPosition(0,winResults.getHeight()/5);
+            if(!isPlayed){
+                AudioController.instance.stopMusic();
+                isPlayed = true;
+                prefs.addMoney(50);
+                AudioController.instance.play(AssetsController.instance.lose);
+
+            }
         }
 
 
-
-        Label goldReceiveLabel = new Label("获得1000金币",new Label.LabelStyle(font, Color.BLACK));
-        winResults.addActor(goldReceiveLabel);
-        goldReceiveLabel.setSize(winResults.getWidth(),winResults.getHeight()/2);
-        goldReceiveLabel.setAlignment(Align.center);
-        goldReceiveLabel.setPosition(0,winResults.getHeight()/5);
-        Image confirm = new Image(AssetsController.instance.getRegion("confirm"));
-        confirm.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
-        confirm.setPosition((winResults.getWidth()-virtory.getWidth())/2,50);
+        confirm.setPosition((winResults.getWidth()-confirm.getWidth())/2,50);
         winResults.addActor(confirm);
         confirm.addListener(new InputListener(){
 
@@ -594,11 +663,12 @@ public class GameScreen extends AbstractGameScreen{
                 //game.loadRoomScreen();
                 winResults.setVisible(false);
                 AudioController.instance.play(AssetsController.instance.btnClicked);
+                game.loadLobbyScreen();
                 return true;
 
             }
         });
-
+        stage.addActor(winResults);
 
     }
 
@@ -609,9 +679,10 @@ public class GameScreen extends AbstractGameScreen{
         Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),new TextureRegionDrawable(AssetsController.instance.getRegion("winresult")));
         winErrorQuit = new Window("",windowStyle);
         Label.LabelStyle labelStyle = new Label.LabelStyle(font,Color.BLACK);
-        Label label = new Label("Because Manager is quitted, game error stop.",labelStyle);
-        winErrorQuit.setSize(width/2,height/2);
-        winErrorQuit.setPosition(width/4,height/4);
+        Label label = new Label("Because Manager is quitted,\n game error stop.",labelStyle);
+        label.setFontScale(1.0f);
+        winErrorQuit.setSize(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
+        winErrorQuit.setPosition(Gdx.graphics.getWidth()/4,Gdx.graphics.getHeight()/4);
         label.setPosition(winErrorQuit.getWidth()/2-label.getPrefWidth()/2,2*winErrorQuit.getHeight()/3-label.getPrefHeight()/2);
         //winOptions.setColor(1,1,1,1f);
         winErrorQuit.addActor(buildErrorQuitWindowBotton());
@@ -626,7 +697,7 @@ public class GameScreen extends AbstractGameScreen{
         Table layer = new Table();
         btnWinErrorQuit = new Image(AssetsController.instance.getRegion("confirm"));
         btnWinErrorQuit.setScale(0.6f);
-        btnWinErrorQuit.setPosition(winErrorQuit.getWidth()/2-btnWinErrorQuit.getWidth()*0.6f/2,winErrorQuit.getHeight()*0.6f/3-btnWinErrorQuit.getHeight()/2);
+        btnWinErrorQuit.setPosition(winErrorQuit.getWidth()/2-btnWinErrorQuit.getWidth()*0.6f/2,winErrorQuit.getHeight()/3-btnWinErrorQuit.getHeight()*0.6f/2);
         layer.addActor(btnWinErrorQuit);
         btnWinErrorQuit.addListener(new InputListener(){
             @Override
@@ -645,45 +716,9 @@ public class GameScreen extends AbstractGameScreen{
     }
 
 
-    //自己英雄信息
-    public Player myPlayer(){
-        int i;
-        for(i=0;i<worldController.getPlayers().size;i++) {
-            if (worldController.getPlayers().get(i).isMe()) {
-                return worldController.getPlayers().get(i);
-            }
-        }
-        return worldController.getPlayers().get(0);
-    }
-
-    public String myHeroType(){
-        int heroType =  myHeroTypeI();
-        if(heroType==0){
-            return "Sparda";
-        }
-        else if(heroType==1){
-            return "Protector";
-        }
-        else if(heroType==2){
-            return  "Angel";
-        }
-        else if(heroType==3){
-            return "Sniper";
-        }
-        else {
-            return "Wizard";
-        }
-    }
-
-    public int myHeroTypeI() {
-        Gdx.app.log(TAG, "myPlayerHeroType=" + myPlayer().getHeroType());
-        return myPlayer().getHeroType();
-
-    }
-
     @Override
     public void resize(int width, int height) {
-        //stage.getViewport().update(width,height);
+        stage.getViewport().update(width,height);
     }
 
     public void playQuit(String ID){
@@ -711,6 +746,7 @@ public class GameScreen extends AbstractGameScreen{
     }
 
     public void errorStop(){
+        isStage = true;
         Gdx.input.setInputProcessor(stage);
         winErrorQuit.setVisible(true);
     }
@@ -722,25 +758,29 @@ public class GameScreen extends AbstractGameScreen{
 
     @Override
     public void show() {
-        stage = new Stage();
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
         rebuildStage();
         Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void render(float deltaTime) {
-        Gdx.gl.glClearColor(0x64/255.0f,0x95/255.0f,0xed/255.0f,0xff/255.0f);
+        Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         renderWorld(batch);
         worldController.getWorld().getPlayerManager().update(deltaTime);
+        worldController.getWorld().getPlayerManager().getBomb().update(deltaTime);
         worldController.testCollisions();
         renderGUI(batch);
         batch.end();
-        stage.act();
-        stage.draw();
-
+        if(isStage){
+            stage.act();
+            stage.draw();
+        }
         if(worldController.isGameOver()!= 0){
+            Gdx.input.setInputProcessor(stage);
+            isStage = true;
             GameOver();
         }
     }
@@ -751,6 +791,14 @@ public class GameScreen extends AbstractGameScreen{
 
     public boolean isClickedHero() {
         return isClickedHero;
+    }
+
+    public void setStageTrue(){
+        isStage = true;
+    }
+
+    public Player myPlayer(){
+        return myPlayer;
     }
 
     public DirectedGame getGame(){

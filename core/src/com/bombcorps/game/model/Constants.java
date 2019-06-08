@@ -16,7 +16,7 @@ public class Constants {
     //DataController
     public static final int HERO_MAX_LEVEL = 5;
 
-    public static final float ACCELERATION = -5f;   //加速度
+    public static final float ACCELERATION = -30f;   //加速度
     public static final float VELOCITY_X = 5f;        //水平速度
 
 
@@ -72,7 +72,7 @@ public class Constants {
         public static final Vector2 BOOM_DIMENSION = new Vector2(0.5f,0.5f);
         public static final Vector2 BOOM_SCALE = new Vector2(1f,1f);
 
-        public static final Vector2 DIMENSION = new Vector2(5f,5f);
+        public static final Vector2 DIMENSION = new Vector2(0.5f,0.5f);
 
         public static final float ROTATE_SPEED = 120f;
         public static final float ACCELERATION = -8f;

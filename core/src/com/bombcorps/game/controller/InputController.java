@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombcorps.game.model.Constants;
-import com.bombcorps.game.model.Message;
 import com.bombcorps.game.model.Player;
 import com.bombcorps.game.view.GameScreen;
 
@@ -31,9 +30,15 @@ public class InputController implements GestureDetector.GestureListener {
     public boolean touchDown(float x, float y, int pointer, int button) {
         Vector3 v = new Vector3(x, y, 0);
         camera.unproject(v);
-        Gdx.app.log("zc", "x="+v.x+"  y="+v.y);
+//        Gdx.app.log("zc", "x="+v.x+"  y="+v.y);
         //确定是否按到了炸弹
         if(controller.getOperations()==1 || controller.getOperations()==2){
+
+//            if(controller.getCurPlayer().getBomb() == null)
+//                Gdx.app.log("bomb","null");
+//            else
+//                Gdx.app.log("bomb","not null");
+
             Rectangle r = controller.getCurPlayer().getBomb().getRect();
             if(r.contains(v.x, v.y)){
                 hasAim = true;
@@ -53,6 +58,7 @@ public class InputController implements GestureDetector.GestureListener {
             gameScreen.getGame().loadLobbyScreen();
             return false;
         }else if(gameScreen.btnSettings.getBoundingRectangle().contains(v.x,v.y)){
+            gameScreen.setStageTrue();
             Gdx.input.setInputProcessor(gameScreen.stage);
             gameScreen.winOptions.setVisible(true);
             return false;
@@ -78,15 +84,18 @@ public class InputController implements GestureDetector.GestureListener {
             controller.onOperationClicked(6);
             return false;
         }else if(gameScreen.imgMyHeroHead.getBoundingRectangle().contains(v.x,v.y)){
+            gameScreen.setStageTrue();
             Gdx.input.setInputProcessor(gameScreen.stage);
             gameScreen.winHeroInfo.setVisible(true);
             return false;
         }else if(gameScreen.imgOtherHeroHead.getBoundingRectangle().contains(v.x,v.y)&&gameScreen.isClickedHero()){
+            gameScreen.setStageTrue();
             Gdx.input.setInputProcessor(gameScreen.stage);
             gameScreen.winOtherHeroInfo.setVisible(true);
             return false;
         }
 
+        v = new Vector3(x, y, 0);
         camera.unproject(v);
         int op = controller.getOperations();
         if(op == -1) {
@@ -96,6 +105,7 @@ public class InputController implements GestureDetector.GestureListener {
                  controller.onHeroClicked(p);
             }
         } else if (op == 0) {
+            controller.getCurPlayer().setState(Constants.STATE_MOVING);
             controller.getCurPlayer().setDestX(v.x);
             controller.resetOperations();
         }
@@ -108,7 +118,6 @@ public class InputController implements GestureDetector.GestureListener {
             Vector3 v = new Vector3(x, y, 0);
             camera.unproject(v);
             controller.getCurPlayer().setTap(new Vector2(v.x, v.y));
-            controller.resetOperations();
         }else{
             deltaX = -deltaX/Gdx.graphics.getWidth()*(camera.viewportWidth*camera.zoom);
             deltaY = deltaY/Gdx.graphics.getHeight()*(camera.viewportHeight*camera.zoom);
@@ -124,6 +133,7 @@ public class InputController implements GestureDetector.GestureListener {
         int op = controller.getOperations();
         if(op == 1 || op == 2){
             controller.getCurPlayer().shoot();
+            controller.resetOperations();
         }
         return false;
     }

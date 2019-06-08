@@ -34,6 +34,8 @@ public class Bomb {
     private Vector2 acceleration;
     private float rotation;
     private Rectangle rec;
+    private Rectangle tapRec;
+
     private Animation boomAnimation;
     private TextureRegion boomKeyFrame;
     private int stateTime;
@@ -60,15 +62,25 @@ public class Bomb {
         routeScale = Constants.BOMB.ROUTESCALE;
         dimension = Constants.BOMB.DIMENSION;
         bombScale = Constants.BOMB.BOMBSCALE;
+        position = new Vector2(0,0);
         origin = new Vector2(dimension.x / 2, dimension.y / 2);
         velocity = new Vector2();
         acceleration = new Vector2(0,Constants.BOMB.ACCELERATION);
         rotation = 0;
 
         rec = new Rectangle(0,0,dimension.x,dimension.y);
+        tapRec = new Rectangle(0,0,dimension.x * 2, dimension.y * 2);
     }
 
     public void update(float deltaTime){
+        if(state == STATE.WAIT){
+            Gdx.app.log("bombState","wait");
+        }else if(state == STATE.READY){
+            Gdx.app.log("bombState", "ready");
+        }else{
+            Gdx.app.log("bombState","fly");
+        }
+
         switch (state){
             case FLY:
                 updateRotation(deltaTime);
@@ -78,7 +90,7 @@ public class Bomb {
         }
     }
 
-    public void initBombEveryRound(){
+    public void initBombEveryChange(){
         state = STATE.WAIT;
         bombType = 0;
     }
@@ -187,12 +199,14 @@ public class Bomb {
                 renderReady(batch);
                 break;
         }
+
     }
 
     public void renderReady(SpriteBatch batch){
         batch.draw(bomb[heroType][bombType], position.x - dimension.x, position.y,
                 origin.x,origin.y,dimension.x,dimension.y,
                 bombScale.x,bombScale.y,0);
+
     }
 
     public void renderBomb(SpriteBatch batch){
@@ -212,6 +226,7 @@ public class Bomb {
         if(stateTime > boomAnimation.getAnimationDuration()){
             state = STATE.WAIT;
         }
+
     }
 
     public void explode(Array<Player> playerListRed, Array<Player> playerListBlue){
@@ -569,9 +584,22 @@ public class Bomb {
         this.heroType = heroType;
     }
 
+    public Rectangle getTapRec(){
+        tapRec.x = position.x;
+        tapRec.y = position.y;
+
+        return tapRec;
+    }
+
     public Rectangle getRect() {
+        Gdx.app.log("rectangle", rec.height + "");
         rec.x = position.x;
         rec.y = position.y;
+        if(rec == null){
+            Gdx.app.log("bomb","null");
+        }else {
+            Gdx.app.log("bomb", "not null");
+        }
         return rec;
     }
 

@@ -18,7 +18,7 @@ public class Aura {
         public Vector2 origin;
         public Vector2 dimension;
 
-        private AURA(){
+        AURA(){
             aura = new TextureRegion();
             scale = Constants.AURA.SCALE;
             origin = Constants.AURA.ORIGIN;
