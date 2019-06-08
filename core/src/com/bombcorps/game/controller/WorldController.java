@@ -214,24 +214,23 @@ public class WorldController {
     }
 
     public int isGameOver() {  //0 未结束   1 红赢   2 蓝赢   3 平
-//        boolean red = false, blue = false;
-//        for (Player p : world.getPlayers()) {
-//            if(p.getTeam() == Constants.PLAYER.RED_TEAM){
-//                red = true;
-//            }else{
-//                blue = true;
-//            }
-//        }
-//        if (red && blue) {
-//            return 0;
-//        } else if (red) {
-//            return 1;
-//        } else if (blue) {
-//            return 2;
-//        } else {
-//            return 3;
-//        }
-        return 1;
+        boolean red = false, blue = false;
+        for (Player p : world.getPlayers()) {
+            if(p.getTeam() == Constants.PLAYER.RED_TEAM){
+                red = true;
+            }else{
+                blue = true;
+            }
+        }
+        if (red && blue) {
+            return 0;
+        } else if (red) {
+            return 1;
+        } else if (blue) {
+            return 2;
+        } else {
+            return 3;
+        }
     }
 
     public void testCollisions() {
