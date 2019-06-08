@@ -111,7 +111,7 @@ public class NetController {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Gdx.app.log(getLocalHostIp()+" to", msg.getToIp());
+//        Gdx.app.log(getLocalHostIp()+" to", msg.getToIp());
         (new UdpSend(msg)).start();
     }
 
@@ -206,7 +206,7 @@ public class NetController {
     }
 
     public void parse(Message msg) {
-        Gdx.app.log("zc", ""+ msg.getMsg());
+//        Gdx.app.log("zc", ""+ msg.getMsg());
         Message m;
         switch(msg.getMsg()){
             case REFRESH_ROOM:

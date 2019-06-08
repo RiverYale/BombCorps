@@ -30,9 +30,15 @@ public class InputController implements GestureDetector.GestureListener {
     public boolean touchDown(float x, float y, int pointer, int button) {
         Vector3 v = new Vector3(x, y, 0);
         camera.unproject(v);
-        Gdx.app.log("zc", "x="+v.x+"  y="+v.y);
+//        Gdx.app.log("zc", "x="+v.x+"  y="+v.y);
         //确定是否按到了炸弹
         if(controller.getOperations()==1 || controller.getOperations()==2){
+
+//            if(controller.getCurPlayer().getBomb() == null)
+//                Gdx.app.log("bomb","null");
+//            else
+//                Gdx.app.log("bomb","not null");
+
             Rectangle r = controller.getCurPlayer().getBomb().getRect();
             if(r.contains(v.x, v.y)){
                 hasAim = true;
