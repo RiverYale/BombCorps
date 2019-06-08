@@ -49,6 +49,11 @@ public class WorldController {
 //        AudioController.instance.play(AssetsController.instance.getMusic("")); //TODO
     }
 
+    public void update(float deltaTime){
+        testCollisions();
+        cameraController.update(deltaTime);
+    }
+
     public OrthographicCamera getCamera() {
         return camera;
     }
@@ -183,7 +188,7 @@ public class WorldController {
                 //TODO curPlayer扔球
                 if(curPlayer.useSkill(op)) {
                     curPlayer.setTap(new Vector2(tapX, tapY));
-                    curPlayer.shoot();
+                    curPlayer.shoot(cameraController);
                 }
                 break;
             case 2:
@@ -191,7 +196,7 @@ public class WorldController {
                 if(curPlayer.useSkill(op)) {
 //                    curPlayer
                     curPlayer.setTap(new Vector2(tapX, tapY));
-                    curPlayer.shoot();
+                    curPlayer.shoot(cameraController);
 
                 }
                 break;

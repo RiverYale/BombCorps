@@ -113,7 +113,7 @@ public class InputController implements GestureDetector.GestureListener {
             Player p = controller.hasPlayer(v.x, v.y);
             if (p != null) {
                 cameraController.setTarget(p);
-                 controller.onHeroClicked(p);
+                controller.onHeroClicked(p);
             }
         } else if (op == 0) {
             controller.getCurPlayer().setState(Constants.STATE_MOVING);
@@ -143,7 +143,7 @@ public class InputController implements GestureDetector.GestureListener {
     public boolean panStop(float x, float y, int pointer, int button) {
         int op = controller.getOperations();
         if(op == 1 || op == 2){
-            controller.getCurPlayer().shoot();
+            controller.getCurPlayer().shoot(controller.getCameraController());
             controller.resetOperations();
         }
         return false;

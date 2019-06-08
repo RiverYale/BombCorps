@@ -774,7 +774,7 @@ public class GameScreen extends AbstractGameScreen{
         renderWorld(batch);
         worldController.getWorld().getPlayerManager().update(deltaTime);
         worldController.getWorld().getPlayerManager().getBomb().update(deltaTime);
-        worldController.testCollisions();
+        worldController.update(deltaTime);
         renderGUI(batch);
         batch.end();
         if(isStage){

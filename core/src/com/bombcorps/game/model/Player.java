@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.bombcorps.game.controller.CameraController;
 import com.bombcorps.game.controller.NetController;
 import com.bombcorps.game.model.bombs.Bomb;
 import com.bombcorps.game.model.heros.*;
@@ -154,8 +155,8 @@ public class Player implements Serializable {
         return tap;
     }
 
-    public void shoot(){
-
+    public void shoot(CameraController controller){
+        controller.setTarget(bomb);
         bomb.setFromPlayer(this);
 
         bomb.setState(Constants.BOMB.STATE_FLY);
