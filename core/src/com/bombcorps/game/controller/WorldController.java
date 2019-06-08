@@ -83,8 +83,8 @@ public class WorldController {
             Vector2 dimension = new Vector2();
             p.getRect().getPosition(position);
             p.getRect().getSize(dimension);
-            Gdx.app.log("qin","position.x = "+position.x+" position.y = "+position.y+
-                    " dimension.x = "+dimension.x+" dimension.y = "+dimension.y);
+//            Gdx.app.log("qin","position.x = "+position.x+" position.y = "+position.y+
+//                    " dimension.x = "+dimension.x+" dimension.y = "+dimension.y);
             if(p.getRect().contains(x, y)){
                 return p;
             }
@@ -102,7 +102,7 @@ public class WorldController {
     }
 
     public void onHeroClicked(Player p) {
-        Gdx.app.log("qin","hero clicked is used in WorldController");
+//        Gdx.app.log("qin","hero clicked is used in WorldController");
         game.onHeroClicked(p);
     }
 
@@ -147,9 +147,9 @@ public class WorldController {
 
     public void startNextRound(Bonus b) {
         //TODO
-        Gdx.app.log("ain","Change");
+//        Gdx.app.log("ain","Change");
         world.getPlayerManager().getSkillAndBuff().initSkillEveryChange();
-        Gdx.app.log("qin","next player is ");
+//        Gdx.app.log("qin","next player is ");
         if(b != null){
             world.addBonus(b);
         }
@@ -190,6 +190,7 @@ public class WorldController {
                 if(curPlayer.useSkill(op)) {
                     curPlayer.setTap(new Vector2(tapX, tapY));
                     curPlayer.shoot();
+
                 }
                 break;
             case 3:

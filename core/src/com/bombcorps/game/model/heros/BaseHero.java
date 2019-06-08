@@ -279,8 +279,8 @@ public class BaseHero{
                 stateTime += Gdx.graphics.getDeltaTime();
 
                 batch.draw(attackKeyFrame.getTexture(), position.x, position.y, origin.x, origin.y, dimension.x, dimension.y,
-                        scale.x, scale.y, 0, moveKeyFrame.getRegionX(), moveKeyFrame.getRegionY(), moveKeyFrame.getRegionWidth(),
-                        moveKeyFrame.getRegionHeight(),!headright, false);
+                        scale.x, scale.y, 0, attackKeyFrame.getRegionX(), attackKeyFrame.getRegionY(), attackKeyFrame.getRegionWidth(),
+                        attackKeyFrame.getRegionHeight(),!headright, false);
 
                 if(stateTime > attackAnimation.getAnimationDuration()){
                     attackTimes--;
