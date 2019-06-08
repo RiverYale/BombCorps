@@ -52,6 +52,7 @@ public class GameScreen extends AbstractGameScreen{
     private boolean isClickedHero;
     private boolean isStage;
 
+    private Player myPlayer;
     private Player otherPlayer;
     private String quitPlayer;
     private CurPlayerSignal curPlayerSignal;
@@ -167,6 +168,15 @@ public class GameScreen extends AbstractGameScreen{
         isPlayed = false;
         isStage = false;
 
+        myPlayer = worldController.getPlayers().get(0);
+        int i;
+        for(i=0;i<worldController.getPlayers().size;i++) {
+            if (worldController.getPlayers().get(i).isMe()) {
+                myPlayer =  worldController.getPlayers().get(i);
+            }
+        }
+
+
         worldController.getCameraController().setPosition(Constants.VIEWPORT_WIDTH/2,Constants.VIEWPORT_HEIGHT/2);
         worldController.getCameraController().setTarget(worldController.getCurPlayer());
         camera.update();
@@ -264,7 +274,7 @@ public class GameScreen extends AbstractGameScreen{
     public void renderGUI(SpriteBatch batch){
         batch.setProjectionMatrix(cameraGUI.combined);
         batchBotton(batch);
-        if(myPlayer().equals(worldController.getCurPlayer())){
+        if(myPlayer.equals(worldController.getCurPlayer())){
             batchSkill(batch);
         }
         batchHeroInfo(batch);
@@ -303,11 +313,11 @@ public class GameScreen extends AbstractGameScreen{
             bar.setColor(c[i]);
             bar.setY(i*15+1);
             if(i == 2){
-                bar.setSize(width/15*1.5f*myPlayer().getMyHero().getHealth()/myPlayer().getMyHero().getMaxHealth(), bar.getHeight());
+                bar.setSize(width/15*1.5f*myPlayer.getMyHero().getHealth()/myPlayer.getMyHero().getMaxHealth(), bar.getHeight());
             }else if(i == 1){
-                bar.setSize(width/15*1.5f*myPlayer().getMyHero().getEndurance()/Constants.MAX_ENDURENCE,bar.getHeight());
+                bar.setSize(width/15*1.5f*myPlayer.getMyHero().getEndurance()/Constants.MAX_ENDURENCE,bar.getHeight());
             }else if(i==0){
-                bar.setSize(width/15*1.5f*myPlayer().getMyHero().getRagePower()/Constants.MAX_RAGEPOWER,bar.getHeight());
+                bar.setSize(width/15*1.5f*myPlayer.getMyHero().getRagePower()/Constants.MAX_RAGEPOWER,bar.getHeight());
             }
             bar.draw(batch);
         }
@@ -582,13 +592,13 @@ public class GameScreen extends AbstractGameScreen{
         TextureRegionDrawable winResultsDrawable = new TextureRegionDrawable(AssetsController.instance.getRegion("winresult"));
         Window.WindowStyle windowStyle = new Window.WindowStyle(font,font.getColor(),winResultsDrawable);
         winResults = new Window("",windowStyle);
-        winResults.setSize(width/2,height/2);
-        winResults.setPosition((width-winResults.getWidth())/2,(height-winResults.getHeight())/2);
+        winResults.setSize(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
+        winResults.setPosition(Gdx.graphics.getWidth()/4,Gdx.graphics.getHeight()/4);
         winResults.setVisible(true);
         virtory = new Image(AssetsController.instance.getRegion("vitory"));
         failed = new Image(AssetsController.instance.getRegion("failed"));
 
-        if((worldController.isGameOver()==1&&myPlayer().getTeam() == Constants.PLAYER.RED_TEAM)||(worldController.isGameOver()==2&&myPlayer().getTeam() == Constants.PLAYER.BLUE_TEAM)){
+        if((worldController.isGameOver()==1&&myPlayer.getTeam() == Constants.PLAYER.RED_TEAM)||(worldController.isGameOver()==2&&myPlayer.getTeam() == Constants.PLAYER.BLUE_TEAM)){
             virtory.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
             virtory.setPosition((winResults.getWidth()-virtory.getWidth())/2,(winResults.getHeight()-virtory.getHeight())/1.25f);
             winResults.addActor(virtory);
@@ -683,15 +693,6 @@ public class GameScreen extends AbstractGameScreen{
 
 
     //自己英雄信息
-    public Player myPlayer(){
-        int i;
-        for(i=0;i<worldController.getPlayers().size;i++) {
-            if (worldController.getPlayers().get(i).isMe()) {
-                return worldController.getPlayers().get(i);
-            }
-        }
-        return worldController.getPlayers().get(0);
-    }
 
     public String myHeroType(){
         int heroType =  myHeroTypeI();
@@ -713,9 +714,7 @@ public class GameScreen extends AbstractGameScreen{
     }
 
     public int myHeroTypeI() {
-        Gdx.app.log(TAG, "myPlayerHeroType=" + myPlayer().getHeroType());
-        return myPlayer().getHeroType();
-
+        return myPlayer.getHeroType();
     }
 
     @Override
@@ -799,6 +798,9 @@ public class GameScreen extends AbstractGameScreen{
         isStage = true;
     }
 
+    public Player myPlayer(){
+        return myPlayer;
+    }
 
     public DirectedGame getGame(){
         return game;
