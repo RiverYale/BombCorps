@@ -242,15 +242,15 @@ public class Player implements Serializable {
                         break;
                     case 4:
                         if(team == TEAM.RED)
-                            skillAndBuff.angelSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
+                            skillAndBuff.angelSkill.useSkill_2(Constants.PLAYER.RED_TEAM, IP);
                         else
-                            skillAndBuff.angelSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
+                            skillAndBuff.angelSkill.useSkill_2(Constants.PLAYER.BLUE_TEAM, IP);
                         break;
                     case 5:
                         if(team == TEAM.RED)
-                            skillAndBuff.angelSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
+                            skillAndBuff.angelSkill.useSkill_3(Constants.PLAYER.RED_TEAM, IP);
                         else
-                            skillAndBuff.angelSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
+                            skillAndBuff.angelSkill.useSkill_3(Constants.PLAYER.BLUE_TEAM, IP);
                         break;
                 }
                 break;
@@ -267,15 +267,15 @@ public class Player implements Serializable {
                         break;
                     case 4:
                         if(team == TEAM.RED)
-                            skillAndBuff.spardaSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
+                            skillAndBuff.spardaSkill.useSkill_2(Constants.PLAYER.RED_TEAM, IP);
                         else
-                            skillAndBuff.spardaSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
+                            skillAndBuff.spardaSkill.useSkill_2(Constants.PLAYER.BLUE_TEAM, IP);
                         break;
                     case 5:
                         if(team == TEAM.RED)
-                            skillAndBuff.spardaSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
+                            skillAndBuff.spardaSkill.useSkill_3(Constants.PLAYER.RED_TEAM, IP);
                         else
-                            skillAndBuff.spardaSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
+                            skillAndBuff.spardaSkill.useSkill_3(Constants.PLAYER.BLUE_TEAM, IP);
                         break;
                 }
                 break;
@@ -290,15 +290,15 @@ public class Player implements Serializable {
                         break;
                     case 4:
                         if(team == TEAM.RED)
-                            skillAndBuff.sniperSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
+                            skillAndBuff.sniperSkill.useSkill_2(Constants.PLAYER.RED_TEAM, IP);
                         else
-                            skillAndBuff.sniperSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
+                            skillAndBuff.sniperSkill.useSkill_2(Constants.PLAYER.BLUE_TEAM, IP);
                         break;
                     case 5:
                         if(team == TEAM.RED)
-                            skillAndBuff.sniperSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
+                            skillAndBuff.sniperSkill.useSkill_3(Constants.PLAYER.RED_TEAM, IP);
                         else
-                            skillAndBuff.sniperSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
+                            skillAndBuff.sniperSkill.useSkill_3(Constants.PLAYER.BLUE_TEAM, IP);
                         break;
                 }
                 break;
@@ -313,15 +313,15 @@ public class Player implements Serializable {
                         break;
                     case 4:
                         if(team == TEAM.RED)
-                            skillAndBuff.protectorSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
+                            skillAndBuff.protectorSkill.useSkill_2(Constants.PLAYER.RED_TEAM, IP);
                         else
-                            skillAndBuff.protectorSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
+                            skillAndBuff.protectorSkill.useSkill_2(Constants.PLAYER.BLUE_TEAM, IP);
                         break;
                     case 5:
                         if(team == TEAM.RED)
-                            skillAndBuff.protectorSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
+                            skillAndBuff.protectorSkill.useSkill_3(Constants.PLAYER.RED_TEAM, IP);
                         else
-                            skillAndBuff.protectorSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
+                            skillAndBuff.protectorSkill.useSkill_3(Constants.PLAYER.BLUE_TEAM, IP);
                         break;
                 }
                 break;
@@ -336,15 +336,15 @@ public class Player implements Serializable {
                         break;
                     case 4:
                         if(team == TEAM.RED)
-                            skillAndBuff.wizardSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
+                            skillAndBuff.wizardSkill.useSkill_2(Constants.PLAYER.RED_TEAM, IP);
                         else
-                            skillAndBuff.wizardSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
+                            skillAndBuff.wizardSkill.useSkill_2(Constants.PLAYER.BLUE_TEAM, IP);
                         break;
                     case 5:
                         if(team == TEAM.RED)
-                            skillAndBuff.wizardSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
+                            skillAndBuff.wizardSkill.useSkill_3(Constants.PLAYER.RED_TEAM, IP);
                         else
-                            skillAndBuff.wizardSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
+                            skillAndBuff.wizardSkill.useSkill_3(Constants.PLAYER.BLUE_TEAM, IP);
                         break;
                 }
                 break;
