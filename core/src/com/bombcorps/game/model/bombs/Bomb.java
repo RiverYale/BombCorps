@@ -431,8 +431,9 @@ public class Bomb {
                 case 5:
                     Gdx.app.log("jump", "activated");
                     fromPlayer.getMyHero().setPosition(position);
-                    break;
                     AudioController.instance.play(AssetsController.instance.tp);
+                    break;
+
             }
 
     }
