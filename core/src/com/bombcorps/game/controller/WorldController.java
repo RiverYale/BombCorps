@@ -276,6 +276,12 @@ public class WorldController {
                     onCollisionsBombWithRock(curPlayer.getBomb());
                 }
             }
+            for(Pillar r : world.pillars) {
+                r2 = r.getRect();
+                if (r1.overlaps(r2)) {
+                    onCollisionsBombWithRock(curPlayer.getBomb());
+                }
+            }
         }
 
         Bonus fallingOne = world.getFallingBonus();
