@@ -148,7 +148,7 @@ public class WorldController {
     public void startNextRound(Bonus b) {
         //TODO
 //        Gdx.app.log("ain","Change");
-        world.getPlayerManager().getSkillAndBuff().initSkillEveryChange();
+        world.getPlayerManager().initEveryChange();
 //        Gdx.app.log("qin","next player is ");
         if(b != null){
             world.addBonus(b);
@@ -162,8 +162,7 @@ public class WorldController {
             perRound++;
         }
         if (perRound > world.getPlayers().size) {
-            curPlayer.initHeroEveryRound();
-            world.getPlayerManager().getSkillAndBuff().updateBuffEveryRound();
+            world.getPlayerManager().initEveryRound();
             perRound %= world.getPlayers().size;
         }
         cameraController.setTarget(curPlayer);

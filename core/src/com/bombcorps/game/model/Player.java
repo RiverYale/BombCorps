@@ -157,6 +157,7 @@ public class Player implements Serializable {
     public void shoot(){
 
         bomb.setFromPlayer(this);
+
         bomb.setState(Constants.BOMB.STATE_FLY);
         myHero.setState(Constants.STATE_ATTACK);
     }
