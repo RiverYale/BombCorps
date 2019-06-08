@@ -153,16 +153,11 @@ public class WorldController {
     }
 
     public void startNextRound(Bonus b) {
-        //TODO
-//        Gdx.app.log("ain","Change");
         world.getPlayerManager().initEveryChange();
-//        Gdx.app.log("qin","next player is ");
         if(b != null){
             world.addBonus(b);
         }
-
         curPlayer = world.getNextPlayer();
-
         perRound++;
         while (curPlayer.getMyHero().getState() == Constants.STATE_DEAD){
             curPlayer = world.getNextPlayer();

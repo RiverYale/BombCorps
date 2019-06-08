@@ -3,6 +3,7 @@ package com.bombcorps.game.controller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.bombcorps.game.model.Player;
 import com.bombcorps.game.model.bombs.Bomb;
@@ -23,9 +24,6 @@ public class CameraController {
     }
 
     public void setPosition(float x, float y) {
-//TODO
-//        x = MathUtils.clamp(x, , );
-//        y = MathUtils.clamp(y, , );
         this.position.set(x, y);
     }
 
@@ -51,26 +49,29 @@ public class CameraController {
 
     public void update(float deltaTime) {
         if(target != null){
+            Rectangle r;
             if(target instanceof Player){
                 if(((Player) target).getRect().contains(position.x+0.5f, position.y+0.5f)){
                     setTarget(null);
                 }else{
                     position.lerp(((Player) target).getPosition(), Constants.FOLLOW_SPEED * deltaTime);
+
                 }
             }else if(target instanceof Bomb){
-                if(((Bomb) target).getState() != Constants.BOMB.STATE_FLY){
+                if(((Bomb) target).getState()!=Constants.BOMB.STATE_FLY){
                     setTarget(null);
                 }else{
                     position.lerp(((Bomb) target).getPosition(), Constants.FOLLOW_SPEED * deltaTime);
                 }
             }
-//TODO
-//            position.x = MathUtils.clamp(position.x, , );
-//            position.y = MathUtils.clamp(position.y, , );
         }
     }
 
     public void applyTo(OrthographicCamera camera) {
+        float tx = MathUtils.clamp(position.x, 0, 32);
+        float ty = MathUtils.clamp(position.y, 5*zoom, 20-5*zoom);
+        position.x = tx;
+        position.y = ty;
         camera.position.x = position.x;
         camera.position.y = position.y;
         camera.zoom = zoom;

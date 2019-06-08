@@ -125,6 +125,7 @@ public class InputController implements GestureDetector.GestureListener {
 
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
+        controller.getCameraController().setTarget(null);
         if(hasAim){
             Vector3 v = new Vector3(x, y, 0);
             camera.unproject(v);
