@@ -286,6 +286,7 @@ public class GameScreen extends AbstractGameScreen{
         bar.setX(imgMyHeroHead.getX()+43*scale);
         for(int i=2;i>=0;i--) {
             bar.setColor(Color.GRAY);
+            bar.setSize(width/15*1.5f,bar.getHeight());
             bar.setY(i*15+1);
             bar.draw(batch);
 
@@ -296,7 +297,7 @@ public class GameScreen extends AbstractGameScreen{
             }else if(i == 1){
                 bar.setSize(width/15*1.5f*myPlayer().getMyHero().getEndurance()/Constants.MAX_ENDURENCE,bar.getHeight());
 
-            }else {
+            }else if(i==0){
                 bar.setSize(width/15*1.5f*myPlayer().getMyHero().getRagePower()/Constants.MAX_RAGEPOWER,bar.getHeight());
             }
             bar.draw(batch);

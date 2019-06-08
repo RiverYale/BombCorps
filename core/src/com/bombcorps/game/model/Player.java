@@ -142,6 +142,11 @@ public class Player implements Serializable {
 
     public void setTap(Vector2 tap){
         this.tap = tap;
+        if(tap.x > myHero.getPosition().x){
+            myHero.setDirection(false);
+        }else{
+            myHero.setDirection(true);
+        }
         bomb.setVelocity(new Vector2(myHero.getPosition().x - tap.x, myHero.getPosition().y - tap.y));
     }
 
