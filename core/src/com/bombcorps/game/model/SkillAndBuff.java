@@ -763,7 +763,7 @@ public class SkillAndBuff {
         player.bomb.setPosition(player.getMyHero().getPosition());
         player.bomb.setHeroType(heroType);
         player.bomb.setBombType(bombType);
-        player.bomb.setState(Constants.BOMB.STATE_READY);
+//        player.bomb.setState(Constants.BOMB.STATE_READY);
     }
 
 

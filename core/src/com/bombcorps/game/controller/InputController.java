@@ -105,6 +105,7 @@ public class InputController implements GestureDetector.GestureListener {
                  controller.onHeroClicked(p);
             }
         } else if (op == 0) {
+            controller.getCurPlayer().setState(Constants.STATE_MOVING);
             controller.getCurPlayer().setDestX(v.x);
             controller.resetOperations();
         }
