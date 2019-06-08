@@ -466,11 +466,10 @@ public class GameScreen extends AbstractGameScreen{
         winHeroInfo = new Window("",windowStyle);
         //winOptions.setColor(1,1,1,1f);
         winHeroInfo.setVisible(false);
-        Label.LabelStyle labelStyle = new Label.LabelStyle(font,Color.BLACK);
+        Label.LabelStyle labelStyle = new Label.LabelStyle(font,Color.WHITE);
         Label label = new Label(description[myHeroTypeI()],labelStyle);
         label.setFontScale(1.0f);
         label.setSize(500,200);
-        label.debug();
         winHeroInfo.addActor(label);
         //winOptions.pack();
         winHeroInfo.setSize(label.getWidth()*1.2f,label.getHeight()*1.2f);
@@ -513,7 +512,7 @@ public class GameScreen extends AbstractGameScreen{
         //winOptions.pack();
         winOtherHeroInfo.setPosition(width-winOtherHeroInfo.getWidth(),imgMyHeroHead.getHeight()*width/15/imgMyHeroHead.getWidth());
         btnwinOHInfoQuit = new Image(AssetsController.instance.getRegion("button_quit"));
-        btnwinHInfoQuit.setScale(1.5f);
+        btnwinOHInfoQuit.setScale(1.5f);
         btnwinOHInfoQuit.setPosition(winOtherHeroInfo.getWidth()-btnwinOHInfoQuit.getWidth()*1.5f,winOtherHeroInfo.getHeight()-btnwinOHInfoQuit.getHeight()*1.5f);
         btnwinOHInfoQuit.addListener(new InputListener(){
             @Override
@@ -566,7 +565,8 @@ public class GameScreen extends AbstractGameScreen{
         winOtherHeroInfo.addActor(label);
         winOtherHeroInfo.setSize(label.getWidth()*1.2f,label.getHeight()*1.2f);
         label.setPosition(label.getWidth()*0.1f,label.getHeight()*0.1f);
-        winOtherHeroInfo.setPosition(width-600,width/9+50);
+        winOtherHeroInfo.setPosition(Gdx.graphics.getWidth()-winOtherHeroInfo.getWidth(),width/9+50);
+        btnwinOHInfoQuit.setPosition(winOtherHeroInfo.getWidth()-btnwinOHInfoQuit.getWidth()*1.5f,winOtherHeroInfo.getHeight()-btnwinOHInfoQuit.getHeight()*1.5f);
         winOtherHeroInfo.setVisible(false);
     }
 
