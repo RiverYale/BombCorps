@@ -586,6 +586,7 @@ public class GameScreen extends AbstractGameScreen{
             virtory.setSize(winResults.getWidth()/3,winResults.getHeight()/3);
             virtory.setPosition((winResults.getWidth()-virtory.getWidth())/2,(winResults.getHeight()-virtory.getHeight())/1.25f);
             winResults.addActor(virtory);
+            AudioController.instance.play(AssetsController.instance.win);
             Label goldReceiveLabel = new Label("获得100金币",new Label.LabelStyle(font, Color.BLACK));
             winResults.addActor(goldReceiveLabel);
             goldReceiveLabel.setSize(winResults.getWidth(),winResults.getHeight()/2);
