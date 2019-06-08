@@ -1,5 +1,6 @@
 package com.bombcorps.game.model;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.BufferUtils;
@@ -309,6 +310,7 @@ public class SkillAndBuff {
         }
 
         public void useSkill_3(int team, String IP){
+
             AudioController.instance.play(AssetsController.instance.angelskill3);
             Player player;
             int index = -1;
@@ -533,7 +535,7 @@ public class SkillAndBuff {
         }
 
         public void useSkill_3(int team, String IP){
-            AudioController.instance.play(AssetsController.instance.protectorskill3);
+            AssetsController.instance.protectorskill1 = Gdx.audio.newSound(Gdx.files.internal("sound/protectorskill3"));
             Player player;
             int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){

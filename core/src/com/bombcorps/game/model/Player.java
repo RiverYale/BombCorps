@@ -159,28 +159,7 @@ public class Player implements Serializable {
 
     public void shoot(CameraController controller){
         controller.setTarget(bomb);
-    public void shoot(){
-        switch (heroType){
-            case Constants.PROTECTOR:
-                AudioController.instance.play(AssetsController.instance.protectorshoot);
-                break;
-            case Constants.ANGEL:
-                AudioController.instance.play(AssetsController.instance.angelshoot);
-                break;
-            case Constants.SNIPER:
-                AudioController.instance.play(AssetsController.instance.snipershoot);
-                break;
-            case Constants.SPARDA:
-                AudioController.instance.play(AssetsController.instance.spardashoot);
-                break;
-            case Constants.WIZARD:
-                AudioController.instance.play(AssetsController.instance.angelshoot);
-                break;
-
-        }
-
         bomb.setFromPlayer(this);
-
         bomb.setState(Constants.BOMB.STATE_FLY);
         myHero.setState(Constants.STATE_ATTACK);
     }
