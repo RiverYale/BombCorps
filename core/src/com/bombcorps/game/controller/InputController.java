@@ -32,6 +32,7 @@ public class InputController implements GestureDetector.GestureListener {
         camera.unproject(v);
 //        Gdx.app.log("zc", "x="+v.x+"  y="+v.y);
         //确定是否按到了炸弹
+//        Gdx.app.log("zc", v.x+" "+v.y);
         if(controller.getOperations()==1 || controller.getOperations()==2){
 
 //            if(controller.getCurPlayer().getBomb() == null)
@@ -39,8 +40,10 @@ public class InputController implements GestureDetector.GestureListener {
 //            else
 //                Gdx.app.log("bomb","not null");
 
-            Rectangle r = controller.getCurPlayer().getBomb().getRect();
+            Rectangle r = controller.getCurPlayer().getBomb().getTapRec();
+            Gdx.app.log("zc", r.toString()+" "+ v.x+" "+v.y);
             if(r.contains(v.x, v.y)){
+//                Gdx.app.log("zc", "has aim");
                 hasAim = true;
             }else{
                 hasAim = false;
@@ -114,6 +117,7 @@ public class InputController implements GestureDetector.GestureListener {
 
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
+//        Gdx.app.log("zc", ""+hasAim);
         if(hasAim){
             Vector3 v = new Vector3(x, y, 0);
             camera.unproject(v);
@@ -134,6 +138,7 @@ public class InputController implements GestureDetector.GestureListener {
         if(op == 1 || op == 2){
             controller.getCurPlayer().shoot();
             controller.resetOperations();
+            hasAim = false;
         }
         return false;
     }

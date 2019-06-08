@@ -86,6 +86,10 @@ public class Player implements Serializable {
         /*
         每一回合结束都要把英雄的精力值，怒气值调正初始化
          */
+        Gdx.app.log("initPlayer","initPlayerEveryRound");
+
+        myHero.setAttackTimes(1);
+
         boolean isweaked = false;
         if(team == TEAM.RED){
             for(int i = 0 ; i < skillAndBuff.playerListRed.size ; i++){
@@ -155,7 +159,7 @@ public class Player implements Serializable {
     }
 
     public void shoot(){
-
+//        bomb.setHeroType(heroType);
         bomb.setFromPlayer(this);
 
         bomb.setState(Constants.BOMB.STATE_FLY);
@@ -184,6 +188,9 @@ public class Player implements Serializable {
                 if(!skillAndBuff.canJump)   //已经非过一次
                     return false;
 
+                if(myHero.getAttackTimes() == 0)
+                    return false;
+
                 if(team == TEAM.RED)
                     skillAndBuff.jump(Constants.PLAYER.RED_TEAM, IP);
                 else
@@ -191,6 +198,7 @@ public class Player implements Serializable {
 
                 return true;
             case 2:
+                Gdx.app.log("set Ready", "" + myHero.getAttackTimes());
                 if(myHero.getAttackTimes() == 0)
                     return false;
 

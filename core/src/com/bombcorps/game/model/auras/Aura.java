@@ -27,6 +27,7 @@ public class Aura {
     }
 
     public Aura(){
+        position = new Vector2();
         state = AURA.WAIT;
         initAura();
     }
@@ -45,8 +46,9 @@ public class Aura {
     }
 
     public void render(SpriteBatch batch){
-        batch.draw(state.aura, position.x, position.y, state.origin.x, state.origin.y,
-                state.dimension.x,state.dimension.y, state.scale.x, state.scale.y, 0);
+        if(state != AURA.WAIT)
+            batch.draw(state.aura, position.x, position.y, state.origin.x, state.origin.y,
+                    state.dimension.x,state.dimension.y, state.scale.x, state.scale.y, 0);
     }
 
     public void setState(int input){

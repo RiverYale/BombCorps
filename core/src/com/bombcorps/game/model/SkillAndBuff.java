@@ -1,6 +1,8 @@
 package com.bombcorps.game.model;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.BufferUtils;
 
@@ -106,6 +108,7 @@ public class SkillAndBuff {
 
             if(angel_skill_2_debuff == 0){
                 curPlayer.getMyHero().setAttack(curPlayer.getMyHero().getAttack() + Constants.Angel.SKILL_2_ATTACK_MIN);    //恢复攻击力
+                Gdx.app.log("Aura size", ""+ curPlayer.getMyHero().getAura().size);
                 curPlayer.getMyHero().getAura().get(2).setState(Constants.AURA.WAIT);    //取消光环
             }
 
@@ -232,7 +235,7 @@ public class SkillAndBuff {
             }
         }
 
-        public Array<Integer> angel_skill_3_buff;      //增加AttackBUFF
+        public Array<Integer> angel_skill_3_buff = new Array<Integer>();      //增加AttackBUFF
         public int angel_skill_2_debuff;               //虚弱剩余时间
         public boolean angel_self_buff;                //天使自身回血buff
 
@@ -240,8 +243,8 @@ public class SkillAndBuff {
         public int sparda_skill_2_buff;                //增加暴击的数量   instant
         public int sparda_skill_3_buff;            //技能3剩余局数
 
-        public Array<Integer> protector_skill_1_buff;  //技能1BUFF数量和剩余ROUND数量
-        public Array<Integer> protector_skill_2_buff;    //技能2buff数量与剩余盘数
+        public Array<Integer> protector_skill_1_buff = new Array<Integer>();  //技能1BUFF数量和剩余ROUND数量
+        public Array<Integer> protector_skill_2_buff = new Array<Integer>();    //技能2buff数量与剩余盘数
         //skill_3
         public int protector_skill_3_left_round;              //减伤Buff剩余局数
         public int FromIndex;                          //buff来源
@@ -760,7 +763,7 @@ public class SkillAndBuff {
     }
 
     private void setBomb(Player player,int heroType, int bombType){
-        player.bomb.setPosition(player.getMyHero().getPosition());
+        player.bomb.setPosition(new Vector2(player.getMyHero().getPosition().x, player.getMyHero().getPosition().y + 1f));
         player.bomb.setHeroType(heroType);
         player.bomb.setBombType(bombType);
 //        player.bomb.setState(Constants.BOMB.STATE_READY);

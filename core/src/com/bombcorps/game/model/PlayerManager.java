@@ -27,6 +27,8 @@ public class PlayerManager {
     public void initEveryRound(){
         skillAndBuff.updateBuffEveryRound();
 
+        Gdx.app.log("number Of playerList", ""+playerListRed.size);
+
         for(Player i : playerListRed)
             i.initHeroEveryRound();
         for(Player i : playerListBlue)
@@ -107,6 +109,7 @@ public class PlayerManager {
 
 
     public void explode(Player player){
+//        Gdx.app.log("zc", "bomb");
         bomb.setFromPlayer(player);
         bomb.explode(playerListRed, playerListBlue);
     }

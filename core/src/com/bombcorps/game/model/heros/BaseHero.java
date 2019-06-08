@@ -162,7 +162,10 @@ public class BaseHero{
         skill_3 = false;
         this.state = STATE.GROUNDED;
 
-        aura = new Array<Aura>(6);
+        aura = new Array<Aura>();
+        for(int i = 0 ; i < 6 ; i++)
+            aura.add(new Aura());
+
         criticalRate = 2;
         destination = 0;
         health = 0;

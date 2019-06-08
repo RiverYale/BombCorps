@@ -38,7 +38,7 @@ public class Bomb {
 
     private Animation boomAnimation;
     private TextureRegion boomKeyFrame;
-    private int stateTime;
+    private float stateTime;
 
     private STATE state;
     private enum STATE{
@@ -69,17 +69,17 @@ public class Bomb {
         rotation = 0;
 
         rec = new Rectangle(0,0,dimension.x,dimension.y);
-        tapRec = new Rectangle(0,0,dimension.x * 2, dimension.y * 2);
+        tapRec = new Rectangle(0,0,dimension.x * 3, dimension.y * 3);
     }
 
     public void update(float deltaTime){
-        if(state == STATE.WAIT){
-            Gdx.app.log("bombState","wait");
-        }else if(state == STATE.READY){
-            Gdx.app.log("bombState", "ready");
-        }else{
-            Gdx.app.log("bombState","fly");
-        }
+//        if(state == STATE.WAIT){
+//            Gdx.app.log("bombState","wait");
+//        }else if(state == STATE.READY){
+//            Gdx.app.log("bombState", "ready");
+//        }else{
+//            Gdx.app.log("bombState","fly");
+//        }
 
         switch (state){
             case FLY:
@@ -203,7 +203,7 @@ public class Bomb {
     }
 
     public void renderReady(SpriteBatch batch){
-        batch.draw(bomb[heroType][bombType], position.x - dimension.x, position.y,
+        batch.draw(bomb[heroType][bombType], position.x, position.y,
                 origin.x,origin.y,dimension.x,dimension.y,
                 bombScale.x,bombScale.y,0);
 
@@ -230,6 +230,8 @@ public class Bomb {
     }
 
     public void explode(Array<Player> playerListRed, Array<Player> playerListBlue){
+        Gdx.app.log("hero type","" + heroType);
+        state = STATE.BOOM;
         Array<Player> playersBeingHit = playersBeingHit(playerListRed, playerListBlue);  //被炸到的玩家
 
 //        if(playersBeingHit.size > 0) {
@@ -418,7 +420,9 @@ public class Bomb {
                     }
                     break;
                 case 5:
+                    Gdx.app.log("jump", "activated");
                     fromPlayer.getMyHero().setPosition(position);
+                    break;
             }
 
     }
@@ -592,14 +596,8 @@ public class Bomb {
     }
 
     public Rectangle getRect() {
-        Gdx.app.log("rectangle", rec.height + "");
         rec.x = position.x;
         rec.y = position.y;
-        if(rec == null){
-            Gdx.app.log("bomb","null");
-        }else {
-            Gdx.app.log("bomb", "not null");
-        }
         return rec;
     }
 
