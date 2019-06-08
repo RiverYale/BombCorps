@@ -17,7 +17,7 @@ public class CurPlayerSignal {
     }
 
     private void init(){
-        region = new TextureRegion(new Texture(Gdx.files.internal("gamescreen/curPlayerSignal.png")));
+        region = AssetsController.instance.getRegion("curPlayerSignal");
         dimension = new Vector2(0.2f,0.2f);
         position = new Vector2(0,0);
     }
