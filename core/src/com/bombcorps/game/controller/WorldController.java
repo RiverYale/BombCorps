@@ -114,10 +114,12 @@ public class WorldController {
             case 1:
                 operations = 1;
                 //TODO curPlayer放个球
+                getCurPlayer().getBomb().setState(Constants.BOMB.STATE_READY);
                 break;
             case 2:
                 operations = 2;
                 //TODO curPlayer放个炸弹
+                getCurPlayer().getBomb().setState(Constants.BOMB.STATE_READY);
                 break;
             case 3:
             case 4:
@@ -187,6 +189,7 @@ public class WorldController {
             case 2:
                 //TODO curPlayer扔炸弹
                 if(curPlayer.useSkill(op)) {
+//                    curPlayer
                     curPlayer.setTap(new Vector2(tapX, tapY));
                     curPlayer.shoot();
 
