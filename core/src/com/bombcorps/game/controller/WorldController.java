@@ -121,6 +121,7 @@ public class WorldController {
                     operations = 1;
                     //TODO curPlayer放个球
                     getCurPlayer().getBomb().setState(Constants.BOMB.STATE_READY);
+                    getCurPlayer().bomb.setPosition(new Vector2(curPlayer.getMyHero().getPosition().x + 0.1f, curPlayer.getMyHero().getPosition().y + 1f));
 
                 }
                 break;
@@ -129,7 +130,7 @@ public class WorldController {
                     operations = 2;
                     //TODO curPlayer放个炸弹
                     getCurPlayer().getBomb().setState(Constants.BOMB.STATE_READY);
-
+                    getCurPlayer().bomb.setPosition(new Vector2(curPlayer.getMyHero().getPosition().x + 0.1f, curPlayer.getMyHero().getPosition().y + 1f));
 //                    getCurPlayer().setTap(new Vector2(getCurPlayer().getPosition().x - 5, getCurPlayer().getPosition().y - 5));
 //                    getCurPlayer().getBomb().setState(Constants.BOMB.STATE_FLY);
 //                    getCurPlayer().shoot();
@@ -191,13 +192,15 @@ public class WorldController {
             case 1:
                 if(curPlayer.useSkill(op)) {
                     curPlayer.getBomb().setHeroType(5);
+                    getCurPlayer().bomb.setPosition(new Vector2(curPlayer.getMyHero().getPosition().x + 0.1f, curPlayer.getMyHero().getPosition().y + 1f));
                     curPlayer.setTap(new Vector2(tapX, tapY));
                     curPlayer.shoot(cameraController);
                 }
                 break;
             case 2:
-                    curPlayer.setTap(new Vector2(tapX, tapY));
-                    curPlayer.shoot(cameraController);
+                getCurPlayer().bomb.setPosition(new Vector2(curPlayer.getMyHero().getPosition().x + 0.1f, curPlayer.getMyHero().getPosition().y + 1f));
+                curPlayer.setTap(new Vector2(tapX, tapY));
+                curPlayer.shoot(cameraController);
 
                 break;
             case 3:
