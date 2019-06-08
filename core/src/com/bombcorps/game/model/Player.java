@@ -159,7 +159,6 @@ public class Player implements Serializable {
 
     public void shoot(CameraController controller){
         controller.setTarget(bomb);
-    public void shoot(){
         switch (heroType){
             case Constants.PROTECTOR:
                 AudioController.instance.play(AssetsController.instance.protectorshoot);
