@@ -751,10 +751,6 @@ public class GameScreen extends AbstractGameScreen{
         winErrorQuit.setVisible(true);
     }
 
-    public void loadMenuScreen() {
-        game.loadMenuScreen();
-    }
-
 
     @Override
     public void show() {
