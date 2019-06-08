@@ -433,7 +433,6 @@ public class Bomb {
                     fromPlayer.getMyHero().setPosition(position);
                     AudioController.instance.play(AssetsController.instance.tp);
                     break;
-
             }
 
     }
