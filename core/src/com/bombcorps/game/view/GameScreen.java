@@ -485,6 +485,12 @@ public class GameScreen extends AbstractGameScreen{
         prefs.saveSettings();
         winOptions.setVisible(false);
     }
+    public void loadSettings(){
+        DataController prefs = DataController.instance;
+        sldSound.setValue(prefs.getVolSound());
+        sldMusic.setValue(prefs.getVolMusic());
+
+    }
 
 
 
