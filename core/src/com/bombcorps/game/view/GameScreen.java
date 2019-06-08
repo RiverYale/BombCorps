@@ -53,9 +53,12 @@ public class GameScreen extends AbstractGameScreen{
     private boolean isStage;
 
     private Player myPlayer;
+    private int myHeroTypeI;
+    private String myHeroType;
     private Player otherPlayer;
     private String quitPlayer;
     private CurPlayerSignal curPlayerSignal;
+
 
     private BitmapFont font;
     private float scale;
@@ -176,6 +179,21 @@ public class GameScreen extends AbstractGameScreen{
             }
         }
 
+        myHeroTypeI = myPlayer.getHeroType();
+
+        myHeroType = "Sparda";
+        if(myHeroTypeI==0){
+            myHeroType = "Sparda";
+        } else if(myHeroTypeI==1){
+            myHeroType = "Protector";
+        } else if(myHeroTypeI==2){
+            myHeroType =  "Angel";
+        } else if(myHeroTypeI==3){
+            myHeroType = "Sniper";
+        } else {
+            myHeroType = "Wizard";
+        }
+
 
         worldController.getCameraController().setPosition(Constants.VIEWPORT_WIDTH/2,Constants.VIEWPORT_HEIGHT/2);
         worldController.getCameraController().setTarget(worldController.getCurPlayer());
@@ -192,11 +210,11 @@ public class GameScreen extends AbstractGameScreen{
         //退出按钮
         btnQuit = new Sprite(AssetsController.instance.getRegion("mapleft"));
         btnQuit.setSize(0.045f * width,0.07f * height);
-        btnQuit.setPosition(0,0.91f * height);
+        btnQuit.setPosition(0,0.93f*height);
         //设置按钮
         btnSettings = new Sprite(AssetsController.instance.getRegion("button_setting"));
         btnSettings.setSize(0.045f * width,0.07f * height);
-        btnSettings.setPosition(width-btnSettings.getWidth(),0.91f * height);
+        btnSettings.setPosition(width-btnSettings.getWidth(),0.93f * height);
         //移动按钮
         imgMove = new Sprite(AssetsController.instance.getRegion("move")) ;
         scale=width/15/imgMove.getWidth();
@@ -211,15 +229,15 @@ public class GameScreen extends AbstractGameScreen{
         imgAttrack.setScale(scale);
         imgAttrack.setPosition(imgEjection.getX()+imgEjection.getWidth()*scale,0);
         //一技能按钮
-        imgSkillOne = new Sprite(AssetsController.instance.getRegion("SkillOne"));
+        imgSkillOne = new Sprite(AssetsController.instance.getRegion(myHeroType+"1"));
         imgSkillOne.setScale(scale);
         imgSkillOne.setPosition(imgAttrack.getX()+imgAttrack.getWidth()*scale,0);
         //二技能按钮
-        imgSkillTwo = new Sprite(AssetsController.instance.getRegion("SkillTwo"));
+        imgSkillTwo = new Sprite(AssetsController.instance.getRegion(myHeroType+"2"));
         imgSkillTwo.setScale(scale);
         imgSkillTwo.setPosition(imgSkillOne.getX()+imgSkillOne.getWidth()*scale,0);
         //三技能按钮
-        imgSkillThree = new Sprite(AssetsController.instance.getRegion("SkillThree"));
+        imgSkillThree = new Sprite(AssetsController.instance.getRegion(myHeroType+"3"));
         imgSkillThree.setScale(scale);
         imgSkillThree.setPosition(imgSkillTwo.getX()+imgSkillTwo.getWidth()*scale,0);
         //回合结束按钮
@@ -228,14 +246,14 @@ public class GameScreen extends AbstractGameScreen{
         imgTurnEnd.setScale(scale);
         imgTurnEnd.setPosition(imgSkillThree.getX()+imgSkillThree.getWidth()*scale,0);
         //本人英雄头像
-        imgMyHeroHead = new Sprite(AssetsController.instance.getRegion(myHeroType()+"_move0"));
+        imgMyHeroHead = new Sprite(AssetsController.instance.getRegion(myHeroType+"_move0"));
         imgMyHeroHead.setSize(43,43);
         imgMyHeroHead.setScale(scale);
         imgMyHeroHead.setPosition(0,0);
 
 
         //他人英雄头像
-        imgOtherHeroHead = new Sprite(AssetsController.instance.getRegion(myHeroType()+"_move0"));
+        imgOtherHeroHead = new Sprite(AssetsController.instance.getRegion(myHeroType+"_move0"));
         imgOtherHeroHead.setSize(43,43);
         imgOtherHeroHead.setScale(scale);
         imgOtherHeroHead.setPosition(width/15*12,0);
@@ -480,7 +498,7 @@ public class GameScreen extends AbstractGameScreen{
         //winOptions.setColor(1,1,1,1f);
         winHeroInfo.setVisible(false);
         Label.LabelStyle labelStyle = new Label.LabelStyle(font,Color.WHITE);
-        Label label = new Label(description[myHeroTypeI()],labelStyle);
+        Label label = new Label(description[myHeroTypeI],labelStyle);
         label.setFontScale(1.0f);
         label.setSize(500,200);
         winHeroInfo.addActor(label);
@@ -692,31 +710,6 @@ public class GameScreen extends AbstractGameScreen{
     }
 
 
-    //自己英雄信息
-
-    public String myHeroType(){
-        int heroType =  myHeroTypeI();
-        if(heroType==0){
-            return "Sparda";
-        }
-        else if(heroType==1){
-            return "Protector";
-        }
-        else if(heroType==2){
-            return  "Angel";
-        }
-        else if(heroType==3){
-            return "Sniper";
-        }
-        else {
-            return "Wizard";
-        }
-    }
-
-    public int myHeroTypeI() {
-        return myPlayer.getHeroType();
-    }
-
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width,height);
@@ -771,6 +764,7 @@ public class GameScreen extends AbstractGameScreen{
         batch.begin();
         renderWorld(batch);
         worldController.getWorld().getPlayerManager().update(deltaTime);
+        worldController.getWorld().getPlayerManager().getBomb().update(deltaTime);
         worldController.testCollisions();
         renderGUI(batch);
         batch.end();

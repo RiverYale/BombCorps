@@ -221,6 +221,7 @@ public class World {
            pillar.render(batch);
        }
         playerManager.render(batch);
+        playerManager.getBomb().render(batch);
         bonusManager.render(batch);
     }
 
