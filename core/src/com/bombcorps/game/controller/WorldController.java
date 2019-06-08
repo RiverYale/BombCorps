@@ -172,7 +172,7 @@ public class WorldController {
             curPlayer = world.getNextPlayer();
             perRound++;
         }
-        if (perRound > world.getPlayers().size) {
+        if (perRound >= world.getPlayers().size) {
             world.getPlayerManager().initEveryRound();
             perRound %= world.getPlayers().size;
         }
@@ -189,7 +189,6 @@ public class WorldController {
                 curPlayer.setDestX(targetX);
                 break;
             case 1:
-                //TODO curPlayer扔球
                 if(curPlayer.useSkill(op)) {
                     curPlayer.getBomb().setHeroType(5);
                     curPlayer.setTap(new Vector2(tapX, tapY));
@@ -197,7 +196,6 @@ public class WorldController {
                 }
                 break;
             case 2:
-                //TODO curPlayer扔炸弹
                     curPlayer.setTap(new Vector2(tapX, tapY));
                     curPlayer.shoot(cameraController);
 
@@ -275,7 +273,6 @@ public class WorldController {
             for(Rock r : world.rocks) {
                 r2 = r.getRect();
                 if (r1.overlaps(r2)) {
-                    Gdx.app.log("zc", "collision");
                     onCollisionsBombWithRock(curPlayer.getBomb());
                 }
             }
@@ -295,7 +292,7 @@ public class WorldController {
 
     private void onCollisionsPlayerWithRock(Rock r) {
         float heightDifference = Math.abs(curPlayer.getPosition().y - (r.getPosition().y + r.getRect().getHeight()));
-        if (heightDifference > 0.25f) { //TODO
+        if (heightDifference > 0.25f) {
             boolean hitLeftEdge = curPlayer.getPosition().x > (r.getPosition().x + r.getRect().getWidth() / 2.0f);
             if (hitLeftEdge) {
                 curPlayer.setX(r.getPosition().x + r.getRect().getWidth());
@@ -322,7 +319,7 @@ public class WorldController {
 
     private void onCollisionsPlayerWithPillar(Pillar r) {
         float heightDifference = Math.abs(curPlayer.getPosition().y - (r.getPosition().y + r.getRect().getHeight()));
-        if (heightDifference > 0.25f) { //TODO
+        if (heightDifference > 0.25f) {
             boolean hitLeftEdge = curPlayer.getPosition().x > (r.getPosition().x + r.getRect().getWidth() / 2.0f);
             if (hitLeftEdge) {
                 curPlayer.setX(r.getPosition().x + r.getRect().getWidth());
