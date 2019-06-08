@@ -21,6 +21,8 @@ public class Player implements Serializable {
     private String IP;
     private int level;
 
+
+
     private Vector2 tap;
 
     private boolean current;
@@ -64,7 +66,6 @@ public class Player implements Serializable {
     public void creatHero(SkillAndBuff skillAndBuff, Bomb bomb){
         this.skillAndBuff = skillAndBuff;
         this.bomb = bomb;
-
         switch (heroType){
             case Constants.PROTECTOR:
                 myHero = new Protector(level);
@@ -82,7 +83,7 @@ public class Player implements Serializable {
                 myHero = new Wizard(level);
                 break;
         }
-
+        myHero.getSignal().setTeam(team);
     }
 
     public void initHeroEveryRound(){       //每回合调用

@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.model.Constants;
+import com.bombcorps.game.model.Signal;
 import com.bombcorps.game.model.auras.Aura;
 
 public class BaseHero{
@@ -55,6 +56,8 @@ public class BaseHero{
     private Vector2 acceleration;//加速度
 
     private STATE state;
+
+    private Signal signal;
 
     /*
     渲染英雄
@@ -189,6 +192,7 @@ public class BaseHero{
         attackTimes = 1;
         decreaseRate = 0f;
 
+        signal = new Signal();
     }
 
 
@@ -238,10 +242,12 @@ public class BaseHero{
 
     protected void updateX(float deltaTime){
         position.x += deltaTime * velocity.x;
+        signal.setPositionX(position.x+0.4f);
     }
 
     protected void updateY(float deltaTime){
         position.y += deltaTime * velocity.y;
+        signal.setPositionY(position.y+1.05f);
         velocity.y += deltaTime * acceleration.y;
     }
 
@@ -249,6 +255,7 @@ public class BaseHero{
         for(Aura i : aura)
             i.render(batch);
         renderHero(batch);
+        signal.renderTeamSignal(batch);
     }
 
     protected void renderHero(SpriteBatch batch){
@@ -470,6 +477,7 @@ public class BaseHero{
 
     public void setPosition(Vector2 position) {
         this.position = position;
+        signal.setPosition(this.position.x+0.4f,this.position.y+1.05f);
     }
 
     public int getAttackTimes() {
@@ -526,5 +534,9 @@ public class BaseHero{
 
     public void setDecreaseRate(float decreaseRate) {
         this.decreaseRate = decreaseRate;
+    }
+
+    public Signal getSignal() {
+        return signal;
     }
 }

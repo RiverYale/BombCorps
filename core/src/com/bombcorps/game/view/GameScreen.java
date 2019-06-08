@@ -53,7 +53,7 @@ public class GameScreen extends AbstractGameScreen{
     private Player otherPlayer;
     private String quitPlayer;
     private Signal curPlayerSignal;
-
+    private Label infoLabel;
 
     private BitmapFont font;
     private float scale;
@@ -565,7 +565,7 @@ public class GameScreen extends AbstractGameScreen{
 
 
     public void onHeroClicked(Player p){
-        Gdx.app.log("qin","hero clicked is used in GameScreen");
+        infoLabel = null;
         otherPlayer = p;
         isClickedHero = true;
         final int heroType;
@@ -587,14 +587,13 @@ public class GameScreen extends AbstractGameScreen{
         imgOtherHeroHead.setScale(scale);
         imgOtherHeroHead.setPosition(width/15*12,0);
         //font.getData().setScale(1.0f);
-
         Label.LabelStyle labelStyle = new Label.LabelStyle(font,font.getColor());
-        Label label = new Label(description[heroType],labelStyle);
-        label.setFontScale(1.0f);
-        label.setSize(500,200);
-        winOtherHeroInfo.addActor(label);
-        winOtherHeroInfo.setSize(label.getWidth()*1.2f,label.getHeight()*1.2f);
-        label.setPosition(label.getWidth()*0.1f,label.getHeight()*0.1f);
+        infoLabel = new Label(description[heroType],labelStyle);
+        infoLabel.setFontScale(1.0f);
+        infoLabel.setSize(500,200);
+        winOtherHeroInfo.addActor(infoLabel);
+        winOtherHeroInfo.setSize(infoLabel.getWidth()*1.2f,infoLabel.getHeight()*1.2f);
+        infoLabel.setPosition(infoLabel.getWidth()*0.1f,infoLabel.getHeight()*0.1f);
         winOtherHeroInfo.setPosition(Gdx.graphics.getWidth()-winOtherHeroInfo.getWidth(),width/9+50);
         btnwinOHInfoQuit.setPosition(winOtherHeroInfo.getWidth()-btnwinOHInfoQuit.getWidth()*1.5f,winOtherHeroInfo.getHeight()-btnwinOHInfoQuit.getHeight()*1.5f);
         winOtherHeroInfo.setVisible(false);

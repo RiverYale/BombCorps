@@ -12,23 +12,23 @@ public class Signal {
     private Vector2 position;
     public Vector2 dimension;
     private TextureRegion Region;
-    private int team;
+    private Player.TEAM team;
     public Signal(){
         init();
     }
 
     private void init(){
-        team = 0;
+        team = Player.TEAM.BLUE;
         dimension = new Vector2(0.2f,0.2f);
         position = new Vector2(0,0);
     }
 
     public void renderTeamSignal(SpriteBatch batch){
-        if(team == Constants.PLAYER.RED_TEAM){
+        if(team == Player.TEAM.RED){
             Region = AssetsController.instance.getRegion("redTeamSignal");
             batch.draw(Region,position.x,position.y,dimension.x,dimension.y);
         }
-        else if(team == Constants.PLAYER.BLUE_TEAM){
+        else if(team == Player.TEAM.BLUE){
             Region = AssetsController.instance.getRegion("blueTeamSignal");
             batch.draw(Region,position.x,position.y,dimension.x,dimension.y);
         }
@@ -49,11 +49,18 @@ public class Signal {
     }
 
     public void setPosition(float v, float v1) {
-        this.position.x = v;
-        this.position.y = v1;
+        this.position.set(v,v1);
     }
 
-    public void setTeam(int team){
+    public void setPositionX(float x){
+        position.x = x;
+    }
+
+    public void setPositionY(float y){
+        position.y = y;
+    }
+
+    public void setTeam(Player.TEAM team){
         this.team = team;
     }
 
