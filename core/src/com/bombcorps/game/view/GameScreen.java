@@ -579,6 +579,7 @@ public class GameScreen extends AbstractGameScreen{
         winResults = new Window("",windowStyle);
         winResults.setSize(width/2,height/2);
         winResults.setPosition((width-winResults.getWidth())/2,(height-winResults.getHeight())/2);
+        winResults.setVisible(true);
         virtory = new Image(AssetsController.instance.getRegion("vitory"));
         failed = new Image(AssetsController.instance.getRegion("failed"));
 
@@ -623,11 +624,12 @@ public class GameScreen extends AbstractGameScreen{
                 //game.loadRoomScreen();
                 winResults.setVisible(false);
                 AudioController.instance.play(AssetsController.instance.btnClicked);
+                game.loadLobbyScreen();
                 return true;
 
             }
         });
-
+        stage.addActor(winResults);
 
     }
 
@@ -769,9 +771,9 @@ public class GameScreen extends AbstractGameScreen{
         renderGUI(batch);
         batch.end();
         stage.act();
-        stage.draw();
-
+        stage.draw();;
         if(worldController.isGameOver()!= 0){
+            Gdx.input.setInputProcessor(stage);
             GameOver();
         }
     }
