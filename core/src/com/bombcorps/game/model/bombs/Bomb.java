@@ -570,6 +570,7 @@ public class Bomb {
     }
 
     public Rectangle getRect() {
+        Gdx.app.log("rectangle", rec.height + "");
         rec.x = position.x;
         rec.y = position.y;
         return rec;
