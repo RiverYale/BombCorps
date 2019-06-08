@@ -448,7 +448,7 @@ public class GameScreen extends AbstractGameScreen{
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 AudioController.instance.play(AssetsController.instance.btnClicked);
                 onSaveClicked();
-                return true;
+                return false;
             }
         });
         // 添加cancel按钮并且 初始化事件处理器
@@ -460,7 +460,7 @@ public class GameScreen extends AbstractGameScreen{
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 onCancelClicked();
                 AudioController.instance.play(AssetsController.instance.btnClicked);
-                return true;
+                return false;
             }
         });
         return tbl;
@@ -483,7 +483,6 @@ public class GameScreen extends AbstractGameScreen{
         prefs.setVolSound(sldSound.getValue());
         prefs.setVolMusic(sldMusic.getValue());
         prefs.saveSettings();
-        winOptions.setVisible(false);
     }
     public void loadSettings(){
         DataController prefs = DataController.instance;
