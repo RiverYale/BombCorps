@@ -166,6 +166,9 @@ public class GameScreen extends AbstractGameScreen{
         isPlayed = false;
         isStage = false;
 
+        Label.LabelStyle labelStyle = new Label.LabelStyle(font,font.getColor());
+        infoLabel = new Label("",labelStyle);
+
         myPlayer = worldController.getPlayers().get(0);
         int i;
         for(i=0;i<worldController.getPlayers().size;i++) {
@@ -565,7 +568,7 @@ public class GameScreen extends AbstractGameScreen{
 
 
     public void onHeroClicked(Player p){
-        infoLabel = null;
+        infoLabel.setVisible(false);
         otherPlayer = p;
         isClickedHero = true;
         final int heroType;
