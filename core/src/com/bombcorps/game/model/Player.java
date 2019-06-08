@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.bombcorps.game.controller.AssetsController;
+import com.bombcorps.game.controller.AudioController;
 import com.bombcorps.game.controller.NetController;
 import com.bombcorps.game.model.bombs.Bomb;
 import com.bombcorps.game.model.heros.*;
@@ -155,6 +157,24 @@ public class Player implements Serializable {
     }
 
     public void shoot(){
+        switch (heroType){
+            case Constants.PROTECTOR:
+                AudioController.instance.play(AssetsController.instance.protectorshoot);
+                break;
+            case Constants.ANGEL:
+                AudioController.instance.play(AssetsController.instance.angelshoot);
+                break;
+            case Constants.SNIPER:
+                AudioController.instance.play(AssetsController.instance.snipershoot);
+                break;
+            case Constants.SPARDA:
+                AudioController.instance.play(AssetsController.instance.spardashoot);
+                break;
+            case Constants.WIZARD:
+                AudioController.instance.play(AssetsController.instance.angelshoot);
+                break;
+
+        }
 
         bomb.setFromPlayer(this);
 

@@ -410,6 +410,7 @@ public class SkillAndBuff {
         }
 
         public void useSkill_2(int team, String IP){
+            AudioController.instance.play(AssetsController.instance.spardaskill1);
             Player player;
             int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
@@ -442,6 +443,7 @@ public class SkillAndBuff {
         }
 
         public void useSkill_3(int team, String IP){
+            AudioController.instance.play(AssetsController.instance.spardaskill3);
             Player player;
             int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
@@ -478,6 +480,7 @@ public class SkillAndBuff {
         public boolean skill_3;
 
         public void useSkill_1(int team, String IP){
+            AudioController.instance.play(AssetsController.instance.protectorskill1);
             Player player;
             int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
@@ -530,6 +533,7 @@ public class SkillAndBuff {
         }
 
         public void useSkill_3(int team, String IP){
+            AudioController.instance.play(AssetsController.instance.protectorskill3);
             Player player;
             int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
@@ -586,6 +590,7 @@ public class SkillAndBuff {
         public boolean skill_3;
 
         public void useSkill_1(int team, String IP){
+            AudioController.instance.play(AssetsController.instance.sniperskill1);
             Player player;
             int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
@@ -617,6 +622,7 @@ public class SkillAndBuff {
         }
 
         public void useSkill_2(int team, String IP){
+            AudioController.instance.play(AssetsController.instance.sniperskill1);
             Player player;
             int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
@@ -638,6 +644,7 @@ public class SkillAndBuff {
         }
 
         public void useSkill_3(int team, String IP){
+            AudioController.instance.play(AssetsController.instance.sniperskill3);
             Player player;
             int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
@@ -675,6 +682,7 @@ public class SkillAndBuff {
         public boolean skill_3;
 
         public void useSkill_1(int team, String IP){
+            AudioController.instance.play(AssetsController.instance.wizardskill1);
             Player player;
             int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
@@ -717,6 +725,7 @@ public class SkillAndBuff {
         }
 
         public void useSkill_3(int team, String IP){
+            AudioController.instance.play(AssetsController.instance.wizardskill3);
             Player player;
             int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
