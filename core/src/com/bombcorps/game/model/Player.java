@@ -111,7 +111,8 @@ public class Player implements Serializable {
             myHero.setEndurance(Constants.MAX_ENDURENCE);
         }
 
-        myHero.setRagePower(100);
+        myHero.setRagePower(MathUtils.clamp(myHero.getRagePower() + Constants.RAGEPOWER_ADD_PER_ROUND,
+                0, Constants.MAX_RAGEPOWER));
     }
 
     public float getDestX(){
