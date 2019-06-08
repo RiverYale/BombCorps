@@ -117,14 +117,23 @@ public class WorldController {
                 operations = 0;
                 break;
             case 1:
-                operations = 1;
-                //TODO curPlayer放个球
-                getCurPlayer().getBomb().setState(Constants.BOMB.STATE_READY);
+                if(curPlayer.useSkill(1)) {
+                    operations = 1;
+                    //TODO curPlayer放个球
+                    getCurPlayer().getBomb().setState(Constants.BOMB.STATE_READY);
+
+                }
                 break;
             case 2:
-                operations = 2;
-                //TODO curPlayer放个炸弹
-                getCurPlayer().getBomb().setState(Constants.BOMB.STATE_READY);
+                if(curPlayer.useSkill(2)) {
+                    operations = 2;
+                    //TODO curPlayer放个炸弹
+                    getCurPlayer().getBomb().setState(Constants.BOMB.STATE_READY);
+
+//                    getCurPlayer().setTap(new Vector2(getCurPlayer().getPosition().x - 5, getCurPlayer().getPosition().y - 5));
+//                    getCurPlayer().getBomb().setState(Constants.BOMB.STATE_FLY);
+//                    getCurPlayer().shoot();
+                }
                 break;
             case 3:
             case 4:
@@ -163,7 +172,7 @@ public class WorldController {
             curPlayer = world.getNextPlayer();
             perRound++;
         }
-        if (perRound > world.getPlayers().size) {
+        if (perRound >= world.getPlayers().size) {
             world.getPlayerManager().initEveryRound();
             perRound %= world.getPlayers().size;
         }
@@ -180,20 +189,16 @@ public class WorldController {
                 curPlayer.setDestX(targetX);
                 break;
             case 1:
-                //TODO curPlayer扔球
                 if(curPlayer.useSkill(op)) {
+                    curPlayer.getBomb().setHeroType(5);
                     curPlayer.setTap(new Vector2(tapX, tapY));
                     curPlayer.shoot(cameraController);
                 }
                 break;
             case 2:
-                //TODO curPlayer扔炸弹
-                if(curPlayer.useSkill(op)) {
-//                    curPlayer
                     curPlayer.setTap(new Vector2(tapX, tapY));
                     curPlayer.shoot(cameraController);
 
-                }
                 break;
             case 3:
             case 4:
@@ -271,6 +276,12 @@ public class WorldController {
                     onCollisionsBombWithRock(curPlayer.getBomb());
                 }
             }
+            for(Pillar r : world.pillars) {
+                r2 = r.getRect();
+                if (r1.overlaps(r2)) {
+                    onCollisionsBombWithRock(curPlayer.getBomb());
+                }
+            }
         }
 
         Bonus fallingOne = world.getFallingBonus();
@@ -287,7 +298,7 @@ public class WorldController {
 
     private void onCollisionsPlayerWithRock(Rock r) {
         float heightDifference = Math.abs(curPlayer.getPosition().y - (r.getPosition().y + r.getRect().getHeight()));
-        if (heightDifference > 0.25f) { //TODO
+        if (heightDifference > 0.25f) {
             boolean hitLeftEdge = curPlayer.getPosition().x > (r.getPosition().x + r.getRect().getWidth() / 2.0f);
             if (hitLeftEdge) {
                 curPlayer.setX(r.getPosition().x + r.getRect().getWidth());
@@ -314,7 +325,7 @@ public class WorldController {
 
     private void onCollisionsPlayerWithPillar(Pillar r) {
         float heightDifference = Math.abs(curPlayer.getPosition().y - (r.getPosition().y + r.getRect().getHeight()));
-        if (heightDifference > 0.25f) { //TODO
+        if (heightDifference > 0.25f) {
             boolean hitLeftEdge = curPlayer.getPosition().x > (r.getPosition().x + r.getRect().getWidth() / 2.0f);
             if (hitLeftEdge) {
                 curPlayer.setX(r.getPosition().x + r.getRect().getWidth());
