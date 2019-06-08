@@ -92,17 +92,19 @@ public class PlayerManager {
     public void update(float deltaTime){
         for(Player i : playerListRed)
             i.getMyHero().update(deltaTime);
-
         for(Player i : playerListBlue)
             i.getMyHero().update(deltaTime);
     }
 
     public void render(SpriteBatch batch){
-        for(Player i : playerListRed)
+        for(Player i : playerListRed){
             i.getMyHero().render(batch);
+        }
 
-        for(Player i : playerListBlue)
+        for(Player i : playerListBlue){
             i.getMyHero().render(batch);
+        }
+
     }
 
 

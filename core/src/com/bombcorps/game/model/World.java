@@ -123,7 +123,6 @@ public class World {
     //柱子
     public Array<Pillar> pillars;
     //标志
-    public Array<Signal> signals;
     //英雄
     private PlayerManager playerManager;
     //
@@ -149,7 +148,6 @@ public class World {
         //物品
         rocks = new Array<Rock>();
         pillars = new Array<Pillar>();
-        signals = new Array<Signal>();
         Pixmap pixmap = new Pixmap(Gdx.files.internal("map/map"+filename+".png"));
         MapWidth = 32;
         bonusManager = new BonusManager((int)MapWidth);
@@ -193,18 +191,13 @@ public class World {
                 //英雄出生点
                 else if (BLOCK_TYPE.PLAYER_SPAWNPOINT.sameColor(currentPixel)) {
                     Vector2 position = new Vector2(pixelX,baseHeight);
-                    Signal signal = new Signal();
-                    signal.setPosition(position.x+0.4f,position.y+1.05f);
                     if(levelTurnRed <playerManager.getRedPlayerList().size){
-                        signal.setTeam(Constants.PLAYER.RED_TEAM);
                         playerManager.getRedPlayerList().get(levelTurnRed).getMyHero().setPosition(position);
                         levelTurnRed++;
                     }else if(levelTurnBlue<playerManager.getBluePlayerList().size){
-                        signal.setTeam(Constants.PLAYER.BLUE_TEAM);
                         playerManager.getBluePlayerList().get(levelTurnBlue).getMyHero().setPosition(position);
                         levelTurnBlue++;
                     }
-                    signals.add(signal);
                 }
                 //未知错误
                 else {
@@ -232,9 +225,6 @@ public class World {
         bonusManager.render(batch);
         playerManager.render(batch);
         playerManager.getBomb().render(batch);
-        for(Signal signal : signals){
-            signal.renderTeamSignal(batch);
-        }
     }
 
     public float getMapWidth() {
