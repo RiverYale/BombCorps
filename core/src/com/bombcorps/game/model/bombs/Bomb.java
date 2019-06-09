@@ -70,7 +70,7 @@ public class Bomb {
         acceleration = new Vector2(0,Constants.BOMB.ACCELERATION);
         rotation = 0;
 
-        rec = new Rectangle(0,0,dimension.x,dimension.y);
+        rec = new Rectangle(0,0,dimension.x * 2,dimension.y * 2);
         tapRec = new Rectangle(0,0,dimension.x * 3, dimension.y * 3);
     }
 
