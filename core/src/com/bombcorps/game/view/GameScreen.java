@@ -33,10 +33,6 @@ import com.bombcorps.game.model.Constants;
 import com.bombcorps.game.model.Signal;
 import com.bombcorps.game.model.Player;
 
-
-/*
-图片路径均非真正设置
- */
 public class GameScreen extends AbstractGameScreen{
     public final String TAG = GameScreen.class.getName();
     public final float width = Constants.VIEWPORT_GUI_WIDTH;
