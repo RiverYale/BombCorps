@@ -3,6 +3,7 @@ package com.bombcorps.game.model;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
+import com.bombcorps.game.model.bombs.Bomb;
 
 public class BonusManager {
     private Array<Bonus> bonusList;
@@ -21,8 +22,13 @@ public class BonusManager {
 //    }
 
     public void update(float deltaTime){
-        for(Bonus i : bonusList){
-            i.update(deltaTime);
+        for(int i = 0 ; i < bonusList.size ; i++){
+            if(bonusList.get(i).attachTo){
+                bonusList.removeIndex(i);
+            }
+        }
+        for(int i = 0 ; i < bonusList.size ; i++){
+            bonusList.get(i).update(deltaTime);
         }
     }
 

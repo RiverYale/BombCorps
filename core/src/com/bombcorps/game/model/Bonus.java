@@ -17,6 +17,7 @@ public class Bonus implements Serializable {
     private Vector2 dimension;
     public TextureRegion bonusBox;
     public TextureRegion parachute;
+    public boolean attachTo = false;
 
     private Rectangle rec;
 
@@ -71,6 +72,7 @@ public class Bonus implements Serializable {
 //    }
 
     public void attachTo(Player player){
+        attachTo = true;
         switch (type){
             case ADDENDURANCE:
                 player.getMyHero().setEndurance(MathUtils.clamp(
@@ -94,7 +96,7 @@ public class Bonus implements Serializable {
     }
 
     public void render(SpriteBatch batch){
-        if(state == STATE.ACTIVATED)
+        if(state == STATE.ACTIVATED);
             batch.draw(parachute, position.x, position.y + dimension.y,
                     origin.x, origin.y, dimension.x, dimension.y,
                     scale.x, scale.y,0);
