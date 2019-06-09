@@ -155,7 +155,7 @@ public class Player implements Serializable {
         }else{
             myHero.setDirection(true);
         }
-        bomb.setVelocity(new Vector2(myHero.getPosition().x - tap.x, myHero.getPosition().y - tap.y));
+        bomb.setVelocity(new Vector2(myHero.getPosition().x - tap.x + 0.1f, myHero.getPosition().y - tap.y + myHero.getDimension().y));
     }
 
     public Vector2 getTap(){
@@ -260,9 +260,11 @@ public class Player implements Serializable {
                 switch (op){
                     case 3:
                         if(team == TEAM.RED){
+                            Gdx.app.log("useskill","1");
                             skillAndBuff.spardaSkill.useSkill_1(Constants.PLAYER.RED_TEAM, IP);
                         }
                         else{
+                            Gdx.app.log("useskill","1");
                             skillAndBuff.spardaSkill.useSkill_1(Constants.PLAYER.BLUE_TEAM, IP);
                         }
                         break;

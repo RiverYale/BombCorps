@@ -226,6 +226,7 @@ public class Bomb {
 
         if(stateTime > boomAnimation.getAnimationDuration()){
             state = STATE.WAIT;
+            stateTime = 0;
         }
 
     }

@@ -46,9 +46,11 @@ public class Aura {
     }
 
     public void render(SpriteBatch batch){
-        if(state != AURA.WAIT)
-            batch.draw(state.aura, position.x, position.y, state.origin.x, state.origin.y,
-                    state.dimension.x,state.dimension.y, state.scale.x, state.scale.y, 0);
+        if(state != AURA.WAIT) {
+            
+            batch.draw(state.aura, position.x + 0.22f, position.y + 0.22f, state.origin.x, state.origin.y,
+                    state.dimension.x, state.dimension.y, state.scale.x, state.scale.y, 0);
+        }
     }
 
     public void setState(int input){
