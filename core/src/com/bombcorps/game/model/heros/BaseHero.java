@@ -349,6 +349,10 @@ public class BaseHero{
     set 与 put函数
      */
 
+    public Vector2 getDimension() {
+        return dimension;
+    }
+
     public float getCriticalRate() {
         return criticalRate;
     }

@@ -45,6 +45,7 @@ public class WorldController {
         operations = -1;
         net.bindWorldController(this);
         curPlayer = world.getFirstPlayer();
+        world.getPlayerManager().initEveryChange(curPlayer);
         cameraController.setTarget(curPlayer);
 //        AudioController.instance.play(AssetsController.instance.getMusic("")); //TODO
     }
@@ -139,6 +140,7 @@ public class WorldController {
             case 3:
             case 4:
             case 5:
+                operations = index;
                 curPlayer.useSkill(index);
                 resetOperations();
                 break;
@@ -163,7 +165,6 @@ public class WorldController {
     }
 
     public void startNextRound(Bonus b) {
-        world.getPlayerManager().initEveryChange();
         if(b != null){
             world.addBonus(b);
         }
@@ -177,6 +178,7 @@ public class WorldController {
             world.getPlayerManager().initEveryRound();
             perRound %= world.getPlayers().size;
         }
+        world.getPlayerManager().initEveryChange(curPlayer);
         cameraController.setTarget(curPlayer);
     }
 
@@ -185,6 +187,9 @@ public class WorldController {
         float targetX = msg.getTargetX();
         float tapX = msg.getTapX();
         float tapY = msg.getTapY();
+
+        Gdx.app.log("op skill", "" + op);
+
         switch (op) {
             case 0:
                 curPlayer.setDestX(targetX);
@@ -206,6 +211,7 @@ public class WorldController {
             case 3:
             case 4:
             case 5:
+                Gdx.app.log("anwser skill","activatied");
                 curPlayer.useSkill(op);
                 break;
         }

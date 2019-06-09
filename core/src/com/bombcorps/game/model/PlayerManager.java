@@ -35,8 +35,10 @@ public class PlayerManager {
             i.initHeroEveryRound();
     }
 
-    public void initEveryChange(){
+    public void initEveryChange(Player nextPlayer){
         bomb.initBombEveryChange();
+        bomb.setHeroType(nextPlayer.getHeroType());
+        bomb.setBombType(0);
 
         skillAndBuff.initSkillEveryChange();
     }
@@ -99,12 +101,12 @@ public class PlayerManager {
     }
 
     public void render(SpriteBatch batch){
-        for(Player i : playerListRed){
-            i.getMyHero().render(batch);
+        for(int i = 0 ; i < playerListRed.size ; i++){
+            playerListRed.get(i).getMyHero().render(batch);
         }
 
-        for(Player i : playerListBlue){
-            i.getMyHero().render(batch);
+        for(int i = 0 ; i < playerListBlue.size ; i++){
+            playerListBlue.get(i).getMyHero().render(batch);
         }
 
     }

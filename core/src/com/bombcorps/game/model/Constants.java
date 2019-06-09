@@ -93,7 +93,7 @@ public class Constants {
         public static final int WAIT = -1;
 
         public static final Vector2 DIMENSION = new Vector2(0.5f,0.5f);
-        public static final Vector2 SCALE = new Vector2(1f,1f);
+        public static final Vector2 SCALE = new Vector2(2f,2f);
         public static final Vector2 ORIGIN = new Vector2(DIMENSION.x / 2, DIMENSION.y / 2);
     }
 
