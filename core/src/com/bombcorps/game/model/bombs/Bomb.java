@@ -497,9 +497,9 @@ public class Bomb {
     private float damageOutput(float inputDamage){  //输出伤害
         float damage = inputDamage;
         damage += damage * fromPlayer.getMyHero().getAntiArmor();
-        if(Math.random() < fromPlayer.getMyHero().getCriticalProbability()){
-            damage *= fromPlayer.getMyHero().getCriticalRate();
-        }
+//        if(Math.random() < fromPlayer.getMyHero().getCriticalProbability()){
+        damage *= fromPlayer.getMyHero().getCriticalRate();
+//        }
 
         return damage;
     }
