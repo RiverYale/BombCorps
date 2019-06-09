@@ -94,7 +94,7 @@ public class DataController {
         prefs.putInteger("gameNum", personalDataVal[GAME_NUM]);
         if (isWin) {
             personalDataVal[WIN_NUM]++;
-            prefs.putInteger("gameNum", personalDataVal[WIN_NUM]);
+            prefs.putInteger("winNum", personalDataVal[WIN_NUM]);
         }
         prefs.flush();
     }

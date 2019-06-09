@@ -143,7 +143,7 @@ public class InputController implements GestureDetector.GestureListener {
     @Override
     public boolean panStop(float x, float y, int pointer, int button) {
         int op = controller.getOperations();
-        if(op == 1 || op == 2){
+        if(hasAim && (op == 1 || op == 2)){
             controller.getCurPlayer().shoot(controller.getCameraController());
             controller.resetOperations();
             hasAim = false;
