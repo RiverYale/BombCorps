@@ -96,7 +96,7 @@ public class Bonus implements Serializable {
     }
 
     public void render(SpriteBatch batch){
-        if(state == STATE.ACTIVATED);
+        if(state == STATE.ACTIVATED)
             batch.draw(parachute, position.x, position.y + dimension.y,
                     origin.x, origin.y, dimension.x, dimension.y,
                     scale.x, scale.y,0);

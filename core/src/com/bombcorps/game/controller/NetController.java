@@ -203,7 +203,7 @@ public class NetController {
     }
 
     public void parse(Message msg) {
-//        Gdx.app.log("zc", ""+ msg.getMsg());
+        Gdx.app.log("zc", ""+ msg.getMsg());
         Message m;
         switch(msg.getMsg()){
             case REFRESH_ROOM:
@@ -222,8 +222,7 @@ public class NetController {
                 if(game.inRoom()){
                     if(game.hasRoom()){
                         if(!game.getRoom().isFull()){
-                            m = new Message(ENTER_ROOM);
-                            broadcastInRoom(m);
+                            broadcastInRoom(msg);
                             game.getRoom().addPlayer(msg.getTargetPlayer());
                         }
                     }else{
