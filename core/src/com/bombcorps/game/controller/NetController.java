@@ -143,28 +143,31 @@ public class NetController {
         Message msg;
         public void run() {
             // 消息循环
-            while (!bool_stop) {
-                try {
-                    DatagramSocket ds = new DatagramSocket(PORT_RECEIVE);
-                    byte[] data = new byte[1024 * 32];
-                    DatagramPacket dp = new DatagramPacket(data, data.length);
-                    ds.receive(dp);
-                    byte[] data2 = new byte[dp.getLength()];
-                    // 得到接收的数据
-                    System.arraycopy(data, 0, data2, 0, data2.length);
-                    Message msg = (Message) toObject(data2);
-                    ds.close();
-                    //若是自己则不解析
-                    if(getLocalHostIp().equals(dp.getAddress().getHostAddress())){
-                        continue;
-                    }
-                    // 解析消息
-                    parse(msg);
-                } catch (Exception e) {
-                    e.printStackTrace();
+            try {
+                DatagramSocket ds = new DatagramSocket(PORT_RECEIVE);
+                ds.setReceiveBufferSize(1024 * 128);
+                byte[] data = new byte[1024 * 128];
+                DatagramPacket dp = new DatagramPacket(data, data.length);
+                ds.receive(dp);
+                ds.close();
+                if(bool_stop){
+                    return;
                 }
+                openReceiveMsgThread();
+                byte[] data2 = new byte[dp.getLength()];
+                // 得到接收的数据
+                System.arraycopy(data, 0, data2, 0, data2.length);
+                Message msg = (Message) toObject(data2);
+                ds.close();
+                //若是自己则不解析
+                if(getLocalHostIp().equals(dp.getAddress().getHostAddress())){
+                    return;
+                }
+                // 解析消息
+                parse(msg);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
         }
     }
 
