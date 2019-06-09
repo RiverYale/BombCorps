@@ -76,11 +76,16 @@ public class World {
         float RandomX = (float)(1+Math.random()*(30-1+1));
         position = new Vector2(RandomX,28);
         double RandomType = Math.random();
-        if(RandomType < 0.5){
+
+        if(RandomType < 0.33){
             type = Constants.BONUS.ADDENDURANCE;
-        }else{
+        }else if(RandomType < 0.66){
             type = Constants.BONUS.ADDHEALTH;
+        }else{
+            type = Constants.BONUS.ADDRAGEPOWER;
         }
+
+
         Bonus bonus = new Bonus(position,type);
 
         return bonus;

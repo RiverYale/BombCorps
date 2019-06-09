@@ -57,7 +57,7 @@ public class DataController {
         for(int i=0;i<personalDataKey.length;i++){
             personalDataVal[i] = prefs.getInteger(personalDataKey[i], 0);
         }
-        personalDataVal[0] = 3000;
+//        personalDataVal[0] = 3000;
     }
 
     public int getPersonalData(int type){

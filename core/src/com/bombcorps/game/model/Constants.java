@@ -47,8 +47,11 @@ public class Constants {
         public static final float BONUS_VELOCITY_Y = -10;
         public static final int ADDHEALTH = 0;
         public static final int ADDENDURANCE = 1;
+        public static final int ADDRAGEPOWER = 2;
+
         public static final float HEALTH = 400f;
         public static final float ENDURENCE = 100f;
+        public static final float RAGEPOWERADD = 50f;
 
 
         public static final int ACTIVATED = 2;

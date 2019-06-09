@@ -23,7 +23,7 @@ public class Bonus implements Serializable {
 
     private TYPE type;
     public enum TYPE{
-        ADDHEALTH, ADDENDURANCE
+        ADDHEALTH, ADDENDURANCE, ADDRAGEPOWER
     }
 
     private STATE state;
@@ -84,6 +84,10 @@ public class Bonus implements Serializable {
                         player.getMyHero().getHealth() + Constants.BONUS.HEALTH,0,
                         player.getMyHero().getMaxHealth() ));
                 break;
+            case ADDRAGEPOWER:
+                player.getMyHero().setRagePower(MathUtils.clamp(
+                        player.getMyHero().getRagePower() + Constants.BONUS.RAGEPOWERADD,
+                        0,Constants.MAX_RAGEPOWER));
         }
     }
 
@@ -119,10 +123,16 @@ public class Bonus implements Serializable {
     }
 
     public void setType(int type){
-        if(type == Constants.BONUS.ADDHEALTH){
-            this.type = TYPE.ADDHEALTH;
-        }else{
-            this.type = TYPE.ADDENDURANCE;
+        switch (type){
+            case Constants.BONUS.ADDHEALTH:
+                this.type = TYPE.ADDHEALTH;
+                break;
+            case Constants.BONUS.ADDENDURANCE:
+                this.type = TYPE.ADDENDURANCE;
+                break;
+            case Constants.BONUS.ADDRAGEPOWER:
+                this.type = TYPE.ADDRAGEPOWER;
+                break;
         }
     }
 
