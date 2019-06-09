@@ -22,6 +22,7 @@ public class Message implements Serializable{
     private MRoom room;
 
     private int op;
+    private boolean doubleHit;
     private float targetX;
     private float tapX;
     private float tapY;
@@ -52,11 +53,20 @@ public class Message implements Serializable{
         this.room = room.getMRoom();
     }
 
-    public void setOp(int op, float targetX, float tapX, float tapY){
+    public void setOp(int op, float targetX, float tapX, float tapY, boolean doubleHit){
         this.op = op;
         this.targetX = targetX;
         this.tapX = tapX;
         this.tapY = tapY;
+        this.doubleHit = doubleHit;
+    }
+
+    public boolean isDoubleHit() {
+        return doubleHit;
+    }
+
+    public void setDoubleHit(boolean doubleHit) {
+        this.doubleHit = doubleHit;
     }
 
     public int getOp() {

@@ -15,6 +15,7 @@ import com.bombcorps.game.model.Player;
 
 public class Bomb {
 
+    private boolean doubleHit;
     Player fromPlayer;
     private int heroType;
     private int bombType;
@@ -460,7 +461,6 @@ public class Bomb {
                                     Array<Player> playerListBlue){      //扣所有被打到玩家的血
         float attack = fromPlayer.getMyHero().getAttack();
         float damage = damageOutput(attack);
-        Gdx.app.log("damage"," " + damage);
 
         for(Player i : playerList){
 
@@ -496,17 +496,23 @@ public class Bomb {
 
     private float damageOutput(float inputDamage){  //输出伤害
         float damage = inputDamage;
+        Gdx.app.log("attack", "" + inputDamage);
         damage += damage * fromPlayer.getMyHero().getAntiArmor();
-//        if(Math.random() < fromPlayer.getMyHero().getCriticalProbability()){
+        if(doubleHit){
         damage *= fromPlayer.getMyHero().getCriticalRate();
-//        }
+        }
 
+        Gdx.app.log("damage", "" + damage);
         return damage;
     }
 
     /*
     get   set函数
     */
+
+//    public void setDoubleHit(boolean doubleHit){
+//        this.doubleHit = doubleHit;
+//    }
 
     public Player getFromPlayer() {
         return fromPlayer;
@@ -610,6 +616,14 @@ public class Bomb {
         rec.x = position.x;
         rec.y = position.y;
         return rec;
+    }
+
+    public void setDoubleHit(boolean doublehit){
+        this.doubleHit = doublehit;
+    }
+
+    public boolean getDoubleHit(){
+        return doubleHit;
     }
 
     public int getState(){

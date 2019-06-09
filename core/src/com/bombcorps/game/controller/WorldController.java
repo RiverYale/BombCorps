@@ -27,6 +27,7 @@ public class WorldController {
     private NetController net;
     private World world;
     private int perRound = 0;
+    private boolean b_doubleHit;
 
     private Player curPlayer;
     private int operations;
@@ -103,7 +104,7 @@ public class WorldController {
     }
 
     public void resetOperations() {
-        net.operate(operations, curPlayer.getDestX(), curPlayer.getTap().x, curPlayer.getTap().y);
+        net.operate(operations, curPlayer.getDestX(), curPlayer.getTap().x, curPlayer.getTap().y, curPlayer.isDoubleHit());
         this.operations = -1;
     }
 
@@ -189,6 +190,7 @@ public class WorldController {
         float targetX = msg.getTargetX();
         float tapX = msg.getTapX();
         float tapY = msg.getTapY();
+        boolean doubleHit = msg.isDoubleHit();
 
         Gdx.app.log("op skill", "" + op);
 
@@ -201,13 +203,13 @@ public class WorldController {
                     curPlayer.getBomb().setHeroType(5);
                     getCurPlayer().bomb.setPosition(new Vector2(curPlayer.getMyHero().getPosition().x + 0.1f, curPlayer.getMyHero().getPosition().y + 1f));
                     curPlayer.setTap(new Vector2(tapX, tapY));
-                    curPlayer.shoot(cameraController);
+                    curPlayer.shoot(false, cameraController);
                 }
                 break;
             case 2:
                 getCurPlayer().bomb.setPosition(new Vector2(curPlayer.getMyHero().getPosition().x + 0.1f, curPlayer.getMyHero().getPosition().y + 1f));
                 curPlayer.setTap(new Vector2(tapX, tapY));
-                curPlayer.shoot(cameraController);
+                curPlayer.shoot(doubleHit, cameraController);
 
                 break;
             case 3:

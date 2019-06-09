@@ -21,8 +21,6 @@ public class Player implements Serializable {
     private String IP;
     private int level;
 
-
-
     private Vector2 tap;
 
     private boolean current;
@@ -30,6 +28,7 @@ public class Player implements Serializable {
 
     public SkillAndBuff skillAndBuff;
     public Bomb bomb;
+    private boolean doubleHit;
 
     private TEAM team;
     public enum TEAM{
@@ -91,6 +90,7 @@ public class Player implements Serializable {
         每一回合结束都要把英雄的精力值，怒气值调正初始化
          */
         Gdx.app.log("initPlayer","initPlayerEveryRound");
+
 
         myHero.setAttackTimes(1);
 
@@ -162,7 +162,7 @@ public class Player implements Serializable {
         return tap;
     }
 
-    public void shoot(CameraController controller){
+    public void shoot(boolean doubleHit,CameraController controller){
         controller.setTarget(bomb);
         switch (heroType){
             case Constants.PROTECTOR:
@@ -182,10 +182,21 @@ public class Player implements Serializable {
                 break;
 
         }
-
-        bomb.setFromPlayer(this);
+        this.doubleHit = doubleHit;
         bomb.setState(Constants.BOMB.STATE_FLY);
         myHero.setState(Constants.STATE_ATTACK);
+        bomb.setDoubleHit(doubleHit);
+    }
+
+    public void shoot(CameraController controller){
+        boolean doubleHit;
+
+        if(Math.random() > myHero.getCriticalProbability())
+            doubleHit = false;
+        else
+            doubleHit = true;
+
+        shoot(doubleHit, controller);
     }
 
     public boolean useSkill(int op){
@@ -376,6 +387,10 @@ public class Player implements Serializable {
             return Constants.PLAYER.BLUE_TEAM;
         else
             return Constants.PLAYER.RED_TEAM;
+    }
+
+    public boolean isDoubleHit(){
+        return doubleHit;
     }
 
     public void setLevel(int level){

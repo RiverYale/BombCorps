@@ -352,9 +352,9 @@ public class NetController {
         sendCMD(m);
     }
 
-    public void operate(int op,  float targetX, float tapX, float tapY){
+    public void operate(int op,  float targetX, float tapX, float tapY, boolean doubleHit){
         Message m = new Message(OPERATIONS);
-        m.setOp(op, targetX, tapX, tapY);
+        m.setOp(op, targetX, tapX, tapY, doubleHit);
         broadcastInRoom(m);
     }
 
