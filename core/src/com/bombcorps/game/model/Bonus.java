@@ -56,9 +56,9 @@ public class Bonus implements Serializable {
 
     public void init(){
         state = STATE.ACTIVATED;
-        origin = new Vector2();
-        scale = new Vector2();
+        scale = new Vector2(1,1);
         dimension = Constants.BONUS.DIMENSION;
+        origin = new Vector2(dimension.x / 2, dimension.y / 2);
         bonusBox = AssetsController.instance.getRegion("BonusBox");
         parachute = AssetsController.instance.getRegion("Parachute");
 

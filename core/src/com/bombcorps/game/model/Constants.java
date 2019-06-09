@@ -54,7 +54,7 @@ public class Constants {
         public static final int ACTIVATED = 2;
         public static final int GROUNDED = 3;
 
-        public static final Vector2 DIMENSION = new Vector2(0.5f,0.5f);
+        public static final Vector2 DIMENSION = new Vector2(1f,1f);
 
         public static final double BONUS_CHANCE = 0.4f;
 
