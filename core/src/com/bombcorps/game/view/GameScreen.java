@@ -789,6 +789,7 @@ public class GameScreen extends AbstractGameScreen{
         renderWorld(batch);
         worldController.getWorld().getPlayerManager().update(deltaTime);
         worldController.getWorld().getPlayerManager().getBomb().update(deltaTime);
+        worldController.getWorld().bonusManager.update(deltaTime);
         worldController.update(deltaTime);
         renderGUI(batch);
         batch.end();
