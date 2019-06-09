@@ -33,10 +33,6 @@ import com.bombcorps.game.model.Constants;
 import com.bombcorps.game.model.Signal;
 import com.bombcorps.game.model.Player;
 
-
-/*
-图片路径均非真正设置
- */
 public class GameScreen extends AbstractGameScreen{
     public final String TAG = GameScreen.class.getName();
     public final float width = Constants.VIEWPORT_GUI_WIDTH;
@@ -165,6 +161,9 @@ public class GameScreen extends AbstractGameScreen{
         isquit = false;
         isPlayed = false;
         isStage = false;
+
+        Label.LabelStyle labelStyle = new Label.LabelStyle(font,font.getColor());
+        infoLabel = new Label("",labelStyle);
 
         myPlayer = worldController.getPlayers().get(0);
         int i;
@@ -327,17 +326,29 @@ public class GameScreen extends AbstractGameScreen{
             bar.setY(i*15+1);
             if(i == 2){
                 bar.setSize(width/15*1.5f*myPlayer.getMyHero().getHealth()/myPlayer.getMyHero().getMaxHealth(), bar.getHeight());
+                bar.draw(batch);
+                font.getData().setScale(0.4f);
+                font.draw(batch,(int)(myPlayer.getMyHero().getHealth())+"/"+(int)(myPlayer.getMyHero().getMaxHealth()),imgMyHeroHead.getX()+43*scale,bar.getY()+8);
             }else if(i == 1){
                 bar.setSize(width/15*1.5f*myPlayer.getMyHero().getEndurance()/Constants.MAX_ENDURENCE,bar.getHeight());
+                bar.draw(batch);
+                font.getData().setScale(0.4f);
+                font.draw(batch,(int)(myPlayer.getMyHero().getEndurance())+"/"+(int)(Constants.MAX_ENDURENCE),imgMyHeroHead.getX()+43*scale,bar.getY()+8);
             }else if(i==0){
                 bar.setSize(width/15*1.5f*myPlayer.getMyHero().getRagePower()/Constants.MAX_RAGEPOWER,bar.getHeight());
+                bar.draw(batch);
+                font.getData().setScale(0.4f);
+                font.draw(batch,(int)(myPlayer.getMyHero().getRagePower())+"/"+(int)(Constants.MAX_RAGEPOWER),imgMyHeroHead.getX()+43*scale,bar.getY()+8);
+
             }
-            bar.draw(batch);
+
         }
     }
 
     public void batchOtherHeroInfo(SpriteBatch batch){
         imgOtherHeroHead.draw(batch);
+        font.getData().setScale(0.6f);
+        font.draw(batch,otherPlayer.getID(),imgOtherHeroHead.getX(),60);
         bar.setX(imgOtherHeroHead.getX()+43*scale);
         for(int i=2;i>=0;i--) {
             bar.setColor(Color.GRAY);
@@ -349,13 +360,21 @@ public class GameScreen extends AbstractGameScreen{
             bar.setY(i*15+1);
             if(i == 2){
                 bar.setSize(width/15*1.5f*otherPlayer.getMyHero().getHealth()/otherPlayer.getMyHero().getMaxHealth(), bar.getHeight());
+                bar.draw(batch);
+                font.getData().setScale(0.4f);
+                font.draw(batch,(int)(otherPlayer.getMyHero().getHealth())+"/"+(int)(otherPlayer.getMyHero().getMaxHealth()),imgOtherHeroHead.getX()+43*scale,bar.getY()+8);
             }else if(i == 1){
                 bar.setSize(width/15*1.5f*otherPlayer.getMyHero().getEndurance()/Constants.MAX_ENDURENCE,bar.getHeight());
-
+                bar.draw(batch);
+                font.getData().setScale(0.4f);
+                font.draw(batch,(int)(otherPlayer.getMyHero().getEndurance())+"/"+(int)(Constants.MAX_ENDURENCE),imgOtherHeroHead.getX()+43*scale,bar.getY()+8);
             }else {
                 bar.setSize(width/15*1.5f*otherPlayer.getMyHero().getRagePower()/Constants.MAX_RAGEPOWER,bar.getHeight());
+                bar.draw(batch);
+                font.getData().setScale(0.4f);
+                font.draw(batch,(int)(otherPlayer.getMyHero().getRagePower())+"/"+(int)(Constants.MAX_RAGEPOWER),imgOtherHeroHead.getX()+43*scale,bar.getY()+8);
             }
-            bar.draw(batch);
+
         }
     }
 
@@ -480,7 +499,12 @@ public class GameScreen extends AbstractGameScreen{
         prefs.setVolSound(sldSound.getValue());
         prefs.setVolMusic(sldMusic.getValue());
         prefs.saveSettings();
-        winOptions.setVisible(false);
+    }
+    public void loadSettings(){
+        DataController prefs = DataController.instance;
+        sldSound.setValue(prefs.getVolSound());
+        sldMusic.setValue(prefs.getVolMusic());
+
     }
 
 
@@ -565,7 +589,7 @@ public class GameScreen extends AbstractGameScreen{
 
 
     public void onHeroClicked(Player p){
-        infoLabel = null;
+        infoLabel.setVisible(false);
         otherPlayer = p;
         isClickedHero = true;
         final int heroType;

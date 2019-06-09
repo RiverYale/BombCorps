@@ -230,9 +230,9 @@ public class WorldController {
     public int isGameOver() {  //0 未结束   1 红赢   2 蓝赢   3 平
         boolean red = false, blue = false;
         for (Player p : world.getPlayers()) {
-            if(p.getTeam() == Constants.PLAYER.RED_TEAM){
+            if(p.getTeam() == Constants.PLAYER.RED_TEAM&&p.getHeroState()!=Constants.STATE_DEAD){
                 red = true;
-            }else{
+            }else if(p.getTeam() == Constants.PLAYER.BLUE_TEAM&&p.getHeroState()!=Constants.STATE_DEAD){
                 blue = true;
             }
         }

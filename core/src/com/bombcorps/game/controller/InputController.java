@@ -61,6 +61,7 @@ public class InputController implements GestureDetector.GestureListener {
             gameScreen.getGame().loadLobbyScreen();
             return false;
         }else if(gameScreen.btnSettings.getBoundingRectangle().contains(v.x,v.y)){
+            gameScreen.loadSettings();
             AudioController.instance.play(AssetsController.instance.btnClicked);
             gameScreen.setStageTrue();
             Gdx.input.setInputProcessor(gameScreen.stage);
