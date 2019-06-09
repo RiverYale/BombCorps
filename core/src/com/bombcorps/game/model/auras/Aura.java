@@ -1,14 +1,17 @@
 package com.bombcorps.game.model.auras;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.model.Constants;
+import com.bombcorps.game.model.Player;
 
 public class Aura {
     private Vector2 position;
     private AURA state;
+    private float scaleChange = 0;
 
     private enum AURA{
         SPARDAAURA, PROTECTORAURA, ANGELAURA, SNIPERAURA,WIZARDAURA0,WIZARDAURA1,WAIT;
@@ -43,11 +46,29 @@ public class Aura {
 
     public void update(float deltaTime, Vector2 position){
         this.position = position;
+        AURA.SPARDAAURA.scale.x += scaleChange;
+        AURA.SPARDAAURA.scale.y += scaleChange;
+        AURA.WIZARDAURA0.scale.x += scaleChange;
+        AURA.WIZARDAURA0.scale.y += scaleChange;
+        AURA.WIZARDAURA1.scale.x += scaleChange;
+        AURA.WIZARDAURA1.scale.y += scaleChange;
+        AURA.SNIPERAURA.scale.x += scaleChange;
+        AURA.SNIPERAURA.scale.y += scaleChange;
+        AURA.ANGELAURA.scale.x += scaleChange;
+        AURA.ANGELAURA.scale.y += scaleChange;
+        AURA.PROTECTORAURA.scale.x += scaleChange;
+        AURA.PROTECTORAURA.scale.y += scaleChange;
+        if(AURA.SPARDAAURA.scale.x >= 2.2){
+            scaleChange = -0.001f;
+        }
+        if(AURA.SPARDAAURA.scale.x <= 1.8){
+            scaleChange = 0.003f;
+        }
+
     }
 
     public void render(SpriteBatch batch){
         if(state != AURA.WAIT) {
-            
             batch.draw(state.aura, position.x + 0.22f, position.y + 0.22f, state.origin.x, state.origin.y,
                     state.dimension.x, state.dimension.y, state.scale.x, state.scale.y, 0);
         }
