@@ -280,6 +280,7 @@ public class SkillAndBuff {
 
             if(!skill_2 && player.getMyHero().getEndurance() >= Constants.Angel.SKILL_1_ENDURENCE_COST
                     && player.getMyHero().getRagePower() >= Constants.Angel.SKILL_1_POWERRAGE_COST){
+                AudioController.instance.play(AssetsController.instance.angelskill1);
                 skill_1 = true;
 
                 setBomb(player, Constants.ANGEL, 1);
@@ -302,6 +303,7 @@ public class SkillAndBuff {
 
             if(!skill_1 && player.getMyHero().getEndurance() >= Constants.Angel.SKILL_2_ENDURENCE_COST
                     && player.getMyHero().getRagePower() >= Constants.Angel.SKILL_2_POWERRAGE_COST){
+                AudioController.instance.play(AssetsController.instance.angelskill1);
                 skill_2 = true;
 
                 setBomb(player, Constants.ANGEL, 2);
@@ -313,7 +315,7 @@ public class SkillAndBuff {
 
         public void useSkill_3(int team, String IP){
 
-            AudioController.instance.play(AssetsController.instance.angelskill3);
+
             Player player;
             int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
@@ -326,7 +328,7 @@ public class SkillAndBuff {
 
             if(player.getMyHero().getEndurance() >= Constants.Angel.SKILL_3_ENDURENCE_COST &&
                     player.getMyHero().getRagePower() >= Constants.Angel.SKILL_3_POWERRAGE_COST){
-
+                AudioController.instance.play(AssetsController.instance.angelskill3);
                 skill_3 = true;
 
                 if(team == Constants.PLAYER.RED_TEAM) {
@@ -383,7 +385,6 @@ public class SkillAndBuff {
         public boolean skill_3;
 
         public void useSkill_1(int team, String IP){
-            AudioController.instance.play(AssetsController.instance.spardaskill1);
             Player player;
             int index;
             if(team == Constants.PLAYER.RED_TEAM){
@@ -396,7 +397,7 @@ public class SkillAndBuff {
 
             if(player.getMyHero().getEndurance() >= Constants.Sparda.SKILL_1_ENDURENCE_COST
                     && player.getMyHero().getHealth() >= Constants.Sparda.SKILL_1_HEALTH_COST){
-
+                AudioController.instance.play(AssetsController.instance.spardaskill1);
                 skill_1 = true;
 
                 setBomb(player, Constants.SPARDA, 1);
@@ -414,7 +415,6 @@ public class SkillAndBuff {
         }
 
         public void useSkill_2(int team, String IP){
-            AudioController.instance.play(AssetsController.instance.spardaskill1);
             Player player;
             int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
@@ -427,7 +427,7 @@ public class SkillAndBuff {
 
             if(player.getMyHero().getEndurance() >= Constants.Sparda.SKILL_2_ENDURENCE_COST
                     && player.getMyHero().getRagePower() >= Constants.Sparda.SKILL_2_RAGEPOWER_COST){
-
+                AudioController.instance.play(AssetsController.instance.spardaskill1);
                 skill_2 = true;
 
                 setBomb(player, Constants.SPARDA, 1);
@@ -447,7 +447,6 @@ public class SkillAndBuff {
         }
 
         public void useSkill_3(int team, String IP){
-            AudioController.instance.play(AssetsController.instance.spardaskill3);
             Player player;
             int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
@@ -460,6 +459,7 @@ public class SkillAndBuff {
 
             if(player.getMyHero().getEndurance() >= Constants.Sparda.SKILL_3_ENDURENCE_COST &&
                     player.getMyHero().getRagePower() >= Constants.MAX_RAGEPOWER){
+                AudioController.instance.play(AssetsController.instance.spardaskill3);
                 skill_3 = true;
 
                 player.getMyHero().getAura().get(0).setState(Constants.AURA.SPARDAAURA);      //aura
@@ -484,7 +484,6 @@ public class SkillAndBuff {
         public boolean skill_3;
 
         public void useSkill_1(int team, String IP){
-            AudioController.instance.play(AssetsController.instance.protectorskill1);
             Player player;
             int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
@@ -497,7 +496,7 @@ public class SkillAndBuff {
 
             if(player.getMyHero().getEndurance() >= Constants.Protector.SKILL_1_ENDURENCE_COST &&
                     player.getMyHero().getRagePower() >= Constants.Protector.SKILL_1_POWERRAGE_COST){
-
+                AudioController.instance.play(AssetsController.instance.protectorskill1);
                 skill_1 = true;
 
 
@@ -527,6 +526,7 @@ public class SkillAndBuff {
 
             if(player.getMyHero().getEndurance() >= Constants.Protector.SKILL_2_ENDURENCE_COST
                     && player.getMyHero().getRagePower() >= Constants.Protector.SKILL_2_POWERRAGE_COST){
+                AudioController.instance.play(AssetsController.instance.protectorskill1);
                 skill_2 = true;
 
                 setBomb(player, Constants.PROTECTOR, 1);
@@ -537,7 +537,6 @@ public class SkillAndBuff {
         }
 
         public void useSkill_3(int team, String IP){
-            AudioController.instance.play(AssetsController.instance.protectorskill3);
             Player player;
             int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
@@ -550,6 +549,7 @@ public class SkillAndBuff {
 
             if(player.getMyHero().getEndurance() >= Constants.Protector.SKILL_3_ENDURENCE_COST
                     && player.getMyHero().getRagePower() >= Constants.Protector.SKILL_3_POWERRAGE_COST){
+                AudioController.instance.play(AssetsController.instance.protectorskill3);
                 skill_3 = true;
 
 //                player.getMyHero().getAura().get(1).setState(Constants.AURA.PROTECTORAURA);  //aura
@@ -594,7 +594,6 @@ public class SkillAndBuff {
         public boolean skill_3;
 
         public void useSkill_1(int team, String IP){
-            AudioController.instance.play(AssetsController.instance.sniperskill1);
             Player player;
             int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
@@ -607,6 +606,7 @@ public class SkillAndBuff {
 
             if(player.getMyHero().getEndurance() >= Constants.Sniper.SKILL_1_ENDURENCE_COST
                     && player.getMyHero().getRagePower() >= Constants.Sniper.SKILL_1_POWERRAGE_COST){
+                AudioController.instance.play(AssetsController.instance.sniperskill1);
                 skill_1 = true;
 
                 setBomb(player, Constants.SNIPER, 1);
@@ -626,7 +626,6 @@ public class SkillAndBuff {
         }
 
         public void useSkill_2(int team, String IP){
-            AudioController.instance.play(AssetsController.instance.sniperskill1);
             Player player;
             int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
@@ -639,6 +638,7 @@ public class SkillAndBuff {
 
             if(player.getMyHero().getEndurance() >= Constants.Sniper.SKILL_2_ENDURENCE_COST
                     && player.getMyHero().getRagePower() >= Constants.Sniper.SKILL_2_POWERRAGE_COST){
+                AudioController.instance.play(AssetsController.instance.sniperskill1);
                 skill_2 = true;
                 player.getMyHero().setAttackTimes(2); // 攻击次数
 
@@ -648,7 +648,6 @@ public class SkillAndBuff {
         }
 
         public void useSkill_3(int team, String IP){
-            AudioController.instance.play(AssetsController.instance.sniperskill3);
             Player player;
             int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
@@ -661,6 +660,7 @@ public class SkillAndBuff {
 
             if(player.getMyHero().getEndurance() >= Constants.Sniper.SKILL_3_ENDURENCE_COST
                     && player.getMyHero().getRagePower() >= Constants.Sniper.SKILL_3_POWERRAGE_COST){
+                AudioController.instance.play(AssetsController.instance.sniperskill3);
                 skill_3 = true;
 
                 player.getMyHero().setCriticalRate(3f);
@@ -686,7 +686,6 @@ public class SkillAndBuff {
         public boolean skill_3;
 
         public void useSkill_1(int team, String IP){
-            AudioController.instance.play(AssetsController.instance.wizardskill1);
             Player player;
             int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
@@ -699,6 +698,7 @@ public class SkillAndBuff {
 
             if(player.getMyHero().getEndurance() >= Constants.Wizard.SKILL_1_ENDURENCE_COST
                     && player.getMyHero().getRagePower() >= Constants.Wizard.SKILL_1_POWERRAGE_COST){
+                AudioController.instance.play(AssetsController.instance.wizardskill1);
                 skill_1 = true;
 
                 player.getMyHero().setEndurance(player.getMyHero().getEndurance() - Constants.Wizard.SKILL_1_ENDURENCE_COST);
@@ -719,6 +719,7 @@ public class SkillAndBuff {
 
             if(player.getMyHero().getEndurance() >= Constants.Wizard.SKILL_2_ENDURENCE_COST
                     && player.getMyHero().getRagePower() >= Constants.Wizard.SKILL_2_POWERRAGE_COST){
+                AudioController.instance.play(AssetsController.instance.wizardskill1);
                 skill_2 = true;
 
                 setBomb(player, Constants.WIZARD, 1);
@@ -729,7 +730,6 @@ public class SkillAndBuff {
         }
 
         public void useSkill_3(int team, String IP){
-            AudioController.instance.play(AssetsController.instance.wizardskill3);
             Player player;
             int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
@@ -742,6 +742,7 @@ public class SkillAndBuff {
 
             if(player.getMyHero().getEndurance() >= Constants.Wizard.SKILL_3_ENDURENCE_COST
                     && player.getMyHero().getRagePower() >= Constants.Wizard.SKILL_3_POWERRAGE_COST){
+                AudioController.instance.play(AssetsController.instance.wizardskill3);
                 skill_3 = true;
 
                 if(team == Constants.PLAYER.RED_TEAM){
