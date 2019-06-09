@@ -459,7 +459,7 @@ public class Bomb {
                                     Array<Player> playerListRed,
                                     Array<Player> playerListBlue){      //扣所有被打到玩家的血
         float attack = fromPlayer.getMyHero().getAttack();
-
+        Gdx.app.log("attack"," " + attack);
         float damage = damageOutput(attack);
 
         for(Player i : playerList){
