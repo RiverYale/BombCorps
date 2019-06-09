@@ -239,7 +239,7 @@ public class Constants {
         public static final float SKILL_3_ENDURENCE_COST = 100f;
         public static final float SKILL_3_RAGEPOWER_COST = 100f;
         public static final float SKILL_1_HEALTH_COST = 100f;
-        public static final float SKILL_2_RAGEPOWER_COST = 100f;
+        public static final float SKILL_2_RAGEPOWER_COST = 30f;
         /*
         技能效果加成
          */

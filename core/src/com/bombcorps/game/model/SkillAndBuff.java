@@ -197,7 +197,9 @@ public class SkillAndBuff {
             //刷新sparda技能一
             for(int i = 0 ; i < sparda_skill_1_buff ; i++){
                 curPlayer.getMyHero().setAttack(curPlayer.getMyHero().getAttack() - Constants.Sparda.SKILL_1_ATTACK_ADD);
+                Gdx.app.log("skill 1", "mindamage");
             }
+            sparda_skill_1_buff = 0;
 
             //更新sparda技能2
             if(sparda_skill_2_buff > 0)
@@ -399,7 +401,6 @@ public class SkillAndBuff {
                     && player.getMyHero().getHealth() >= Constants.Sparda.SKILL_1_HEALTH_COST){
                 AudioController.instance.play(AssetsController.instance.spardaskill1);
                 skill_1 = true;
-
                 setBomb(player, Constants.SPARDA, 1);
 
                 player.getMyHero().setAttack(player.getMyHero().getAttack() + Constants.Sparda.SKILL_1_ATTACK_ADD);
@@ -415,6 +416,7 @@ public class SkillAndBuff {
         }
 
         public void useSkill_2(int team, String IP){
+
             Player player;
             int index = -1;
             if(team == Constants.PLAYER.RED_TEAM){
@@ -429,7 +431,7 @@ public class SkillAndBuff {
                     && player.getMyHero().getRagePower() >= Constants.Sparda.SKILL_2_RAGEPOWER_COST){
                 AudioController.instance.play(AssetsController.instance.spardaskill1);
                 skill_2 = true;
-
+                Gdx.app.log("skill 2","activated");
                 setBomb(player, Constants.SPARDA, 1);
 
                 player.getMyHero().setCriticalProbability(MathUtils.clamp(player.getMyHero().getCriticalProbability()

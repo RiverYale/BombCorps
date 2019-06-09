@@ -461,7 +461,7 @@ public class Bomb {
                                     Array<Player> playerListBlue){      //扣所有被打到玩家的血
         float attack = fromPlayer.getMyHero().getAttack();
         float damage = damageOutput(attack);
-
+        Gdx.app.log("attack hero"," "+ attack);
         for(Player i : playerList){
 
             if(i.getMyHero().getDecreaseRate() == Constants.Protector.SKILL_3_TEAMMATE_DAMAGE_PERCENTAGE) {   //减伤率为40%

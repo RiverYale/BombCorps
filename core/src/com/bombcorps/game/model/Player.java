@@ -89,7 +89,7 @@ public class Player implements Serializable {
         /*
         每一回合结束都要把英雄的精力值，怒气值调正初始化
          */
-        Gdx.app.log("initPlayer","initPlayerEveryRound");
+        Gdx.app.log("sparda attack","" + myHero.getAttack());
 
 
         myHero.setAttackTimes(1);
