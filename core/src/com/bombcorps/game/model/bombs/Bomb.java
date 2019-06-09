@@ -70,7 +70,7 @@ public class Bomb {
         acceleration = new Vector2(0,Constants.BOMB.ACCELERATION);
         rotation = 0;
 
-        rec = new Rectangle(0,0,dimension.x * 2,dimension.y * 2);
+        rec = new Rectangle(0,0,dimension.x * 3,dimension.y * 3);
         tapRec = new Rectangle(0,0,dimension.x * 3, dimension.y * 3);
     }
 
@@ -496,9 +496,10 @@ public class Bomb {
 
     private float damageOutput(float inputDamage){  //输出伤害
         float damage = inputDamage;
-        Gdx.app.log("attack", "" + inputDamage);
         damage += damage * fromPlayer.getMyHero().getAntiArmor();
         if(doubleHit){
+        Gdx.app.log("doubleHit", "" + doubleHit);
+
         damage *= fromPlayer.getMyHero().getCriticalRate();
         }
 

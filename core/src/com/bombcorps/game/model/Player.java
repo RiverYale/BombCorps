@@ -191,11 +191,8 @@ public class Player implements Serializable {
     public void shoot(CameraController controller){
         boolean doubleHit;
 
-        if(Math.random() > myHero.getCriticalProbability())
-            doubleHit = false;
-        else
-            doubleHit = true;
-
+//        doubleHit = !(Math.random() > myHero.getCriticalProbability());
+        doubleHit = !(Math.random() > 0.5);
         shoot(doubleHit, controller);
     }
 
