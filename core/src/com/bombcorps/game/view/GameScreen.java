@@ -485,6 +485,7 @@ public class GameScreen extends AbstractGameScreen{
 
     public void onSaveClicked() {
         saveSettings();
+        AudioController.instance.onSettingsUpdated();
         onCancelClicked();
     }
 
@@ -496,8 +497,8 @@ public class GameScreen extends AbstractGameScreen{
 
     public void saveSettings(){
         DataController prefs = DataController.instance;
-        prefs.setVolSound(sldSound.getValue());
         prefs.setVolMusic(sldMusic.getValue());
+        prefs.setVolSound(sldSound.getValue());
         prefs.saveSettings();
     }
     public void loadSettings(){
