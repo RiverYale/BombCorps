@@ -13,12 +13,12 @@ public class BonusManager {
         this.mapWidth = mapWidth;
     }
 
-    public void addBonus(int type){             //输入bonus的类别，产生该种bonus,位置随机
-
-        Bonus bonus = new Bonus(mapWidth);
-        bonus.setState(type);
-        bonusList.add(bonus);
-    }
+//    public void addBonus(int type){             //输入bonus的类别，产生该种bonus,位置随机
+//
+//        Bonus bonus = new Bonus();
+//        bonus.setState(type);
+//        bonusList.add(bonus);
+//    }
 
     public void update(float deltaTime){
         for(Bonus i : bonusList){

@@ -82,6 +82,7 @@ public class World {
             type = Constants.BONUS.ADDHEALTH;
         }
         Bonus bonus = new Bonus(position,type);
+
         return bonus;
     }
 
