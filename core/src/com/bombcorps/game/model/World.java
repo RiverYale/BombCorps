@@ -215,7 +215,7 @@ public class World {
     }
 
     public void render(SpriteBatch batch){
-       batch.draw(AssetsController.instance.getRegion("gamebackground"),-16,0,64,20);
+       batch.draw(AssetsController.instance.getRegion("gamebackground"),-16,0,64,30);
        for (Rock rock : rocks){
            rock.render(batch);
        }

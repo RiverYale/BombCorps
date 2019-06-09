@@ -59,7 +59,7 @@ public class CameraController {
 
     public void applyTo(OrthographicCamera camera) {
         float tx = MathUtils.clamp(position.x, 0, 32);
-        float ty = MathUtils.clamp(position.y, 5*zoom, 20-5*zoom);
+        float ty = MathUtils.clamp(position.y, 5*zoom, 30-5*zoom);
         position.x = tx;
         position.y = ty;
         camera.position.x = position.x;

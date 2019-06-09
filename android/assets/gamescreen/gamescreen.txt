@@ -1,263 +1,263 @@
 gamescreen.png
-size: 2034, 1108
+size: 2032, 1476
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 Angel1
   rotate: false
-  xy: 693, 1071
+  xy: 934, 0
   size: 53, 35
   orig: 53, 35
   offset: 0, 0
   index: -1
 Angel2
   rotate: false
-  xy: 748, 1071
+  xy: 1040, 0
   size: 53, 35
   orig: 53, 35
   offset: 0, 0
   index: -1
 Angel3
   rotate: false
-  xy: 803, 1071
+  xy: 987, 0
   size: 53, 35
   orig: 53, 35
   offset: 0, 0
   index: -1
 attrack
   rotate: false
-  xy: 1177, 1033
+  xy: 401, 0
   size: 43, 35
   orig: 43, 35
   offset: 0, 0
   index: -1
 blueTeamSignal
   rotate: false
-  xy: 1479, 755
+  xy: 195, 0
   size: 34, 12
   orig: 34, 12
   offset: 0, 0
   index: -1
 button_quit
   rotate: false
-  xy: 1188, 1070
+  xy: 583, 0
   size: 43, 35
   orig: 43, 35
   offset: 0, 0
   index: -1
 button_setting
   rotate: false
-  xy: 1222, 1033
+  xy: 626, 0
   size: 43, 35
   orig: 43, 35
   offset: 0, 0
   index: -1
 confirm
   rotate: false
-  xy: 1177, 837
+  xy: 0, 68
   size: 187, 83
   orig: 187, 83
   offset: 0, 0
   index: -1
 curPlayerSignal
   rotate: false
-  xy: 1515, 755
+  xy: 229, 0
   size: 34, 12
   orig: 34, 12
   offset: 0, 0
   index: -1
 ejection
   rotate: false
-  xy: 1233, 1070
+  xy: 487, 0
   size: 43, 35
   orig: 43, 35
   offset: 0, 0
   index: -1
 failed
   rotate: false
-  xy: 693, 707
+  xy: 315, 68
   size: 482, 362
   orig: 482, 362
   offset: 0, 0
   index: -1
 gamebackground
   rotate: false
-  xy: 1, 1
-  size: 2032, 704
-  orig: 2032, 704
+  xy: 0, 486
+  size: 2032, 990
+  orig: 2032, 990
   offset: 0, 0
   index: -1
 move
   rotate: false
-  xy: 1232, 922
+  xy: 444, 0
   size: 43, 35
   orig: 43, 35
   offset: 0, 0
   index: -1
 pillarBase
   rotate: false
-  xy: 1232, 959
+  xy: 369, 0
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 pillarMiddle
   rotate: false
-  xy: 1266, 959
-  size: 24, 32
+  xy: 337, 0
+  size: 32, 32
   orig: 32, 32
-  offset: 4, 0
+  offset: 0, 0
   index: -1
 Protector1
   rotate: false
-  xy: 858, 1071
+  xy: 881, 0
   size: 53, 35
   orig: 53, 35
   offset: 0, 0
   index: -1
 Protector2
   rotate: false
-  xy: 913, 1071
+  xy: 828, 0
   size: 53, 35
   orig: 53, 35
   offset: 0, 0
   index: -1
 Protector3
   rotate: false
-  xy: 968, 1071
+  xy: 1093, 0
   size: 53, 35
   orig: 53, 35
   offset: 0, 0
   index: -1
 quit
   rotate: false
-  xy: 1277, 922
+  xy: 275, 0
   size: 30, 30
   orig: 30, 30
   offset: 0, 0
   index: -1
 redTeamSignal
   rotate: false
-  xy: 1551, 755
+  xy: 161, 0
   size: 34, 12
   orig: 34, 12
   offset: 0, 0
   index: -1
 rock
   rotate: false
-  xy: 1232, 993
+  xy: 305, 0
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 savecancelbutton
   rotate: false
-  xy: 1465, 707
+  xy: 1411, 0
   size: 157, 46
   orig: 157, 46
   offset: 0, 0
   index: -1
 sliderbackground
   rotate: false
-  xy: 1587, 755
+  xy: 0, 0
   size: 161, 7
   orig: 161, 7
   offset: 0, 0
   index: -1
 sliderkuai
   rotate: false
-  xy: 1465, 755
+  xy: 263, 0
   size: 12, 18
   orig: 12, 18
   offset: 0, 0
   index: -1
 Sniper1
   rotate: false
-  xy: 1023, 1071
+  xy: 669, 0
   size: 53, 35
   orig: 53, 35
   offset: 0, 0
   index: -1
 Sniper2
   rotate: false
-  xy: 1078, 1071
+  xy: 775, 0
   size: 53, 35
   orig: 53, 35
   offset: 0, 0
   index: -1
 Sniper3
   rotate: false
-  xy: 1133, 1071
+  xy: 1358, 0
   size: 53, 35
   orig: 53, 35
   offset: 0, 0
   index: -1
 Sparda1
   rotate: false
-  xy: 1624, 707
+  xy: 1252, 0
   size: 53, 35
   orig: 53, 35
   offset: 0, 0
   index: -1
 Sparda2
   rotate: false
-  xy: 1679, 707
+  xy: 1305, 0
   size: 53, 35
   orig: 53, 35
   offset: 0, 0
   index: -1
 Sparda3
   rotate: false
-  xy: 1734, 707
+  xy: 1199, 0
   size: 53, 35
   orig: 53, 35
   offset: 0, 0
   index: -1
 textfieldbackground
   rotate: false
-  xy: 1307, 777
+  xy: 1568, 0
   size: 300, 50
   orig: 300, 50
   offset: 0, 0
   index: -1
 vitory
   rotate: false
-  xy: 1, 707
-  size: 690, 400
+  xy: 797, 68
+  size: 690, 418
   orig: 690, 418
-  offset: 0, 9
+  offset: 0, 0
   index: -1
 window
   rotate: false
-  xy: 1177, 707
+  xy: 187, 68
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 winresult
   rotate: false
-  xy: 1307, 707
+  xy: 1868, 0
   size: 156, 68
   orig: 156, 68
   offset: 0, 0
   index: -1
 Wizard1
   rotate: false
-  xy: 1177, 922
+  xy: 1146, 0
   size: 53, 35
   orig: 53, 35
   offset: 0, 0
   index: -1
 Wizard2
   rotate: false
-  xy: 1177, 959
+  xy: 722, 0
   size: 53, 35
   orig: 53, 35
   offset: 0, 0
   index: -1
 Wizard3
   rotate: false
-  xy: 1177, 996
+  xy: 530, 0
   size: 53, 35
   orig: 53, 35
   offset: 0, 0
