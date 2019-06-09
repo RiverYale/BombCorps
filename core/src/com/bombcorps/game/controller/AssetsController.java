@@ -30,7 +30,6 @@ public class AssetsController  implements Disposable, AssetErrorListener {
 
     public Sound angelshoot;
     public Sound spardashoot;
-    public Sound wizardshoot;
     public Sound snipershoot;
     public Sound protectorshoot;
 
@@ -38,6 +37,7 @@ public class AssetsController  implements Disposable, AssetErrorListener {
     public Sound protectorskill3;
     public Sound spardaskill1;
     public Sound spardaskill3;
+    public Sound angelskill1;
     public Sound angelskill3;
     public Sound wizardskill1;
     public Sound wizardskill3;
@@ -76,9 +76,9 @@ public class AssetsController  implements Disposable, AssetErrorListener {
         snipershoot =Gdx.audio.newSound(Gdx.files.internal("sound/snipershoot.mp3"));
         spardashoot =Gdx.audio.newSound(Gdx.files.internal("sound/spardashoot.mp3"));
         protectorshoot =Gdx.audio.newSound(Gdx.files.internal("sound/protectorshoot.mp3"));
-
         spardaskill1 = Gdx.audio.newSound(Gdx.files.internal("sound/spardaskill1.mp3"));
         spardaskill3 = Gdx.audio.newSound(Gdx.files.internal("sound/spardaskill3.mp3"));
+        angelskill1 =Gdx.audio.newSound(Gdx.files.internal("sound/angelskill1.mp3"));
         angelskill3 =Gdx.audio.newSound(Gdx.files.internal("sound/angelskill3.mp3"));
         protectorskill1 =Gdx.audio.newSound(Gdx.files.internal("sound/protectorskill1.mp3"));
         protectorskill3 =Gdx.audio.newSound(Gdx.files.internal("sound/protectorskill3.mp3"));
