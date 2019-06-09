@@ -30,8 +30,10 @@ public class Bonus implements Serializable {
         ACTIVATED, GROUNDED
     }
 
-    public Bonus(float mapWidth){
-        init(mapWidth);
+    public Bonus(Vector2 position, int type){
+        init();
+        this.position = position;
+        setType(type);
 //        initType();
     }
 
@@ -52,7 +54,7 @@ public class Bonus implements Serializable {
         return new Message.MBonus(position, origin, scale, dimension, type, state);
     }
 
-    public void init(float mapWidth){
+    public void init(){
         state = STATE.ACTIVATED;
         origin = new Vector2();
         scale = new Vector2();
@@ -60,13 +62,13 @@ public class Bonus implements Serializable {
         bonusBox = AssetsController.instance.getRegion("BonusBox");
         parachute = AssetsController.instance.getRegion("Parachute");
 
-        initPosition(mapWidth);
+//        initPosition();
     }
 
-    public void initPosition(float mapWidth){
-        position = new Vector2();
-        position.x = (float)Math.random() * (mapWidth - dimension.x);
-    }
+//    public void initPosition(float mapWidth){
+//        position = new Vector2();
+//        position.x = (float)Math.random() * (mapWidth - dimension.x);
+//    }
 
     public void attachTo(Player player){
         switch (type){

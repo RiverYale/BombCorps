@@ -146,7 +146,8 @@ public class WorldController {
                 break;
             case 6:
                 if(world.getIp().equals(curPlayer.getIp())){
-                    boolean hasBonus = MathUtils.random(9) > 6; // 30%的几率
+                    int t = MathUtils.random(9);
+                    boolean hasBonus =  (t > 6); // 30%的几率
                     Bonus b = null;
                     if(hasBonus){
                         b = world.spawnBonus();
@@ -168,6 +169,7 @@ public class WorldController {
         if(b != null){
             world.addBonus(b);
         }
+        Gdx.app.log("zc", (b!=null)+"");
         curPlayer = world.getNextPlayer();
         perRound++;
         while (curPlayer.getMyHero().getState() == Constants.STATE_DEAD){
