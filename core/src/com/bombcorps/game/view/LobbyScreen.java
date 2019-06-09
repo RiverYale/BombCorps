@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.bombcorps.game.controller.AssetsController;
+import com.bombcorps.game.controller.AudioController;
 import com.bombcorps.game.controller.DataController;
 import com.bombcorps.game.controller.NetController;
 import com.bombcorps.game.model.Room;
@@ -240,34 +241,42 @@ public class LobbyScreen extends AbstractGameScreen implements InputProcessor{
         camera.unproject(v);
 
         if(btnToMenu.getBoundingRectangle().contains(v.x,v.y)){
+            AudioController.instance.play(AssetsController.instance.btnClicked);
             game.loadMenuScreen();
         }
 
         if(btnToInfoScreen.getBoundingRectangle().contains(v.x,v.y)){
+            AudioController.instance.play(AssetsController.instance.btnClicked);
             game.loadInfoScreen();
         }
 
         if(btnRefresh.getBoundingRectangle().contains(v.x,v.y)){
+            AudioController.instance.play(AssetsController.instance.btnClicked);
             netController.refreshRoom();
         }
 
         if(btnBuildRoom.getBoundingRectangle().contains(v.x,v.y)){
+            AudioController.instance.play(AssetsController.instance.btnClicked);
             showWinBR = true;
         }
 
         if(btnCancel.getBoundingRectangle().contains(v.x,v.y)){
+            AudioController.instance.play(AssetsController.instance.btnClicked);
             showWinBR = false;
         }
         //创建房间
         if(btnOne.getBoundingRectangle().contains(v.x,v.y)){
+            AudioController.instance.play(AssetsController.instance.btnClicked);
             Room room = new Room(NetController.getLocalHostIp(),1);
             game.loadRoomScreen(room);
         }
         if(btnTwo.getBoundingRectangle().contains(v.x,v.y)){
+            AudioController.instance.play(AssetsController.instance.btnClicked);
             Room room = new Room(NetController.getLocalHostIp(),2);
             game.loadRoomScreen(room);
         }
         if(btnFour.getBoundingRectangle().contains(v.x,v.y)){
+            AudioController.instance.play(AssetsController.instance.btnClicked);
             Room room = new Room(NetController.getLocalHostIp(),4);
             game.loadRoomScreen(room);
         }
@@ -282,12 +291,14 @@ public class LobbyScreen extends AbstractGameScreen implements InputProcessor{
         }
 
         if(btnRoomlistUp.getBoundingRectangle().contains(v.x,v.y)){
+            AudioController.instance.play(AssetsController.instance.btnClicked);
             if(numOfPage > 0){
                 numOfPage --;
             }
         }
 
         if(btnRoomlistDown.getBoundingRectangle().contains(v.x,v.y)){
+            AudioController.instance.play(AssetsController.instance.btnClicked);
             if(((numOfPage + 1) * 4 ) < unfullRoom.size()){
                 numOfPage ++;
             }
