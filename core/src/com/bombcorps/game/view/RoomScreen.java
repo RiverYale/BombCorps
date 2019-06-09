@@ -440,7 +440,13 @@ public class RoomScreen extends AbstractGameScreen implements InputProcessor{
         }
 
         if(btnReady.getBoundingRectangle().contains(v.x,v.y) && !b_error){
-            if(myplayer.getIp().equals(room.getOwnerIp())){
+            int readyNum = 0;
+            for(int i = 0;i < room.getPlayerManager().getAllPlayerList().size;i ++){
+                if(room.getPlayerManager().getAllPlayerList().get(i).getReady()){
+                    readyNum ++;
+                }
+            }
+            if(myplayer.getIp().equals(room.getOwnerIp()) && (readyNum == (2 * mode - 1))){
                 //游戏开始
                 game.getNetController().startGame();
                 game.loadGameScreen();
