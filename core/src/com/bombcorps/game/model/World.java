@@ -71,10 +71,18 @@ public class World {
     }
 
     public Bonus spawnBonus() {
-        if(bonusManager.getBonusList().size > 0)
-            return bonusManager.getBonusList().get(bonusManager.getBonusList().size - 1);
-
-        return null;
+        int type;
+        Vector2 position;
+        float RandomX = (float)(1+Math.random()*(30-1+1));
+        position = new Vector2(RandomX,28);
+        double RandomType = Math.random();
+        if(RandomType < 0.5){
+            type = Constants.BONUS.ADDENDURANCE;
+        }else{
+            type = Constants.BONUS.ADDHEALTH;
+        }
+        Bonus bonus = new Bonus(position,type);
+        return bonus;
     }
 
     public Bonus getFallingBonus() {
