@@ -70,7 +70,7 @@ public class Constants {
 
         public static final float BOOM_DURETION = 0.2f;
         public static final Vector2 BOOM_DIMENSION = new Vector2(0.5f,0.5f);
-        public static final Vector2 BOOM_SCALE = new Vector2(1f,1f);
+        public static final Vector2 BOOM_SCALE = new Vector2(3f,3f);
 
         public static final Vector2 DIMENSION = new Vector2(0.5f,0.5f);
 
@@ -124,7 +124,7 @@ public class Constants {
 
     public static final float MAX_ENDURENCE = 200;
     public static final float MAX_RAGEPOWER = 100;
-    public static final float MOVE_ENDURANCE_COST = 0.2f;
+    public static final float MOVE_ENDURANCE_COST = 1f;
     public static final float TRANSPORT_ENDURENCE_COST = 150f;
     public static final float CRITICALPROBABILITY_DAMAGE_RATE = 2f;
 
