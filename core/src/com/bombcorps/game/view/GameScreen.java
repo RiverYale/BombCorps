@@ -324,6 +324,7 @@ public class GameScreen extends AbstractGameScreen{
 
             bar.setColor(c[i]);
             bar.setY(i*15+1);
+            font.setColor(Color.BLACK);
             if(i == 2){
                 bar.setSize(width/15*1.5f*myPlayer.getMyHero().getHealth()/myPlayer.getMyHero().getMaxHealth(), bar.getHeight());
                 bar.draw(batch);
@@ -358,6 +359,7 @@ public class GameScreen extends AbstractGameScreen{
 
             bar.setColor(c[i]);
             bar.setY(i*15+1);
+            font.setColor(Color.BLACK);
             if(i == 2){
                 bar.setSize(width/15*1.5f*otherPlayer.getMyHero().getHealth()/otherPlayer.getMyHero().getMaxHealth(), bar.getHeight());
                 bar.draw(batch);
@@ -645,6 +647,7 @@ public class GameScreen extends AbstractGameScreen{
             winResults.addActor(virtory);
             Label goldReceiveLabel = new Label("获得100金币",new Label.LabelStyle(font, Color.BLACK));
             winResults.addActor(goldReceiveLabel);
+            goldReceiveLabel.setFontScale(1.5f);
             goldReceiveLabel.setSize(winResults.getWidth(),winResults.getHeight()/2);
             goldReceiveLabel.setAlignment(Align.center);
             goldReceiveLabel.setPosition(0,winResults.getHeight()/5);
@@ -653,6 +656,7 @@ public class GameScreen extends AbstractGameScreen{
                 AudioController.instance.stopMusic();
                 isPlayed =true;
                 prefs.addMoney(100);
+                prefs.addGameNum(true);
                 AudioController.instance.play(AssetsController.instance.win);
             }
         }else{
@@ -661,6 +665,7 @@ public class GameScreen extends AbstractGameScreen{
             failed.setPosition((winResults.getWidth()-failed.getWidth())/2,(winResults.getHeight()-failed.getHeight())/1.25f);
             winResults.addActor(failed);
             Label goldReceiveLabel = new Label("获得50金币",new Label.LabelStyle(font, Color.BLACK));
+            goldReceiveLabel.setFontScale(1.5f);
             winResults.addActor(goldReceiveLabel);
             goldReceiveLabel.setSize(winResults.getWidth(),winResults.getHeight()/2);
             goldReceiveLabel.setAlignment(Align.center);
@@ -669,6 +674,7 @@ public class GameScreen extends AbstractGameScreen{
                 AudioController.instance.stopMusic();
                 isPlayed = true;
                 prefs.addMoney(50);
+                prefs.addGameNum(false);
                 AudioController.instance.play(AssetsController.instance.lose);
 
             }
