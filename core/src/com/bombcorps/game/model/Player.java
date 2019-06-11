@@ -8,11 +8,9 @@ import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.controller.AudioController;
 import com.bombcorps.game.controller.CameraController;
 import com.bombcorps.game.controller.NetController;
-import com.bombcorps.game.model.bombs.Bomb;
 import com.bombcorps.game.model.heros.*;
 
 import java.io.Serializable;
-import java.util.Set;
 
 public class Player implements Serializable {
     private String ID;

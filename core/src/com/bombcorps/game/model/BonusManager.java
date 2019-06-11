@@ -3,7 +3,6 @@ package com.bombcorps.game.model;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
-import com.bombcorps.game.model.bombs.Bomb;
 
 public class BonusManager {
     private Array<Bonus> bonusList;

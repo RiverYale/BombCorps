@@ -3,7 +3,6 @@ package com.bombcorps.game.model;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
-import com.bombcorps.game.model.bombs.Bomb;
 
 import java.util.ArrayList;
 
