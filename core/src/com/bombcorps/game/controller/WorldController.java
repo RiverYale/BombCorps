@@ -36,10 +36,6 @@ public class WorldController {
         game.getRoom().getPlayerManager().gameBegin();
         this.world = game.getWorld();
         cameraController = new CameraController();
-        init();
-    }
-
-    public void init() {
         operations = -1;
         net.bindWorldController(this);
         curPlayer = world.getFirstPlayer();
