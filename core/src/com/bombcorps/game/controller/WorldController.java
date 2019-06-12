@@ -25,7 +25,6 @@ public class WorldController {
     private NetController net;
     private World world;
     private int perRound = 0;
-    private boolean b_doubleHit;
 
     private Player curPlayer;
     private int operations;
@@ -46,7 +45,6 @@ public class WorldController {
         curPlayer = world.getFirstPlayer();
         world.getPlayerManager().initEveryChange(curPlayer);
         cameraController.setTarget(curPlayer);
-//        AudioController.instance.play(AssetsController.instance.getMusic("")); //TODO
     }
 
     public void update(float deltaTime){
@@ -60,10 +58,6 @@ public class WorldController {
 
     public CameraController getCameraController() {
         return cameraController;
-    }
-
-    public NetController getNetController() {
-        return net;
     }
 
     public World getWorld(){
@@ -88,8 +82,6 @@ public class WorldController {
             Vector2 dimension = new Vector2();
             p.getRect().getPosition(position);
             p.getRect().getSize(dimension);
-//            Gdx.app.log("qin","position.x = "+position.x+" position.y = "+position.y+
-//                    " dimension.x = "+dimension.x+" dimension.y = "+dimension.y);
             if(p.getRect().contains(x, y)){
                 return p;
             }
@@ -107,7 +99,6 @@ public class WorldController {
     }
 
     public void onHeroClicked(Player p) {
-//        Gdx.app.log("qin","hero clicked is used in WorldController");
         game.onHeroClicked(p);
     }
 
@@ -119,7 +110,6 @@ public class WorldController {
             case 1:
                 if(curPlayer.useSkill(1)) {
                     operations = 1;
-                    //TODO curPlayer放个球
                     getCurPlayer().getBomb().setState(Constants.BOMB.STATE_READY);
                     getCurPlayer().bomb.setPosition(new Vector2(curPlayer.getMyHero().getPosition().x + 0.1f, curPlayer.getMyHero().getPosition().y + 1f));
 
@@ -128,12 +118,8 @@ public class WorldController {
             case 2:
                 if(curPlayer.useSkill(2)) {
                     operations = 2;
-                    //TODO curPlayer放个炸弹
                     getCurPlayer().getBomb().setState(Constants.BOMB.STATE_READY);
                     getCurPlayer().bomb.setPosition(new Vector2(curPlayer.getMyHero().getPosition().x + 0.1f, curPlayer.getMyHero().getPosition().y + 1f));
-//                    getCurPlayer().setTap(new Vector2(getCurPlayer().getPosition().x - 5, getCurPlayer().getPosition().y - 5));
-//                    getCurPlayer().getBomb().setState(Constants.BOMB.STATE_FLY);
-//                    getCurPlayer().shoot();
                 }
                 break;
             case 3:
@@ -168,7 +154,6 @@ public class WorldController {
         if(b != null){
             world.addBonus(b);
         }
-        Gdx.app.log("zc", (b!=null)+"");
         curPlayer = world.getNextPlayer();
         perRound++;
         while (curPlayer.getMyHero().getState() == Constants.STATE_DEAD){
@@ -189,9 +174,6 @@ public class WorldController {
         float tapX = msg.getTapX();
         float tapY = msg.getTapY();
         boolean doubleHit = msg.isDoubleHit();
-
-        Gdx.app.log("op skill", "" + op);
-
         switch (op) {
             case 0:
                 curPlayer.setDestX(targetX);
@@ -249,7 +231,7 @@ public class WorldController {
         }
     }
 
-    public void testCollisions() {
+    private void testCollisions() {
         boolean b_falling = true;
         Rectangle r1 = curPlayer.getRect();
         Rectangle r2;
@@ -276,7 +258,7 @@ public class WorldController {
         for (Bonus b : world.bonusManager.getBonusList()) {
             r2 = b.getRect();
             if (r1.overlaps(r2)) {
-                onCollisionsPlayerWithBonus(b);
+                b.attachTo(curPlayer);
             }
         }
         if(curPlayer.getBomb().getState() == Constants.BOMB.STATE_FLY) {
@@ -284,13 +266,13 @@ public class WorldController {
             for(Rock r : world.rocks) {
                 r2 = r.getRect();
                 if (r1.overlaps(r2)) {
-                    onCollisionsBombWithRock(curPlayer.getBomb());
+                    world.getPlayerManager().explode(curPlayer);
                 }
             }
             for(Pillar r : world.pillars) {
                 r2 = r.getRect();
                 if (r1.overlaps(r2)) {
-                    onCollisionsBombWithRock(curPlayer.getBomb());
+                    world.getPlayerManager().explode(curPlayer);
                 }
             }
         }
@@ -301,7 +283,7 @@ public class WorldController {
             for (Rock r : world.rocks) {
                 r2 = r.getRect();
                 if (r1.overlaps(r2)) {
-                    onCollisionsBonusWithRock(fallingOne, r);
+                    fallingOne.setState(Constants.BONUS.GROUNDED);
                 }
             }
         }
@@ -360,17 +342,4 @@ public class WorldController {
                 break;
         }
     }
-
-    private void onCollisionsPlayerWithBonus(Bonus b) {
-        b.attachTo(curPlayer);
-    }
-
-    private void onCollisionsBombWithRock(Bomb b) {
-        world.getPlayerManager().explode(curPlayer);
-    }
-
-    private void onCollisionsBonusWithRock(Bonus b, Rock rock) {
-        b.setState(Constants.BONUS.GROUNDED);
-    }
-
 }

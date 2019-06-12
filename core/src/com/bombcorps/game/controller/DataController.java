@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.bombcorps.game.model.Constants;
 
 public class DataController {
-    public static final String TAG = DataController.class.getName();
     public static final DataController instance = new DataController();
     public static final int MONEY = 0;
     public static final int ANGEL = 1;

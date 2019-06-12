@@ -21,6 +21,8 @@ public class AssetsController  implements Disposable, AssetErrorListener {
     private HashMap<String, Sound> soundMap;
     private HashMap<String, Music> musicMap;
     public BitmapFont font;
+
+    //备用
     public Music bgm1;
     public Music bgm2;
     public Sound btnClicked;
@@ -64,6 +66,9 @@ public class AssetsController  implements Disposable, AssetErrorListener {
         this.assetManager = new AssetManager();
         assetManager.setErrorListener(this);
         textureMap = new HashMap<String, TextureAtlas.AtlasRegion>();
+        musicMap = new HashMap<String, Music>();
+        soundMap = new HashMap<String, Sound>();
+
         font = new BitmapFont(Gdx.files.internal("font/font.fnt"), false);
         assetManager.load("music/bgm.mp3",Music.class);
         bgm1 = Gdx.audio.newMusic(Gdx.files.internal("music/bgm.mp3"));
@@ -113,9 +118,9 @@ public class AssetsController  implements Disposable, AssetErrorListener {
     }
 
     public TextureAtlas.AtlasRegion getRegion(String regionName) {
-//        if (textureMap.get(regionName) == null) {
-//            Gdx.app.log("zc", regionName);
-//        }
+        if (textureMap.get(regionName) == null) {
+            Gdx.app.log(TAG, "Couldn't get " + regionName);
+        }
         return textureMap.get(regionName);
     }
 
@@ -135,7 +140,7 @@ public class AssetsController  implements Disposable, AssetErrorListener {
         musicMap.put(key, assetManager.get(fileName, Music.class));
     }
 
-    public Music getMusic(String key) {
+        public Music getMusic(String key) {
         return musicMap.get(key);
     }
 
@@ -147,6 +152,8 @@ public class AssetsController  implements Disposable, AssetErrorListener {
     @Override
     public void dispose() {
         textureMap.clear();
+        soundMap.clear();
+        musicMap.clear();
         assetManager.dispose();
         font.dispose();
     }

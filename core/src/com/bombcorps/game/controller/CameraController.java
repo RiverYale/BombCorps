@@ -17,32 +17,16 @@ public class CameraController {
         zoom = 1f;
     }
 
-    public Vector2 getPosition() {
-        return position;
-    }
-
     public void setPosition(float x, float y) {
         this.position.set(x, y);
-    }
-
-    public float getZoom() {
-        return zoom;
     }
 
     public void setZoom(float zoom) {
         this.zoom = MathUtils.clamp(zoom, Constants.MAX_ZOON_IN, Constants.MAX_ZOON_OUT);
     }
 
-    public void addZoom(float amount) {
-        this.zoom = MathUtils.clamp(zoom+amount, Constants.MAX_ZOON_IN, Constants.MAX_ZOON_OUT);
-    }
-
     public void setTarget(Object target) {
         this.target = target;
-    }
-
-    public boolean hasTarget(){
-        return target != null;
     }
 
     public void update(float deltaTime) {

@@ -27,11 +27,10 @@ import java.util.Enumeration;
 
 public class NetController {
     private ArrayList<Room> roomList;
-    private ArrayList<Player> playerList;
-    private ArrayList<Ai> aiList;
     private WorldController world;
     private boolean bool_stop;
     private DirectedGame game;
+    private static String localHost = getLocalHost();
 
     //网络行为协议
     private static final int REFRESH_ROOM = 9;      //刷新房间
@@ -52,8 +51,6 @@ public class NetController {
 
     public NetController() {
         roomList = new ArrayList<Room>();
-        playerList = new ArrayList<Player>();
-        aiList = new ArrayList<Ai>();
     }
 
     public void bindWorldController(WorldController world) {
@@ -64,20 +61,18 @@ public class NetController {
         this.game = game;
     }
 
-    public void init() {
-        roomList.clear();
-        playerList.clear();
-        aiList.clear();
-    }
-
     // 得到广播ip, 192.168.0.255之类的格式
-    public static String getBroadCastIP() {
+    private static String getBroadCastIP() {
         String ip = getLocalHostIp().substring(0, getLocalHostIp().lastIndexOf(".") + 1) + "255";
         return ip;
     }
 
-    // 获取本机IP
     public static String getLocalHostIp() {
+        return localHost;
+    }
+
+    // 获取本机IP
+    private static String getLocalHost() {
         String ipaddress = "";
         try {
             Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces();
@@ -105,7 +100,7 @@ public class NetController {
         return roomList;
     }
 
-    public void sendCMD(Message msg) {
+    private void sendCMD(Message msg) {
         Gdx.app.log(getLocalHostIp()+" to", msg.getToIp());
         (new UdpSend(msg)).start();
     }
@@ -166,13 +161,13 @@ public class NetController {
                 // 解析消息
                 parse(msg);
             } catch (Exception e) {
-                e.printStackTrace();
+//                e.printStackTrace();
             }
         }
     }
 
     // 对象封装成消息
-    public byte[] toByteArray(Object obj) {
+    private byte[] toByteArray(Object obj) {
         byte[] bytes = null;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         try {
@@ -189,7 +184,7 @@ public class NetController {
     }
 
     // 消息解析成对象
-    public Object toObject(byte[] bytes) {
+    private Object toObject(byte[] bytes) {
         Object obj = null;
         try {
             ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
@@ -205,8 +200,7 @@ public class NetController {
         return obj;
     }
 
-    public void parse(Message msg) {
-        Gdx.app.log("zc", ""+ msg.getMsg());
+    private void parse(Message msg) {
         Message m;
         switch(msg.getMsg()){
             case REFRESH_ROOM:
@@ -299,7 +293,7 @@ public class NetController {
         sendCMD(m);
     }
 
-    public void broadcastInRoom(Message m) {
+    private void broadcastInRoom(Message m) {
         for (Player p : game.getRoom().getPlayerManager().getAllPlayerList()) {
             if(p.getIp().equals(getLocalHostIp())){
                 continue;
@@ -324,11 +318,6 @@ public class NetController {
     public void chooseMap(String mapName) {
         Message m = new Message(CHOOSE_MAP);
         m.setMap(mapName);
-        broadcastInRoom(m);
-    }
-
-    public void addAi() {
-        Message m = new Message(ADD_AI);
         broadcastInRoom(m);
     }
 
