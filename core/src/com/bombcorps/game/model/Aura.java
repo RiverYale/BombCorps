@@ -1,12 +1,9 @@
-package com.bombcorps.game.model.auras;
+package com.bombcorps.game.model;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.bombcorps.game.controller.AssetsController;
-import com.bombcorps.game.model.Constants;
-import com.bombcorps.game.model.Player;
 
 public class Aura {
     private Vector2 position;

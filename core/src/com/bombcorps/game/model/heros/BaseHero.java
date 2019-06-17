@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Array;
 import com.bombcorps.game.controller.AssetsController;
 import com.bombcorps.game.model.Constants;
 import com.bombcorps.game.model.Signal;
-import com.bombcorps.game.model.auras.Aura;
+import com.bombcorps.game.model.Aura;
 
 public class BaseHero{
 
