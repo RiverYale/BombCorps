@@ -37,15 +37,7 @@ public class BombCorps extends DirectedGame {
 		netController.openReceiveMsgThread();
 		DataController.instance.loadSettings();
 		DataController.instance.loadPersonalData();
-
-		//AssetsController.instance.music.play();
-		//music = Gdx.audio.newMusic(Gdx.files.internal("music/bgm.mp3"));
-		//music.play();
-		//music.setLooping(true);
 		loadMenuScreen();
-//		DataController.instance.loadPersonalData();
-//		DataController.instance.loadSettings();
-//		loadInfoScreen();
 	}
 
 

@@ -2,13 +2,11 @@ package com.bombcorps.game.controller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
-import com.bombcorps.game.model.Ai;
 import com.bombcorps.game.model.Bonus;
 import com.bombcorps.game.model.Message;
 import com.bombcorps.game.model.Player;
 import com.bombcorps.game.model.Room;
 import com.bombcorps.game.view.DirectedGame;
-import com.bombcorps.game.view.GameScreen;
 import com.bombcorps.game.view.RoomScreen;
 
 import java.io.ByteArrayInputStream;
@@ -21,7 +19,6 @@ import java.net.DatagramSocket;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
@@ -106,7 +103,7 @@ public class NetController {
     }
 
     //发送消息
-    class UdpSend extends Thread {
+    public class UdpSend extends Thread {
         Message msg;
         UdpSend(Message msg) {
             this.msg = msg;

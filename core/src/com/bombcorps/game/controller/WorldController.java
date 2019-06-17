@@ -126,7 +126,7 @@ public class WorldController {
                 resetOperations();
                 break;
             case 6:
-                if(world.getIp().equals(curPlayer.getIp())){
+                    if(world.getIp().equals(curPlayer.getIp())){
                     int t = MathUtils.random(9);
                     boolean hasBonus =  (t > 6); // 30%的几率
                     Bonus b = null;
